@@ -11,6 +11,8 @@ const createWindow = () => {
     }
   })
 
+  BrowserWindow.maximize()
+  mainWindow.removeMenu()
   mainWindow.loadURL('https://deadshot.io')
 }
 
