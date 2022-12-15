@@ -1,0 +1,19 @@
+{
+  "name": "BestestBestBetterGoodDeadshotClient",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@electron-forge/cli": "^6.0.4",
+    "electron": "^22.0.0"
+  },
+  "dependencies": {}
+}
