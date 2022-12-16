@@ -1,14 +1,5 @@
 const { ipcRenderer } = require('electron');
 
-// unlock curser
-document.addEventListener("keydown", (event) => {
-  if (event.code == "Escape") {
-      document.exitPointerLock();
-  }
-})
-
-console.log("it works?");
-
 document.addEventListener("DOMContentLoaded", function() {
     let btn = document.createElement("button");
     btn.innerHTML = "GG";
