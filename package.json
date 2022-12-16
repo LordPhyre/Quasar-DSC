@@ -5,6 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron-forge start",
+    "dist": "electron-builder",
     "package": "electron-forge package",
     "make": "electron-forge make"
   },
@@ -13,5 +14,7 @@
   "devDependencies": {
     "@electron-forge/cli": "^6.0.4",
     "electron": "^22.0.0"
+  },
+  "dependencies": {
   }
 }
