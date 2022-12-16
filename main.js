@@ -1,29 +1,30 @@
-const { app, BrowserWindow } = require('electron')
-const path = require('path')
+const { app, BrowserWindow } = require('electron');
+const path = require('path');
 
 const createWindow = () => {
-
-  const mainWindow = new BrowserWindow({
-    width: 852,
-    height: 480,
+  const win = new BrowserWindow({
+    width: 800,
+    height: 600,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
-    }
-  })
+      preload: path.join(__dirname, 'preload.js'),
+    },
+  });
 
-  //BrowserWindow.maximize()
-  mainWindow.removeMenu()
-  mainWindow.loadURL('https://deadshot.io')
-}
+  win.loadFile('index.html');
+};
 
 app.whenReady().then(() => {
-  createWindow()
+  createWindow();
 
   app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
-  })
-})
+    if (BrowserWindow.getAllWindows().length === 0) {
+      createWindow();
+    }
+  });
+});
 
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') app.quit()
-})
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
+});
