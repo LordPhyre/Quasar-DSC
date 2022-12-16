@@ -5,13 +5,17 @@ const createWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 852,
     height: 480,
+    center: true,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
+      preload: path.join(__dirname, 'src/preload.js'),
+      nodeIntegration: true,
+      enableRemoteModule: true,
+      sandbox: false
     }
   })
 
   //BrowserWindow.maximize()
-  mainWindow.removeMenu()
+  //mainWindow.removeMenu()
   mainWindow.loadURL('https://deadshot.io')
 
   var cssToLoad = '';

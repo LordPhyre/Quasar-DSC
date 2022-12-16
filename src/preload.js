@@ -1,9 +1,23 @@
+const { ipcRenderer } = require('electron');
+
 // unlock curser
 document.addEventListener("keydown", (event) => {
   if (event.code == "Escape") {
       document.exitPointerLock();
   }
 })
+
+console.log("it works?");
+
+/*document.addEventListener("DOMContentLoaded", (event) => {
+  ipcRenderer.send('preloadNeedSettings');
+
+  const titleUpdate = setInterval(function () {
+      if (!document.title.includes('Deadshot')) {
+          document.title = 'Deadshot';
+      }
+  }, 100);
+})*/
 
 let btn = document.createElement("button");
 btn.innerHTML = "GG";
@@ -12,7 +26,7 @@ btn.id = "ggbtn";
 btn.style = "position: absolute;left: 100;top: 100;z-index: 1000;";
 document.body.appendChild(btn);
 
-document.getElementById('ggbtn').onclick = function() {
+/*document.getElementById('ggbtn').onclick = function() {
     //alert("it should work");
     //document.getElementById('input').value = 'GG';
 
@@ -27,7 +41,7 @@ document.getElementById('ggbtn').onclick = function() {
         cancelable: true
     });*/
 
-    const event = new KeyboardEvent('keydown', {
+    /*const event = new KeyboardEvent('keydown', {
         keyCode: 13,
         bubbles: true,
         cancelable: true
@@ -103,4 +117,4 @@ function switchSettingsMenu(){
   settingsMenuOpen = !settingsMenuOpen;
 
   ipcRenderer.send('settingsNeedSettings');
-}
+}*/

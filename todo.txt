@@ -1,0 +1,4 @@
+- gg button
+- switch "wallpaper"
+- custom gun skins
+- auto rejoin
