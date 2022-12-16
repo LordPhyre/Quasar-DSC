@@ -2,3 +2,8 @@
 - switch "wallpaper"
 - custom gun skins
 - auto rejoin
+- better tab scoreboard
+- random cool looking gui elements
+- custom fps counter
+- texture pack loader
+- gamma editor (changes lighting)
