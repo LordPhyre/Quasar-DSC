@@ -1,0 +1,62 @@
+body {
+  background-image:url(https://cdn.discordapp.com/attachments/901905234861883432/910340407949398046/background.jpg);
+  background-size:stretch;
+  background-attachment: fixed;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+#title{
+  font-size:24px;
+  background-color:rgba(0,0,0,0.3);
+  text-align:center;
+  margin-bottom:10px;
+  width:400px;
+}
+@font-face {
+		font-family: "FFF Forward";
+		src: url("../fonts/BaiJamjuree-Bold.ttf");
+}
+* {
+				font-family: "FFF Forward";
+				font-size: 24px;
+				user-select: none;
+				color: #FFF;
+				text-shadow:
+					-1px -1px 0 #202020,
+					1px -1px 0 #202020,
+					-1px 1px 0 #202020,
+					1px 1px 0 #202020,
+					-2px -2px 0 #202020,
+					2px -2px 0 #202020,
+					-2px 2px 0 #202020,
+					2px 2px 0 #202020;
+}
+#container{
+  background-color:rgba(0,0,0,0.3);
+  width:400px;
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.emote {
+  width:80px;
+  height:80px;
+  background-color:rgba(150,150,150,0.3);
+  margin:10px;
+  border-radius:16px;
+}
+.emote img {
+  width:40px;
+  height:40px;
+  position:relative;
+  left:50%;
+  top:25%;
+  transform:translate(-50%, 25%);
+}
+.emote p {
+  font-size:12px;
+  text-align:center;
+  width:80px;
+  padding-top:8px;
+}
