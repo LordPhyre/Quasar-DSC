@@ -95,6 +95,7 @@ ipcRenderer.on('preloadSettings', (event, preferences, version, filedir) => {
     btn.innerHTML = "GG";
     btn.type = "submit";
     btn.name = "formBtn";
+    btn.style = "position: absolute;left: 100;top: 100;z-index: 1000;";
     document.body.appendChild(btn);
 
     // FPS Counter
