@@ -7,13 +7,10 @@ document.addEventListener("DOMContentLoaded", function() {
     document.body.appendChild(btn);
 
     // replace "wallpaper" (camera) | completely destroys page -> find a way to still reload size (grab the values from there!)
-    /*const canvas = document.querySelector('body > canvas:last-of-type');
+    const canvas = document.querySelector('body > canvas:last-of-type');
 
     // style="display: block; opacity: 0.5; width: 283px; height: 423px;"
     const canvasstyle = canvas.style;
-
-    const img = document.createElement('img');
-    img.src = 'https://upload.wikimedia.org/wikipedia/commons/f/f1/2ChocolateChipCookies.jpg';
 
     const src = 'https://upload.wikimedia.org/wikipedia/commons/f/f1/2ChocolateChipCookies.jpg';
 
@@ -35,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 bgimage.height = canvas.height;
             }
         });
-    });*/
+    });
       
     observer.observe(canvas, { attributes: true });
 
