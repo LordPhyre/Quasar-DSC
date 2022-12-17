@@ -11,8 +11,12 @@
 - auto fullscreen setting
 - fov slider (DIFFICULT!) // we could scale the canvas and then do something with the zoom
 - toggleable wasd detector thing (you know what i mean) // yeah, where you see the button clicks
-- functioning keyboard shortcuts (easy) // 'done'
-- "No Internet" screen (easy)
 - GG button on killed (get name from kill menu) // not an element?! I have no clue how to do this, even querySelector wont work
 
 - keybind presets
+
+Done:
+
+- functioning keyboard shortcuts (easy)
+- GG shortcut
+- "No Internet" screen (easy)
