@@ -124,67 +124,8 @@ document.addEventListener("DOMContentLoaded", function() {
       
     observer.observe(canvas, { attributes: true });*/
 
-    /*document.getElementById('ggbtn').onclick = function() {
-        //alert("it should work");
-        //document.getElementById('input').value = 'GG';
-
-        const input = document.querySelector('input[placeholder="[Enter] to use chat"]');
-        input.value = 'GG';
-
-        const event = new KeyboardEvent('keydown', {
-            keyCode: 13,
-            bubbles: true,
-            cancelable: true
-        });
-
-        input.dispatchEvent(event);
-        // without this one it wont work
-        input.dispatchEvent(event);
-
-        //input.click();
-
-        /*const event = new KeyboardEvent('keydown', {
-            key: 'Enter',
-            bubbles: true,
-            cancelable: true
-        });*/
-
-        /*const event = new KeyboardEvent('keydown', {
-            keyCode: 13,
-            bubbles: true,
-            cancelable: true
-        });
-
-        input.dispatchEvent(event);*/
-    /*};*/
-
-    /*document.getElementById('hellobtn').onclick = function() {
-        const input = document.querySelector('input[placeholder="[Enter] to use chat"]');
-        input.value = 'hello guys';
-
-        const event = new KeyboardEvent('keydown', {
-            keyCode: 13,
-            bubbles: true,
-            cancelable: true
-        });
-
-        input.dispatchEvent(event);
-        input.dispatchEvent(event);
-    };
-
-    document.getElementById('showwrapper').onclick = function() {
-        document.getElementById("wrapper").style.display = "";
-    };
-
-    document.getElementById('hidewrapper').onclick = function() {
-        document.getElementById("wrapper").style.display = "";
-    };*/
-
     document.body.addEventListener('keypress', (e) => {
         if(e.key == '1') {
-            // this definetly works
-            //console.log("g Key Pressed");
-
             const input = document.querySelector('input[placeholder="[Enter] to use chat"]');
             input.value = 'GG';
 
@@ -195,7 +136,6 @@ document.addEventListener("DOMContentLoaded", function() {
             });
     
             input.dispatchEvent(event);
-            // without this one it wont work
             input.dispatchEvent(event);
         }
 
@@ -210,7 +150,6 @@ document.addEventListener("DOMContentLoaded", function() {
             });
     
             input.dispatchEvent(event);
-            // without this one it wont work
             input.dispatchEvent(event);
         }
 
@@ -228,66 +167,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
         if(e.key == '4') {
             document.getElementById("wrapper").style.display = "none";
-            /*if (wrapperHidden = true)
-            {
-                document.getElementById("wrapper").style.display = "";
-                wrapperHidden = false;
-            } else {
-                document.getElementById("wrapper").style.display = "none";
-                wrapperHidden = true;
-            }*/
         }
     });
-
-    /*document.addEventListener("keypress", function(event) {
-        if (event.altKey && event.key === "g") {
-            const input = document.querySelector('input[placeholder="[Enter] to use chat"]');
-            input.value = 'GG';
-
-            const event = new KeyboardEvent('keydown', {
-                keyCode: 13,
-                bubbles: true,
-                cancelable: true
-            });
-    
-            input.dispatchEvent(event);
-            // without this one it wont work
-            input.dispatchEvent(event);
-        }
-
-        if (event.altKey && event.key === "h") {
-            const input = document.querySelector('input[placeholder="[Enter] to use chat"]');
-            input.value = 'hello guys';
-
-            const event = new KeyboardEvent('keydown', {
-                keyCode: 13,
-                bubbles: true,
-                cancelable: true
-            });
-    
-            input.dispatchEvent(event);
-            // without this one it wont work
-            input.dispatchEvent(event);
-        }
-      });*/
-      
-
-    /*document.body.addEventListener('keypress', (e) => {
-        if(e.key == 'j') {
-            const input = document.querySelector('input[placeholder="[Enter] to use chat"]');
-            input.value = 'ඞ'; // doesn't work :/
-
-            const event = new KeyboardEvent('keydown', {
-                keyCode: 13,
-                bubbles: true,
-                cancelable: true
-            });
-    
-            input.dispatchEvent(event);
-            // without this one it wont work
-            input.dispatchEvent(event);
-        }
-    });*/
 
     // offline / online status
 
