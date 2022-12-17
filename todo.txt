@@ -4,7 +4,6 @@
 - auto rejoin
 - better tab scoreboard
 - random cool looking gui elements
-- custom fps counter
 - texture pack loader
 - gamma editor (changes lighting)
 - auto-gg setting (no need for button press)
@@ -21,3 +20,5 @@ Done:
 - GG shortcut
 - hello shortcut
 - "No Internet" screen (easy)
+- custom fps counter
+- splash screen

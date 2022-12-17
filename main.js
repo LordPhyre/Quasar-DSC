@@ -6,11 +6,28 @@ const createWindow = () => {
     const mainWindow = new BrowserWindow({
         width: 852,
         height: 480,
+        show: false,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js')
         }
     })
-    //mainWindow.removeMenu()
+    var splash = new BrowserWindow({
+      width: 500, 
+      height: 300, 
+      transparent: true, 
+      frame: false, 
+      alwaysOnTop: true 
+    });
+
+    splash.loadFile('splash.html');
+    splash.center();
+
+    setTimeout(function () {
+      splash.close();
+      mainWindow.show();
+    }, 5000);
+
+    mainWindow.removeMenu()
     mainWindow.loadURL('https://deadshot.io')
     //mainWindow.loadFile('index.html')
 
