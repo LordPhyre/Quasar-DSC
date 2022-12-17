@@ -6,6 +6,39 @@ document.addEventListener("DOMContentLoaded", function() {
     btn.style = "position: absolute;left: 100;top: 100;z-index: 1000;";
     document.body.appendChild(btn);
 
+    // replace "wallpaper" (camera) | completely destroys page -> find a way to still reload size (grab the values from there!)
+    /*const canvas = document.querySelector('body > canvas:last-of-type');
+
+    // style="display: block; opacity: 0.5; width: 283px; height: 423px;"
+    const canvasstyle = canvas.style;
+
+    const img = document.createElement('img');
+    img.src = 'https://upload.wikimedia.org/wikipedia/commons/f/f1/2ChocolateChipCookies.jpg';
+
+    const src = 'https://upload.wikimedia.org/wikipedia/commons/f/f1/2ChocolateChipCookies.jpg';
+
+    canvas.insertAdjacentHTML("beforebegin", '<img height="' + canvas.height + '" width="' + canvas.width + '" id="bgimage" src="'+ src + '" style="display: block; opacity:' + canvasstyle.opacity + '; width:' + canvasstyle.width + '; height:' + canvasstyle.width + ';">');
+    //canvas.insertAdjacentHTML("beforebegin", img);
+
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.type === "attributes" && mutation.attributeName === "style") {
+                console.log("canvas size changed");
+
+                // change image size
+                const bgimage = document.getElementById("bgimage");
+                bgimage.style.width = canvasstyle.width;
+                bgimage.style.height = canvasstyle.height;
+
+                // also need these
+                bgimage.width = canvas.width;
+                bgimage.height = canvas.height;
+            }
+        });
+    });*/
+      
+    observer.observe(canvas, { attributes: true });
+
     document.getElementById('ggbtn').onclick = function() {
         //alert("it should work");
         //document.getElementById('input').value = 'GG';
