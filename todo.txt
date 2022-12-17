@@ -10,4 +10,6 @@
 - auto-gg setting (no need for button press)
 - auto fullscreen setting
 - fov slider (DIFFICULT!)
-
+- toggleable wasd detector thing (you know what i mean)
+- functioning keyboard shortcuts (easy)
+- "No Internet" screen (easy)
