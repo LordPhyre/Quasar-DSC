@@ -129,7 +129,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let status = document.createElement("h2");
     status.innerHTML = "Network Status";
     status.id = "status";
-    status.style = "position: absolute; text-align: center; z-index: 1000; color: lightgreen";
+    status.style = "position: absolute; width: 100%; text-align: center; z-index: 1000; color: lightgreen";
     document.body.appendChild(status);
 
     const updateOnlineStatus = () => {
