@@ -29,7 +29,7 @@ const createWindow = () => {
 
     //mainWindow.removeMenu()
     mainWindow.loadURL('https://deadshot.io')
-    //mainWindow.loadFile('index.html')
+    //mainWindow.loadFile('draggablewindow.html')
 
     // Open the DevTools.
     // mainWindow.webContents.openDevTools()
