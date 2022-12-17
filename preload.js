@@ -194,7 +194,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let fpscounter = document.createElement("h2");
     fpscounter.innerHTML = "FPS Counter";
     fpscounter.id = "fpscounter";
-    fpscounter.style = "position: absolute; left: 100;top: 100; z-index: 1000; color: grey;";
+    fpscounter.style = "position: absolute; left: 100;top: 100; z-index: 1000; color: grey; margin-left: 7.5px;";
     document.body.appendChild(fpscounter);
 
     let fps = 0;
