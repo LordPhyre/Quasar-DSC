@@ -184,7 +184,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // ping | doesn't work
 
-    /*let pingimg = document.createElement("img");
+    var script = document.createElement('script');
+    script.src = 'https://code.jquery.com/jquery-3.4.1.min.js';
+    script.type = 'text/javascript';
+    document.getElementsByTagName('head')[0].appendChild(script);
+
+    let pingimg = document.createElement("img");
     pingimg.id = "junkOne";
     document.body.appendChild(pingimg);
 
@@ -202,7 +207,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
     
-    ping();*/
+    ping();
 
     /*function ping() {
         var xhr = new XMLHttpRequest();
