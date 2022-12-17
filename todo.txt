@@ -11,6 +11,7 @@
 - fov slider (DIFFICULT!) // we could scale the canvas and then do something with the zoom
 - toggleable wasd detector thing (you know what i mean) // yeah, where you see the button clicks
 - GG button on killed (get name from kill menu) // not an element?! I have no clue how to do this, even querySelector wont work
+- permanent small version of scoreboard
 
 - keybind presets
 
