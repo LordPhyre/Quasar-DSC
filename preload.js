@@ -124,4 +124,28 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });*/
 
+    // offline / online status
+
+    let status = document.createElement("h2");
+    status.innerHTML = "Network Status";
+    status.id = "status";
+    status.style = "position: absolute; text-align: center; z-index: 1000; color: lightgreen";
+    document.body.appendChild(status);
+
+    const updateOnlineStatus = () => {
+        document.getElementById('status').innerHTML = navigator.onLine ? 'online' : 'offline'
+
+        if (navigator.onLine == 1)
+        {
+            status.style.color = "lightgreen";
+        } else {
+            status.style.color = "red";
+        }
+    }
+      
+    window.addEventListener('online', updateOnlineStatus)
+    window.addEventListener('offline', updateOnlineStatus)
+    
+    updateOnlineStatus()
+
 });
