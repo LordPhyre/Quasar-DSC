@@ -10,7 +10,7 @@ const createWindow = () => {
             preload: path.join(__dirname, 'preload.js')
         }
     })
-    mainWindow.removeMenu()
+    //mainWindow.removeMenu()
     mainWindow.loadURL('https://deadshot.io')
     //mainWindow.loadFile('index.html')
 
