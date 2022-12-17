@@ -13,4 +13,4 @@
 - toggleable wasd detector thing (you know what i mean)
 - functioning keyboard shortcuts (easy)
 - "No Internet" screen (easy)
-- GG button on killed (get name from kill menu)
+- GG button on killed (get name from kill menu) // not an element?! I have no clue how to do this, even querySelector wont work
