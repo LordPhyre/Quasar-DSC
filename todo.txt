@@ -14,3 +14,5 @@
 - functioning keyboard shortcuts (easy) // 'done'
 - "No Internet" screen (easy)
 - GG button on killed (get name from kill menu) // not an element?! I have no clue how to do this, even querySelector wont work
+
+- keybind presets

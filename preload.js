@@ -141,11 +141,30 @@ document.addEventListener("DOMContentLoaded", function() {
         } else {
             status.style.color = "red";
         }
+
     }
       
     window.addEventListener('online', updateOnlineStatus)
     window.addEventListener('offline', updateOnlineStatus)
     
     updateOnlineStatus()
+
+    // ping | doesn't work
+
+    /*function ping() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/ping', true);
+        xhr.send();
+        
+        var startTime = performance.now();
+        
+        xhr.onload = function() {
+            var endTime = performance.now();
+            var pingTime = endTime - startTime;
+            console.log('Ping time: ' + pingTime + 'ms');
+        };
+    }
+    
+    ping();*/
 
 });
