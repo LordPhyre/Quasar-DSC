@@ -184,6 +184,26 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // ping | doesn't work
 
+    /*let pingimg = document.createElement("img");
+    pingimg.id = "junkOne";
+    document.body.appendChild(pingimg);
+
+    let faFEA = document.createElement("p");
+    faFEA.innerHTML = "ping here";
+    faFEA.id = "timer";
+    faFEA.style = "position: absolute; width: 100%; text-align: center; z-index: 1000; color: red";
+    document.body.appendChild(faFEA);
+
+    function ping() {
+        var start = new Date().getTime();
+        $('#junkOne').attr('src', 'http://deadshot.io:8886/').error(function () {
+            var end = new Date().getTime();
+            $('#timer').html("" + (end-start) + "ms");
+        });
+    }
+    
+    ping();*/
+
     /*function ping() {
         var xhr = new XMLHttpRequest();
         xhr.open('GET', '/ping', true);
