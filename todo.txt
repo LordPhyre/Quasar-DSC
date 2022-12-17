@@ -1,4 +1,4 @@
-- gg button
+- better gg button
 - switch "wallpaper"
 - custom gun skins
 - auto rejoin
@@ -7,3 +7,7 @@
 - custom fps counter
 - texture pack loader
 - gamma editor (changes lighting)
+- auto-gg setting (no need for button press)
+- auto fullscreen setting
+- fov slider (DIFFICULT!)
+
