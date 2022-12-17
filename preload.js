@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
 
     // vars & preset stuff
-
     var wrapperHidden = true;
 
     let shortcuts = document.createElement("h2");
