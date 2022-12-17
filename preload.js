@@ -173,6 +173,7 @@ document.addEventListener("DOMContentLoaded", function() {
             status.style.color = "lightgreen";
         } else {
             status.style.color = "red";
+            mainWindow.loadFile('index.html')
         }
 
     }
@@ -182,7 +183,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
     updateOnlineStatus()
 
-    // ping | doesn't work
+    // ping | doesn't work | jquery is the problem
 
     var script = document.createElement('script');
     script.src = 'https://code.jquery.com/jquery-3.4.1.min.js';
@@ -201,7 +202,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function ping() {
         var start = new Date().getTime();
-        $('#junkOne').attr('src', 'http://deadshot.io:8886/').error(function () {
+        $('#junkOne').attr('src', 'http://deadshot.io/').error(function () {
             var end = new Date().getTime();
             $('#timer').html("" + (end-start) + "ms");
         });
