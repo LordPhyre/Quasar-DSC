@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function() {
     document.body.appendChild(btn);
 
     // replace "wallpaper" (camera) | completely destroys page -> find a way to still reload size (grab the values from there!)
-    const canvas = document.querySelector('body > canvas:last-of-type');
+    /*const canvas = document.querySelector('body > canvas:last-of-type');
 
     // style="display: block; opacity: 0.5; width: 283px; height: 423px;"
     const canvasstyle = canvas.style;
@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
       
-    observer.observe(canvas, { attributes: true });
+    observer.observe(canvas, { attributes: true });*/
 
     document.getElementById('ggbtn').onclick = function() {
         //alert("it should work");
@@ -89,5 +89,39 @@ document.addEventListener("DOMContentLoaded", function() {
             input.dispatchEvent(event);
         }
     });
+
+    document.body.addEventListener('keypress', (e) => {
+        if(e.key == 'h') {
+            const input = document.querySelector('input[placeholder="[Enter] to use chat"]');
+            input.value = 'hello guys';
+
+            const event = new KeyboardEvent('keydown', {
+                keyCode: 13,
+                bubbles: true,
+                cancelable: true
+            });
+    
+            input.dispatchEvent(event);
+            // without this one it wont work
+            input.dispatchEvent(event);
+        }
+    });
+
+    /*document.body.addEventListener('keypress', (e) => {
+        if(e.key == 'j') {
+            const input = document.querySelector('input[placeholder="[Enter] to use chat"]');
+            input.value = 'ඞ'; // doesn't work :/
+
+            const event = new KeyboardEvent('keydown', {
+                keyCode: 13,
+                bubbles: true,
+                cancelable: true
+            });
+    
+            input.dispatchEvent(event);
+            // without this one it wont work
+            input.dispatchEvent(event);
+        }
+    });*/
 
 });
