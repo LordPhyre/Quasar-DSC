@@ -187,7 +187,7 @@ document.addEventListener("DOMContentLoaded", function() {
         input.dispatchEvent(event);*/
     };
 
-    document.getElementById('hellobtn').onclick = function() {
+    /*document.getElementById('hellobtn').onclick = function() {
         const input = document.querySelector('input[placeholder="[Enter] to use chat"]');
         input.value = 'hello guys';
 
@@ -207,7 +207,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     document.getElementById('hidewrapper').onclick = function() {
         document.getElementById("wrapper").style.display = "none";
-    };
+    };*/
 
     document.body.addEventListener('keypress', (e) => {
         if(e.key == '1') {
