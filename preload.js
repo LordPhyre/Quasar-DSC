@@ -1,10 +1,18 @@
 document.addEventListener("DOMContentLoaded", function() {
-    let btn = document.createElement("button");
-    btn.innerHTML = "GG";
-    btn.type = "submit";
-    btn.id = "ggbtn";
-    btn.style = "position: absolute;left: 100;top: 100;z-index: 1000;";
-    document.body.appendChild(btn);
+    let ggbtn = document.createElement("button");
+    ggbtn.innerHTML = "[g] GG";
+    ggbtn.type = "submit";
+    ggbtn.id = "ggbtn";
+    //btn.disabled = true; // !!!
+    ggbtn.style = "position: absolute; left: 0; bottom: 0; z-index: 1000; color: grey; background-color: transparent; outline: none; margin-bottom: 4px; margin-left: 7.5px; outline: none; border: none; font-size: 20px;"; // bugging
+    document.body.appendChild(ggbtn);
+
+    let hellobtn = document.createElement("button");
+    hellobtn.innerHTML = "[h] hello guys";
+    hellobtn.type = "submit";
+    hellobtn.id = "hellobtn";
+    hellobtn.style = "position: absolute; left: 0; bottom: 0; z-index: 1000; color: grey; background-color: transparent; outline: none; margin-bottom: 4px; margin-left: 80px; outline: none; border: none; font-size: 20px;"; // bugging
+    document.body.appendChild(hellobtn);
 
     // replace "wallpaper" (camera) | completely destroys page -> find a way to still reload size (grab the values from there!)
     /*const canvas = document.querySelector('body > canvas:last-of-type');
@@ -68,6 +76,20 @@ document.addEventListener("DOMContentLoaded", function() {
         });
 
         input.dispatchEvent(event);*/
+    };
+
+    document.getElementById('hellobtn').onclick = function() {
+        const input = document.querySelector('input[placeholder="[Enter] to use chat"]');
+        input.value = 'hello guys';
+
+        const event = new KeyboardEvent('keydown', {
+            keyCode: 13,
+            bubbles: true,
+            cancelable: true
+        });
+
+        input.dispatchEvent(event);
+        input.dispatchEvent(event);
     };
 
     document.body.addEventListener('keypress', (e) => {
@@ -166,5 +188,35 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     
     ping();*/
+
+    // FPS-Counter
+
+    let fpscounter = document.createElement("h2");
+    fpscounter.innerHTML = "FPS Counter";
+    fpscounter.id = "fpscounter";
+    fpscounter.style = "position: absolute; left: 100;top: 100; z-index: 1000; color: grey;";
+    document.body.appendChild(fpscounter);
+
+    let fps = 0;
+    let frameCount = 0;
+    let startTime = 0;
+
+    function updateFps() {
+        frameCount++;
+
+        const elapsedTime = (performance.now() - startTime) / 1000;
+
+        if (elapsedTime > 1) {
+            fps = frameCount / elapsedTime;
+            startTime = performance.now();
+            frameCount = 0;
+        }
+
+        document.getElementById('fpscounter').innerText = 'FPS: ' + fps.toFixed(2);
+
+        requestAnimationFrame(updateFps);
+    }
+
+    updateFps();
 
 });
