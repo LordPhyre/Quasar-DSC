@@ -4,40 +4,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
     var wrapperHidden = true;
 
-    /*let ggbtn = document.createElement("button");
-    ggbtn.innerHTML = "[1] GG";
-    ggbtn.type = "submit";
-    ggbtn.id = "ggbtn";
-    //btn.disabled = true; // !!!
-    ggbtn.style = "position: absolute; left: 0; bottom: 0; z-index: 1000; color: grey; background-color: transparent; outline: none; margin-bottom: 4px; margin-left: 7.5px; outline: none; border: none; font-size: 20px;"; // bugging
-    document.body.appendChild(ggbtn);
-
-    let hellobtn = document.createElement("button");
-    hellobtn.innerHTML = "[2] hello guys";
-    hellobtn.type = "submit";
-    hellobtn.id = "hellobtn";
-    hellobtn.style = "position: absolute; left: 0; bottom: 0; z-index: 1000; color: grey; background-color: transparent; outline: none; margin-bottom: 4px; margin-left: 77.5px; outline: none; border: none; font-size: 20px;"; // bugging
-    document.body.appendChild(hellobtn);
-
-    let showwrapper = document.createElement("button");
-    showwrapper.innerHTML = "[3] show";
-    showwrapper.type = "submit";
-    showwrapper.id = "showwrapper";
-    showwrapper.style = "position: absolute; left: 0; bottom: 0; z-index: 1000; color: grey; background-color: transparent; outline: none; margin-bottom: 4px; margin-left: 220px; outline: none; border: none; font-size: 20px;"; // bugging
-    document.body.appendChild(showwrapper);
-
-    let hidewrapper = document.createElement("button");
-    hidewrapper.innerHTML = "[4] hide";
-    hidewrapper.type = "submit";
-    hidewrapper.id = "hidewrapper";
-    hidewrapper.style = "position: absolute; left: 0; bottom: 0; z-index: 1000; color: grey; background-color: transparent; outline: none; margin-bottom: 4px; margin-left: 315px; outline: none; border: none; font-size: 20px;"; // bugging
-    document.body.appendChild(hidewrapper);*/
-
     let shortcuts = document.createElement("h2");
     shortcuts.innerHTML = "[1] GG  [2] hello guys  [3] show  [4] hide";
     shortcuts.type = "submit";
     shortcuts.id = "hidewrapper";
-    shortcuts.style = "position: absolute; left: 0; bottom: 0; z-index: 1000; color: grey; background-color: transparent; outline: none; margin-bottom: 4px; margin-left: 7.5px; outline: none; border: none; font-size: 20px;"; // bugging
+    shortcuts.style = "position: absolute; left: 0; bottom: 0; z-index: 1000; color: grey; background-color: transparent; outline: none; margin-bottom: 4px; margin-left: 7.5px; outline: none; border: none; font-size: 100%;";
     document.body.appendChild(shortcuts);
 
     // draggable windows
@@ -153,7 +124,7 @@ document.addEventListener("DOMContentLoaded", function() {
       
     observer.observe(canvas, { attributes: true });*/
 
-    document.getElementById('ggbtn').onclick = function() {
+    /*document.getElementById('ggbtn').onclick = function() {
         //alert("it should work");
         //document.getElementById('input').value = 'GG';
 
@@ -185,7 +156,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
 
         input.dispatchEvent(event);*/
-    };
+    /*};*/
 
     /*document.getElementById('hellobtn').onclick = function() {
         const input = document.querySelector('input[placeholder="[Enter] to use chat"]');
@@ -206,7 +177,7 @@ document.addEventListener("DOMContentLoaded", function() {
     };
 
     document.getElementById('hidewrapper').onclick = function() {
-        document.getElementById("wrapper").style.display = "none";
+        document.getElementById("wrapper").style.display = "";
     };*/
 
     document.body.addEventListener('keypress', (e) => {
@@ -323,7 +294,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let status = document.createElement("h2");
     status.innerHTML = "Network Status";
     status.id = "status";
-    status.style = "position: absolute; width: 100%; text-align: center; z-index: 1000; color: lightgreen";
+    status.style = "position: absolute; width: 100%; text-align: center; z-index: 1000; color: lightgreen; font-size: 100%";
     document.body.appendChild(status);
 
     const updateOnlineStatus = () => {
@@ -392,7 +363,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let fpscounter = document.createElement("h2");
     fpscounter.innerHTML = "FPS Counter";
     fpscounter.id = "fpscounter";
-    fpscounter.style = "position: absolute; left: 100;top: 100; z-index: 1000; color: grey; margin-left: 7.5px;";
+    fpscounter.style = "position: absolute; left: 100;top: 100; z-index: 1000; color: grey; margin-left: 7.5px; font-size: 100%";
     document.body.appendChild(fpscounter);
 
     let fps = 0;
