@@ -14,6 +14,16 @@ document.addEventListener("DOMContentLoaded", function() {
     hellobtn.style = "position: absolute; left: 0; bottom: 0; z-index: 1000; color: grey; background-color: transparent; outline: none; margin-bottom: 4px; margin-left: 80px; outline: none; border: none; font-size: 20px;"; // bugging
     document.body.appendChild(hellobtn);
 
+    // css
+    let el = document.createElement('style');
+    el.type = 'text/css';
+    el.innerText = "html, body {background: url(https://upload.wikimedia.org/wikipedia/commons/f/f1/2ChocolateChipCookies.jpg);";
+    document.head.appendChild(el);
+
+    const canvas = document.querySelector('body > canvas:last-of-type');
+    canvas.style.display = "none"
+    //canvas.style.display = "block" // undo
+
     // replace "wallpaper" (camera) | completely destroys page -> find a way to still reload size (grab the values from there!)
     /*const canvas = document.querySelector('body > canvas:last-of-type');
 

@@ -27,7 +27,7 @@ const createWindow = () => {
       mainWindow.show();
     }, 5000);
 
-    mainWindow.removeMenu()
+    //mainWindow.removeMenu()
     mainWindow.loadURL('https://deadshot.io')
     //mainWindow.loadFile('index.html')
 
