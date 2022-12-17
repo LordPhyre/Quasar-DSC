@@ -15,14 +15,15 @@ document.addEventListener("DOMContentLoaded", function() {
     document.body.appendChild(hellobtn);
 
     // css
-    let el = document.createElement('style');
+    /*let el = document.createElement('style');
     el.type = 'text/css';
     el.innerText = "html, body {background: url(https://upload.wikimedia.org/wikipedia/commons/f/f1/2ChocolateChipCookies.jpg);";
     document.head.appendChild(el);
 
     const canvas = document.querySelector('body > canvas:last-of-type');
-    canvas.style.display = "none"
-    //canvas.style.display = "block" // undo
+    canvas.style.display = "none";
+    console.log("should have worked");
+    //canvas.style.display = "block" // undo*/
 
     // replace "wallpaper" (camera) | completely destroys page -> find a way to still reload size (grab the values from there!)
     /*const canvas = document.querySelector('body > canvas:last-of-type');

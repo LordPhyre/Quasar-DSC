@@ -22,3 +22,4 @@ Done:
 - "No Internet" screen (easy)
 - custom fps counter
 - splash screen
+- fix styling
