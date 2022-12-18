@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // skinselector.html
 
-    let skinwrapper = document.createElement("div");
+    /*let skinwrapper = document.createElement("div");
     skinwrapper.id = "skinwrapper";
     skinwrapper.classList.add('skinwrapper');
     document.body.appendChild(skinwrapper);
@@ -147,7 +147,7 @@ document.addEventListener("DOMContentLoaded", function() {
     skincontent.appendChild(flexSquare.cloneNode(true));
     skincontent.appendChild(flexSquare.cloneNode(true));
     skincontent.appendChild(flexSquare.cloneNode(true));
-    skincontent.appendChild(flexSquare.cloneNode(true));
+    skincontent.appendChild(flexSquare.cloneNode(true));*/
 
 
     /*let skinclose = document.createElement("button");
@@ -199,11 +199,167 @@ document.addEventListener("DOMContentLoaded", function() {
     skincontentselector.appendChild(flexSquare.cloneNode(true));
     skincontentselector.appendChild(flexSquare.cloneNode(true));*/
 
+    // wrapper
+    const skinWrapper = document.createElement('div');
+    skinWrapper.className = 'skinwrapper';
+    skinWrapper.id = "skinWrapper";
+    document.body.appendChild(skinWrapper);
+
+    // close button
+    const skinCloseButton = document.createElement('button');
+    skinCloseButton.className = 'skinclose';
+    skinCloseButton.innerText = '_';
+    skinCloseButton.addEventListener('click', close);
+    document.getElementById('skinWrapper').appendChild(skinCloseButton);
+
+    // title
+    const skinHeader = document.createElement('header');
+    skinHeader.id = 'skinheader';
+    skinHeader.innerText = 'Main Menu';
+    document.getElementById('skinWrapper').appendChild(skinHeader);
+
+    // background & container
+    const mainDiv = document.createElement('div');
+    mainDiv.style.backgroundColor = '#2a394f';
+    mainDiv.id = "mainDiv";
+    document.getElementById('skinWrapper').appendChild(mainDiv);
+
+    // left part of the menu (the buttons)
+    const leftDiv = document.createElement('div');
+    leftDiv.style.float = 'left';
+    leftDiv.style.width = '40%';
+    leftDiv.id = "leftDiv";
+    document.getElementById('mainDiv').appendChild(leftDiv);
+
+    // the buttons (using for loop for demo purposes)
+    //for (let i = 0; i < 7; i++) {
+        const optionButton1 = document.createElement('button');
+        optionButton1.className = 'skinbutton';
+        optionButton1.innerText = 'General';
+        optionButton1.id = "general";
+        document.getElementById('leftDiv').appendChild(optionButton1);
+
+        const optionButton2 = document.createElement('button');
+        optionButton2.className = 'skinbutton';
+        optionButton2.innerText = 'Option2';
+        optionButton2.id = "optionButton2";
+        document.getElementById('leftDiv').appendChild(optionButton2);
+
+        const optionButton3 = document.createElement('button');
+        optionButton3.className = 'skinbutton';
+        optionButton3.innerText = 'Option3';
+        optionButton3.id = "optionButton3";
+        document.getElementById('leftDiv').appendChild(optionButton3);
+    //}
+
+    // right part of the menu (sub-options)
+    const rightDiv = document.createElement('div');
+    rightDiv.style.float = 'right';
+    rightDiv.style.width = '60%';
+    rightDiv.id = "rightDiv";
+    document.getElementById('mainDiv').appendChild(rightDiv);
+
+    // title of sub options (demo)
+    const h2 = document.createElement('h2');
+    h2.style.textAlign = 'center';
+    h2.style.margin = '10px 0 10px 0';
+    h2.innerText = 'Option Name';
+    document.getElementById('rightDiv').appendChild(h2);
+
+    for (let i = 0; i < 5; i++) {
+        // holds the sub-options
+        const optionHolder = document.createElement('div');
+        optionHolder.className = 'optionholder';
+        optionHolder.id = "optionHolder";
+        document.getElementById('rightDiv').appendChild(optionHolder);
+
+        // sub-option title
+        const optionDescr = document.createElement('p');
+        optionDescr.className = 'optiondescr';
+        optionDescr.innerText = 'Option Name';
+        document.getElementById('optionHolder').appendChild(optionDescr);
+
+        // percent input
+        const input1 = document.createElement('input');
+        input1.type = 'text';
+        document.getElementById('optionHolder').appendChild(input1);
+
+        // slider
+        const input2 = document.createElement('input');
+        input2.type = 'range';
+        input2.min = '1';
+        input2.max = '100';
+        input2.value = '50';
+        input2.className = 'slider';
+        input2.id = 'myRange';
+        document.getElementById('optionHolder').appendChild(input2);
+
+        const div = document.createElement('div');
+        div.style.height = '50px';
+        document.getElementById('optionHolder').appendChild(div);
+
+        const hr = document.createElement('hr');
+        document.getElementById('optionHolder').appendChild(hr);
+    }
+
+    document.body.append(skinWrapper);
+
+    document.getElementById("general").addEventListener("click", function() {
+        rightDiv.innerHTML = '';
+
+        // holds the sub-options
+        const optionHolder = document.createElement('div');
+        optionHolder.className = 'optionholder';
+        optionHolder.id = "optionHolder";
+        document.getElementById('rightDiv').appendChild(optionHolder);
+
+        // sub-option title
+        const optionDescr = document.createElement('p');
+        optionDescr.className = 'optiondescr';
+        optionDescr.innerText = 'FPS-Counter';
+        document.getElementById('optionHolder').appendChild(optionDescr);
+
+        // percent input
+        /*const input1 = document.createElement('input');
+        input1.type = 'text';
+        document.getElementById('optionHolder').appendChild(input1);*/
+
+        // slider
+        /*const input2 = document.createElement('input');
+        input2.type = 'range';
+        input2.min = '1';
+        input2.max = '100';
+        input2.value = '50';
+        input2.className = 'slider';
+        input2.id = 'myRange';
+        document.getElementById('optionHolder').appendChild(input2);*/
+
+        const input3 = document.createElement('input');
+        input3.type = 'checkbox';
+        input3.id = "input3";
+        input3.style = "float: right; margin: 14px 25px 10px 0; width: 35px; font-weight: bold; color: grey;";
+        document.getElementById('optionHolder').appendChild(input3);
+
+        const div = document.createElement('div');
+        div.style.height = '50px';
+        document.getElementById('optionHolder').appendChild(div);
+
+        const hr = document.createElement('hr');
+        document.getElementById('optionHolder').appendChild(hr);
+    });
+
+    document.getElementById("optionButton2").addEventListener("click", function() {
+        alert("optionButton2");
+    });
+
+    document.getElementById("optionButton3").addEventListener("click", function() {
+        alert("optionButton3");
+    });
 
     // css and js
 
     let skincss = document.createElement('style');
-    skincss.innerText = "@import 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap';*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}.skinwrapper{z-index:1000;position:absolute;top:50%;left:50%;max-width:750px;width:100%;background:#2a394f;transform:translate(-50%,-50%);border:solid 1px #000;color:#fff}.skinwrapper header{font-size:23px;font-weight:500;padding:17px 30px;border-bottom:1px solid #000;background:#2a394f;text-align:center}.skinwrapper header.skinactive{cursor:move;user-select:none}.skinwrapper .skincontent{display:flex;flex-direction:wrap;flex-wrap:wrap;justify-content:center;background:#2a394f}.skincontent .title{margin:15px 0;font-size:29px;font-weight:500}.skincontent p{font-size:16px;text-align:center;display:flex}.skinbutton{width:100%;height:50px;background-color:#364760;border:none;color:#fff}.skinbutton:hover{background-color:#0798fc}.skinclose{color:grey;position:absolute;top:0;right:0;margin-right:15px;margin-top:-6px;background-color:#ffffff00;border:none;font-size:35px}.skinclose:hover{color:#fff}";
+    skincss.innerText = "@import 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap';*{z-index:1000;margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}.skinwrapper{position:absolute;top:50%;left:50%;max-width:750px;width:100%;background:#2a394f;transform:translate(-50%,-50%);border:solid 1px #000;color:#fff}.skinwrapper header{font-size:23px;font-weight:500;padding:17px 30px;border-bottom:1px solid #000;background:#2a394f;text-align:center}.skinwrapper header.skinactive{cursor:move;user-select:none}.skinwrapper .skincontent{display:flex;flex-direction:wrap;flex-wrap:wrap;justify-content:center;background:#2a394f}.skincontent .title{margin:15px 0;font-size:29px;font-weight:500}.skincontent p{font-size:16px;text-align:center;display:flex}.skinbutton{width:100%;height:50px;background-color:#364760;border:none;color:#fff;font-size:20px}.skinbutton:hover{background-color:#0798fc}.skinclose{color:grey;position:absolute;top:0;right:0;margin-right:15px;margin-top:-6px;background-color:#ffffff00;border:none;font-size:35px}.skinclose:hover{color:#fff}p{font-size:20px}input[type=text]{float:right;margin:14px 25px 10px 0;width:35px;font-weight:700;color:grey}input[type=range]{float:right;margin:16px 20px 10px 0}.optiondescr{float:left;margin:10px 0 10px 20px}.optionholder{background-color:#364760}hr{width:100%;border:.1px solid #000}";
     document.head.appendChild(skincss);
 
     var script = document.createElement('script');
@@ -212,7 +368,7 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementsByTagName('head')[0].appendChild(script);
 
     // hide
-    document.getElementById("skinwrapper").style.display = "none";
+    //document.getElementById("skinwrapper").style.display = "none";
 
     // fixes wrong area glitch
     /*const canvas = document.querySelector('body > canvas:last-of-type');
@@ -320,7 +476,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         if(e.key == '3') {
             //document.getElementById("wrapper").style.display = "";
-            document.getElementById("skinwrapper").style.display = "";
+            document.getElementById("skinWrapper").style.display = "";
             /*if (wrapperHidden = true)
             {
                 document.getElementById("wrapper").style.display = "";
@@ -333,7 +489,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         if(e.key == '4') {
             //document.getElementById("wrapper").style.display = "none";
-            document.getElementById("skinwrapper").style.display = "none";
+            document.getElementById("skinWrapper").style.display = "none";
         }
     });
 
@@ -408,7 +564,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // FPS-Counter
 
-    let fpscounter = document.createElement("h2");
+    const fpscounter = document.createElement("h2");
     fpscounter.innerHTML = "FPS Counter";
     fpscounter.id = "fpscounter";
     fpscounter.style = "position: absolute; left: 100;top: 100; z-index: 1000; color: grey; margin-left: 7.5px; font-size: 100%";
@@ -435,5 +591,15 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     updateFps();
+
+    var checkbox = document.querySelector("input3");
+
+    checkbox.addEventListener( 'change', function() {
+        if(this.checked) {
+            fpscounter.style.display = "";
+        } else {
+            fpscounter.style.display = "none";
+        }
+    });
 
 });
