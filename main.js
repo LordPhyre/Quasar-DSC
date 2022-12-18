@@ -1,6 +1,7 @@
-const { app, BrowserWindow } = require('electron');
+const { app, ipcMain, BrowserWindow } = require('electron');
 const path = require('path');
 const fs = require('fs');
+const DiscordRpc = require("discord-rpc");
 
 const createWindow = () => {
     // Create the browser window.
@@ -30,7 +31,7 @@ const createWindow = () => {
 
     //mainWindow.removeMenu()
     mainWindow.loadURL('https://deadshot.io')
-    
+
     // Open the DevTools.
     // mainWindow.webContents.openDevTools()
 }
@@ -62,6 +63,69 @@ fs.readdir(path.join(app.getPath("documents"), "DeadshotClient/gunskins"), funct
   });
 });
 
+
+ipcMain.on('app_version', (event) => {
+  event.sender.send('app_version', { version: app.getVersion() });
+});
+
+// Rich Presence
+/*const clientId = "1016830391694413835";
+const rpc = new DiscordRpc.Client({ transport: 'ipc' });
+const setActivity =
+  async (gameInfo) => {
+      console.log(gameInfo)
+      try {
+          rpc.setActivity({
+              details: "Playing Deadshot.io",
+              state: "v" + app.getVersion(),
+              startTimestamp: Date.now(),
+              largeImageKey: "icon",
+              buttons: [
+                  { label: 'Download', url: 'https://github.com/LordPhyre/BestestBestBetterGoodDeadshotClient/' }
+              ]
+          })
+      } catch {
+      }
+  }*/
+
+  
+/*const rpc = require("discord-rpc");
+const client = new rpc.Client({ transport: 'ipc' });
+const config = require('./config.json');
+
+client.login({ clientId: config.ClientID }).catch(console.error);
+
+client.on('ready', () => {
+    console.log('[DEBUG] Presence now active!')
+    console.log('[WARN] Do not close this Console as it will terminate the rpc')
+    console.log('=================== Error Output ===================')
+    client.request('SET_ACTIVITY', {
+        pid: process.pid,
+        activity: {
+            details: config.Details,
+            state: config.State,
+            timestamps: {
+                start: Date.now()
+            },
+            assets: {
+                large_image: config.LargeImage,
+                large_text: config.LargeImageText,
+                small_image: config.SmallImage,
+                small_text: config.SmallImageText,
+            },
+            buttons: [{
+                    label: config.Button1,
+                    url: config.Url1
+                },
+                {
+                    label: config.Button2,
+                    url: config.Url2
+                },
+            ]
+        }
+    })
+})*/
+  
 
 app.whenReady().then(() => {
   createWindow()

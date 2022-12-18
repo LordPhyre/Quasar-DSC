@@ -10,6 +10,7 @@
 - toggleable wasd detector thing (you know what i mean) // yeah, where you see the button clicks
 - wireframe?
 - keybind presets
+- sreenshake (only with readable html and trees help)
 
 Done:
 
