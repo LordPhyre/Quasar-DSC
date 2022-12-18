@@ -155,6 +155,36 @@ document.addEventListener("DOMContentLoaded", function() {
     // hide
     document.getElementById("skinwrapper").style.display = "none";
 
+    // fixes wrong area glitch
+    /*const canvas = document.querySelector('body > canvas:last-of-type');
+    canvas.style.zoom = 0.5;*/
+
+    //window.scrollTo(window.innerWidth * 0.01, window.innerHeight * 0.01);
+
+
+    //const body = document.querySelector('body');
+    //body.style.zoom = 0.65;
+
+    /*let clientsettingscanvas = document.createElement("canvas");
+    clientsettingscanvas.id = "canvas";
+    clientsettingscanvas.classList.add('clientsettingscanvas');
+    document.body.appendChild(clientsettingscanvas);
+
+    let menu1 = document.createElement("div");
+    menu1.id = "menu1";
+    menu1.classList.add('menu1');
+    menu1.innerHTML = "This should be working";
+    document.body.appendChild(menu1);
+
+
+    let css = document.createElement('style');
+    css.innerText = "div {z-index: 1000; position: absolute;top: 0;height: 60px;width: 100px;background: #15a5ed;text-align: center;line-height: 60px;border-radius: 15px 15px 15px 15px;}";
+    document.head.appendChild(css);
+
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.innerHTML = "for(div of divs=document.getElementsByTagName('div'))div.onmousedown=onMouseDown;document.onmousemove=onMouseMove,document.onmouseup=onMouseUp,canvas.width=window.innerWidth-20,canvas.height=window.innerHeight-20;var the_moving_div='',the_last_mouse_position={x:0,y:0};function onMouseDown(e){e.preventDefault(),the_moving_div=e.target.id,the_last_mouse_position.x=e.clientX,the_last_mouse_position.y=e.clientY;var t=document.getElementsByTagName('div');e.target.style.zIndex=t.length;var o=1;for(div of t)div.id!=the_moving_div&&(div.style.zIndex=o++)}function onMouseMove(e){if(e.preventDefault(),''!=the_moving_div){var t=document.getElementById(the_moving_div);t.style.left=t.offsetLeft+e.clientX-the_last_mouse_position.x+'px',t.style.top=t.offsetTop+e.clientY-the_last_mouse_position.y+'px',the_last_mouse_position.x=e.clientX,the_last_mouse_position.y=e.clientY}}function onMouseUp(e){e.preventDefault(),''!=the_moving_div&&(the_moving_div='')}drawConnectors();";
+    document.getElementsByTagName('head')[0].appendChild(script);*/
 
 
     // background change | doesn't really work

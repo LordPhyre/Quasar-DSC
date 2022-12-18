@@ -30,7 +30,7 @@ const createWindow = () => {
 
     //mainWindow.removeMenu()
     mainWindow.loadURL('https://deadshot.io')
-
+    
     // Open the DevTools.
     // mainWindow.webContents.openDevTools()
 }
