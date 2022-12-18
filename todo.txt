@@ -1,6 +1,7 @@
 - better gg button
 - switch "wallpaper"
 - custom gun skins
+	-> library with skins and nice menu (in-game windows)
 - auto rejoin
 - better tab scoreboard
 - random cool looking gui elements
