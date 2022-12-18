@@ -124,25 +124,25 @@
   </div>
 
   <script>
-    const skinwrapper = document.querySelector(".skinwrapper"),
-    skinheader = document.getElementById("skinheader");
+    const skinwrapper1 = document.querySelector(".skinwrapper"),
+    skinheader1 = document.getElementById("skinheader");
 
     function onDrag({movementX, movementY}){
-      let getStyle = window.getComputedStyle(skinwrapper);
+      let getStyle = window.getComputedStyle(skinwrapper1);
       let leftVal = parseInt(getStyle.left);
       let topVal = parseInt(getStyle.top);
-      skinwrapper.style.left = `${leftVal + movementX}px`;
-      skinwrapper.style.top = `${topVal + movementY}px`;
+      skinwrapper1.style.left = `${leftVal + movementX}px`;
+      skinwrapper1.style.top = `${topVal + movementY}px`;
     }
 
-    skinheader.addEventListener("mousedown", ()=>{
-      skinheader.classList.add("skinactive");
-      skinheader.addEventListener("mousemove", onDrag);
+    skinheader1.addEventListener("mousedown", ()=>{
+      skinheader1.classList.add("skinactive");
+      skinheader1.addEventListener("mousemove", onDrag);
     });
 
     document.addEventListener("mouseup", ()=>{
-      skinheader.classList.remove("skinactive");
-      skinheader.removeEventListener("mousemove", onDrag);
+      skinheader1.classList.remove("skinactive");
+      skinheader1.removeEventListener("mousemove", onDrag);
     });
 
     function close(){document.getElementById("skinwrapper").style.display = "none";}

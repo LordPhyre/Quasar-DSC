@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // example button window (examplebuttons.html)
 
-    let wrapper = document.createElement("div");
+    /*let wrapper = document.createElement("div");
     wrapper.id = "wrapper";
     wrapper.classList.add('wrapper');
     document.body.appendChild(wrapper);
@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementsByTagName('head')[0].appendChild(script);
 
     // hide
-    document.getElementById("wrapper").style.display = "none";
+    document.getElementById("wrapper").style.display = "none";*/
 
     // skinselector.html
 
@@ -91,7 +91,66 @@ document.addEventListener("DOMContentLoaded", function() {
     skinwrapper.classList.add('skinwrapper');
     document.body.appendChild(skinwrapper);
 
-    let skinclose = document.createElement("button");
+    const skinWrapper = document.querySelector('.skinwrapper');
+
+    const skinClose = document.createElement('button');
+    skinClose.classList.add('skinclose');
+    skinClose.addEventListener('click', close);
+    skinClose.textContent = '_';
+
+    const skinHeader = document.createElement('header');
+    skinHeader.classList.add('skinheader');
+    skinHeader.id = "skinheader";
+    skinHeader.textContent = 'Main Menu';
+
+    const mainDiv = document.createElement('div');
+    mainDiv.style.backgroundColor = '#2a394f';
+
+    const leftDiv = document.createElement('div');
+    leftDiv.style.cssText = 'float: left; width: 40%;';
+    for (let i = 0; i < 7; i++) {
+        const button = document.createElement('button');
+        button.classList.add('skinbutton');
+        button.textContent = 'Option';
+        leftDiv.appendChild(button);
+    }
+    mainDiv.appendChild(leftDiv);
+
+    const rightDiv = document.createElement('div');
+    rightDiv.style.cssText = 'float: right; width: 60%;';
+    const rightHolder = document.createElement('div');
+    rightHolder.classList.add('skincontent');
+    rightHolder.id = 'right-holder';
+    rightDiv.appendChild(rightHolder);
+    mainDiv.appendChild(rightDiv);
+
+    skinWrapper.appendChild(skinClose);
+    skinWrapper.appendChild(skinHeader);
+    skinWrapper.appendChild(mainDiv);
+
+    var skincontent = document.getElementById('right-holder');
+
+    var flexSquare = document.createElement('div');
+    flexSquare.style.width = '85px';
+    flexSquare.style.height = '85px';
+    flexSquare.style.border = '1px solid black';
+    flexSquare.style.margin = '10px';
+    flexSquare.style.backgroundColor = '#ffffff';
+    skincontent.appendChild(flexSquare);
+    skincontent.appendChild(flexSquare.cloneNode(true));
+    skincontent.appendChild(flexSquare.cloneNode(true));
+    skincontent.appendChild(flexSquare.cloneNode(true));
+    skincontent.appendChild(flexSquare.cloneNode(true));
+    skincontent.appendChild(flexSquare.cloneNode(true));
+    skincontent.appendChild(flexSquare.cloneNode(true));
+    skincontent.appendChild(flexSquare.cloneNode(true));
+    skincontent.appendChild(flexSquare.cloneNode(true));
+    skincontent.appendChild(flexSquare.cloneNode(true));
+    skincontent.appendChild(flexSquare.cloneNode(true));
+    skincontent.appendChild(flexSquare.cloneNode(true));
+
+
+    /*let skinclose = document.createElement("button");
     skinclose.id = "skinclose";
     skinclose.classList.add('skinclose');
     skinclose.onclick = "close()";
@@ -138,19 +197,19 @@ document.addEventListener("DOMContentLoaded", function() {
     skincontentselector.appendChild(flexSquare.cloneNode(true));
     skincontentselector.appendChild(flexSquare.cloneNode(true));
     skincontentselector.appendChild(flexSquare.cloneNode(true));
-    skincontentselector.appendChild(flexSquare.cloneNode(true));
+    skincontentselector.appendChild(flexSquare.cloneNode(true));*/
 
 
     // css and js
 
     let skincss = document.createElement('style');
-    skincss.innerText = "@import 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap';*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}.skinwrapper{position:absolute;top:50%;left:50%;max-width:500px;width:100%;background:#fff;transform:translate(-50%,-50%);border:solid 1px #000;color:#fff}.skinwrapper header{font-size:23px;font-weight:500;padding:17px 30px;border-bottom:1px solid #000;background:#2a394f;text-align:center}.skinwrapper header.active{cursor:move;user-select:none}.skinwrapper .skincontent{display:flex;flex-direction:wrap;flex-wrap:wrap;justify-content:center;background:#2a394f}.skincontent .title{margin:15px 0;font-size:29px;font-weight:500}.skincontent p{font-size:16px;text-align:center;display:flex}.skinbutton{width:100%;height:50px;background-color:#364760;border:none;color:#fff}.button:hover{background-color:#0798fc}.skinclose{color:grey;position:absolute;top:0;right:0;margin-right:15px;margin-top:-6px;background-color:#ffffff00;border:none;font-size:35px}.skinclose:hover{color:#fff}";
+    skincss.innerText = "@import 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap';*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}.skinwrapper{z-index:1000;position:absolute;top:50%;left:50%;max-width:750px;width:100%;background:#2a394f;transform:translate(-50%,-50%);border:solid 1px #000;color:#fff}.skinwrapper header{font-size:23px;font-weight:500;padding:17px 30px;border-bottom:1px solid #000;background:#2a394f;text-align:center}.skinwrapper header.skinactive{cursor:move;user-select:none}.skinwrapper .skincontent{display:flex;flex-direction:wrap;flex-wrap:wrap;justify-content:center;background:#2a394f}.skincontent .title{margin:15px 0;font-size:29px;font-weight:500}.skincontent p{font-size:16px;text-align:center;display:flex}.skinbutton{width:100%;height:50px;background-color:#364760;border:none;color:#fff}.skinbutton:hover{background-color:#0798fc}.skinclose{color:grey;position:absolute;top:0;right:0;margin-right:15px;margin-top:-6px;background-color:#ffffff00;border:none;font-size:35px}.skinclose:hover{color:#fff}";
     document.head.appendChild(skincss);
 
-    var skinscript = document.createElement('script');
-    skinscript.type = 'text/javascript';
-    skinscript.innerHTML = "const skinwrapper=document.querySelector('.skinwrapper'),skinheader=document.getElementById('skinheader');function onDrag({movementX:e,movementY:n}){let s=window.getComputedStyle(skinwrapper),t=parseInt(s.left),r=parseInt(s.top);skinwrapper.style.left=`${t+e}px`,skinwrapper.style.top=`${r+n}px`}function close(){document.getElementById('skinwrapper').style.display='none'}skinheader.addEventListener('mousedown',()=>{skinheader.classList.add('skinactive'),skinheader.addEventListener('mousemove',onDrag)}),document.addEventListener('mouseup',()=>{skinheader.classList.remove('skinactive'),skinheader.removeEventListener('mousemove',onDrag)});";
-    document.getElementsByTagName('head')[0].appendChild(skinscript);
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.innerHTML = "const skinwrapper1=document.querySelector('.skinwrapper'),skinheader1=document.getElementById('skinheader');function onDrag({movementX:e,movementY:n}){let s=window.getComputedStyle(skinwrapper1),t=parseInt(s.left),r=parseInt(s.top);skinwrapper1.style.left=`${t+e}px`,skinwrapper1.style.top=`${r+n}px`}function close(){document.getElementById('skinwrapper').style.display='none'}skinheader1.addEventListener('mousedown',()=>{skinheader1.classList.add('skinactive'),skinheader1.addEventListener('mousemove',onDrag)}),document.addEventListener('mouseup',()=>{skinheader1.classList.remove('skinactive'),skinheader1.removeEventListener('mousemove',onDrag)});";
+    document.getElementsByTagName('head')[0].appendChild(script);
 
     // hide
     document.getElementById("skinwrapper").style.display = "none";
@@ -260,7 +319,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         if(e.key == '3') {
-            document.getElementById("wrapper").style.display = "";
+            //document.getElementById("wrapper").style.display = "";
             document.getElementById("skinwrapper").style.display = "";
             /*if (wrapperHidden = true)
             {
@@ -273,7 +332,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         if(e.key == '4') {
-            document.getElementById("wrapper").style.display = "none";
+            //document.getElementById("wrapper").style.display = "none";
             document.getElementById("skinwrapper").style.display = "none";
         }
     });
