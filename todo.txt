@@ -8,7 +8,7 @@
 - auto fullscreen setting
 - fov slider (DIFFICULT!) // we could scale the canvas and then do something with the zoom
 - toggleable wasd detector thing (you know what i mean) // yeah, where you see the button clicks
-
+- wireframe?
 - keybind presets
 
 Done:
