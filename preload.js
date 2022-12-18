@@ -19,6 +19,8 @@ document.addEventListener("DOMContentLoaded", function() {
         </div>
     </div>*/
 
+    // example button window (examplebuttons.html)
+
     let wrapper = document.createElement("div");
     wrapper.id = "wrapper";
     wrapper.classList.add('wrapper');
@@ -81,6 +83,81 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // hide
     document.getElementById("wrapper").style.display = "none";
+
+    // skinselector.html
+
+    let skinwrapper = document.createElement("div");
+    skinwrapper.id = "skinwrapper";
+    skinwrapper.classList.add('skinwrapper');
+    document.body.appendChild(skinwrapper);
+
+    let skinclose = document.createElement("button");
+    skinclose.id = "skinclose";
+    skinclose.classList.add('skinclose');
+    skinclose.onclick = "close()";
+    skinclose.innerHTML = "_";
+
+    document.getElementById('skinwrapper').appendChild(close);
+
+    let skinheader = document.createElement("header");
+    skinheader.id = "skinheader";
+    skinheader.innerHTML = "Skin Select";
+
+    document.getElementById('skinwrapper').appendChild(skinheader);
+
+    let skincontent = document.createElement("div");
+    skincontent.id = "skincontent";
+    skincontent.classList.add('skincontent');
+
+    document.getElementById('skinwrapper').appendChild(skincontent);
+
+    // content
+
+    var skincontentselector = document.getElementById('skincontent');
+
+    var flexSquare = document.createElement('div');
+    flexSquare.style.width = '100px';
+    flexSquare.style.height = '100px';
+    flexSquare.style.border = '1px solid black';
+    flexSquare.style.margin = '10px';
+    flexSquare.style.backgroundColor = '#ffffff';
+
+    for (let i = 0; i < 10; i++) {
+        console.log(i);
+    }
+
+    skincontentselector.appendChild(flexSquare);
+    skincontentselector.appendChild(flexSquare.cloneNode(true));
+    skincontentselector.appendChild(flexSquare.cloneNode(true));
+    skincontentselector.appendChild(flexSquare.cloneNode(true));
+    skincontentselector.appendChild(flexSquare.cloneNode(true));
+    skincontentselector.appendChild(flexSquare.cloneNode(true));
+    skincontentselector.appendChild(flexSquare.cloneNode(true));
+    skincontentselector.appendChild(flexSquare.cloneNode(true));
+    skincontentselector.appendChild(flexSquare.cloneNode(true));
+    skincontentselector.appendChild(flexSquare.cloneNode(true));
+    skincontentselector.appendChild(flexSquare.cloneNode(true));
+    skincontentselector.appendChild(flexSquare.cloneNode(true));
+    skincontentselector.appendChild(flexSquare.cloneNode(true));
+
+
+    // css and js
+
+    let skincss = document.createElement('style');
+    skincss.innerText = "@import 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap';*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}.skinwrapper{position:absolute;top:50%;left:50%;max-width:500px;width:100%;background:#fff;transform:translate(-50%,-50%);border:solid 1px #000;color:#fff}.skinwrapper header{font-size:23px;font-weight:500;padding:17px 30px;border-bottom:1px solid #000;background:#2a394f;text-align:center}.skinwrapper header.active{cursor:move;user-select:none}.skinwrapper .skincontent{display:flex;flex-direction:wrap;flex-wrap:wrap;justify-content:center;background:#2a394f}.skincontent .title{margin:15px 0;font-size:29px;font-weight:500}.skincontent p{font-size:16px;text-align:center;display:flex}.skinbutton{width:100%;height:50px;background-color:#364760;border:none;color:#fff}.button:hover{background-color:#0798fc}.skinclose{color:grey;position:absolute;top:0;right:0;margin-right:15px;margin-top:-6px;background-color:#ffffff00;border:none;font-size:35px}.skinclose:hover{color:#fff}";
+    document.head.appendChild(skincss);
+
+    var skinscript = document.createElement('script');
+    skinscript.type = 'text/javascript';
+    skinscript.innerHTML = "const skinwrapper=document.querySelector('.skinwrapper'),skinheader=document.getElementById('skinheader');function onDrag({movementX:e,movementY:n}){let s=window.getComputedStyle(skinwrapper),t=parseInt(s.left),r=parseInt(s.top);skinwrapper.style.left=`${t+e}px`,skinwrapper.style.top=`${r+n}px`}function close(){document.getElementById('skinwrapper').style.display='none'}skinheader.addEventListener('mousedown',()=>{skinheader.classList.add('skinactive'),skinheader.addEventListener('mousemove',onDrag)}),document.addEventListener('mouseup',()=>{skinheader.classList.remove('skinactive'),skinheader.removeEventListener('mousemove',onDrag)});";
+    document.getElementsByTagName('head')[0].appendChild(skinscript);
+
+    // hide
+    document.getElementById("skinwrapper").style.display = "none";
+
+
+
+    // background change | doesn't really work
 
     // css
     /*let el = document.createElement('style');
@@ -154,6 +231,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         if(e.key == '3') {
             document.getElementById("wrapper").style.display = "";
+            document.getElementById("skinwrapper").style.display = "";
             /*if (wrapperHidden = true)
             {
                 document.getElementById("wrapper").style.display = "";
@@ -166,6 +244,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         if(e.key == '4') {
             document.getElementById("wrapper").style.display = "none";
+            document.getElementById("skinwrapper").style.display = "none";
         }
     });
 

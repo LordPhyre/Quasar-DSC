@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<head>
+ <style>
+      @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+    *{
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+    .skinwrapper{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    max-width: 500px;
+    width: 100%;
+    background: #fff;
+    transform: translate(-50%, -50%);
+    border: solid 1px black;
+    color: white;
+    }
+    .skinwrapper header{
+    font-size: 23px;
+    font-weight: 500;
+    padding: 17px 30px;
+    border-bottom: 1px solid rgb(0, 0, 0);
+    background: #2a394f;
+    text-align: center;
+    }
+    .skinwrapper header.active{
+    cursor: move;
+    user-select: none;
+    }
+    .skinwrapper .skincontent{
+    display: flex;
+    flex-direction: wrap;
+    flex-wrap: wrap;
+    justify-content: center;
+    background: #2a394f;
+    }
+    .skincontent .title{
+    margin: 15px 0;
+    font-size: 29px;
+    font-weight: 500;
+    }
+    .skincontent p{
+    font-size: 16px;
+    text-align: center;
+    display: flex;
+    }
+    .skinbutton {
+      width: 100%;
+      height: 50px;
+      background-color: #364760;
+      border: none;
+      color: white;
+      
+    }
+    .button:hover{
+      background-color: #0798fc;
+    }
+    .skinclose{
+      color: grey;
+      position: absolute;
+      top: 0;
+      right: 0;
+      margin-right: 15px;
+      margin-top: -6px;
+      background-color: #ffffff00;
+      border: none;
+      font-size: 35px;
+    }
+    .skinclose:hover{
+      color: white;
+    }
+ </style>
+ <script>
+    document.addEventListener("DOMContentLoaded", function() {
+
+    var skincontent = document.getElementById('skincontent');
+
+    var flexSquare = document.createElement('div');
+    flexSquare.style.width = '100px';
+    flexSquare.style.height = '100px';
+    flexSquare.style.border = '1px solid black';
+    flexSquare.style.margin = '10px';
+    flexSquare.style.backgroundColor = '#ffffff';
+    skincontent.appendChild(flexSquare);
+    skincontent.appendChild(flexSquare.cloneNode(true));
+    skincontent.appendChild(flexSquare.cloneNode(true));
+    skincontent.appendChild(flexSquare.cloneNode(true));
+    skincontent.appendChild(flexSquare.cloneNode(true));
+    skincontent.appendChild(flexSquare.cloneNode(true));
+    skincontent.appendChild(flexSquare.cloneNode(true));
+    skincontent.appendChild(flexSquare.cloneNode(true));
+    skincontent.appendChild(flexSquare.cloneNode(true));
+    skincontent.appendChild(flexSquare.cloneNode(true));
+    skincontent.appendChild(flexSquare.cloneNode(true));
+    skincontent.appendChild(flexSquare.cloneNode(true));
+    skincontent.appendChild(flexSquare.cloneNode(true));
+    });
+ </script>
+</head>
+<body>
+  <div class="skinwrapper">
+    <button class="skinclose" onclick="close()">_</button>
+    <header>Main Menu</header>
+    <div id="skincontent" class="skincontent">
+      <!--<p>Content</p>-->
+
+
+
+    </div>
+  </div>
+
+  <script>
+    const wrapper = document.querySelector(".skinwrapper"),
+    header = wrapper.querySelector("skinheader");
+
+    function onDrag({movementX, movementY}){
+      let getStyle = window.getComputedStyle(wrapper);
+      let leftVal = parseInt(getStyle.left);
+      let topVal = parseInt(getStyle.top);
+      wrapper.style.left = `${leftVal + movementX}px`;
+      wrapper.style.top = `${topVal + movementY}px`;
+    }
+
+    header.addEventListener("mousedown", ()=>{
+      header.classList.add("active");
+      header.addEventListener("mousemove", onDrag);
+    });
+
+    document.addEventListener("mouseup", ()=>{
+      header.classList.remove("active");
+      header.removeEventListener("mousemove", onDrag);
+    });
+
+    function close(){document.getElementById("skinwrapper").style.display = "none";}
+  </script>
+
+</body>
+</html>
