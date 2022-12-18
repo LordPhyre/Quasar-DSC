@@ -1,18 +1,13 @@
-- better gg button
 - switch "wallpaper"
 - custom gun skins
 	-> library with skins and nice menu (in-game windows)
 - auto rejoin
-- better tab scoreboard
 - random cool looking gui elements
 - texture pack loader
 - gamma editor (changes lighting)
-- auto-gg setting (no need for button press)
 - auto fullscreen setting
 - fov slider (DIFFICULT!) // we could scale the canvas and then do something with the zoom
 - toggleable wasd detector thing (you know what i mean) // yeah, where you see the button clicks
-- GG button on killed (get name from kill menu) // not an element?! I have no clue how to do this, even querySelector wont work
-- permanent small version of scoreboard
 
 - keybind presets
 
@@ -25,3 +20,10 @@ Done:
 - custom fps counter
 - splash screen
 - fix styling
+
+Not really possible:
+
+- GG button on killed (get name from kill menu) // not an element?! I have no clue how to do this, even querySelector wont work
+- permanent small version of scoreboard
+- better tab scoreboard
+- auto-gg setting (no need for button press) // how do we see if the user got killed?
