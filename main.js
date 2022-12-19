@@ -34,9 +34,53 @@ app.whenReady().then(() => {
 
   win.loadURL('https://deadshot.io')
 
-  win.webContents.on('did-finish-load', () => {
+  ////////////////////////////////////////////////////////
+  ///// data exchange between main.js and preload.js /////
+  ////////////////////////////////////////////////////////
+  /*win.webContents.on('did-finish-load', () => {
     win.webContents.send('ping', 'whoooooooh!')
-  })
+  })*/
+
+  // credit to gatos for the swapper folders
+
+  var swapperFolder = path.join(app.getPath("documents"), "DeadshotClient");
+
+  if (!fs.existsSync(swapperFolder)) {
+      fs.mkdirSync(swapperFolder, { recursive: true });
+  };
+  if (!fs.existsSync(path.join(swapperFolder, "/gunskins"))) {
+      fs.mkdirSync(path.join(swapperFolder, "/gunskins"), { recursive: true });
+  };
+
+  // do x for images in folder
+
+  fs.readdir(path.join(app.getPath("documents"), "DeadshotClient/gunskins"), function(err, files) {
+    if (err) {
+      console.error('There was an error reading the directory:', err);
+      return;
+    }
+
+    // Filder actual images (.png and .jpg)
+    const imageFiles = files.filter(file => file.endsWith('.png') || file.endsWith('.jpg'));
+
+    var skins = [];
+    var imgpath = path.join(app.getPath("documents"), "DeadshotClient/gunskins");
+
+    imageFiles.forEach(function(imageFile) {
+      console.log(`Processing image file: ${imageFile}`);
+
+      // push file names to skin-array
+      skins.push(`${imageFile}`);
+      
+    });
+
+    win.webContents.on('did-finish-load', () => {
+      win.webContents.send('imgpath', imgpath);
+      win.webContents.send('filename', skins)
+    })
+
+  });
+  ////////////////////////////////////////////////////////
 })
 
 /*const createWindow = () => {
@@ -75,12 +119,6 @@ app.whenReady().then(() => {
     mainWindow.webContents.send('data-from-main', data);
 }*/
 
-////////////////////////////////////////////////////////
-///// file exchange between main.js and preload.js /////
-////////////////////////////////////////////////////////
-
-///////////////////////////////////////////////////////////
-
 /*const imageFolder = './images';
 
 fs.readdir(imageFolder, (err, files) => {
@@ -93,34 +131,6 @@ fs.readdir(imageFolder, (err, files) => {
 
   ipcRenderer.send('image-file-paths', filePaths);
 });*/
-
-
-// credit to gatos for the swapper folders
-
-var swapperFolder = path.join(app.getPath("documents"), "DeadshotClient");
-
-if (!fs.existsSync(swapperFolder)) {
-    fs.mkdirSync(swapperFolder, { recursive: true });
-};
-if (!fs.existsSync(path.join(swapperFolder, "/gunskins"))) {
-    fs.mkdirSync(path.join(swapperFolder, "/gunskins"), { recursive: true });
-};
-
-// do x for images in folder
-
-fs.readdir(path.join(app.getPath("documents"), "DeadshotClient/gunskins"), function(err, files) {
-  if (err) {
-    console.error('There was an error reading the directory:', err);
-    return;
-  }
-
-  // Filder actual images (.png and .jpg)
-  const imageFiles = files.filter(file => file.endsWith('.png') || file.endsWith('.jpg'));
-
-  imageFiles.forEach(function(imageFile) {
-    console.log(`Processing image file: ${imageFile}`);
-  });
-});
 
 
 /*ipcMain.on('app_version', (event) => {

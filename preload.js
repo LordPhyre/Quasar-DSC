@@ -416,36 +416,39 @@ document.addEventListener("DOMContentLoaded", function() {
 
     var skincontentselector = document.getElementById('skincontent');
 
-    var flexSquare = document.createElement('div');
+    var flexSquare = document.createElement('img');
     flexSquare.style.width = '100px';
     flexSquare.style.height = '100px';
     flexSquare.style.border = '1px solid black';
     flexSquare.style.margin = '10px';
     flexSquare.style.backgroundColor = '#ffffff';
 
+    skincontentselector.appendChild(flexSquare);
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    //ipcMain.on('data-from-renderer', (event, data) => {
-    //  console.log(data); // { message: 'Hello from the renderer process!' }
-      // Do something with the data here
-    //});
+    //const imgpath = `${process.env.HOME}/Documents/DeadshotClient/gunskins`;
+    //console.log(imgpath);
 
-    /*const { ipcRenderer } = require('electron');
-
-    ipcRenderer.on('data-from-main', (event, data) => {
-        console.log(data);
-    });*/
-
-    require('electron').ipcRenderer.on('ping', (event, message) => {
-        console.log(message)
+    // get path
+    require('electron').ipcRenderer.on('imgpath', (event, message) => {
+        console.log(message);
+        imgpath = message;
     });
 
-    /*app.on('ready', () => {
-        ipcMain.on('image-file-paths', (event, filePaths) => {
-          console.log(filePaths);
-          // do something with the file paths here
-        });
-    });*/
+    // get skins
+    require('electron').ipcRenderer.on('filename', (event, message) => {
+        var skins = message;
+        console.log(skins);
+        console.log(skins.length);
+
+        for (let i = 0; i < skins.length; i++) {
+            let flexSquareClone = flexSquare.cloneNode(true);
+          
+            flexSquareClone.setAttribute('src', skins[i]);
+            skincontentselector.appendChild(flexSquareClone);
+        }
+    });
 
     /*var swapperFolder = path.join(app.getPath("documents"), "DeadshotClient");
 
@@ -473,11 +476,11 @@ document.addEventListener("DOMContentLoaded", function() {
     });*/
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    skincontentselector.appendChild(flexSquare);
+    /*skincontentselector.appendChild(flexSquare);
     skincontentselector.appendChild(flexSquare.cloneNode(true));
     skincontentselector.appendChild(flexSquare.cloneNode(true));
     skincontentselector.appendChild(flexSquare.cloneNode(true));
-    skincontentselector.appendChild(flexSquare.cloneNode(true));
+    skincontentselector.appendChild(flexSquare.cloneNode(true));*/
 
     // show all options as default
 
