@@ -10,7 +10,8 @@ const createWindow = () => {
         height: 480,
         show: false,
         webPreferences: {
-            preload: path.join(__dirname, 'preload.js')
+            preload: path.join(__dirname, 'preload.js'),
+            nodeIntegration: true
         }
     })
     var splash = new BrowserWindow({
