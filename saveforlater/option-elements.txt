@@ -1,0 +1,33 @@
+// holds the sub-options
+const optionHolder = document.createElement('div');
+optionHolder.className = 'optionholder';
+optionHolder.id = "optionHolder";
+document.getElementById('rightDiv').appendChild(optionHolder);
+
+// sub-option title
+const optionDescr = document.createElement('p');
+optionDescr.className = 'optiondescr';
+optionDescr.innerText = 'Option Name';
+document.getElementById('optionHolder').appendChild(optionDescr);
+
+// percent input
+const input1 = document.createElement('input');
+input1.type = 'text';
+document.getElementById('optionHolder').appendChild(input1);
+
+// slider
+const input2 = document.createElement('input');
+input2.type = 'range';
+input2.min = '1';
+input2.max = '100';
+input2.value = '50';
+input2.className = 'slider';
+input2.id = 'myRange';
+document.getElementById('optionHolder').appendChild(input2);
+
+const div = document.createElement('div');
+div.style.height = '50px';
+document.getElementById('optionHolder').appendChild(div);
+
+const hr = document.createElement('hr');
+document.getElementById('optionHolder').appendChild(hr);

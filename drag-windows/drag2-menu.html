@@ -18,6 +18,7 @@
     transform: translate(-50%, -50%);
     border: solid 1px black;
     color: white;
+    height: 350px;
     }
     .skinwrapper header{
     font-size: 23px;
@@ -87,6 +88,14 @@
       float: right; 
       margin: 16px 20px 10px 0;
     }
+    input[type=checkbox] {
+      float: right; 
+      transform: scale(2);
+      margin: 14px 25px 10px 0; 
+      width: 35px; 
+      font-weight: bold; 
+      color: grey;
+    }
     .optiondescr {
       float:left; 
       margin: 10px 0 10px 20px;
@@ -105,7 +114,7 @@
     <button class="skinclose" onclick="close()">_</button>
     <header id="skinheader">Main Menu</header>
     <div id="maindiv" style="background-color: #2a394f">
-      <div id="left" style="float: left; width: 40%;">
+      <div id="left" style="float: left; width: 40%; height: 280px; overflow: scroll;">
         <button class="skinbutton">Option</button>
         <button class="skinbutton">Option</button>
         <button class="skinbutton">Option</button>
@@ -114,7 +123,7 @@
         <button class="skinbutton">Option</button>
         <button class="skinbutton">Option</button>
       </div>
-      <div id="right" style="float: right; width: 60%;">
+      <div id="right" style="float: right; width: 60%; height: 280px; overflow-x: hidden">
           <h2 style="text-align: center; margin: 10px 0 10px 0;">Option Name</h2>
           <!--<div id="left" style="float: left; width: 50%;">
             <div style="padding: 7px 0px 7px 25px; margin-top: 25px; font-size: 20px; background-color: #364760;">
@@ -148,7 +157,7 @@
 
           <div class="optionholder">
             <p class="optiondescr">Option Name</p>
-            <input style="float: right; height: 25px; margin: 14px 25px 10px 0; width: 35px; font-weight: bold; color: grey;" type="checkbox">
+            <input type="checkbox">
             <div style="height: 50px;"></div>
           </div>
 
@@ -165,7 +174,7 @@
 
           <div class="optionholder">
             <p class="optiondescr">Option Name</p>
-            <input style="float: right; height: 25px; margin: 14px 25px 10px 0; width: 35px; font-weight: bold; color: grey;" type="checkbox">
+            <input type="checkbox">
             <div style="height: 50px;"></div>
           </div>
 

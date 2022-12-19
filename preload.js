@@ -3,14 +3,14 @@ document.addEventListener("DOMContentLoaded", function() {
     // vars & preset stuff
     var wrapperHidden = true;
 
-    let shortcuts = document.createElement("h2");
+    const shortcuts = document.createElement("h2");
     shortcuts.innerHTML = "[1] GG  [2] hello guys  [3] show  [4] hide";
     shortcuts.type = "submit";
-    shortcuts.id = "hidewrapper";
-    shortcuts.style = "position: absolute; left: 0; bottom: 0; z-index: 1000; color: grey; background-color: transparent; outline: none; margin-bottom: 4px; margin-left: 7.5px; outline: none; border: none; font-size: 100%;";
+    shortcuts.id = "shortcutsdisplay";
+    shortcuts.style = "position: absolute; left: 0; bottom: 0; z-index: 1000; color: grey; background-color: transparent; outline: none; margin-bottom: 4px; margin-left: 7.5px; outline: none; border: none; font-size: 100%; display: none;";
     document.body.appendChild(shortcuts);
 
-    // draggable windows
+    // draggable windows | make all of this easier with modules -> https://stackoverflow.com/questions/950087/how-do-i-include-a-javascript-file-in-another-javascript-file
 
     /*<div class="wrapper">
         <header>Draggable Div</header>
@@ -203,6 +203,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const skinWrapper = document.createElement('div');
     skinWrapper.className = 'skinwrapper';
     skinWrapper.id = "skinWrapper";
+    skinWrapper.style = "::-webkit-scrollbar{border:1px solid #d5d5d5}";
     document.body.appendChild(skinWrapper);
 
     // close button
@@ -228,11 +229,22 @@ document.addEventListener("DOMContentLoaded", function() {
     const leftDiv = document.createElement('div');
     leftDiv.style.float = 'left';
     leftDiv.style.width = '40%';
+    leftDiv.style.height = '263px';
+    leftDiv.style.overflow = 'scroll';
+    leftDiv.style.overflowX = 'hidden';
+    leftDiv.style.overflowY = 'auto';
     leftDiv.id = "leftDiv";
     document.getElementById('mainDiv').appendChild(leftDiv);
 
     // the buttons (using for loop for demo purposes)
     //for (let i = 0; i < 7; i++) {
+
+        const allOptions = document.createElement('button');
+        allOptions.className = 'skinbutton';
+        allOptions.innerText = 'All Options';
+        allOptions.id = "allOptions";
+        document.getElementById('leftDiv').appendChild(allOptions);
+
         const optionButton1 = document.createElement('button');
         optionButton1.className = 'skinbutton';
         optionButton1.innerText = 'General';
@@ -241,14 +253,26 @@ document.addEventListener("DOMContentLoaded", function() {
 
         const optionButton2 = document.createElement('button');
         optionButton2.className = 'skinbutton';
-        optionButton2.innerText = 'Option2';
-        optionButton2.id = "optionButton2";
+        optionButton2.innerText = 'Shortcuts';
+        optionButton2.id = "shortcuts";
         document.getElementById('leftDiv').appendChild(optionButton2);
+
+        const optionButton12 = document.createElement('button');
+        optionButton12.className = 'skinbutton';
+        optionButton12.innerText = 'Skins';
+        optionButton12.id = "skinmenu";
+        document.getElementById('leftDiv').appendChild(optionButton12);
+
+        const optionButton123 = document.createElement('button');
+        optionButton123.className = 'skinbutton';
+        optionButton123.innerText = 'Aimbot';
+        optionButton123.id = "aimbot";
+        document.getElementById('leftDiv').appendChild(optionButton123);
 
         const optionButton3 = document.createElement('button');
         optionButton3.className = 'skinbutton';
-        optionButton3.innerText = 'Option3';
-        optionButton3.id = "optionButton3";
+        optionButton3.innerText = 'Default Settings';
+        optionButton3.id = "defaultsettings";
         document.getElementById('leftDiv').appendChild(optionButton3);
     //}
 
@@ -256,6 +280,10 @@ document.addEventListener("DOMContentLoaded", function() {
     const rightDiv = document.createElement('div');
     rightDiv.style.float = 'right';
     rightDiv.style.width = '60%';
+    rightDiv.style.height = '263px';
+    rightDiv.style.overflow = 'scroll';
+    rightDiv.style.overflowX = 'hidden';
+    rightDiv.style.overflowY = 'auto';
     rightDiv.id = "rightDiv";
     document.getElementById('mainDiv').appendChild(rightDiv);
 
@@ -266,109 +294,235 @@ document.addEventListener("DOMContentLoaded", function() {
     h2.innerText = 'Option Name';
     document.getElementById('rightDiv').appendChild(h2);
 
-    for (let i = 0; i < 5; i++) {
-        // holds the sub-options
-        const optionHolder = document.createElement('div');
-        optionHolder.className = 'optionholder';
-        optionHolder.id = "optionHolder";
-        document.getElementById('rightDiv').appendChild(optionHolder);
 
-        // sub-option title
-        const optionDescr = document.createElement('p');
-        optionDescr.className = 'optiondescr';
-        optionDescr.innerText = 'Option Name';
-        document.getElementById('optionHolder').appendChild(optionDescr);
+    const optionHolder = document.createElement('div');
 
-        // percent input
-        const input1 = document.createElement('input');
-        input1.type = 'text';
-        document.getElementById('optionHolder').appendChild(input1);
 
-        // slider
-        const input2 = document.createElement('input');
-        input2.type = 'range';
-        input2.min = '1';
-        input2.max = '100';
-        input2.value = '50';
-        input2.className = 'slider';
-        input2.id = 'myRange';
-        document.getElementById('optionHolder').appendChild(input2);
-
-        const div = document.createElement('div');
-        div.style.height = '50px';
-        document.getElementById('optionHolder').appendChild(div);
-
-        const hr = document.createElement('hr');
-        document.getElementById('optionHolder').appendChild(hr);
-    }
 
     document.body.append(skinWrapper);
 
+    // one time define
+
+    const optionSpaceThing = document.createElement('div');
+    optionSpaceThing.style.height = '50px';
+
+    const optionHr = document.createElement('hr');
+
+    // FPS-DISPLAY
+
+    // holds the sub-options
+    const fpsDisplayOptionHolder = document.createElement('div');
+    fpsDisplayOptionHolder.className = 'optionholder';
+    fpsDisplayOptionHolder.id = "fpsDisplayOptionHolder";
+    document.getElementById('rightDiv').appendChild(fpsDisplayOptionHolder);
+
+    // sub-option title
+    const fpsDisplayoptionDescr = document.createElement('p');
+    fpsDisplayoptionDescr.className = 'optiondescr';
+    fpsDisplayoptionDescr.innerText = 'FPS-Counter';
+    document.getElementById('fpsDisplayOptionHolder').appendChild(fpsDisplayoptionDescr);
+
+    // checkbox
+    const fpsDisplayCheck = document.createElement('input');
+    fpsDisplayCheck.type = 'checkbox';
+    fpsDisplayCheck.id = "fpsDisplayCheck";
+    document.getElementById('fpsDisplayOptionHolder').appendChild(fpsDisplayCheck);
+
+    document.getElementById('fpsDisplayOptionHolder').appendChild(optionSpaceThing);
+    document.getElementById('fpsDisplayOptionHolder').appendChild(optionHr);
+
+    fpsDisplayOptionHolder.style.display = "none";
+
+    fpsDisplayCheck.addEventListener('change', e => {
+        if(e.target.checked){
+            fpscounter.style.display = "";
+        } else {
+            fpscounter.style.display = "none";
+        }
+    });
+
+    // ONLINE-DISPLAY
+
+    // holds the sub-options
+    const onlineDisplayOptionHolder = document.createElement('div');
+    onlineDisplayOptionHolder.className = 'optionholder';
+    onlineDisplayOptionHolder.id = "onlineDisplayOptionHolder";
+    document.getElementById('rightDiv').appendChild(onlineDisplayOptionHolder);
+
+    // sub-option title
+    const onlineDisplayoptionDescr = document.createElement('p');
+    onlineDisplayoptionDescr.className = 'optiondescr';
+    onlineDisplayoptionDescr.innerText = 'Network Status';
+    document.getElementById('onlineDisplayOptionHolder').appendChild(onlineDisplayoptionDescr);
+
+    // checkbox
+    const onlineDisplayCheck = document.createElement('input');
+    onlineDisplayCheck.type = 'checkbox';
+    onlineDisplayCheck.id = "onlineDisplayCheck";
+    document.getElementById('onlineDisplayOptionHolder').appendChild(onlineDisplayCheck);
+
+    document.getElementById('onlineDisplayOptionHolder').appendChild(optionSpaceThing);
+    document.getElementById('onlineDisplayOptionHolder').appendChild(optionHr);
+
+    onlineDisplayCheck.addEventListener('change', e => {
+        if(e.target.checked){
+            status.style.display = "";
+        } else {
+            status.style.display = "none";
+        }
+    });
+
+    // SHORTCUT-DISPLAY
+
+    // holds the sub-options
+    const shortcutDisplayOptionHolder = document.createElement('div');
+    shortcutDisplayOptionHolder.className = 'optionholder';
+    shortcutDisplayOptionHolder.id = "shortcutDisplayOptionHolder";
+    document.getElementById('rightDiv').appendChild(shortcutDisplayOptionHolder);
+
+    // sub-option title
+    const shortcutDisplayoptionDescr = document.createElement('p');
+    shortcutDisplayoptionDescr.className = 'optiondescr';
+    shortcutDisplayoptionDescr.innerText = 'Show Shortcuts';
+    document.getElementById('shortcutDisplayOptionHolder').appendChild(shortcutDisplayoptionDescr);
+
+    // checkbox
+    const shortcutDisplayCheck = document.createElement('input');
+    shortcutDisplayCheck.type = 'checkbox';
+    shortcutDisplayCheck.id = "shortcutDisplayCheck";
+    document.getElementById('shortcutDisplayOptionHolder').appendChild(shortcutDisplayCheck);
+
+    document.getElementById('shortcutDisplayOptionHolder').appendChild(optionSpaceThing);
+    document.getElementById('shortcutDisplayOptionHolder').appendChild(optionHr);
+
+
+    shortcutDisplayCheck.addEventListener('change', e => {
+        if(e.target.checked){
+            shortcuts.style.display = "";
+        } else {
+            shortcuts.style.display = "none";
+        }
+    });
+
+    // SKIN-DISPLAY
+
+    const skincontent = document.createElement("div");
+    skincontent.id = "skincontent";
+    skincontent.classList.add('skincontent');
+
+    document.getElementById('rightDiv').appendChild(skincontent);
+
+    var skincontentselector = document.getElementById('skincontent');
+
+    var flexSquare = document.createElement('div');
+    flexSquare.style.width = '100px';
+    flexSquare.style.height = '100px';
+    flexSquare.style.border = '1px solid black';
+    flexSquare.style.margin = '10px';
+    flexSquare.style.backgroundColor = '#ffffff';
+
+    skincontentselector.appendChild(flexSquare);
+    skincontentselector.appendChild(flexSquare.cloneNode(true));
+    skincontentselector.appendChild(flexSquare.cloneNode(true));
+    skincontentselector.appendChild(flexSquare.cloneNode(true));
+    skincontentselector.appendChild(flexSquare.cloneNode(true));
+
+    // show all options as default
+
+    // menu title
+    h2.innerHTML = "All Options";
+
+    // show all options
+    optionHolder.style.display = "";
+    fpsDisplayOptionHolder.style.display = "";
+    onlineDisplayOptionHolder.style.display = "";
+    shortcutDisplayOptionHolder.style.display = "";
+    //skincontent.style.display = "flex";
+
+    // hide
+    skincontent.style.display = "none";
+
+    document.getElementById("allOptions").addEventListener("click", function() {
+
+        // menu title
+        h2.innerHTML = "All Options";
+
+        // show all options
+        fpsDisplayOptionHolder.style.display = "";
+        onlineDisplayOptionHolder.style.display = "";
+        shortcutDisplayOptionHolder.style.display = "";
+        skincontent.style.display = "flex";
+    });
+
     document.getElementById("general").addEventListener("click", function() {
-        rightDiv.innerHTML = '';
 
-        // holds the sub-options
-        const optionHolder = document.createElement('div');
-        optionHolder.className = 'optionholder';
-        optionHolder.id = "optionHolder";
-        document.getElementById('rightDiv').appendChild(optionHolder);
+        // menu title
+        h2.innerHTML = "General";
 
-        // sub-option title
-        const optionDescr = document.createElement('p');
-        optionDescr.className = 'optiondescr';
-        optionDescr.innerText = 'FPS-Counter';
-        document.getElementById('optionHolder').appendChild(optionDescr);
+        // hide all options
+        fpsDisplayOptionHolder.style.display = "none";
+        onlineDisplayOptionHolder.style.display = "none";
+        shortcutDisplayOptionHolder.style.display = "none";
+        skincontent.style.display = "none";
 
-        // percent input
-        /*const input1 = document.createElement('input');
-        input1.type = 'text';
-        document.getElementById('optionHolder').appendChild(input1);*/
-
-        // slider
-        /*const input2 = document.createElement('input');
-        input2.type = 'range';
-        input2.min = '1';
-        input2.max = '100';
-        input2.value = '50';
-        input2.className = 'slider';
-        input2.id = 'myRange';
-        document.getElementById('optionHolder').appendChild(input2);*/
-
-        const input3 = document.createElement('input');
-        input3.type = 'checkbox';
-        input3.id = "input3";
-        input3.style = "float: right; margin: 14px 25px 10px 0; width: 35px; font-weight: bold; color: grey;";
-        document.getElementById('optionHolder').appendChild(input3);
-
-        const div = document.createElement('div');
-        div.style.height = '50px';
-        document.getElementById('optionHolder').appendChild(div);
-
-        const hr = document.createElement('hr');
-        document.getElementById('optionHolder').appendChild(hr);
-
-        input3.addEventListener('change', e => {
-            if(e.target.checked){
-                fpscounter.style.display = "";
-            } else {
-                fpscounter.style.display = "none";
-            }
-        }); 
+        // reactivate needed options
+        fpsDisplayOptionHolder.style.display = "";
+        onlineDisplayOptionHolder.style.display = "";
     
     });
 
-    document.getElementById("optionButton2").addEventListener("click", function() {
-        alert("optionButton2");
+    document.getElementById("shortcuts").addEventListener("click", function() {
+        // menu title
+        h2.innerHTML = "Shortcuts";
+
+        // hide all options
+        fpsDisplayOptionHolder.style.display = "none";
+        onlineDisplayOptionHolder.style.display = "none";
+        shortcutDisplayOptionHolder.style.display = "none";
+        skincontent.style.display = "none";
+
+        // reactivate needed options
+        shortcutDisplayOptionHolder.style.display = "";
+
     });
 
-    document.getElementById("optionButton3").addEventListener("click", function() {
-        alert("optionButton3");
+    document.getElementById("skinmenu").addEventListener("click", function() {
+
+        // menu title
+        h2.innerHTML = "Skins";
+
+        // hide all options
+        fpsDisplayOptionHolder.style.display = "none";
+        onlineDisplayOptionHolder.style.display = "none";
+        shortcutDisplayOptionHolder.style.display = "none";
+        skincontent.style.display = "none";
+
+        // reactivate needed options
+        skincontent.style.display = "flex";
+    
+    });
+
+    document.getElementById("aimbot").addEventListener("click", function() {
+
+        // menu title
+        h2.innerHTML = "WTF?! <br> Didn't expect that from you tbh.";
+
+        // hide all options
+        fpsDisplayOptionHolder.style.display = "none";
+        onlineDisplayOptionHolder.style.display = "none";
+        shortcutDisplayOptionHolder.style.display = "none";
+        skincontent.style.display = "none";
+    
+    });
+
+    document.getElementById("defaultsettings").addEventListener("click", function() {
+        alert("you have to create them first lol");
     });
 
     // css and js
 
     let skincss = document.createElement('style');
-    skincss.innerText = "@import 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap';*{z-index:1000;margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}.skinwrapper{position:absolute;top:50%;left:50%;max-width:750px;width:100%;background:#2a394f;transform:translate(-50%,-50%);border:solid 1px #000;color:#fff}.skinwrapper header{font-size:23px;font-weight:500;padding:17px 30px;border-bottom:1px solid #000;background:#2a394f;text-align:center}.skinwrapper header.skinactive{cursor:move;user-select:none}.skinwrapper .skincontent{display:flex;flex-direction:wrap;flex-wrap:wrap;justify-content:center;background:#2a394f}.skincontent .title{margin:15px 0;font-size:29px;font-weight:500}.skincontent p{font-size:16px;text-align:center;display:flex}.skinbutton{width:100%;height:50px;background-color:#364760;border:none;color:#fff;font-size:20px}.skinbutton:hover{background-color:#0798fc}.skinclose{color:grey;position:absolute;top:0;right:0;margin-right:15px;margin-top:-6px;background-color:#ffffff00;border:none;font-size:35px}.skinclose:hover{color:#fff}p{font-size:20px}input[type=text]{float:right;margin:14px 25px 10px 0;width:35px;font-weight:700;color:grey}input[type=range]{float:right;margin:16px 20px 10px 0}.optiondescr{float:left;margin:10px 0 10px 20px}.optionholder{background-color:#364760}hr{width:100%;border:.1px solid #000}";
+    skincss.innerText = "@import 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap';*{z-index:1000;margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}.skinwrapper{position:absolute;top:50%;left:50%;max-width:750px;width:100%;background:#2a394f;transform:translate(-50%,-50%);border:solid 1px #000;color:#fff;height:335px;}.skinwrapper header{font-size:23px;font-weight:500;padding:17px 30px;border-bottom:1px solid #000;background:#2a394f;text-align:center}.skinwrapper header.skinactive{cursor:move;user-select:none}.skinwrapper .skincontent{display:flex;flex-direction:wrap;flex-wrap:wrap;justify-content:center;background:#2a394f}.skincontent .title{margin:15px 0;font-size:29px;font-weight:500}.skincontent p{font-size:16px;text-align:center;display:flex}.skinbutton{width:100%;height:50px;background-color:#364760;border:none;color:#fff;font-size:20px}.skinbutton:hover{background-color:#0798fc}.skinclose{color:grey;position:absolute;top:0;right:0;margin-right:15px;margin-top:-6px;background-color:#ffffff00;border:none;font-size:35px}.skinclose:hover{color:#fff}p{font-size:20px}input[type=text]{float:right;margin:14px 25px 10px 0;width:35px;font-weight:700;color:grey}input[type=range]{float:right;margin:16px 20px 10px 0}input[type=checkbox]{float:right;transform:scale(2);margin:14px 25px 5px 0;width:35px;font-weight:700;color:grey;}.optiondescr{float:left;margin:10px 0 10px 20px}.optionholder{background-color:#364760}hr{width:100%;border:.1px solid #000}";
     document.head.appendChild(skincss);
 
     var script = document.createElement('script');
@@ -454,6 +608,8 @@ document.addEventListener("DOMContentLoaded", function() {
       
     observer.observe(canvas, { attributes: true });*/
 
+    // shortcuts
+
     document.body.addEventListener('keypress', (e) => {
         if(e.key == '1') {
             const input = document.querySelector('input[placeholder="[Enter] to use chat"]');
@@ -484,30 +640,22 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         if(e.key == '3') {
-            //document.getElementById("wrapper").style.display = "";
-            document.getElementById("skinWrapper").style.display = "";
-            /*if (wrapperHidden = true)
-            {
-                document.getElementById("wrapper").style.display = "";
-                wrapperHidden = false;
-            } else {
-                document.getElementById("wrapper").style.display = "none";
-                wrapperHidden = true;
-            }*/
-        }
+            const wrapperElement = document.getElementById("skinWrapper");
 
-        if(e.key == '4') {
-            //document.getElementById("wrapper").style.display = "none";
-            document.getElementById("skinWrapper").style.display = "none";
+            if (wrapperElement.style.display == "none") {
+                wrapperElement.style.display = "";
+            } else {
+                wrapperElement.style.display = "none";
+            }
         }
     });
 
     // offline / online status
 
-    let status = document.createElement("h2");
+    const status = document.createElement("h2");
     status.innerHTML = "Network Status";
     status.id = "status";
-    status.style = "position: absolute; width: 100%; text-align: center; z-index: 1000; color: lightgreen; font-size: 100%";
+    status.style = "position: absolute; width: 100%; text-align: center; z-index: 1000; color: lightgreen; font-size: 100%; display: none;";
     document.body.appendChild(status);
 
     const updateOnlineStatus = () => {
