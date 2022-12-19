@@ -1,3 +1,4 @@
+const { readFileSync } = require('fs'); // just in case
 document.addEventListener("DOMContentLoaded", function() {
 
     // vars & preset stuff
@@ -748,5 +749,8 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     updateFps();
+    
+    // Settings Page (Redundant but maybe will re-use)
+    //document.getElementById("settingsDiv").innerHTML += readFileSync('settingsPage.html').toString();
 
 });
