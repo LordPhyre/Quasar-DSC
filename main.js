@@ -1,24 +1,62 @@
-const { app, ipcMain, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const DiscordRpc = require("discord-rpc");
+let win = null
 
-const createWindow = () => {
-    // Create the browser window.
+app.whenReady().then(() => {
+  win = new BrowserWindow({ 
+    width: 800, 
+    height: 600,
+    show: false,
+    webPreferences: {
+      nodeIntegration: true,
+      enableRemoteModule: true,
+      sandbox: false,
+      preload: path.join(__dirname, 'preload.js'),
+    }
+  })
+  var splash = new BrowserWindow({
+    width: 500, 
+    height: 300, 
+    transparent: true, 
+    frame: false,
+    alwaysOnTop: true 
+  });
+
+  splash.loadFile('splash.html');
+  splash.center();
+
+  setTimeout(function () {
+    splash.close();
+    win.show();
+  }, 5000);
+
+  win.loadURL('https://deadshot.io')
+
+  win.webContents.on('did-finish-load', () => {
+    win.webContents.send('ping', 'whoooooooh!')
+  })
+})
+
+/*const createWindow = () => {
     const mainWindow = new BrowserWindow({
+        //autoHideMenuBar: true,
         width: 852,
         height: 480,
         show: false,
         webPreferences: {
+            nodeIntegration: true,
+            enableRemoteModule: true,
+            sandbox: false,
             preload: path.join(__dirname, 'preload.js'),
-            nodeIntegration: true
         }
     })
     var splash = new BrowserWindow({
       width: 500, 
       height: 300, 
       transparent: true, 
-      frame: false, 
+      frame: false,
       alwaysOnTop: true 
     });
 
@@ -30,12 +68,32 @@ const createWindow = () => {
       mainWindow.show();
     }, 5000);
 
-    //mainWindow.removeMenu()
     mainWindow.loadURL('https://deadshot.io')
 
-    // Open the DevTools.
-    // mainWindow.webContents.openDevTools()
-}
+    const data = { message: 'test' };
+
+    mainWindow.webContents.send('data-from-main', data);
+}*/
+
+////////////////////////////////////////////////////////
+///// file exchange between main.js and preload.js /////
+////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////
+
+/*const imageFolder = './images';
+
+fs.readdir(imageFolder, (err, files) => {
+  if (err) {
+    console.error(err);
+    return;
+  }
+
+  const filePaths = files.map((file) => path.join(imageFolder, file));
+
+  ipcRenderer.send('image-file-paths', filePaths);
+});*/
+
 
 // credit to gatos for the swapper folders
 
@@ -65,9 +123,9 @@ fs.readdir(path.join(app.getPath("documents"), "DeadshotClient/gunskins"), funct
 });
 
 
-ipcMain.on('app_version', (event) => {
+/*ipcMain.on('app_version', (event) => {
   event.sender.send('app_version', { version: app.getVersion() });
-});
+});*/
 
 // Rich Presence
 /*const clientId = "1016830391694413835";
@@ -128,7 +186,7 @@ client.on('ready', () => {
 })*/
   
 
-app.whenReady().then(() => {
+/*app.whenReady().then(() => {
   createWindow()
 
   app.on('activate', () => {
@@ -138,4 +196,4 @@ app.whenReady().then(() => {
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()
-})
+})*/

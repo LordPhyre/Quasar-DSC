@@ -1,3 +1,5 @@
+const { ipcMain } = require('electron');
+
 document.addEventListener("DOMContentLoaded", function() {
 
     // vars & preset stuff
@@ -420,6 +422,56 @@ document.addEventListener("DOMContentLoaded", function() {
     flexSquare.style.border = '1px solid black';
     flexSquare.style.margin = '10px';
     flexSquare.style.backgroundColor = '#ffffff';
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //ipcMain.on('data-from-renderer', (event, data) => {
+    //  console.log(data); // { message: 'Hello from the renderer process!' }
+      // Do something with the data here
+    //});
+
+    /*const { ipcRenderer } = require('electron');
+
+    ipcRenderer.on('data-from-main', (event, data) => {
+        console.log(data);
+    });*/
+
+    require('electron').ipcRenderer.on('ping', (event, message) => {
+        console.log(message)
+    });
+
+    /*app.on('ready', () => {
+        ipcMain.on('image-file-paths', (event, filePaths) => {
+          console.log(filePaths);
+          // do something with the file paths here
+        });
+    });*/
+
+    /*var swapperFolder = path.join(app.getPath("documents"), "DeadshotClient");
+
+    if (!fs.existsSync(swapperFolder)) {
+        fs.mkdirSync(swapperFolder, { recursive: true });
+    };
+    if (!fs.existsSync(path.join(swapperFolder, "/gunskins"))) {
+        fs.mkdirSync(path.join(swapperFolder, "/gunskins"), { recursive: true });
+    };
+
+    // do x for images in folder
+
+    fs.readdir(path.join(app.getPath("documents"), "DeadshotClient/gunskins"), function(err, files) {
+    if (err) {
+        console.error('There was an error reading the directory:', err);
+        return;
+    }
+
+    // Filder actual images (.png and .jpg)
+    const imageFiles = files.filter(file => file.endsWith('.png') || file.endsWith('.jpg'));
+
+    imageFiles.forEach(function(imageFile) {
+        console.log(`Processing image file: ${imageFile}`);
+    });
+    });*/
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     skincontentselector.appendChild(flexSquare);
     skincontentselector.appendChild(flexSquare.cloneNode(true));
