@@ -1,5 +1,5 @@
+const { readFileSync } = require('fs'); // just in case
 const { ipcMain } = require('electron');
-
 document.addEventListener("DOMContentLoaded", function() {
 
     // vars & preset stuff
@@ -800,5 +800,8 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     updateFps();
+    
+    // Settings Page (Redundant but maybe will re-use)
+    //document.getElementById("settingsDiv").innerHTML += readFileSync('settingsPage.html').toString();
 
 });
