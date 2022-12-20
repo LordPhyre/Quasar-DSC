@@ -7,19 +7,11 @@
 - gamma editor (changes lighting)
 - fov slider (DIFFICULT!) // we could scale the canvas and then do something with the zoom
 - toggleable wasd detector thing (you know what i mean) // yeah, where you see the button clicks /// thats right, yeah
-- wireframe? // wdym?
-- keybind presets // wdym?
+- wireframe? // wdym? | https://i.imgur.com/GoLZfPe.jpeg // without the enemies
+- keybind presets // wdym? like insted of awsd -> esdf | for the weirdos
 - sreenshake (only with readable html and trees help)
 - "No Internet" screen (not that easy as i thought)
 - ***custom*** fps counter (allows changing colors and stuff through the menu)
-
-Done:
-
-- functioning keyboard shortcuts (easy)
-- GG shortcut
-- hello shortcut
-- splash screen
-- fix styling
 
 Not really possible:
 
