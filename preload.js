@@ -335,6 +335,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
     fpsDisplayOptionHolder.style.display = "none";
 
+    // nice way | not so nice as I thought but gonna leave it in as proof that I tried lol
+
+    //document.write("<div class='optionholder' id='fpsDisplayOptionHolder'></div>");
+    //document.getElementById('rightDiv').appendChild("<div class='optionholder' id='fpsDisplayOptionHolder'></div>");
+
     fpsDisplayCheck.addEventListener('change', e => {
         if(e.target.checked){
             fpscounter.style.display = "";
