@@ -421,14 +421,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
     var skincontentselector = document.getElementById('skincontent');
 
-    var flexSquare = document.createElement('img');
+    const flexSquare = document.createElement('img');
     flexSquare.style.width = '100px';
     flexSquare.style.height = '100px';
     flexSquare.style.border = '1px solid black';
     flexSquare.style.margin = '10px';
     flexSquare.style.backgroundColor = '#ffffff';
-
-    skincontentselector.appendChild(flexSquare);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -436,22 +434,27 @@ document.addEventListener("DOMContentLoaded", function() {
     //console.log(imgpath);
 
     // get path
-    require('electron').ipcRenderer.on('imgpath', (event, message) => {
+    /*require('electron').ipcRenderer.on('imgpath', (event, message) => {
         console.log(message);
         imgpath = message;
-    });
+    });*/
 
     // get skins
-    require('electron').ipcRenderer.on('filename', (event, message) => {
+    require('electron').ipcRenderer.on('filepaths', (event, message) => {
         var skins = message;
         console.log(skins);
         console.log(skins.length);
 
         for (let i = 0; i < skins.length; i++) {
-            let flexSquareClone = flexSquare.cloneNode(true);
-          
-            flexSquareClone.setAttribute('src', skins[i]);
-            skincontentselector.appendChild(flexSquareClone);
+            if ([i] > 0) {
+                let flexSquareClone = flexSquare.cloneNode(true);
+              
+                flexSquareClone.setAttribute('src', skins[i]);
+                skincontentselector.appendChild(flexSquareClone);
+            } else {
+                flexSquare.src = skins[i];
+                skincontentselector.appendChild(flexSquare);
+            }
         }
     });
 

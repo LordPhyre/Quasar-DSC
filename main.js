@@ -13,6 +13,7 @@ app.whenReady().then(() => {
       nodeIntegration: true,
       enableRemoteModule: true,
       sandbox: false,
+      webSecurity: false, // needed to load local images
       preload: path.join(__dirname, 'preload.js'),
     }
   })
@@ -67,16 +68,18 @@ app.whenReady().then(() => {
     var imgpath = path.join(app.getPath("documents"), "DeadshotClient/gunskins");
 
     imageFiles.forEach(function(imageFile) {
-      console.log(`Processing image file: ${imageFile}`);
+      var pathcontainer = imgpath + "/" + `${imageFile}`
+
+      console.log(`Processing image file: ${imageFile} pathcontainer: ` + pathcontainer);
+
 
       // push file names to skin-array
-      skins.push(`${imageFile}`);
+      skins.push(pathcontainer);
       
     });
 
     win.webContents.on('did-finish-load', () => {
-      win.webContents.send('imgpath', imgpath);
-      win.webContents.send('filename', skins)
+      win.webContents.send('filepaths', skins)
     })
 
   });
