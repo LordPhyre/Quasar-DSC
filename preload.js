@@ -338,11 +338,12 @@ document.addEventListener("DOMContentLoaded", function() {
     // nice way | not so nice as I thought but gonna leave it in as proof that I tried lol
 
     //document.write("<div class='optionholder' id='fpsDisplayOptionHolder'></div>");
-    //document.getElementById('rightDiv').appendChild("<div class='optionholder' id='fpsDisplayOptionHolder'></div>");
+    // or
+    //document.getElementById('rightDiv').appendChild("<div class='optionholder' id='fpsDisplayOptionHolder'></div>"); // doesn't work like that lol
 
     fpsDisplayCheck.addEventListener('change', e => {
         if(e.target.checked){
-            fpscounter.style.display = "";
+            fpscounter.style.display = "initial"; // initial works better for skill, use that in the future instead of ""
         } else {
             fpscounter.style.display = "none";
         }
