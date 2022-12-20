@@ -68,52 +68,51 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementsByTagName('head')[0].appendChild(script);
 
 
-    // the buttons (using for loop for demo purposes)
-    //for (let i = 0; i < 7; i++) {
+    // menu buttons
 
-        const allOptions = document.createElement('button');
-        allOptions.className = 'skinbutton';
-        allOptions.innerText = 'All Options';
-        allOptions.id = "allOptions";
-        document.getElementById('leftDiv').appendChild(allOptions);
+    const allOptions = document.createElement('button');
+    allOptions.className = 'skinbutton';
+    allOptions.innerText = 'All Options';
+    allOptions.id = "allOptions";
+    document.getElementById('leftDiv').appendChild(allOptions);
 
-        const optionButton1 = document.createElement('button');
-        optionButton1.className = 'skinbutton';
-        optionButton1.innerText = 'General';
-        optionButton1.id = "general";
-        document.getElementById('leftDiv').appendChild(optionButton1);
+    const optionButton1 = document.createElement('button');
+    optionButton1.className = 'skinbutton';
+    optionButton1.innerText = 'General';
+    optionButton1.id = "general";
+    document.getElementById('leftDiv').appendChild(optionButton1);
 
-        const optionButton2 = document.createElement('button');
-        optionButton2.className = 'skinbutton';
-        optionButton2.innerText = 'Shortcuts';
-        optionButton2.id = "shortcuts";
-        document.getElementById('leftDiv').appendChild(optionButton2);
+    const optionButton2 = document.createElement('button');
+    optionButton2.className = 'skinbutton';
+    optionButton2.innerText = 'Shortcuts';
+    optionButton2.id = "shortcuts";
+    document.getElementById('leftDiv').appendChild(optionButton2);
 
-        const optionButton12 = document.createElement('button');
-        optionButton12.className = 'skinbutton';
-        optionButton12.innerText = 'Skins';
-        optionButton12.id = "skinmenu";
-        document.getElementById('leftDiv').appendChild(optionButton12);
+    const optionButton12 = document.createElement('button');
+    optionButton12.className = 'skinbutton';
+    optionButton12.innerText = 'Skins';
+    optionButton12.id = "skinmenu";
+    document.getElementById('leftDiv').appendChild(optionButton12);
 
-        const optionButton123 = document.createElement('button');
-        optionButton123.className = 'skinbutton';
-        optionButton123.innerText = 'Aimbot';
-        optionButton123.id = "aimbot";
-        document.getElementById('leftDiv').appendChild(optionButton123);
+    const optionButton123 = document.createElement('button');
+    optionButton123.className = 'skinbutton';
+    optionButton123.innerText = 'Aimbot';
+    optionButton123.id = "aimbot";
+    document.getElementById('leftDiv').appendChild(optionButton123);
 
-        const optionButton34 = document.createElement('button');
-        optionButton34.className = 'skinbutton';
-        optionButton34.innerText = 'Color Settings';
-        optionButton34.id = "colorsettings";
-        document.getElementById('leftDiv').appendChild(optionButton34);
+    const optionButton34 = document.createElement('button');
+    optionButton34.className = 'skinbutton';
+    optionButton34.innerText = 'Color Settings';
+    optionButton34.id = "colorsettings";
+    document.getElementById('leftDiv').appendChild(optionButton34);
 
-        const optionButton3 = document.createElement('button');
-        optionButton3.className = 'skinbutton';
-        optionButton3.innerText = 'Default Settings';
-        optionButton3.id = "defaultsettings";
-        document.getElementById('leftDiv').appendChild(optionButton3);
-    //}
+    const optionButton3 = document.createElement('button');
+    optionButton3.className = 'skinbutton';
+    optionButton3.innerText = 'Default Settings';
+    optionButton3.id = "defaultsettings";
+    document.getElementById('leftDiv').appendChild(optionButton3);
 
+    // menu construction
     // right part of the menu (sub-options)
     const rightDiv = document.createElement('div');
     rightDiv.style.float = 'right';
@@ -132,11 +131,6 @@ document.addEventListener("DOMContentLoaded", function() {
     h2.style.margin = '10px 0 10px 0';
     h2.innerText = 'Option Name';
     document.getElementById('rightDiv').appendChild(h2);
-
-
-    const optionHolder = document.createElement('div');
-
-
 
     document.body.append(skinWrapper);
 
@@ -433,13 +427,11 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // show all options as default
-
     // menu title
     h2.innerHTML = "All Options";
 
     // show all options
-    optionHolder.style.display = "";
+
     fpsDisplayOptionHolder.style.display = "";
     onlineDisplayOptionHolder.style.display = "";
     shortcutDisplayOptionHolder.style.display = "";
