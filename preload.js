@@ -60,7 +60,6 @@ document.addEventListener("DOMContentLoaded", function() {
     skinCloseButton.className = 'skinclose';
     skinCloseButton.innerText = '_';
     skinCloseButton.id = 'skinclose';
-    //skinCloseButton.addEventListener('click', closefunction());
     document.getElementById('skinWrapper').appendChild(skinCloseButton);
 
     var script = document.createElement('script');
