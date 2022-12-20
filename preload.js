@@ -1,9 +1,18 @@
 const { readFileSync } = require('fs'); // just in case
 const { ipcMain } = require('electron');
+//window.$ = window.jQuery = require('./node_modules/jquery/dist/jquery.min.js');
 document.addEventListener("DOMContentLoaded", function() {
 
-    // vars & preset stuff
-    var wrapperHidden = true;
+    // colors
+
+    var menuHeaderColor = "#2a394f";
+    var behindOptionsColor = "#2a394f";
+    var skinButtonColor = "#364760";
+    var skinButtonHoverColor = "#0798fc";
+    var skinCloseColor = "#ffffff00";
+    var optionColor = "#364760";
+
+    // shortcutdisplay
 
     const shortcuts = document.createElement("h2");
     shortcuts.innerHTML = "[1] GG  [2] hello guys  [3] show  [4] hide";
@@ -12,218 +21,25 @@ document.addEventListener("DOMContentLoaded", function() {
     shortcuts.style = "position: absolute; left: 0; bottom: 0; z-index: 1000; color: grey; background-color: transparent; outline: none; margin-bottom: 4px; margin-left: 7.5px; outline: none; border: none; font-size: 100%; display: none;";
     document.body.appendChild(shortcuts);
 
-    // draggable windows | make all of this easier with modules -> https://stackoverflow.com/questions/950087/how-do-i-include-a-javascript-file-in-another-javascript-file
-
-    /*<div class="wrapper">
-        <header>Draggable Div</header>
-        <div class="content">
-        <p>Content</p>
-        </div>
-    </div>*/
-
-    // example button window (examplebuttons.html)
-
-    /*let wrapper = document.createElement("div");
-    wrapper.id = "wrapper";
-    wrapper.classList.add('wrapper');
-    document.body.appendChild(wrapper);
-
-    let close = document.createElement("button");
-    close.id = "close";
-    close.classList.add('close');
-    close.onclick = "close()";
-    close.innerHTML = "_";
-
-    document.getElementById('wrapper').appendChild(close);
-
-    let header = document.createElement("header");
-    header.id = "header";
-    header.innerHTML = "header";
-
-    document.getElementById('wrapper').appendChild(header);
-
-    let content = document.createElement("div");
-    content.id = "content";
-    content.classList.add('content');
-
-    document.getElementById('wrapper').appendChild(content);
-
-    // content
-
-    let contentbutton1 = document.createElement("button");
-    contentbutton1.id = "contentbutton1";
-    contentbutton1.classList.add('button');
-    contentbutton1.innerHTML = "content";
-
-    document.getElementById('content').appendChild(contentbutton1);
-
-    let contentbutton2 = document.createElement("button");
-    contentbutton2.id = "contentbutton2";
-    contentbutton2.classList.add('button');
-    contentbutton2.innerHTML = "content";
-
-    document.getElementById('content').appendChild(contentbutton2);
-
-    let contentbutton3 = document.createElement("button");
-    contentbutton3.id = "contentbutton3";
-    contentbutton3.classList.add('button');
-    contentbutton3.innerHTML = "content";
-
-    document.getElementById('content').appendChild(contentbutton3);
-
-    // css and js
-
-    let css = document.createElement('style');
-    //css.type = 'text/css';
-    css.innerText = "@import 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap';*{margin:0;padding:0;box-sizing:border-box; z-index: 1000; border: none;}.wrapper{position:absolute;top:50%;left:50%;max-width:350px;width:100%;background:#fff;transform:translate(-50%,-50%);color:#fff}.wrapper header{font-size:23px;font-weight:500;padding:17px 30px;border-bottom:1px solid #000;background:#2a394f;text-align:center;font-family:'Poppins',sans-serif;}.wrapper header.active{cursor:move;user-select:none}.wrapper .content{display:flex;align-items:center;flex-direction:column;justify-content:center;background:#2a394f;font-family:'Poppins',sans-serif;}.content .title{margin:15px 0;font-size:29px;font-weight:500; border: none;}.content p{font-size:16px;text-align:center}.button{width:111%;height:50px;background-color:#364760;border:none;color:#fff;text-align:center;}.button:hover{background-color:#0798fc}.close{color:grey;position:absolute;top:0;right:0;margin-right:15px;margin-top:-6px;background-color:#ffffff00;border:none;font-size:35px}.close:hover{color:#fff}";
-    document.head.appendChild(css);
-
-    var script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.innerHTML = "const wrapper=document.querySelector('.wrapper'),header=wrapper.querySelector('header');function onDrag({movementX:e,movementY:r}){let t=window.getComputedStyle(wrapper),a=parseInt(t.left),o=parseInt(t.top);wrapper.style.left=`${a+e}px`,wrapper.style.top=`${o+r}px`}header.addEventListener('mousedown',()=>{header.classList.add('active'),header.addEventListener('mousemove',onDrag)}),document.addEventListener('mouseup',()=>{header.classList.remove('active'),header.removeEventListener('mousemove',onDrag)});function close(){document.getElementById('wrapper').style.display = 'none';}";
-    document.getElementsByTagName('head')[0].appendChild(script);
-
-    // hide
-    document.getElementById("wrapper").style.display = "none";*/
-
-    // skinselector.html
-
-    /*let skinwrapper = document.createElement("div");
-    skinwrapper.id = "skinwrapper";
-    skinwrapper.classList.add('skinwrapper');
-    document.body.appendChild(skinwrapper);
-
-    const skinWrapper = document.querySelector('.skinwrapper');
-
-    const skinClose = document.createElement('button');
-    skinClose.classList.add('skinclose');
-    skinClose.addEventListener('click', close);
-    skinClose.textContent = '_';
-
-    const skinHeader = document.createElement('header');
-    skinHeader.classList.add('skinheader');
-    skinHeader.id = "skinheader";
-    skinHeader.textContent = 'Main Menu';
-
-    const mainDiv = document.createElement('div');
-    mainDiv.style.backgroundColor = '#2a394f';
-
-    const leftDiv = document.createElement('div');
-    leftDiv.style.cssText = 'float: left; width: 40%;';
-    for (let i = 0; i < 7; i++) {
-        const button = document.createElement('button');
-        button.classList.add('skinbutton');
-        button.textContent = 'Option';
-        leftDiv.appendChild(button);
-    }
-    mainDiv.appendChild(leftDiv);
-
-    const rightDiv = document.createElement('div');
-    rightDiv.style.cssText = 'float: right; width: 60%;';
-    const rightHolder = document.createElement('div');
-    rightHolder.classList.add('skincontent');
-    rightHolder.id = 'right-holder';
-    rightDiv.appendChild(rightHolder);
-    mainDiv.appendChild(rightDiv);
-
-    skinWrapper.appendChild(skinClose);
-    skinWrapper.appendChild(skinHeader);
-    skinWrapper.appendChild(mainDiv);
-
-    var skincontent = document.getElementById('right-holder');
-
-    var flexSquare = document.createElement('div');
-    flexSquare.style.width = '85px';
-    flexSquare.style.height = '85px';
-    flexSquare.style.border = '1px solid black';
-    flexSquare.style.margin = '10px';
-    flexSquare.style.backgroundColor = '#ffffff';
-    skincontent.appendChild(flexSquare);
-    skincontent.appendChild(flexSquare.cloneNode(true));
-    skincontent.appendChild(flexSquare.cloneNode(true));
-    skincontent.appendChild(flexSquare.cloneNode(true));
-    skincontent.appendChild(flexSquare.cloneNode(true));
-    skincontent.appendChild(flexSquare.cloneNode(true));
-    skincontent.appendChild(flexSquare.cloneNode(true));
-    skincontent.appendChild(flexSquare.cloneNode(true));
-    skincontent.appendChild(flexSquare.cloneNode(true));
-    skincontent.appendChild(flexSquare.cloneNode(true));
-    skincontent.appendChild(flexSquare.cloneNode(true));
-    skincontent.appendChild(flexSquare.cloneNode(true));*/
-
-
-    /*let skinclose = document.createElement("button");
-    skinclose.id = "skinclose";
-    skinclose.classList.add('skinclose');
-    skinclose.onclick = "close()";
-    skinclose.innerHTML = "_";
-
-    document.getElementById('skinwrapper').appendChild(close);
-
-    let skinheader = document.createElement("header");
-    skinheader.id = "skinheader";
-    skinheader.innerHTML = "Skin Select";
-
-    document.getElementById('skinwrapper').appendChild(skinheader);
-
-    let skincontent = document.createElement("div");
-    skincontent.id = "skincontent";
-    skincontent.classList.add('skincontent');
-
-    document.getElementById('skinwrapper').appendChild(skincontent);
-
-    // content
-
-    var skincontentselector = document.getElementById('skincontent');
-
-    var flexSquare = document.createElement('div');
-    flexSquare.style.width = '100px';
-    flexSquare.style.height = '100px';
-    flexSquare.style.border = '1px solid black';
-    flexSquare.style.margin = '10px';
-    flexSquare.style.backgroundColor = '#ffffff';
-
-    for (let i = 0; i < 10; i++) {
-        console.log(i);
-    }
-
-    skincontentselector.appendChild(flexSquare);
-    skincontentselector.appendChild(flexSquare.cloneNode(true));
-    skincontentselector.appendChild(flexSquare.cloneNode(true));
-    skincontentselector.appendChild(flexSquare.cloneNode(true));
-    skincontentselector.appendChild(flexSquare.cloneNode(true));
-    skincontentselector.appendChild(flexSquare.cloneNode(true));
-    skincontentselector.appendChild(flexSquare.cloneNode(true));
-    skincontentselector.appendChild(flexSquare.cloneNode(true));
-    skincontentselector.appendChild(flexSquare.cloneNode(true));
-    skincontentselector.appendChild(flexSquare.cloneNode(true));
-    skincontentselector.appendChild(flexSquare.cloneNode(true));
-    skincontentselector.appendChild(flexSquare.cloneNode(true));
-    skincontentselector.appendChild(flexSquare.cloneNode(true));*/
+    // draggable window | make all of this easier with modules -> https://stackoverflow.com/questions/950087/how-do-i-include-a-javascript-file-in-another-javascript-file
 
     // wrapper
     const skinWrapper = document.createElement('div');
     skinWrapper.className = 'skinwrapper';
     skinWrapper.id = "skinWrapper";
-    skinWrapper.style = "::-webkit-scrollbar{border:1px solid #d5d5d5}";
+    skinWrapper.style = "::-webkit-scrollbar{border:1px solid #d5d5d5};";
     document.body.appendChild(skinWrapper);
-
-    // close button
-    const skinCloseButton = document.createElement('button');
-    skinCloseButton.className = 'skinclose';
-    skinCloseButton.innerText = '_';
-    skinCloseButton.addEventListener('click', close);
-    document.getElementById('skinWrapper').appendChild(skinCloseButton);
 
     // title
     const skinHeader = document.createElement('header');
     skinHeader.id = 'skinheader';
     skinHeader.innerText = 'Main Menu';
+    skinHeader.style.background = menuHeaderColor;
     document.getElementById('skinWrapper').appendChild(skinHeader);
 
     // background & container
     const mainDiv = document.createElement('div');
-    mainDiv.style.backgroundColor = '#2a394f';
+    mainDiv.style.backgroundColor = behindOptionsColor; // that thing behid the options '#2a394f'
     mainDiv.id = "mainDiv";
     document.getElementById('skinWrapper').appendChild(mainDiv);
 
@@ -235,8 +51,23 @@ document.addEventListener("DOMContentLoaded", function() {
     leftDiv.style.overflow = 'scroll';
     leftDiv.style.overflowX = 'hidden';
     leftDiv.style.overflowY = 'auto';
+    leftDiv.style.borderBottomLeftRadius = '10px';
     leftDiv.id = "leftDiv";
     document.getElementById('mainDiv').appendChild(leftDiv);
+
+    // close button
+    const skinCloseButton = document.createElement('button');
+    skinCloseButton.className = 'skinclose';
+    skinCloseButton.innerText = '_';
+    skinCloseButton.id = 'skinclose';
+    //skinCloseButton.addEventListener('click', closefunction());
+    document.getElementById('skinWrapper').appendChild(skinCloseButton);
+
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.innerHTML = "const skinwrapper1=document.querySelector('.skinwrapper'),skinheader1=document.getElementById('skinheader');function onDrag({movementX:e,movementY:n}){let s=window.getComputedStyle(skinwrapper1),t=parseInt(s.left),r=parseInt(s.top);skinwrapper1.style.left=`${t+e}px`,skinwrapper1.style.top=`${r+n}px`}skinheader1.addEventListener('mousedown',()=>{skinheader1.classList.add('skinactive'),skinheader1.addEventListener('mousemove',onDrag)}),document.addEventListener('mouseup',()=>{skinheader1.classList.remove('skinactive'),skinheader1.removeEventListener('mousemove',onDrag)});document.getElementById('skinclose').addEventListener('click',function(){document.getElementById('skinWrapper').style.display='none'});";
+    document.getElementsByTagName('head')[0].appendChild(script);
+
 
     // the buttons (using for loop for demo purposes)
     //for (let i = 0; i < 7; i++) {
@@ -271,6 +102,12 @@ document.addEventListener("DOMContentLoaded", function() {
         optionButton123.id = "aimbot";
         document.getElementById('leftDiv').appendChild(optionButton123);
 
+        const optionButton34 = document.createElement('button');
+        optionButton34.className = 'skinbutton';
+        optionButton34.innerText = 'Color Settings';
+        optionButton34.id = "colorsettings";
+        document.getElementById('leftDiv').appendChild(optionButton34);
+
         const optionButton3 = document.createElement('button');
         optionButton3.className = 'skinbutton';
         optionButton3.innerText = 'Default Settings';
@@ -286,6 +123,7 @@ document.addEventListener("DOMContentLoaded", function() {
     rightDiv.style.overflow = 'scroll';
     rightDiv.style.overflowX = 'hidden';
     rightDiv.style.overflowY = 'auto';
+    rightDiv.style.borderBottomRightRadius = '10px';
     rightDiv.id = "rightDiv";
     document.getElementById('mainDiv').appendChild(rightDiv);
 
@@ -491,6 +329,111 @@ document.addEventListener("DOMContentLoaded", function() {
     skincontentselector.appendChild(flexSquare.cloneNode(true));
     skincontentselector.appendChild(flexSquare.cloneNode(true));*/
 
+    // COLOR-DISPLAY Settings
+
+    // menuHeaderColor
+
+    // holds the sub-options
+    const menuHeaderColorOptionHolder = document.createElement('div');
+    menuHeaderColorOptionHolder.className = 'optionholder';
+    menuHeaderColorOptionHolder.id = "menuHeaderColorOptionHolder";
+    document.getElementById('rightDiv').appendChild(menuHeaderColorOptionHolder);
+
+    // sub-option title
+    const menuHeaderColorOptionDescr = document.createElement('p');
+    menuHeaderColorOptionDescr.className = 'optiondescr';
+    menuHeaderColorOptionDescr.innerText = 'Header Color';
+    document.getElementById('menuHeaderColorOptionHolder').appendChild(menuHeaderColorOptionDescr);
+
+    // input
+    const menuHeaderColorOptionInput = document.createElement('input');
+    menuHeaderColorOptionInput.type = 'text';
+    menuHeaderColorOptionInput.id = "menuHeaderColorOptionInput";
+    menuHeaderColorOptionInput.style.width = "100px";
+    menuHeaderColorOptionInput.placeholder = "e.g. #2a394f";
+    document.getElementById('menuHeaderColorOptionHolder').appendChild(menuHeaderColorOptionInput);
+
+    document.getElementById('menuHeaderColorOptionHolder').appendChild(optionSpaceThing);
+    document.getElementById('menuHeaderColorOptionHolder').appendChild(optionHr);
+
+
+    menuHeaderColorOptionInput.addEventListener('change', function() {
+        menuHeaderColor = menuHeaderColorOptionInput.value;
+        console.log(menuHeaderColor);
+        skinHeader.style.background = menuHeaderColor;
+    });
+
+    // behindOptionsColor
+
+    // holds the sub-options
+    const behindOptionsColorOptionHolder = document.createElement('div');
+    behindOptionsColorOptionHolder.className = 'optionholder';
+    behindOptionsColorOptionHolder.id = "behindOptionsColorOptionHolder";
+    document.getElementById('rightDiv').appendChild(behindOptionsColorOptionHolder);
+
+    // sub-option title
+    const behindOptionsColorOptionDescr = document.createElement('p');
+    behindOptionsColorOptionDescr.className = 'optiondescr';
+    behindOptionsColorOptionDescr.innerText = 'Behind-Options Color';
+    document.getElementById('behindOptionsColorOptionHolder').appendChild(behindOptionsColorOptionDescr);
+
+    // input
+    const behindOptionsColorOptionInput = document.createElement('input');
+    behindOptionsColorOptionInput.type = 'text';
+    behindOptionsColorOptionInput.id = "menuHeaderColorOptionInput";
+    behindOptionsColorOptionInput.style.width = "100px";
+    behindOptionsColorOptionInput.placeholder = "e.g. #2a394f";
+    document.getElementById('behindOptionsColorOptionHolder').appendChild(behindOptionsColorOptionInput);
+
+    document.getElementById('behindOptionsColorOptionHolder').appendChild(optionSpaceThing);
+    document.getElementById('behindOptionsColorOptionHolder').appendChild(optionHr);
+
+
+    behindOptionsColorOptionInput.addEventListener('change', function() {
+        behindOptionsColor = behindOptionsColorOptionInput.value;
+        console.log(behindOptionsColor);
+        mainDiv.style.background = behindOptionsColor;
+    });
+
+    // skinButtonColor
+
+    // holds the sub-options
+    const skinButtonColorOptionHolder = document.createElement('div');
+    skinButtonColorOptionHolder.className = 'optionholder';
+    skinButtonColorOptionHolder.id = "skinButtonColorOptionHolder";
+    document.getElementById('rightDiv').appendChild(skinButtonColorOptionHolder);
+
+    // sub-option title
+    const skinButtonColorOptionDescr = document.createElement('p');
+    skinButtonColorOptionDescr.className = 'optiondescr';
+    skinButtonColorOptionDescr.innerText = 'Behind-Options Color';
+    document.getElementById('skinButtonColorOptionHolder').appendChild(skinButtonColorOptionDescr);
+
+    // input
+    const skinButtonColorOptionInput = document.createElement('input');
+    skinButtonColorOptionInput.type = 'text';
+    skinButtonColorOptionInput.id = "menuHeaderColorOptionInput";
+    skinButtonColorOptionInput.style.width = "100px";
+    skinButtonColorOptionInput.placeholder = "e.g. #2a394f";
+    document.getElementById('skinButtonColorOptionHolder').appendChild(skinButtonColorOptionInput);
+
+    document.getElementById('skinButtonColorOptionHolder').appendChild(optionSpaceThing);
+    document.getElementById('skinButtonColorOptionHolder').appendChild(optionHr);
+
+
+    skinButtonColorOptionInput.addEventListener('change', function() {
+        skinButtonColor = skinButtonColorOptionInput.value;
+        console.log(skinButtonColor);
+        //skinbutton.style.background = skinButtonColor; - its a class, won't work
+
+        var skinbuttons = document.getElementsByClassName("skinbutton");
+
+        for (var i = 0; i < skinbuttons.length; i++) {
+            skinbuttons[i].style.backgroundColor = skinButtonColor; // kind of breaks hover effect
+            //skinbuttons[i].style = "button:hover {background-color: #ff0000;}"; // nope
+        }
+    });
+
     // show all options as default
 
     // menu title
@@ -583,94 +526,24 @@ document.addEventListener("DOMContentLoaded", function() {
         alert("you have to create them first lol");
     });
 
-    // css and js
+    document.getElementById("colorsettings").addEventListener("click", function() {
 
-    let skincss = document.createElement('style');
-    skincss.innerText = "@import 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap';*{z-index:1000;margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}.skinwrapper{position:absolute;top:50%;left:50%;max-width:750px;width:100%;background:#2a394f;transform:translate(-50%,-50%);border:solid 1px #000;color:#fff;height:335px;}.skinwrapper header{font-size:23px;font-weight:500;padding:17px 30px;border-bottom:1px solid #000;background:#2a394f;text-align:center}.skinwrapper header.skinactive{cursor:move;user-select:none}.skinwrapper .skincontent{display:flex;flex-direction:wrap;flex-wrap:wrap;justify-content:center;background:#2a394f}.skincontent .title{margin:15px 0;font-size:29px;font-weight:500}.skincontent p{font-size:16px;text-align:center;display:flex}.skinbutton{width:100%;height:50px;background-color:#364760;border:none;color:#fff;font-size:20px}.skinbutton:hover{background-color:#0798fc}.skinclose{color:grey;position:absolute;top:0;right:0;margin-right:15px;margin-top:-6px;background-color:#ffffff00;border:none;font-size:35px}.skinclose:hover{color:#fff}p{font-size:20px}input[type=text]{float:right;margin:14px 25px 10px 0;width:35px;font-weight:700;color:grey}input[type=range]{float:right;margin:16px 20px 10px 0}input[type=checkbox]{float:right;transform:scale(2);margin:14px 25px 5px 0;width:35px;font-weight:700;color:grey;}.optiondescr{float:left;margin:10px 0 10px 20px}.optionholder{background-color:#364760}hr{width:100%;border:.1px solid #000}";
-    document.head.appendChild(skincss);
+        // menu title
+        h2.innerHTML = "Color Settings";
 
-    var script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.innerHTML = "const skinwrapper1=document.querySelector('.skinwrapper'),skinheader1=document.getElementById('skinheader');function onDrag({movementX:e,movementY:n}){let s=window.getComputedStyle(skinwrapper1),t=parseInt(s.left),r=parseInt(s.top);skinwrapper1.style.left=`${t+e}px`,skinwrapper1.style.top=`${r+n}px`}function close(){document.getElementById('skinwrapper').style.display='none'}skinheader1.addEventListener('mousedown',()=>{skinheader1.classList.add('skinactive'),skinheader1.addEventListener('mousemove',onDrag)}),document.addEventListener('mouseup',()=>{skinheader1.classList.remove('skinactive'),skinheader1.removeEventListener('mousemove',onDrag)});";
-    document.getElementsByTagName('head')[0].appendChild(script);
-
-    // hide
-    //document.getElementById("skinwrapper").style.display = "none";
-
-    // fixes wrong area glitch
-    /*const canvas = document.querySelector('body > canvas:last-of-type');
-    canvas.style.zoom = 0.5;*/
-
-    //window.scrollTo(window.innerWidth * 0.01, window.innerHeight * 0.01);
-
-
-    //const body = document.querySelector('body');
-    //body.style.zoom = 0.65;
-
-    /*let clientsettingscanvas = document.createElement("canvas");
-    clientsettingscanvas.id = "canvas";
-    clientsettingscanvas.classList.add('clientsettingscanvas');
-    document.body.appendChild(clientsettingscanvas);
-
-    let menu1 = document.createElement("div");
-    menu1.id = "menu1";
-    menu1.classList.add('menu1');
-    menu1.innerHTML = "This should be working";
-    document.body.appendChild(menu1);
-
-
-    let css = document.createElement('style');
-    css.innerText = "div {z-index: 1000; position: absolute;top: 0;height: 60px;width: 100px;background: #15a5ed;text-align: center;line-height: 60px;border-radius: 15px 15px 15px 15px;}";
-    document.head.appendChild(css);
-
-    var script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.innerHTML = "for(div of divs=document.getElementsByTagName('div'))div.onmousedown=onMouseDown;document.onmousemove=onMouseMove,document.onmouseup=onMouseUp,canvas.width=window.innerWidth-20,canvas.height=window.innerHeight-20;var the_moving_div='',the_last_mouse_position={x:0,y:0};function onMouseDown(e){e.preventDefault(),the_moving_div=e.target.id,the_last_mouse_position.x=e.clientX,the_last_mouse_position.y=e.clientY;var t=document.getElementsByTagName('div');e.target.style.zIndex=t.length;var o=1;for(div of t)div.id!=the_moving_div&&(div.style.zIndex=o++)}function onMouseMove(e){if(e.preventDefault(),''!=the_moving_div){var t=document.getElementById(the_moving_div);t.style.left=t.offsetLeft+e.clientX-the_last_mouse_position.x+'px',t.style.top=t.offsetTop+e.clientY-the_last_mouse_position.y+'px',the_last_mouse_position.x=e.clientX,the_last_mouse_position.y=e.clientY}}function onMouseUp(e){e.preventDefault(),''!=the_moving_div&&(the_moving_div='')}drawConnectors();";
-    document.getElementsByTagName('head')[0].appendChild(script);*/
-
-
-    // background change | doesn't really work
+        // hide all options
+        fpsDisplayOptionHolder.style.display = "none";
+        onlineDisplayOptionHolder.style.display = "none";
+        shortcutDisplayOptionHolder.style.display = "none";
+        skincontent.style.display = "none";
+    
+    });
 
     // css
-    /*let el = document.createElement('style');
-    el.type = 'text/css';
-    el.innerText = "html, body {background: url(https://upload.wikimedia.org/wikipedia/commons/f/f1/2ChocolateChipCookies.jpg);";
-    document.head.appendChild(el);
+    let skincss = document.createElement('style');
+    skincss.innerText = "@import 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap';*{z-index:1000;margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}.skinwrapper{position:absolute;top:50%;left:50%;max-width:750px;width:100%;background:#2a394f;/*has to stay like that, else the menu is see trough under header*/transform:translate(-50%,-50%);border:solid 1px #000;color:#fff;height:335px;border-radius:10px;}.skinwrapper header{font-size:23px;font-weight:500;padding:17px 30px;border-bottom:1px solid #000;text-align:center;border-top-left-radius: 10px;border-top-right-radius: 10px;}.skinwrapper header.skinactive{cursor:move;user-select:none;}.skinwrapper .skincontent{display:flex;flex-direction:wrap;flex-wrap:wrap;justify-content:center;background:#2a394f}.skincontent .title{margin:15px 0;font-size:29px;font-weight:500}.skincontent p{font-size:16px;text-align:center;display:flex}.skinbutton{width:100%;height:50px;background-color:" + skinButtonColor + ";border:none;color:#fff;font-size:20px}.skinbutton:hover{background-color:" + skinButtonHoverColor + "}.skinclose{color:grey;position:absolute;top:0;right:0;margin-right:15px;margin-top:-6px;background-color:" + skinCloseColor + ";border:none;font-size:35px}.skinclose:hover{color:#fff}p{font-size:20px}input[type=text]{float:right;margin:14px 25px 10px 0;width:35px;font-weight:700;color:grey}input[type=range]{float:right;margin:16px 20px 10px 0}input[type=checkbox]{float:right;transform:scale(2);margin:14px 25px 5px 0;width:35px;font-weight:700;color:grey;}.optiondescr{float:left;margin:10px 0 10px 20px}.optionholder{background-color:" + optionColor + "}hr{width:100%;border:.1px solid #000}";
+    document.head.appendChild(skincss);
 
-    const canvas = document.querySelector('body > canvas:last-of-type');
-    canvas.style.display = "none";
-    console.log("should have worked");
-    //canvas.style.display = "block" // undo*/
-
-    // replace "wallpaper" (camera) | completely destroys page -> find a way to still reload size (grab the values from there!)
-    /*const canvas = document.querySelector('body > canvas:last-of-type');
-
-    // style="display: block; opacity: 0.5; width: 283px; height: 423px;"
-    const canvasstyle = canvas.style;
-
-    const src = 'https://upload.wikimedia.org/wikipedia/commons/f/f1/2ChocolateChipCookies.jpg';
-
-    canvas.insertAdjacentHTML("beforebegin", '<img height="' + canvas.height + '" width="' + canvas.width + '" id="bgimage" src="'+ src + '" style="display: block; opacity:' + canvasstyle.opacity + '; width:' + canvasstyle.width + '; height:' + canvasstyle.width + ';">');
-    //canvas.insertAdjacentHTML("beforebegin", img);
-
-    const observer = new MutationObserver(function(mutations) {
-        mutations.forEach(function(mutation) {
-            if (mutation.type === "attributes" && mutation.attributeName === "style") {
-                console.log("canvas size changed");
-
-                // change image size
-                const bgimage = document.getElementById("bgimage");
-                bgimage.style.width = canvasstyle.width;
-                bgimage.style.height = canvasstyle.height;
-
-                // also need these
-                bgimage.width = canvas.width;
-                bgimage.height = canvas.height;
-            }
-        });
-    });
-      
-    observer.observe(canvas, { attributes: true });*/
 
     // shortcuts
 
@@ -742,29 +615,66 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // ping | doesn't work | jquery is the problem
 
-    /*var script = document.createElement('script');
+    /*const pingfunction = "function ping() {var start = new Date().getTime();$('junkOne').attr('src', 'http://deadshot.io/').error(function () {var end = new Date().getTime();$('timer').html('' + (end-start) + 'ms');});}ping();"
+
+    var script = document.createElement('script');
     script.src = 'https://code.jquery.com/jquery-3.4.1.min.js';
     script.type = 'text/javascript';
-    document.getElementsByTagName('head')[0].appendChild(script);
+    script.innerHTML = pingfunction;
+    document.getElementsByTagName('head')[0].appendChild(script); // just put the code inside it you fucking idiot
 
-    let pingimg = document.createElement("img");
+    const pingimg = document.createElement("img");
     pingimg.id = "junkOne";
     document.body.appendChild(pingimg);
 
-    let faFEA = document.createElement("p");
+    const faFEA = document.createElement("p");
+    faFEA.innerHTML = "ping here";
+    faFEA.id = "timer";
+    faFEA.style = "position: absolute; width: 100%; text-align: center; z-index: 1000; color: red";
+    document.body.appendChild(faFEA);*/
+
+    // First, load jQuery by adding it to the page as a script element
+    /*var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.innerHTML = "window.$ = window.jQuery = require('./path/to/jquery');";
+    //document.getElementsByTagName('head')[0].appendChild(script);
+    document.body.appendChild(script);*/
+
+    //<script>window.$ = window.jQuery = require('./path/to/jquery');</script>
+
+    // Next, define the ping function using jQuery
+    /*function ping() {
+    var start = new Date().getTime();
+    $('#junkOne').attr('src', 'http://deadshot.io/').error(function () {
+        var end = new Date().getTime();
+        $('#timer').html('' + (end-start) + 'ms');
+    });
+    }
+
+    // Create the junkOne and timer elements and append them to the page
+    const pingimg = document.createElement("img");
+    pingimg.id = "junkOne";
+    pingimg.src = "http://deadshot.io/"; // set the src attribute to avoid an error
+    document.body.appendChild(pingimg);
+
+    const faFEA = document.createElement("p");
     faFEA.innerHTML = "ping here";
     faFEA.id = "timer";
     faFEA.style = "position: absolute; width: 100%; text-align: center; z-index: 1000; color: red";
     document.body.appendChild(faFEA);
 
-    function ping() {
+    // Finally, call the ping function
+    ping();*/
+
+    
+    /*function ping() {
         var start = new Date().getTime();
         $('#junkOne').attr('src', 'http://deadshot.io/').error(function () {
             var end = new Date().getTime();
             $('#timer').html("" + (end-start) + "ms");
         });
     }
-    
+
     ping();*/
 
     /*function ping() {
