@@ -62,55 +62,39 @@ document.addEventListener("DOMContentLoaded", function() {
     skinCloseButton.id = 'skinclose';
     document.getElementById('skinWrapper').appendChild(skinCloseButton);
 
+    // some juicy js and css
     var script = document.createElement('script');
     script.type = 'text/javascript';
     script.innerHTML = "const skinwrapper1=document.querySelector('.skinwrapper'),skinheader1=document.getElementById('skinheader');function onDrag({movementX:e,movementY:n}){let s=window.getComputedStyle(skinwrapper1),t=parseInt(s.left),r=parseInt(s.top);skinwrapper1.style.left=`${t+e}px`,skinwrapper1.style.top=`${r+n}px`}skinheader1.addEventListener('mousedown',()=>{skinheader1.classList.add('skinactive'),skinheader1.addEventListener('mousemove',onDrag)}),document.addEventListener('mouseup',()=>{skinheader1.classList.remove('skinactive'),skinheader1.removeEventListener('mousemove',onDrag)});document.getElementById('skinclose').addEventListener('click',function(){document.getElementById('skinWrapper').style.display='none'});";
     document.getElementsByTagName('head')[0].appendChild(script);
 
+    // css
+    let skincss = document.createElement('style');
+    skincss.innerText = "@import 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap';*{z-index:1000;margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}.skinwrapper{position:absolute;top:50%;left:50%;max-width:750px;width:100%;background:#2a394f;/*has to stay like that, else the menu is see trough under header*/transform:translate(-50%,-50%);border:solid 1px #000;color:#fff;height:335px;border-radius:10px;}.skinwrapper header{font-size:23px;font-weight:500;padding:17px 30px;border-bottom:1px solid #000;text-align:center;border-top-left-radius: 10px;border-top-right-radius: 10px;}.skinwrapper header.skinactive{cursor:move;user-select:none;}.skinwrapper .skincontent{display:flex;flex-direction:wrap;flex-wrap:wrap;justify-content:center;background:#2a394f}.skincontent .title{margin:15px 0;font-size:29px;font-weight:500}.skincontent p{font-size:16px;text-align:center;display:flex}.skinbutton{width:100%;height:50px;background-color:" + skinButtonColor + ";border:none;color:#fff;font-size:20px}.skinbutton:hover{background-color:" + skinButtonHoverColor + "}.skinclose{color:grey;position:absolute;top:0;right:0;margin-right:15px;margin-top:-6px;background-color:" + skinCloseColor + ";border:none;font-size:35px}.skinclose:hover{color:#fff}p{font-size:20px}input[type=text]{float:right;margin:14px 25px 10px 0;width:35px;font-weight:700;color:grey}input[type=range]{float:right;margin:16px 20px 10px 0}input[type=checkbox]{float:right;transform:scale(2);margin:14px 25px 5px 0;width:35px;font-weight:700;color:grey;}.optiondescr{float:left;margin:10px 0 10px 20px}.optionholder{background-color:" + optionColor + "}hr{width:100%;border:.1px solid #000}";
+    document.head.appendChild(skincss);
+
 
     // menu buttons
 
-    const allOptions = document.createElement('button');
-    allOptions.className = 'skinbutton';
-    allOptions.innerText = 'All Options';
-    allOptions.id = "allOptions";
-    document.getElementById('leftDiv').appendChild(allOptions);
-
-    const optionButton1 = document.createElement('button');
-    optionButton1.className = 'skinbutton';
-    optionButton1.innerText = 'General';
-    optionButton1.id = "general";
-    document.getElementById('leftDiv').appendChild(optionButton1);
-
-    const optionButton2 = document.createElement('button');
-    optionButton2.className = 'skinbutton';
-    optionButton2.innerText = 'Shortcuts';
-    optionButton2.id = "shortcuts";
-    document.getElementById('leftDiv').appendChild(optionButton2);
-
-    const optionButton12 = document.createElement('button');
-    optionButton12.className = 'skinbutton';
-    optionButton12.innerText = 'Skins';
-    optionButton12.id = "skinmenu";
-    document.getElementById('leftDiv').appendChild(optionButton12);
-
-    const optionButton123 = document.createElement('button');
-    optionButton123.className = 'skinbutton';
-    optionButton123.innerText = 'Aimbot';
-    optionButton123.id = "aimbot";
-    document.getElementById('leftDiv').appendChild(optionButton123);
-
-    const optionButton34 = document.createElement('button');
-    optionButton34.className = 'skinbutton';
-    optionButton34.innerText = 'Color Settings';
-    optionButton34.id = "colorsettings";
-    document.getElementById('leftDiv').appendChild(optionButton34);
-
-    const optionButton3 = document.createElement('button');
-    optionButton3.className = 'skinbutton';
-    optionButton3.innerText = 'Default Settings';
-    optionButton3.id = "defaultsettings";
-    document.getElementById('leftDiv').appendChild(optionButton3);
+    const buttonData = [
+        { text: 'All Options', id: 'allOptions' },
+        { text: 'General', id: 'general' },
+        { text: 'Shortcuts', id: 'shortcuts' },
+        { text: 'Skins', id: 'skinmenu' },
+        { text: 'Aimbot', id: 'aimbot' },
+        { text: 'Color Settings', id: 'colorsettings' },
+        { text: 'Default Settings', id: 'defaultsettings' }
+    ];
+    
+    const leftDivReference = document.getElementById('leftDiv');
+    
+    buttonData.forEach(button => {
+        const optionButton = document.createElement('button');
+        optionButton.className = 'skinbutton';
+        optionButton.innerText = button.text;
+        optionButton.id = button.id;
+        leftDivReference.appendChild(optionButton);
+    });
 
     // menu construction
     // right part of the menu (sub-options)
@@ -134,44 +118,79 @@ document.addEventListener("DOMContentLoaded", function() {
 
     document.body.append(skinWrapper);
 
-    // one time define
+    // Display options
 
-    const optionSpaceThing = document.createElement('div');
-    optionSpaceThing.style.height = '50px';
-
+    const optionList = [
+    {
+        holderId: "fpsDisplayOptionHolder",
+        descrText: "FPS-Counter",
+        checkId: "fpsDisplayCheck",
+        /*onChange: e => {
+        if (e.target.checked) {
+            fpscounter.hidden = false;
+        } else {
+            fpscounter.hidden = true;
+        }
+        }*/
+    },
+    {
+        holderId: "onlineDisplayOptionHolder",
+        descrText: "Network Status",
+        checkId: "onlineDisplayCheck",
+        /*onChange: e => {
+        if (e.target.checked) {
+            status.hidden = false;
+        } else {
+            status.hidden = true;
+        }
+        }*/
+    },
+    {
+        holderId: "shortcutDisplayOptionHolder",
+        descrText: "Show Shortcuts",
+        checkId: "shortcutDisplayCheck",
+        /*onChange: e => {
+        if (e.target.checked) {
+            shortcuts.hidden = false;
+        } else {
+            shortcuts.hidden = true;
+        }
+        }*/
+    },
+    // add more options here
+    ];
+      
+    
+    const rightDivReference2 = document.getElementById('rightDiv');
     const optionHr = document.createElement('hr');
+    const optionSpaceThing = document.createTextNode(' ');
+    
+    for (const option of optionList) {
+        // holds the sub-options
+        const optionHolder = document.createElement('div');
+        optionHolder.className = 'optionholder';
+        optionHolder.id = option.holderId;
+        
+        // sub-option title
+        const optionDescr = document.createElement('p');
+        optionDescr.className = 'optiondescr';
+        optionDescr.innerText = option.descrText;
+        
+        // checkbox
+        const optionCheck = document.createElement('input');
+        optionCheck.type = 'checkbox';
+        optionCheck.id = option.checkId;
+        //optionCheck.addEventListener('change', option.onChange);
+        
+        optionHolder.innerHTML = `
+            ${optionDescr.outerHTML}
+            ${optionCheck.outerHTML}
+        `;
+        
+        rightDivReference2.appendChild(optionHolder);
+    }
 
-    // FPS-DISPLAY
-
-    // holds the sub-options
-    const fpsDisplayOptionHolder = document.createElement('div');
-    fpsDisplayOptionHolder.className = 'optionholder';
-    fpsDisplayOptionHolder.id = "fpsDisplayOptionHolder";
-    document.getElementById('rightDiv').appendChild(fpsDisplayOptionHolder);
-
-    // sub-option title
-    const fpsDisplayoptionDescr = document.createElement('p');
-    fpsDisplayoptionDescr.className = 'optiondescr';
-    fpsDisplayoptionDescr.innerText = 'FPS-Counter';
-    document.getElementById('fpsDisplayOptionHolder').appendChild(fpsDisplayoptionDescr);
-
-    // checkbox
-    const fpsDisplayCheck = document.createElement('input');
-    fpsDisplayCheck.type = 'checkbox';
-    fpsDisplayCheck.id = "fpsDisplayCheck";
-    document.getElementById('fpsDisplayOptionHolder').appendChild(fpsDisplayCheck);
-
-    document.getElementById('fpsDisplayOptionHolder').appendChild(optionSpaceThing);
-    document.getElementById('fpsDisplayOptionHolder').appendChild(optionHr);
-
-    fpsDisplayOptionHolder.style.display = "none";
-
-    // nice way | not so nice as I thought but gonna leave it in as proof that I tried lol
-
-    //document.write("<div class='optionholder' id='fpsDisplayOptionHolder'></div>");
-    // or
-    //document.getElementById('rightDiv').appendChild("<div class='optionholder' id='fpsDisplayOptionHolder'></div>"); // doesn't work like that lol
-
+    // only including this bc the others don't work lol
     fpsDisplayCheck.addEventListener('change', e => {
         if(e.target.checked){
             fpscounter.style.display = "initial"; // initial works better for skill, use that in the future instead of ""
@@ -179,29 +198,6 @@ document.addEventListener("DOMContentLoaded", function() {
             fpscounter.style.display = "none";
         }
     });
-
-    // ONLINE-DISPLAY
-
-    // holds the sub-options
-    const onlineDisplayOptionHolder = document.createElement('div');
-    onlineDisplayOptionHolder.className = 'optionholder';
-    onlineDisplayOptionHolder.id = "onlineDisplayOptionHolder";
-    document.getElementById('rightDiv').appendChild(onlineDisplayOptionHolder);
-
-    // sub-option title
-    const onlineDisplayoptionDescr = document.createElement('p');
-    onlineDisplayoptionDescr.className = 'optiondescr';
-    onlineDisplayoptionDescr.innerText = 'Network Status';
-    document.getElementById('onlineDisplayOptionHolder').appendChild(onlineDisplayoptionDescr);
-
-    // checkbox
-    const onlineDisplayCheck = document.createElement('input');
-    onlineDisplayCheck.type = 'checkbox';
-    onlineDisplayCheck.id = "onlineDisplayCheck";
-    document.getElementById('onlineDisplayOptionHolder').appendChild(onlineDisplayCheck);
-
-    document.getElementById('onlineDisplayOptionHolder').appendChild(optionSpaceThing);
-    document.getElementById('onlineDisplayOptionHolder').appendChild(optionHr);
 
     onlineDisplayCheck.addEventListener('change', e => {
         if(e.target.checked){
@@ -211,30 +207,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // SHORTCUT-DISPLAY
-
-    // holds the sub-options
-    const shortcutDisplayOptionHolder = document.createElement('div');
-    shortcutDisplayOptionHolder.className = 'optionholder';
-    shortcutDisplayOptionHolder.id = "shortcutDisplayOptionHolder";
-    document.getElementById('rightDiv').appendChild(shortcutDisplayOptionHolder);
-
-    // sub-option title
-    const shortcutDisplayoptionDescr = document.createElement('p');
-    shortcutDisplayoptionDescr.className = 'optiondescr';
-    shortcutDisplayoptionDescr.innerText = 'Show Shortcuts';
-    document.getElementById('shortcutDisplayOptionHolder').appendChild(shortcutDisplayoptionDescr);
-
-    // checkbox
-    const shortcutDisplayCheck = document.createElement('input');
-    shortcutDisplayCheck.type = 'checkbox';
-    shortcutDisplayCheck.id = "shortcutDisplayCheck";
-    document.getElementById('shortcutDisplayOptionHolder').appendChild(shortcutDisplayCheck);
-
-    document.getElementById('shortcutDisplayOptionHolder').appendChild(optionSpaceThing);
-    document.getElementById('shortcutDisplayOptionHolder').appendChild(optionHr);
-
-
     shortcutDisplayCheck.addEventListener('change', e => {
         if(e.target.checked){
             shortcuts.style.display = "";
@@ -242,6 +214,7 @@ document.addEventListener("DOMContentLoaded", function() {
             shortcuts.style.display = "none";
         }
     });
+
 
     // SKIN-DISPLAY
 
@@ -283,35 +256,74 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////
 
     // COLOR-DISPLAY Settings
 
-    // menuHeaderColor
+    const rightDivReference = document.getElementById('rightDiv');
 
-    // holds the sub-options
-    const menuHeaderColorOptionHolder = document.createElement('div');
-    menuHeaderColorOptionHolder.className = 'optionholder';
-    menuHeaderColorOptionHolder.id = "menuHeaderColorOptionHolder";
-    document.getElementById('rightDiv').appendChild(menuHeaderColorOptionHolder);
+    const optionholders = [];
+    const optiondescrs = [];
+    const optioninputs = [];
 
-    // sub-option title
-    const menuHeaderColorOptionDescr = document.createElement('p');
-    menuHeaderColorOptionDescr.className = 'optiondescr';
-    menuHeaderColorOptionDescr.innerText = 'Header Color';
-    document.getElementById('menuHeaderColorOptionHolder').appendChild(menuHeaderColorOptionDescr);
+    const createElement = (type, className, id, innerText) => {
+    const element = document.createElement(type);
+    element.className = className;
+    element.id = id;
+    element.innerText = innerText;
+    return element;
+    };
 
-    // input
-    const menuHeaderColorOptionInput = document.createElement('input');
-    menuHeaderColorOptionInput.type = 'text';
-    menuHeaderColorOptionInput.id = "menuHeaderColorOptionInput";
-    menuHeaderColorOptionInput.style.width = "100px";
-    menuHeaderColorOptionInput.placeholder = "e.g. #2a394f";
-    document.getElementById('menuHeaderColorOptionHolder').appendChild(menuHeaderColorOptionInput);
+    const createOptionHolder = (id, descrText, inputId) => {
+    const optionHolder = createElement('div', 'optionholder', id, '');
+    const optionDescr = createElement('p', 'optiondescr', '', descrText);
+    const optionInput = createElement('input', '', inputId, '');
+    optionInput.type = 'text';
+    optionInput.style.width = '100px';
+    optionInput.placeholder = 'e.g. #2a394f';
 
-    document.getElementById('menuHeaderColorOptionHolder').appendChild(optionSpaceThing);
-    document.getElementById('menuHeaderColorOptionHolder').appendChild(optionHr);
+    optionholders.push(optionHolder);
+    optiondescrs.push(optionDescr);
+    optioninputs.push(optionInput);
 
+    optionHolder.appendChild(optionDescr);
+    optionHolder.appendChild(optionInput);
+    optionHolder.appendChild(optionSpaceThing);
+    optionHolder.appendChild(optionHr);
+    };
+
+    createOptionHolder('menuHeaderColorOptionHolder', 'Header Color', 'menuHeaderColorOptionInput');
+    createOptionHolder('behindOptionsColorOptionHolder', 'Behind-Options Color', 'behindOptionsColorOptionInput');
+    createOptionHolder('skinButtonColorOptionHolder', 'Skin Button Color', 'skinButtonColorOptionInput');
+
+    optionholders.forEach(holder => rightDivReference.appendChild(holder));
+
+    /*document.addEventListener('change', event => {
+    const target = event.target;
+    if (target.className === 'optioninput') {
+        switch (target.id) {
+        case 'menuHeaderColorOptionInput':
+            menuHeaderColor = target.value;
+            skinHeader.style.background = menuHeaderColor;
+            break;
+        case 'behindOptionsColorOptionInput':
+            behindOptionsColor = target.value;
+            mainDiv.style.background = behindOptionsColor;
+            break;
+        case 'skinButtonColorOptionInput':
+            skinButtonColor = target.value;
+    
+            var skinbuttons = document.getElementsByClassName("skinbutton");
+    
+            for (var i = 0; i < skinbuttons.length; i++) {
+                skinbuttons[i].style.backgroundColor = skinButtonColor;
+            }
+            break;
+            default:
+                break;
+            }
+        }
+    });*/
 
     menuHeaderColorOptionInput.addEventListener('change', function() {
         menuHeaderColor = menuHeaderColorOptionInput.value;
@@ -319,63 +331,11 @@ document.addEventListener("DOMContentLoaded", function() {
         skinHeader.style.background = menuHeaderColor;
     });
 
-    // behindOptionsColor
-
-    // holds the sub-options
-    const behindOptionsColorOptionHolder = document.createElement('div');
-    behindOptionsColorOptionHolder.className = 'optionholder';
-    behindOptionsColorOptionHolder.id = "behindOptionsColorOptionHolder";
-    document.getElementById('rightDiv').appendChild(behindOptionsColorOptionHolder);
-
-    // sub-option title
-    const behindOptionsColorOptionDescr = document.createElement('p');
-    behindOptionsColorOptionDescr.className = 'optiondescr';
-    behindOptionsColorOptionDescr.innerText = 'Behind-Options Color';
-    document.getElementById('behindOptionsColorOptionHolder').appendChild(behindOptionsColorOptionDescr);
-
-    // input
-    const behindOptionsColorOptionInput = document.createElement('input');
-    behindOptionsColorOptionInput.type = 'text';
-    behindOptionsColorOptionInput.id = "menuHeaderColorOptionInput";
-    behindOptionsColorOptionInput.style.width = "100px";
-    behindOptionsColorOptionInput.placeholder = "e.g. #2a394f";
-    document.getElementById('behindOptionsColorOptionHolder').appendChild(behindOptionsColorOptionInput);
-
-    document.getElementById('behindOptionsColorOptionHolder').appendChild(optionSpaceThing);
-    document.getElementById('behindOptionsColorOptionHolder').appendChild(optionHr);
-
-
     behindOptionsColorOptionInput.addEventListener('change', function() {
         behindOptionsColor = behindOptionsColorOptionInput.value;
         console.log(behindOptionsColor);
         mainDiv.style.background = behindOptionsColor;
     });
-
-    // skinButtonColor
-
-    // holds the sub-options
-    const skinButtonColorOptionHolder = document.createElement('div');
-    skinButtonColorOptionHolder.className = 'optionholder';
-    skinButtonColorOptionHolder.id = "skinButtonColorOptionHolder";
-    document.getElementById('rightDiv').appendChild(skinButtonColorOptionHolder);
-
-    // sub-option title
-    const skinButtonColorOptionDescr = document.createElement('p');
-    skinButtonColorOptionDescr.className = 'optiondescr';
-    skinButtonColorOptionDescr.innerText = 'Behind-Options Color';
-    document.getElementById('skinButtonColorOptionHolder').appendChild(skinButtonColorOptionDescr);
-
-    // input
-    const skinButtonColorOptionInput = document.createElement('input');
-    skinButtonColorOptionInput.type = 'text';
-    skinButtonColorOptionInput.id = "menuHeaderColorOptionInput";
-    skinButtonColorOptionInput.style.width = "100px";
-    skinButtonColorOptionInput.placeholder = "e.g. #2a394f";
-    document.getElementById('skinButtonColorOptionHolder').appendChild(skinButtonColorOptionInput);
-
-    document.getElementById('skinButtonColorOptionHolder').appendChild(optionSpaceThing);
-    document.getElementById('skinButtonColorOptionHolder').appendChild(optionHr);
-
 
     skinButtonColorOptionInput.addEventListener('change', function() {
         skinButtonColor = skinButtonColorOptionInput.value;
@@ -390,6 +350,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
+
     // menu title
     h2.innerHTML = "All Options";
 
@@ -403,143 +364,87 @@ document.addEventListener("DOMContentLoaded", function() {
     // hide
     skincontent.style.display = "none";
 
+    const options = ["fpsDisplayOptionHolder", "onlineDisplayOptionHolder", "shortcutDisplayOptionHolder", "skincontent", "behindOptionsColorOptionHolder", "menuHeaderColorOptionHolder", "skinButtonColorOptionHolder"];
+
+    
     document.getElementById("allOptions").addEventListener("click", function() {
-
-        // menu title
         h2.innerHTML = "All Options";
-
-        // show all options
-        fpsDisplayOptionHolder.style.display = "";
-        onlineDisplayOptionHolder.style.display = "";
-        shortcutDisplayOptionHolder.style.display = "";
-        skincontent.style.display = "flex";
+        options.forEach(option => {
+            document.getElementById(option).style.display = "";
+        });
     });
 
     document.getElementById("general").addEventListener("click", function() {
-
-        // menu title
         h2.innerHTML = "General";
-
-        // hide all options
-        fpsDisplayOptionHolder.style.display = "none";
-        onlineDisplayOptionHolder.style.display = "none";
-        shortcutDisplayOptionHolder.style.display = "none";
-        skincontent.style.display = "none";
-
-        // reactivate needed options
-        fpsDisplayOptionHolder.style.display = "";
-        onlineDisplayOptionHolder.style.display = "";
-    
+        options.forEach(option => {
+            document.getElementById(option).style.display = "none";
+        });
+        document.getElementById("fpsDisplayOptionHolder").style.display = "";
+        document.getElementById("onlineDisplayOptionHolder").style.display = "";
     });
 
     document.getElementById("shortcuts").addEventListener("click", function() {
-        // menu title
         h2.innerHTML = "Shortcuts";
-
-        // hide all options
-        fpsDisplayOptionHolder.style.display = "none";
-        onlineDisplayOptionHolder.style.display = "none";
-        shortcutDisplayOptionHolder.style.display = "none";
-        skincontent.style.display = "none";
-
-        // reactivate needed options
-        shortcutDisplayOptionHolder.style.display = "";
-
+        options.forEach(option => {
+            document.getElementById(option).style.display = "none";
+        });
+        document.getElementById("shortcutDisplayOptionHolder").style.display = "";
     });
 
     document.getElementById("skinmenu").addEventListener("click", function() {
-
-        // menu title
         h2.innerHTML = "Skins";
-
-        // hide all options
-        fpsDisplayOptionHolder.style.display = "none";
-        onlineDisplayOptionHolder.style.display = "none";
-        shortcutDisplayOptionHolder.style.display = "none";
-        skincontent.style.display = "none";
-
-        // reactivate needed options
-        skincontent.style.display = "flex";
-    
+        options.forEach(option => {
+            document.getElementById(option).style.display = "none";
+        });
+        document.getElementById("skincontent").style.display = "flex";
     });
 
     document.getElementById("aimbot").addEventListener("click", function() {
-
-        // menu title
         h2.innerHTML = "WTF?! <br> Didn't expect that from you tbh.";
+        options.forEach(option => {
+            document.getElementById(option).style.display = "none";
+        });
+    });
 
-        // hide all options
-        fpsDisplayOptionHolder.style.display = "none";
-        onlineDisplayOptionHolder.style.display = "none";
-        shortcutDisplayOptionHolder.style.display = "none";
-        skincontent.style.display = "none";
-    
+    document.getElementById("colorsettings").addEventListener("click", function() {
+        h2.innerHTML = "Color Settings";
+        options.forEach(option => {
+            document.getElementById(option).style.display = "none";
+        });
+        document.getElementById("menuHeaderColorOptionHolder").style.display = "";
+        document.getElementById("behindOptionsColorOptionHolder").style.display = "";
+        document.getElementById("skinButtonColorOptionHolder").style.display = "";
     });
 
     document.getElementById("defaultsettings").addEventListener("click", function() {
         alert("you have to create them first lol");
     });
 
-    document.getElementById("colorsettings").addEventListener("click", function() {
-
-        // menu title
-        h2.innerHTML = "Color Settings";
-
-        // hide all options
-        fpsDisplayOptionHolder.style.display = "none";
-        onlineDisplayOptionHolder.style.display = "none";
-        shortcutDisplayOptionHolder.style.display = "none";
-        skincontent.style.display = "none";
-    
-    });
-
-    // css
-    let skincss = document.createElement('style');
-    skincss.innerText = "@import 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap';*{z-index:1000;margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}.skinwrapper{position:absolute;top:50%;left:50%;max-width:750px;width:100%;background:#2a394f;/*has to stay like that, else the menu is see trough under header*/transform:translate(-50%,-50%);border:solid 1px #000;color:#fff;height:335px;border-radius:10px;}.skinwrapper header{font-size:23px;font-weight:500;padding:17px 30px;border-bottom:1px solid #000;text-align:center;border-top-left-radius: 10px;border-top-right-radius: 10px;}.skinwrapper header.skinactive{cursor:move;user-select:none;}.skinwrapper .skincontent{display:flex;flex-direction:wrap;flex-wrap:wrap;justify-content:center;background:#2a394f}.skincontent .title{margin:15px 0;font-size:29px;font-weight:500}.skincontent p{font-size:16px;text-align:center;display:flex}.skinbutton{width:100%;height:50px;background-color:" + skinButtonColor + ";border:none;color:#fff;font-size:20px}.skinbutton:hover{background-color:" + skinButtonHoverColor + "}.skinclose{color:grey;position:absolute;top:0;right:0;margin-right:15px;margin-top:-6px;background-color:" + skinCloseColor + ";border:none;font-size:35px}.skinclose:hover{color:#fff}p{font-size:20px}input[type=text]{float:right;margin:14px 25px 10px 0;width:35px;font-weight:700;color:grey}input[type=range]{float:right;margin:16px 20px 10px 0}input[type=checkbox]{float:right;transform:scale(2);margin:14px 25px 5px 0;width:35px;font-weight:700;color:grey;}.optiondescr{float:left;margin:10px 0 10px 20px}.optionholder{background-color:" + optionColor + "}hr{width:100%;border:.1px solid #000}";
-    document.head.appendChild(skincss);
-
 
     // shortcuts
 
     document.body.addEventListener('keypress', (e) => {
-        if(e.key == '1') {
-            const input = document.querySelector('input[placeholder="[Enter] to use chat"]');
-            input.value = 'GG';
-
-            const event = new KeyboardEvent('keydown', {
-                keyCode: 13,
-                bubbles: true,
-                cancelable: true
-            });
-    
-            input.dispatchEvent(event);
-            input.dispatchEvent(event);
-        }
-
-        if(e.key == '2') {
-            const input = document.querySelector('input[placeholder="[Enter] to use chat"]');
-            input.value = 'hello guys';
-
-            const event = new KeyboardEvent('keydown', {
-                keyCode: 13,
-                bubbles: true,
-                cancelable: true
-            });
-    
-            input.dispatchEvent(event);
-            input.dispatchEvent(event);
-        }
-
-        if(e.key == '3') {
+        const chatInput = document.querySelector('input[placeholder="[Enter] to use chat"]');
+        const event = new KeyboardEvent('keydown', {
+          keyCode: 13,
+          bubbles: true,
+          cancelable: true
+        });
+      
+        if (e.key == '1') {
+            chatInput.value = 'GG';
+            chatInput.dispatchEvent(event);
+            chatInput.dispatchEvent(event);
+        } else if (e.key == '2') {
+            chatInput.value = 'hello guys';
+            chatInput.dispatchEvent(event);
+            chatInput.dispatchEvent(event);
+        } else if (e.key == '3') {
             const wrapperElement = document.getElementById("skinWrapper");
-
-            if (wrapperElement.style.display == "none") {
-                wrapperElement.style.display = "";
-            } else {
-                wrapperElement.style.display = "none";
-            }
+            wrapperElement.style.display = wrapperElement.style.display === "none" ? "" : "none";
         }
     });
+      
 
     // offline / online status
 
@@ -567,85 +472,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
     updateOnlineStatus()
 
-    // ping | doesn't work | jquery is the problem
-
-    /*const pingfunction = "function ping() {var start = new Date().getTime();$('junkOne').attr('src', 'http://deadshot.io/').error(function () {var end = new Date().getTime();$('timer').html('' + (end-start) + 'ms');});}ping();"
-
-    var script = document.createElement('script');
-    script.src = 'https://code.jquery.com/jquery-3.4.1.min.js';
-    script.type = 'text/javascript';
-    script.innerHTML = pingfunction;
-    document.getElementsByTagName('head')[0].appendChild(script); // just put the code inside it you fucking idiot
-
-    const pingimg = document.createElement("img");
-    pingimg.id = "junkOne";
-    document.body.appendChild(pingimg);
-
-    const faFEA = document.createElement("p");
-    faFEA.innerHTML = "ping here";
-    faFEA.id = "timer";
-    faFEA.style = "position: absolute; width: 100%; text-align: center; z-index: 1000; color: red";
-    document.body.appendChild(faFEA);*/
-
-    // First, load jQuery by adding it to the page as a script element
-    /*var script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.innerHTML = "window.$ = window.jQuery = require('./path/to/jquery');";
-    //document.getElementsByTagName('head')[0].appendChild(script);
-    document.body.appendChild(script);*/
-
-    //<script>window.$ = window.jQuery = require('./path/to/jquery');</script>
-
-    // Next, define the ping function using jQuery
-    /*function ping() {
-    var start = new Date().getTime();
-    $('#junkOne').attr('src', 'http://deadshot.io/').error(function () {
-        var end = new Date().getTime();
-        $('#timer').html('' + (end-start) + 'ms');
-    });
-    }
-
-    // Create the junkOne and timer elements and append them to the page
-    const pingimg = document.createElement("img");
-    pingimg.id = "junkOne";
-    pingimg.src = "http://deadshot.io/"; // set the src attribute to avoid an error
-    document.body.appendChild(pingimg);
-
-    const faFEA = document.createElement("p");
-    faFEA.innerHTML = "ping here";
-    faFEA.id = "timer";
-    faFEA.style = "position: absolute; width: 100%; text-align: center; z-index: 1000; color: red";
-    document.body.appendChild(faFEA);
-
-    // Finally, call the ping function
-    ping();*/
-
-    
-    /*function ping() {
-        var start = new Date().getTime();
-        $('#junkOne').attr('src', 'http://deadshot.io/').error(function () {
-            var end = new Date().getTime();
-            $('#timer').html("" + (end-start) + "ms");
-        });
-    }
-
-    ping();*/
-
-    /*function ping() {
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', '/ping', true);
-        xhr.send();
-        
-        var startTime = performance.now();
-        
-        xhr.onload = function() {
-            var endTime = performance.now();
-            var pingTime = endTime - startTime;
-            console.log('Ping time: ' + pingTime + 'ms');
-        };
-    }
-    
-    ping();*/
+    // ping | doesn't work | jquery is the problem | look at ping.txt in saveforlater
 
     // FPS-Counter
 
