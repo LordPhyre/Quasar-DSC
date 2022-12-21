@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function() {
     var skinCloseColor = "#ffffff00";
     var optionColor = "#364760";
     var opacity = 0.95;
+    var skinWrapperBorderRadius = "10px";
 
     // shortcutdisplay
 
@@ -28,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const skinWrapper = document.createElement('div');
     skinWrapper.className = 'skinwrapper';
     skinWrapper.id = "skinWrapper";
-    skinWrapper.style = "::-webkit-scrollbar{border:1px solid #d5d5d5};opacity:" + opacity + ";";
+    skinWrapper.style = "::-webkit-scrollbar{border:1px solid #d5d5d5};opacity:" + opacity + ";border-radius: " + skinWrapperBorderRadius + "px;";
     document.body.appendChild(skinWrapper);
 
     // title
@@ -52,7 +53,6 @@ document.addEventListener("DOMContentLoaded", function() {
     leftDiv.style.overflow = 'scroll';
     leftDiv.style.overflowX = 'hidden';
     leftDiv.style.overflowY = 'auto';
-    leftDiv.style.borderBottomLeftRadius = '10px';
     leftDiv.id = "leftDiv";
     document.getElementById('mainDiv').appendChild(leftDiv);
 
@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // css
     let skincss = document.createElement('style');
-    skincss.innerText = "@import 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap';*{z-index:1000;margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}.skinwrapper{position:absolute;top:50%;left:50%;max-width:750px;width:100%;background:#2a394f;/*has to stay like that, else the menu is see trough under header*/transform:translate(-50%,-50%);border:solid 1px #000;color:#fff;height:335px;border-radius:10px;}.skinwrapper header{font-size:23px;font-weight:500;padding:17px 30px;border-bottom:1px solid #000;text-align:center;border-top-left-radius: 10px;border-top-right-radius: 10px;}.skinwrapper header.skinactive{cursor:move;user-select:none;}.skinwrapper .skincontent{display:flex;flex-direction:wrap;flex-wrap:wrap;justify-content:center;background:#2a394f}.skincontent .title{margin:15px 0;font-size:29px;font-weight:500}.skincontent p{font-size:16px;text-align:center;display:flex}.skinbutton{width:100%;height:50px;background-color:" + skinButtonColor + ";border:none;color:#fff;font-size:20px}.skinbutton:hover{background-color:" + skinButtonHoverColor + "}.skinclose{color:grey;position:absolute;top:0;right:0;margin-right:15px;margin-top:-6px;background-color:" + skinCloseColor + ";border:none;font-size:35px}.skinclose:hover{color:#fff}p{font-size:20px}input[type=text]{float:right;margin:14px 25px 10px 0;width:35px;font-weight:700;color:grey}input[type=range]{float:right;margin:16px 20px 10px 0}input[type=checkbox]{float:right;transform:scale(2);margin:14px 25px 5px 0;width:35px;font-weight:700;color:grey;}.optiondescr{float:left;margin:10px 0 10px 20px}.optionholder{background-color:" + optionColor + "}hr{width:100%;border:.1px solid #000}";
+    skincss.innerText = "@import 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap';*{z-index:1000;margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}.skinwrapper{position:absolute;top:50%;left:50%;max-width:750px;width:100%;background:#2a394f;/*has to stay like that, else the menu is see trough under header*/transform:translate(-50%,-50%);border:solid 1px #000;color:#fff;height:335px;}.skinwrapper header{font-size:23px;font-weight:500;padding:17px 30px;border-bottom:1px solid #000;text-align:center;border-top-left-radius: 10px;border-top-right-radius: 10px;}.skinwrapper header.skinactive{cursor:move;user-select:none;}.skinwrapper .skincontent{display:flex;flex-direction:wrap;flex-wrap:wrap;justify-content:center;background:#2a394f}.skincontent .title{margin:15px 0;font-size:29px;font-weight:500}.skincontent p{font-size:16px;text-align:center;display:flex}.skinbutton{width:100%;height:50px;background-color:" + skinButtonColor + ";border:none;color:#fff;font-size:20px}.skinbutton:hover{background-color:" + skinButtonHoverColor + "}.skinclose{color:grey;position:absolute;top:0;right:0;margin-right:15px;margin-top:-6px;background-color:" + skinCloseColor + ";border:none;font-size:35px}.skinclose:hover{color:#fff}p{font-size:20px}input[type=text]{float:right;margin:14px 25px 10px 0;font-weight:700;color:grey}input[type=range]{float:right;margin:16px 20px 10px 0}input[type=checkbox]{float:right;transform:scale(2);margin:14px 25px 5px 0;width:35px;font-weight:700;color:grey;}.optiondescr{float:left;margin:10px 0 10px 20px}.optionholder{background-color:" + optionColor + "}hr{width:100%;border:.1px solid #000}select{float:right;margin:14px 25px 10px 0;width:50px}";
     document.head.appendChild(skincss);
 
 
@@ -106,7 +106,6 @@ document.addEventListener("DOMContentLoaded", function() {
     rightDiv.style.overflow = 'scroll';
     rightDiv.style.overflowX = 'hidden';
     rightDiv.style.overflowY = 'auto';
-    rightDiv.style.borderBottomRightRadius = '10px';
     rightDiv.id = "rightDiv";
     document.getElementById('mainDiv').appendChild(rightDiv);
 
@@ -158,10 +157,8 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         }*/
     },
-    // add more options here
     ];
       
-    
     const rightDivReference2 = document.getElementById('rightDiv');
     const optionHr = document.createElement('hr');
     const optionSpaceThing = document.createTextNode(' ');
@@ -284,7 +281,25 @@ document.addEventListener("DOMContentLoaded", function() {
         if (id == "opacityOptionHolder")
         {
             optionInput.placeholder = 'e.g. 0.95';
-        } else {
+        } else if (id == "windowBorderOptionHolder") {
+            optionInput.placeholder = 'e.g. 10';
+        } else if (id == "shortcutOptionHolder") {
+            optionInput.placeholder = 'very nice kill';
+            optionInput.style.width = '140px';
+        
+            const select = document.createElement('select');
+            select.style.width = "35px";
+        
+            for (let i = 1; i <= 10; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.innerText = i;
+                select.appendChild(option);
+            }
+        
+            optionHolder.appendChild(select);
+        }
+         else {
             optionInput.placeholder = 'e.g. #2a394f';
         }
 
@@ -302,6 +317,8 @@ document.addEventListener("DOMContentLoaded", function() {
     createOptionHolder('behindOptionsColorOptionHolder', 'Behind-Options Color', 'behindOptionsColorOptionInput');
     createOptionHolder('skinButtonColorOptionHolder', 'Skin Button Color', 'skinButtonColorOptionInput');
     createOptionHolder('opacityOptionHolder', 'Opacity', 'opacityOptionInput');
+    createOptionHolder('windowBorderOptionHolder', 'Window Border', 'windowBorderOptionInput');
+    createOptionHolder('shortcutOptionHolder', 'Shortcut Option', 'shortcutOptionInput');
 
     optionholders.forEach(holder => rightDivReference.appendChild(holder));
 
@@ -363,6 +380,11 @@ document.addEventListener("DOMContentLoaded", function() {
         skinWrapper.style.opacity = opacity;
     });
 
+    windowBorderOptionInput.addEventListener('change', function() {
+        skinWrapperBorderRadius = windowBorderOptionInput.value;
+        console.log(skinWrapperBorderRadius);
+        skinWrapper.style.borderRadius = skinWrapperBorderRadius + "px";
+    });
 
     // menu title
     h2.innerHTML = "All Options";
@@ -377,7 +399,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // hide
     skincontent.style.display = "none";
 
-    const options = ["fpsDisplayOptionHolder", "onlineDisplayOptionHolder", "shortcutDisplayOptionHolder", "skincontent", "behindOptionsColorOptionHolder", "menuHeaderColorOptionHolder", "skinButtonColorOptionHolder", "opacityOptionHolder"];
+    const options = ["fpsDisplayOptionHolder", "onlineDisplayOptionHolder", "shortcutDisplayOptionHolder", "skincontent", "behindOptionsColorOptionHolder", "menuHeaderColorOptionHolder", "skinButtonColorOptionHolder", "opacityOptionHolder", "windowBorderOptionHolder"];
 
     
     document.getElementById("allOptions").addEventListener("click", function() {
@@ -428,6 +450,7 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("behindOptionsColorOptionHolder").style.display = "";
         document.getElementById("skinButtonColorOptionHolder").style.display = "";
         document.getElementById("opacityOptionHolder").style.display = "";
+        document.getElementById("windowBorderOptionHolder").style.display = "";
     });
 
     document.getElementById("defaultsettings").addEventListener("click", function() {

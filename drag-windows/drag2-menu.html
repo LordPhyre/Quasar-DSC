@@ -84,7 +84,7 @@
     input[type=text] {
       float: right; 
       margin: 14px 25px 10px 0; 
-      width: 35px; 
+      /*width: 35px;*/
       font-weight: bold; 
       color: grey;
     }
@@ -99,6 +99,17 @@
       width: 35px; 
       font-weight: bold; 
       color: grey;
+    }
+    select {
+      float: right; 
+      margin: 14px 25px 10px 0; 
+      width: 50px;
+    }
+    .normalinput {
+      width: 35px;
+    }
+    .shortcutinput {
+      width: 175px;
     }
     .optiondescr {
       float:left; 
@@ -143,8 +154,12 @@
 
           <div class="optionholder">
             <p class="optiondescr">Option Name</p>
-            <input type="text">
-            <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+            <input type="text" class="shortcutinput">
+            <select>
+              <option value="actual value 1">Display Text 1</option>
+              <option value="actual value 2">Display Text 2</option>
+              <option value="actual value 3">Display Text 3</option>
+            </select>
             <div style="height: 50px;"></div>
           </div>
 
@@ -152,7 +167,7 @@
 
           <div class="optionholder">
             <p class="optiondescr">Option Name</p>
-            <input type="text">
+            <input type="text" class="normalinput">
             <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
             <div style="height: 50px;"></div>
           </div>
@@ -169,7 +184,7 @@
 
           <div class="optionholder">
             <p class="optiondescr">Option Name</p>
-            <input type="text">
+            <input type="text" class="normalinput">
             <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
             <div style="height: 50px;"></div>
           </div>
