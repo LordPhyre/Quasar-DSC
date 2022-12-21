@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", function() {
     var skinButtonHoverColor = "#0798fc";
     var skinCloseColor = "#ffffff00";
     var optionColor = "#364760";
+    var opacity = 0.95;
 
     // shortcutdisplay
 
@@ -27,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const skinWrapper = document.createElement('div');
     skinWrapper.className = 'skinwrapper';
     skinWrapper.id = "skinWrapper";
-    skinWrapper.style = "::-webkit-scrollbar{border:1px solid #d5d5d5};";
+    skinWrapper.style = "::-webkit-scrollbar{border:1px solid #d5d5d5};opacity:" + opacity + ";";
     document.body.appendChild(skinWrapper);
 
     // title
@@ -267,34 +268,40 @@ document.addEventListener("DOMContentLoaded", function() {
     const optioninputs = [];
 
     const createElement = (type, className, id, innerText) => {
-    const element = document.createElement(type);
-    element.className = className;
-    element.id = id;
-    element.innerText = innerText;
-    return element;
+        const element = document.createElement(type);
+        element.className = className;
+        element.id = id;
+        element.innerText = innerText;
+        return element;
     };
 
     const createOptionHolder = (id, descrText, inputId) => {
-    const optionHolder = createElement('div', 'optionholder', id, '');
-    const optionDescr = createElement('p', 'optiondescr', '', descrText);
-    const optionInput = createElement('input', '', inputId, '');
-    optionInput.type = 'text';
-    optionInput.style.width = '100px';
-    optionInput.placeholder = 'e.g. #2a394f';
+        const optionHolder = createElement('div', 'optionholder', id, '');
+        const optionDescr = createElement('p', 'optiondescr', '', descrText);
+        const optionInput = createElement('input', '', inputId, '');
+        optionInput.type = 'text';
+        optionInput.style.width = '100px';
+        if (id == "opacityOptionHolder")
+        {
+            optionInput.placeholder = 'e.g. 0.95';
+        } else {
+            optionInput.placeholder = 'e.g. #2a394f';
+        }
 
-    optionholders.push(optionHolder);
-    optiondescrs.push(optionDescr);
-    optioninputs.push(optionInput);
+        optionholders.push(optionHolder);
+        optiondescrs.push(optionDescr);
+        optioninputs.push(optionInput);
 
-    optionHolder.appendChild(optionDescr);
-    optionHolder.appendChild(optionInput);
-    optionHolder.appendChild(optionSpaceThing);
-    optionHolder.appendChild(optionHr);
+        optionHolder.appendChild(optionDescr);
+        optionHolder.appendChild(optionInput);
+        optionHolder.appendChild(optionSpaceThing);
+        optionHolder.appendChild(optionHr);
     };
 
     createOptionHolder('menuHeaderColorOptionHolder', 'Header Color', 'menuHeaderColorOptionInput');
     createOptionHolder('behindOptionsColorOptionHolder', 'Behind-Options Color', 'behindOptionsColorOptionInput');
     createOptionHolder('skinButtonColorOptionHolder', 'Skin Button Color', 'skinButtonColorOptionInput');
+    createOptionHolder('opacityOptionHolder', 'Opacity', 'opacityOptionInput');
 
     optionholders.forEach(holder => rightDivReference.appendChild(holder));
 
@@ -350,6 +357,12 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
+    opacityOptionInput.addEventListener('change', function() {
+        opacity = opacityOptionInput.value;
+        console.log(opacity);
+        skinWrapper.style.opacity = opacity;
+    });
+
 
     // menu title
     h2.innerHTML = "All Options";
@@ -364,7 +377,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // hide
     skincontent.style.display = "none";
 
-    const options = ["fpsDisplayOptionHolder", "onlineDisplayOptionHolder", "shortcutDisplayOptionHolder", "skincontent", "behindOptionsColorOptionHolder", "menuHeaderColorOptionHolder", "skinButtonColorOptionHolder"];
+    const options = ["fpsDisplayOptionHolder", "onlineDisplayOptionHolder", "shortcutDisplayOptionHolder", "skincontent", "behindOptionsColorOptionHolder", "menuHeaderColorOptionHolder", "skinButtonColorOptionHolder", "opacityOptionHolder"];
 
     
     document.getElementById("allOptions").addEventListener("click", function() {
@@ -414,6 +427,7 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("menuHeaderColorOptionHolder").style.display = "";
         document.getElementById("behindOptionsColorOptionHolder").style.display = "";
         document.getElementById("skinButtonColorOptionHolder").style.display = "";
+        document.getElementById("opacityOptionHolder").style.display = "";
     });
 
     document.getElementById("defaultsettings").addEventListener("click", function() {
