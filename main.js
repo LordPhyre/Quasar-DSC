@@ -34,7 +34,8 @@ app.whenReady().then(() => {
   }, 5000);
 
   win.loadURL('https://deadshot.io')
-
+  win.setFrameRate(30)
+  
   ////////////////////////////////////////////////////////
   ///// data exchange between main.js and preload.js /////
   ////////////////////////////////////////////////////////
