@@ -236,14 +236,24 @@ document.addEventListener("DOMContentLoaded", function() {
     ////////////////////////////////////////////////////////
 
     // handle skins
-    function skinPathHandler(src) {
+    function skinPathHandlerAwp(src) {
         console.log("skinpathhandler received the following path: " + src)
 
-        /*require('electron').ipcRenderer.send('text', {
-            //data: "some data"
-            //data: src // does dumb shit
-            
-        })*/
+        require('electron').ipcRenderer.send('text', src)
+
+        console.log("sent")
+    }
+
+    function skinPathHandlerAr2(src) {
+        console.log("skinpathhandler received the following path: " + src)
+
+        require('electron').ipcRenderer.send('text', src)
+
+        console.log("sent")
+    }
+
+    function skinPathHandlerVector(src) {
+        console.log("skinpathhandler received the following path: " + src)
 
         require('electron').ipcRenderer.send('text', src)
 
@@ -251,23 +261,50 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // get skins
-    require('electron').ipcRenderer.on('filepaths', (event, message) => {
-        /*var skins = message;
+
+    function processSkins(skins) {
         console.log(skins);
         console.log(skins.length);
-
+        
         for (let i = 0; i < skins.length; i++) {
-            if ([i] > 0) {
-                let flexSquareClone = flexSquare.cloneNode(true);
-              
-                flexSquareClone.setAttribute('src', skins[i]);
-                skincontentselector.appendChild(flexSquareClone);
+            let element;
+            if (i > 0) {
+            let flexSquareClone = flexSquare.cloneNode(true);
+            flexSquareClone.setAttribute('src', skins[i]);
+            element = flexSquareClone;
             } else {
-                flexSquare.src = skins[i];
-                skincontentselector.appendChild(flexSquare);
+            flexSquare.src = skins[i];
+            element = flexSquare;
             }
-        }*/
+        
+            element.addEventListener('click', function() {
+            let src = this.getAttribute('src');
+            console.log("The source of the selected skin is: " + src);
+            });
+        
+            skincontentselector.appendChild(element);
+        }
+    }
+    
+    require('electron').ipcRenderer.on('filepaths-awp', (event, message) => {
+        processSkins(message);
+        skinPathHandlerAwp(src);
+    });
 
+    // if I don't comment these out the last skin folder is shown (in this case awp) -> the error that only one skin is hsown has something to do with the cresting of the element (there are "no" bugs)
+    
+    /*require('electron').ipcRenderer.on('filepaths-ar2', (event, message) => {
+        processSkins(message);
+        skinPathHandlerAr2(src);
+    });
+    
+    require('electron').ipcRenderer.on('filepaths-vector', (event, message) => {
+        processSkins(message);
+        skinPathHandlerVector(src);
+    });*/
+
+      
+    /*require('electron').ipcRenderer.on('filepaths-awp', (event, message) => {
         var skins = message;
         console.log(skins);
         console.log(skins.length);
@@ -286,12 +323,64 @@ document.addEventListener("DOMContentLoaded", function() {
             element.addEventListener('click', function() {
               let src = this.getAttribute('src');
               console.log("The source of the selected skin is: " + src);
-              skinPathHandler(src);
+              skinPathHandlerAwp(src);
             });
           
             skincontentselector.appendChild(element);
         }
     });
+
+    require('electron').ipcRenderer.on('filepaths-ar2', (event, message) => {
+        var skins = message;
+        console.log(skins);
+        console.log(skins.length);
+
+        for (let i = 0; i < skins.length; i++) {
+            let element;
+            if ([i] > 0) {
+              let flexSquareClone = flexSquare.cloneNode(true);
+              flexSquareClone.setAttribute('src', skins[i]);
+              element = flexSquareClone;
+            } else {
+              flexSquare.src = skins[i];
+              element = flexSquare;
+            }
+          
+            element.addEventListener('click', function() {
+              let src = this.getAttribute('src');
+              console.log("The source of the selected skin is: " + src);
+              skinPathHandlerAr2(src);
+            });
+          
+            skincontentselector.appendChild(element);
+        }
+    });
+
+    require('electron').ipcRenderer.on('filepaths-vector', (event, message) => {
+        var skins = message;
+        console.log(skins);
+        console.log(skins.length);
+
+        for (let i = 0; i < skins.length; i++) {
+            let element;
+            if ([i] > 0) {
+              let flexSquareClone = flexSquare.cloneNode(true);
+              flexSquareClone.setAttribute('src', skins[i]);
+              element = flexSquareClone;
+            } else {
+              flexSquare.src = skins[i];
+              element = flexSquare;
+            }
+          
+            element.addEventListener('click', function() {
+              let src = this.getAttribute('src');
+              console.log("The source of the selected skin is: " + src);
+              skinPathHandlerVector(src);
+            });
+          
+            skincontentselector.appendChild(element);
+        }
+    });*/
 
     /* Sooo... just writing my thoughts down. 
     To make the skinswapper work we need to allow the user 

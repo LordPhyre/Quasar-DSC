@@ -121,7 +121,7 @@ app.whenReady().then(() => {
 
   // do x for images in folder
 
-  fs.readdir(path.join(app.getPath("documents"), "DeadshotClient/gunskins/awp"), function(err, files) {
+  /*fs.readdir(path.join(app.getPath("documents"), "DeadshotClient/gunskins/awp"), function(err, files) {
     if (err) {
       console.error('There was an error reading the directory:', err);
       return;
@@ -148,16 +148,52 @@ app.whenReady().then(() => {
       win.webContents.send('filepaths', skins)
     })
 
-    /*let receivedData;
+  });*/
 
-    function handleReceivedData(data) {
-      if (data == receivedData)
-      {
-        app.quit()
+  function readDirectory(dirPath, fileExtension, eventName) {
+    fs.readdir(dirPath, function(err, files) {
+      if (err) {
+        console.error(`There was an error reading the directory: ${err}`);
+        return;
       }
-    }*/
-
-  });
+  
+      // Filder actual images (.png and .jpg)
+      const imageFiles = files.filter(file => file.endsWith(fileExtension));
+  
+      var skins = [];
+  
+      imageFiles.forEach(function(imageFile) {
+        var pathcontainer = `${dirPath}/${imageFile}`;
+  
+        console.log(`Processing image file: ${imageFile} pathcontainer: ${pathcontainer}`);
+  
+        // push file names to skin-array
+        skins.push(pathcontainer);
+      });
+  
+      win.webContents.on('did-finish-load', () => {
+        win.webContents.send(eventName, skins);
+      });
+    });
+  }
+  
+  readDirectory(
+    path.join(app.getPath("documents"), "DeadshotClient/gunskins/awp"),
+    ".webp",
+    "filepaths-awp"
+  );
+  
+  readDirectory(
+    path.join(app.getPath("documents"), "DeadshotClient/gunskins/ar2"),
+    ".webp",
+    "filepaths-ar2"
+  );
+  
+  readDirectory(
+    path.join(app.getPath("documents"), "DeadshotClient/gunskins/vector"),
+    ".webp",
+    "filepaths-vector"
+  );
 
   ipcMain.on('text', (event, message) => {
     // do something with the skin path here
@@ -203,7 +239,7 @@ app.whenReady().then(() => {
     //receivedData = message;
     //handleReceivedData(message);
   });
-  
+
   ////////////////////////////////////////////////////////
 
     //Swapper -> Credits to Captain Cool 💪
