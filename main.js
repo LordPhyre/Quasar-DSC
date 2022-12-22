@@ -4,7 +4,12 @@ const fs = require('fs');
 const DiscordRpc = require("discord-rpc");
 let win = null
 
+// doesn't work
+//app.commandLine.appendSwitch('fps', '1')
+
 app.whenReady().then(() => {
+  app.commandLine.appendSwitch('fps', '1')
+
   win = new BrowserWindow({ 
     width: 800, 
     height: 600,
@@ -18,6 +23,7 @@ app.whenReady().then(() => {
       preload: path.join(__dirname, 'preload.js'),
     }
   })
+  //win.setFrameRate(1)
   var splash = new BrowserWindow({
     width: 500, 
     height: 300, 
@@ -35,6 +41,59 @@ app.whenReady().then(() => {
   }, 5000);
 
   win.loadURL('https://deadshot.io')
+
+  /*// Set the target framerate (in frames per second)
+  const targetFramerate = 1
+
+  // Calculate the interval (in milliseconds) at which to update the window
+  const updateInterval = 1000 / targetFramerate
+
+  // Set up a timer to update the window at the specified interval
+  let lastUpdateTime = Date.now()
+  let timerId = setInterval(() => {
+    // Calculate the elapsed time since the last update
+    let elapsedTime = Date.now() - lastUpdateTime
+
+    // If the elapsed time is greater than the update interval, skip this frame
+    if (elapsedTime < updateInterval) {
+      return
+    }
+
+    // Update the window
+    win.webContents.send('update-window', elapsedTime)
+
+    // Reset the last update time
+    lastUpdateTime = Date.now()
+  }, updateInterval)
+
+  // Clean up the timer when the window is closed
+  win.on('closed', () => {
+    clearInterval(timerId)
+  })*/
+
+  /*// Set the target framerate (in frames per second)
+  const targetFramerate = 1
+
+  // Calculate the interval (in milliseconds) at which to update the state of the application
+  const updateInterval = 1000 / targetFramerate
+
+  // Set up a timer to update the state of the application at the specified interval
+  let lastUpdateTime = Date.now()
+  let timerId = setInterval(() => {
+    // Calculate the elapsed time since the last update
+    let elapsedTime = Date.now() - lastUpdateTime
+
+    // Update the state of the application
+    win.webContents.send('update-state', elapsedTime)
+
+    // Reset the last update time
+    lastUpdateTime = Date.now()
+  }, updateInterval)
+
+  // Clean up the timer when the window is closed
+  win.on('closed', () => {
+    clearInterval(timerId)
+  })*/
 
   ////////////////////////////////////////////////////////
   ///// data exchange between main.js and preload.js /////
@@ -85,6 +144,8 @@ app.whenReady().then(() => {
 })
 
 //app.commandLine.appendSwitch('fps', '1')
+//app.commandLine.appendSwitch('disable-frame-rate-limit');
+//console.log("uncapped fps");
   
 
 /*app.whenReady().then(() => {
