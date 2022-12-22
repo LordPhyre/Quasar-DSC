@@ -42,7 +42,7 @@ app.whenReady().then(() => {
   globalShortcut.register('F5', () => win.reload());
   globalShortcut.register('Escape', () => win.webContents.executeJavaScript('document.exitPointerLock()', true));
   globalShortcut.register('F7', () => win.webContents.toggleDevTools());
-  globalShortcut.register('F11', () => { win.fullScreen = !win.fullScreen; settings.set('Fullscreen', win.fullScreen) });
+  globalShortcut.register('F11', () => { win.fullScreen = !win.fullScreen;});
 
   ////////////////////////////////////////////////////////
   ///// data exchange between main.js and preload.js /////
