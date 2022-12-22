@@ -235,9 +235,24 @@ document.addEventListener("DOMContentLoaded", function() {
     ///// data exchange between main.js and preload.js /////
     ////////////////////////////////////////////////////////
 
+    // handle skins
+    function skinPathHandler(src) {
+        console.log("skinpathhandler received the following path: " + src)
+
+        /*require('electron').ipcRenderer.send('text', {
+            //data: "some data"
+            //data: src // does dumb shit
+            
+        })*/
+
+        require('electron').ipcRenderer.send('text', src)
+
+        console.log("sent")
+    }
+
     // get skins
     require('electron').ipcRenderer.on('filepaths', (event, message) => {
-        var skins = message;
+        /*var skins = message;
         console.log(skins);
         console.log(skins.length);
 
@@ -251,8 +266,47 @@ document.addEventListener("DOMContentLoaded", function() {
                 flexSquare.src = skins[i];
                 skincontentselector.appendChild(flexSquare);
             }
+        }*/
+
+        var skins = message;
+        console.log(skins);
+        console.log(skins.length);
+
+        for (let i = 0; i < skins.length; i++) {
+            let element;
+            if ([i] > 0) {
+              let flexSquareClone = flexSquare.cloneNode(true);
+              flexSquareClone.setAttribute('src', skins[i]);
+              element = flexSquareClone;
+            } else {
+              flexSquare.src = skins[i];
+              element = flexSquare;
+            }
+          
+            element.addEventListener('click', function() {
+              let src = this.getAttribute('src');
+              console.log("The source of the selected skin is: " + src);
+              skinPathHandler(src);
+            });
+          
+            skincontentselector.appendChild(element);
         }
     });
+
+    /* Sooo... just writing my thoughts down. 
+    To make the skinswapper work we need to allow the user 
+    to click on a certain skin (get linked path),
+    then we need to send that path to the settings (via ipc)
+    and take this file, rename it to the default skin name,
+    put it into the swapper folder and yeah, thats it... 
+    
+    1. On click event
+    2. send linked src via ipc
+    3. copy image
+    4. change name
+    5. paste into the swapper folder
+    6. reload the client
+    (no need to save to settings then)*/
 
     ////////////////////////////////////////////////////////
 

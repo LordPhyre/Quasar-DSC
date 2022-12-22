@@ -119,7 +119,7 @@ app.whenReady().then(() => {
     }
 
     // Filder actual images (.png and .jpg)
-    const imageFiles = files.filter(file => file.endsWith('.png') || file.endsWith('.jpg'));
+    const imageFiles = files.filter(file => file.endsWith('.png') || file.endsWith('.webp'));
 
     var skins = [];
     var imgpath = path.join(app.getPath("documents"), "DeadshotClient/gunskins");
@@ -138,6 +138,36 @@ app.whenReady().then(() => {
     win.webContents.on('did-finish-load', () => {
       win.webContents.send('filepaths', skins)
     })
+
+    /*let receivedData;
+
+    function handleReceivedData(data) {
+      if (data == receivedData)
+      {
+        app.quit()
+      }
+    }*/
+
+    ipcMain.on('text', (event, message) => {
+      // do something with the skin path here
+
+      console.log("should be " + message);
+
+      const srcPath = message.toString();
+      const destPath = path.join(app.getPath("documents"), "DeadshotClient/Resource Swapper/weapons/awp/newawpcomp.webp");
+      //C:\Users\jesse\OneDrive\Dokumente\DeadshotClient\Resource Swapper\weapons\awp
+
+      fs.copyFile(srcPath, destPath, (err) => {
+        if (err) {
+          console.error(err);
+        } else {
+          console.log('Image copied successfully! With new name...');
+        }
+      });
+
+      //receivedData = message;
+      //handleReceivedData(message);
+    });
 
   });
   ////////////////////////////////////////////////////////
