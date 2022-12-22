@@ -11,6 +11,7 @@
 - sreenshake (only with readable html and trees help)
 - "No Internet" screen (not that easy as i thought)
 - ***custom*** fps counter (allows changing colors and stuff through the menu)
+- custom client keybinds
 
 Not really possible:
 
