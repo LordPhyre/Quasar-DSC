@@ -1,8 +1,11 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, protocol, globalShortcut} = require('electron');
 const path = require('path');
 const fs = require('fs');
 const DiscordRpc = require("discord-rpc");
 let win = null
+
+//Swapper
+const swapper = require('./swapper.js');
 
 app.whenReady().then(() => {
   win = new BrowserWindow({ 
@@ -34,8 +37,13 @@ app.whenReady().then(() => {
   }, 5000);
 
   win.loadURL('https://deadshot.io')
-  win.setFrameRate(30)
-  
+
+  globalShortcut.register('F6', () => win.loadURL('https://deadshot.io/'));
+  globalShortcut.register('F5', () => win.reload());
+  globalShortcut.register('Escape', () => win.webContents.executeJavaScript('document.exitPointerLock()', true));
+  globalShortcut.register('F7', () => win.webContents.toggleDevTools());
+  globalShortcut.register('F11', () => { win.fullScreen = !win.fullScreen; settings.set('Fullscreen', win.fullScreen) });
+
   ////////////////////////////////////////////////////////
   ///// data exchange between main.js and preload.js /////
   ////////////////////////////////////////////////////////
@@ -82,17 +90,15 @@ app.whenReady().then(() => {
 
   });
   ////////////////////////////////////////////////////////
+
+
+  //Swapper
+
+  swapper.replaceResources(win, app);
+
+  protocol.registerFileProtocol('swap', (request, callback) => {
+    callback({
+        path: path.normalize(request.url.replace(/^swap:/, ''))
+    });
+});
 })
-  
-
-/*app.whenReady().then(() => {
-  createWindow()
-
-  app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
-  })
-})
-
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') app.quit()
-})*/
