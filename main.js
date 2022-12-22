@@ -181,7 +181,7 @@ app.whenReady().then(() => {
   });
   ////////////////////////////////////////////////////////
 
-    //Swapper
+    //Swapper -> Credits to Captain Cool 💪
 
     swapper.replaceResources(win, app);
 
