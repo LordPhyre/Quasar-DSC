@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, protocol, globalShortcut} = require('electron');
 const path = require('path');
 const fs = require('fs');
 const DiscordRpc = require("discord-rpc");
@@ -180,6 +180,16 @@ app.whenReady().then(() => {
 
   });
   ////////////////////////////////////////////////////////
+
+    //Swapper
+
+    swapper.replaceResources(win, app);
+
+    protocol.registerFileProtocol('swap', (request, callback) => {
+      callback({
+          path: path.normalize(request.url.replace(/^swap:/, ''))
+      });
+    });
 })
 
 //app.commandLine.appendSwitch('fps', '1')
