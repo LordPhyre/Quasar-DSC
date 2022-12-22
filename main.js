@@ -9,6 +9,7 @@ app.whenReady().then(() => {
     width: 800, 
     height: 600,
     show: false,
+    //frameRate: 30,
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
@@ -34,8 +35,7 @@ app.whenReady().then(() => {
   }, 5000);
 
   win.loadURL('https://deadshot.io')
-  win.setFrameRate(30)
-  
+
   ////////////////////////////////////////////////////////
   ///// data exchange between main.js and preload.js /////
   ////////////////////////////////////////////////////////
@@ -83,6 +83,8 @@ app.whenReady().then(() => {
   });
   ////////////////////////////////////////////////////////
 })
+
+//app.commandLine.appendSwitch('fps', '1')
   
 
 /*app.whenReady().then(() => {
