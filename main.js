@@ -121,7 +121,7 @@ app.whenReady().then(() => {
 
   // do x for images in folder
 
-  fs.readdir(path.join(app.getPath("documents"), "DeadshotClient/gunskins"), function(err, files) {
+  fs.readdir(path.join(app.getPath("documents"), "DeadshotClient/gunskins/awp"), function(err, files) {
     if (err) {
       console.error('There was an error reading the directory:', err);
       return;
@@ -131,7 +131,7 @@ app.whenReady().then(() => {
     const imageFiles = files.filter(file => file.endsWith('.png') || file.endsWith('.webp'));
 
     var skins = [];
-    var imgpath = path.join(app.getPath("documents"), "DeadshotClient/gunskins");
+    var imgpath = path.join(app.getPath("documents"), "DeadshotClient/gunskins/awp");
 
     imageFiles.forEach(function(imageFile) {
       var pathcontainer = imgpath + "/" + `${imageFile}`
@@ -157,28 +157,53 @@ app.whenReady().then(() => {
       }
     }*/
 
-    ipcMain.on('text', (event, message) => {
-      // do something with the skin path here
+  });
 
-      console.log("should be " + message);
+  ipcMain.on('text', (event, message) => {
+    // do something with the skin path here
 
-      const srcPath = message.toString();
-      const destPath = path.join(app.getPath("documents"), "DeadshotClient/Resource Swapper/weapons/awp/newawpcomp.webp");
-      //C:\Users\jesse\OneDrive\Dokumente\DeadshotClient\Resource Swapper\weapons\awp
+    console.log("should be " + message);
 
-      fs.copyFile(srcPath, destPath, (err) => {
-        if (err) {
-          console.error(err);
-        } else {
-          console.log('Image copied successfully! With new name...');
-        }
+    const srcPath = message.toString();
+
+    // clear folder
+
+    const folderPath = path.join(app.getPath("documents"), "DeadshotClient/Resource Swapper/weapons/awp/");
+
+    fs.readdir(folderPath, (err, files) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+
+      const webpFiles = files.filter(file => file.endsWith('.webp'));
+
+      webpFiles.forEach(file => {
+        fs.unlink(`${folderPath}/${file}`, err => {
+          if (err) {
+            console.error(err);
+          }
+        });
       });
-
-      //receivedData = message;
-      //handleReceivedData(message);
     });
 
+    // copy, paste and rename file
+
+    const destPath = path.join(app.getPath("documents"), "DeadshotClient/Resource Swapper/weapons/awp/newawpcomp.webp");
+    //C:\Users\jesse\OneDrive\Dokumente\DeadshotClient\Resource Swapper\weapons\awp
+
+    fs.copyFile(srcPath, destPath, (err) => {
+      if (err) {
+        console.error(err);
+      } else {
+        console.log('Image copied successfully! With new name...');
+      }
+    });
+
+    //receivedData = message;
+    //handleReceivedData(message);
   });
+  
   ////////////////////////////////////////////////////////
 
     //Swapper -> Credits to Captain Cool 💪
