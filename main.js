@@ -4,6 +4,9 @@ const fs = require('fs');
 const DiscordRpc = require("discord-rpc");
 let win = null
 
+//Swapper
+const swapper = require('./swapper.js');
+
 // doesn't work
 //app.commandLine.appendSwitch('fps', '1')
 
@@ -41,6 +44,12 @@ app.whenReady().then(() => {
   }, 5000);
 
   win.loadURL('https://deadshot.io')
+
+  globalShortcut.register('F6', () => win.loadURL('https://deadshot.io/'));
+  globalShortcut.register('F5', () => win.reload());
+  globalShortcut.register('Escape', () => win.webContents.executeJavaScript('document.exitPointerLock()', true));
+  globalShortcut.register('F7', () => win.webContents.toggleDevTools());
+  globalShortcut.register('F11', () => { win.fullScreen = !win.fullScreen;});
 
   /*// Set the target framerate (in frames per second)
   const targetFramerate = 1
