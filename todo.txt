@@ -18,7 +18,3 @@ Not really possible:
 - permanent small version of scoreboard // depends what you mean, might be possible if the javascript isnt randomized
 - better tab scoreboard
 - auto-gg setting (no need for button press) // how do we see if the user got killed?
-
-Not needed: 
-
-- keybind presets // like insted of awsd -> esdf | for the weirdos // its built into deadshot already. Settings/Edit Keybinds
