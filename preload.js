@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function() {
     var skinCloseColor = "#ffffff00";
     var optionColor = "#364760";
     var opacity = 0.95;
-    var skinWrapperBorderRadius = "10px";
+    var skinWrapperBorderRadius = "10";
 
     // shortcutdisplay
 
@@ -56,6 +56,16 @@ document.addEventListener("DOMContentLoaded", function() {
     leftDiv.id = "leftDiv";
     document.getElementById('mainDiv').appendChild(leftDiv);
 
+    const rightDiv = document.createElement('div');
+    rightDiv.style.float = 'right';
+    rightDiv.style.width = '60%';
+    rightDiv.style.height = '263px';
+    rightDiv.style.overflow = 'scroll';
+    rightDiv.style.overflowX = 'hidden';
+    rightDiv.style.overflowY = 'auto';
+    rightDiv.id = "rightDiv";
+    document.getElementById('mainDiv').appendChild(rightDiv);
+
     // close button
     const skinCloseButton = document.createElement('button');
     skinCloseButton.className = 'skinclose';
@@ -63,17 +73,13 @@ document.addEventListener("DOMContentLoaded", function() {
     skinCloseButton.id = 'skinclose';
     document.getElementById('skinWrapper').appendChild(skinCloseButton);
 
-    // some juicy js and css
+    // custom css element
+
+    // some juicy js
     var script = document.createElement('script');
     script.type = 'text/javascript';
     script.innerHTML = "const skinwrapper1=document.querySelector('.skinwrapper'),skinheader1=document.getElementById('skinheader');function onDrag({movementX:e,movementY:n}){let s=window.getComputedStyle(skinwrapper1),t=parseInt(s.left),r=parseInt(s.top);skinwrapper1.style.left=`${t+e}px`,skinwrapper1.style.top=`${r+n}px`}skinheader1.addEventListener('mousedown',()=>{skinheader1.classList.add('skinactive'),skinheader1.addEventListener('mousemove',onDrag)}),document.addEventListener('mouseup',()=>{skinheader1.classList.remove('skinactive'),skinheader1.removeEventListener('mousemove',onDrag)});document.getElementById('skinclose').addEventListener('click',function(){document.getElementById('skinWrapper').style.display='none'});";
     document.getElementsByTagName('head')[0].appendChild(script);
-
-    // css
-    let skincss = document.createElement('style');
-    skincss.innerText = "@import 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap';*{z-index:1000;margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}.skinwrapper{position:absolute;top:50%;left:50%;max-width:750px;width:100%;background:#2a394f;/*has to stay like that, else the menu is see trough under header*/transform:translate(-50%,-50%);border:solid 1px #000;color:#fff;height:335px;}.skinwrapper header{font-size:23px;font-weight:500;padding:17px 30px;border-bottom:1px solid #000;text-align:center;border-top-left-radius: 10px;border-top-right-radius: 10px;}.skinwrapper header.skinactive{cursor:move;user-select:none;}.skinwrapper .skincontent{display:flex;flex-direction:wrap;flex-wrap:wrap;justify-content:center;background:#2a394f}.skincontent .title{margin:15px 0;font-size:29px;font-weight:500}.skincontent p{font-size:16px;text-align:center;display:flex}.skinbutton{width:100%;height:50px;background-color:" + skinButtonColor + ";border:none;color:#fff;font-size:20px}.skinbutton:hover{background-color:" + skinButtonHoverColor + "}.skinclose{color:grey;position:absolute;top:0;right:0;margin-right:15px;margin-top:-6px;background-color:" + skinCloseColor + ";border:none;font-size:35px}.skinclose:hover{color:#fff}p{font-size:20px}input[type=text]{float:right;margin:14px 25px 10px 0;font-weight:700;color:grey}input[type=range]{float:right;margin:16px 20px 10px 0}input[type=checkbox]{float:right;transform:scale(2);margin:14px 25px 5px 0;width:35px;font-weight:700;color:grey;}.optiondescr{float:left;margin:10px 0 10px 20px}.optionholder{background-color:" + optionColor + "}hr{width:100%;border:.1px solid #000}select{float:right;margin:14px 25px 10px 0;width:50px}";
-    document.head.appendChild(skincss);
-
 
     // menu buttons
 
@@ -84,6 +90,7 @@ document.addEventListener("DOMContentLoaded", function() {
         { text: 'Skins', id: 'skinmenu' },
         { text: 'Aimbot', id: 'aimbot' },
         { text: 'Color Settings', id: 'colorsettings' },
+        { text: 'Custom CSS', id: 'customcss' },
         { text: 'Default Settings', id: 'defaultsettings' }
     ];
     
@@ -99,7 +106,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // menu construction
     // right part of the menu (sub-options)
-    const rightDiv = document.createElement('div');
+    /*const rightDiv = document.createElement('div');
     rightDiv.style.float = 'right';
     rightDiv.style.width = '60%';
     rightDiv.style.height = '263px';
@@ -107,7 +114,7 @@ document.addEventListener("DOMContentLoaded", function() {
     rightDiv.style.overflowX = 'hidden';
     rightDiv.style.overflowY = 'auto';
     rightDiv.id = "rightDiv";
-    document.getElementById('mainDiv').appendChild(rightDiv);
+    document.getElementById('mainDiv').appendChild(rightDiv);*/
 
     // title of sub options (demo)
     const h2 = document.createElement('h2');
@@ -159,7 +166,6 @@ document.addEventListener("DOMContentLoaded", function() {
     },
     ];
       
-    const rightDivReference2 = document.getElementById('rightDiv');
     const optionHr = document.createElement('hr');
     const optionSpaceThing = document.createTextNode(' ');
     
@@ -185,7 +191,7 @@ document.addEventListener("DOMContentLoaded", function() {
             ${optionCheck.outerHTML}
         `;
         
-        rightDivReference2.appendChild(optionHolder);
+        rightDiv.appendChild(optionHolder);
     }
 
     // only including this bc the others don't work lol
@@ -215,6 +221,90 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     // SKIN-DISPLAY
+
+    const skinCategoryoptionHolder = document.createElement('div');
+    skinCategoryoptionHolder.className = 'optionholder';
+    skinCategoryoptionHolder.id = 'skinCategoryoptionHolder';
+
+    const buttonWrapper = document.createElement('div');
+    buttonWrapper.style.display = 'flex';
+    buttonWrapper.style.justifyContent = 'center';
+
+    const allButton = document.createElement('button');
+    allButton.className = 'skinCategory';
+    allButton.style = "padding: 10px 12.5px 10px 12.5px;background-color: #364760;border: none;color: white;font-size: 20px;";
+    allButton.textContent = 'All';
+
+    const awpButton = document.createElement('button');
+    awpButton.className = 'skinCategory';
+    awpButton.style = "padding: 10px 12.5px 10px 12.5px;background-color: #364760;border: none;color: white;font-size: 20px;";
+    awpButton.textContent = 'AWP';
+
+    const ar2Button = document.createElement('button');
+    ar2Button.className = 'skinCategory';
+    ar2Button.style = "padding: 10px 12.5px 10px 12.5px;background-color: #364760;border: none;color: white;font-size: 20px;";
+    ar2Button.textContent = 'AR2';
+
+    const vectorButton = document.createElement('button');
+    vectorButton.className = 'skinCategory';
+    vectorButton.style = "padding: 10px 12.5px 10px 12.5px;background-color: #364760;border: none;color: white;font-size: 20px;";
+    vectorButton.textContent = 'Vector';
+
+    buttonWrapper.appendChild(allButton);
+    buttonWrapper.appendChild(awpButton);
+    buttonWrapper.appendChild(ar2Button);
+    buttonWrapper.appendChild(vectorButton);
+
+    skinCategoryoptionHolder.appendChild(buttonWrapper);
+
+    rightDiv.appendChild(skinCategoryoptionHolder);
+
+    // hide and show skins on click
+
+    // lol sidenote, didn't know that you can doo al this by doing just that, lmao, adding later
+    /*const html = `
+        <div>
+            <h1>Hello World</h1>
+            <p>Lorem ipsum dolor sit amet</p>
+        </div>
+    `;*/
+
+    function toggleSkins(displayType) {
+        const awpSkins = document.getElementById("awp");
+        const ar2Skins = document.getElementById("ar2");
+        const vectorSkins = document.getElementById("vector");
+
+        awpSkins.style.display = displayType;
+        ar2Skins.style.display = displayType;
+        vectorSkins.style.display = displayType;
+    }
+
+    allButton.addEventListener('click', function() {
+        const allSkins = document.querySelectorAll('#awp, #ar2, #vector');
+        allSkins.forEach((skin) => {
+            skin.style.display = "";
+        });
+    });
+
+    awpButton.addEventListener('click', function() {
+        const awpSkins = document.getElementById("awp");
+        toggleSkins("none");
+        awpSkins.style.display = "";
+    });
+
+    ar2Button.addEventListener('click', function() {
+        const ar2Skins = document.getElementById("ar2");
+        toggleSkins("none");
+        ar2Skins.style.display = "";
+    });
+
+    vectorButton.addEventListener('click', function() {
+        const vectorSkins = document.getElementById("vector");
+        toggleSkins("none");
+        vectorSkins.style.display = "";
+    });
+
+    // skin content + images
 
     const skincontent = document.createElement("div");
     skincontent.id = "skincontent";
@@ -252,7 +342,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     var skipper = 1;
 
-    function processSkins(skins, handler) {
+    function processSkins(skins, handler, id) {
         console.log(skins);
         console.log(skins.length);
         
@@ -261,10 +351,12 @@ document.addEventListener("DOMContentLoaded", function() {
             if (skipper > 0) {
                 let flexSquareClone = flexSquare.cloneNode(true);
                 flexSquareClone.setAttribute('src', skins[i]);
+                flexSquareClone.setAttribute('id', id);
                 element = flexSquareClone;
                 skipper++;
             } else {
                 flexSquare.src = skins[i];
+                flexSquare.id = id;
                 element = flexSquare;
             }
         
@@ -286,17 +378,17 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     
     require('electron').ipcRenderer.on('filepaths-awp', (event, message) => {
-        processSkins(message, 1);
+        processSkins(message, 1, 'awp');
         //skinPathHandlerAwp(src);
     });
     
     require('electron').ipcRenderer.on('filepaths-ar2', (event, message) => {
-        processSkins(message, 2);
+        processSkins(message, 2, 'ar2');
         //skinPathHandlerAr2(src);
     });
     
     require('electron').ipcRenderer.on('filepaths-vector', (event, message) => {
-        processSkins(message, 3);
+        processSkins(message, 3, 'vector');
         //skinPathHandlerVector(src);
     });
 
@@ -398,8 +490,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // COLOR-DISPLAY Settings
 
-    const rightDivReference = document.getElementById('rightDiv');
-
     const optionholders = [];
     const optiondescrs = [];
     const optioninputs = [];
@@ -460,7 +550,7 @@ document.addEventListener("DOMContentLoaded", function() {
     createOptionHolder('windowBorderOptionHolder', 'Window Border', 'windowBorderOptionInput');
     createOptionHolder('shortcutOptionHolder', 'Shortcut Option', 'shortcutOptionInput');
 
-    optionholders.forEach(holder => rightDivReference.appendChild(holder));
+    optionholders.forEach(holder => rightDiv.appendChild(holder));
 
     // create skin selector buttons
 
@@ -491,44 +581,6 @@ document.addEventListener("DOMContentLoaded", function() {
     rightDivReference.appendChild(optionHolder);*/
 
     // create skin category selector
-
-    const optionHolder = document.createElement('div');
-    optionHolder.className = 'optionholder';
-
-    const buttonWrapper = document.createElement('div');
-    buttonWrapper.style.display = 'flex';
-    buttonWrapper.style.justifyContent = 'center';
-
-    const awpButton = document.createElement('button');
-    //awpButton.className = 'skinCategory';
-    awpButton.style = "padding: 10px 12.5px 10px 12.5px;background-color: #364760;border: none;color: white;font-size: 20px;";
-
-    // idk what I am doing, also it doesn't work
-    awpButton.addEventListener('mouseenter', () => {
-        awpButton.style.color = 'background-color: #0798fc;';
-    });
-      
-    awpButton.addEventListener('mouseleave', () => {
-        awpButton.style.color = 'background-color: #364760;';
-    });
-
-    awpButton.textContent = 'AWP';
-
-    const ar2Button = document.createElement('button');
-    //ar2Button.className = 'skinCategory';
-    ar2Button.textContent = 'AR2';
-
-    const vectorButton = document.createElement('button');
-    //vectorButton.className = 'skinCategory';
-    vectorButton.textContent = 'Vector';
-
-    buttonWrapper.appendChild(awpButton);
-    buttonWrapper.appendChild(ar2Button);
-    buttonWrapper.appendChild(vectorButton);
-
-    optionHolder.appendChild(buttonWrapper);
-
-    rightDiv.appendChild(optionHolder);
 
 
     /*document.addEventListener('change', event => {
@@ -608,7 +660,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // hide
     skincontent.style.display = "none";
 
-    const options = ["fpsDisplayOptionHolder", "onlineDisplayOptionHolder", "shortcutDisplayOptionHolder", "skincontent", "behindOptionsColorOptionHolder", "menuHeaderColorOptionHolder", "skinButtonColorOptionHolder", "opacityOptionHolder", "windowBorderOptionHolder", "shortcutOptionHolder"];
+    const options = ["fpsDisplayOptionHolder", "onlineDisplayOptionHolder", "shortcutDisplayOptionHolder", "skincontent", "behindOptionsColorOptionHolder", "menuHeaderColorOptionHolder", "skinButtonColorOptionHolder", "opacityOptionHolder", "windowBorderOptionHolder", "shortcutOptionHolder", "skinCategoryoptionHolder", "customCSSOptionHolder"];
 
     
     document.getElementById("allOptions").addEventListener("click", function() {
@@ -641,6 +693,7 @@ document.addEventListener("DOMContentLoaded", function() {
         options.forEach(option => {
             document.getElementById(option).style.display = "none";
         });
+        document.getElementById("skinCategoryoptionHolder").style.display = "";
         document.getElementById("skincontent").style.display = "flex";
     });
 
@@ -663,9 +716,59 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("windowBorderOptionHolder").style.display = "";
     });
 
+    document.getElementById("customcss").addEventListener("click", function() {
+        h2.innerHTML = "Custom CSS | doesn't work?";
+        options.forEach(option => {
+            document.getElementById(option).style.display = "none";
+        });
+        document.getElementById("customCSSOptionHolder").style.display = "";
+    });
+
     document.getElementById("defaultsettings").addEventListener("click", function() {
         alert("you have to create them first lol");
     });
+
+    //customCSSOptionHolder
+
+    const optionHolder = document.createElement('div');
+    optionHolder.classList.add('optionholder');
+    optionHolder.id = 'customCSSOptionHolder';
+
+    const cssSubmitButtonWrapper = document.createElement('div');
+    cssSubmitButtonWrapper.style.display = 'flex';
+    cssSubmitButtonWrapper.style.justifyContent = 'center';
+
+    const cssTextarea = document.createElement('textarea');
+    cssTextarea.rows = 4;
+    cssTextarea.cols = 30;
+    cssTextarea.style.maxWidth = '100%';
+    cssTextarea.style.minWidth = '100%';
+    cssTextarea.placeholder = 'Paste your custom CSS here...';
+
+    const cssSubmit = document.createElement('button');
+    cssSubmit.innerHTML = "Apply CSS"
+    cssSubmit.style = "padding: 10px 12.5px 10px 12.5px;background-color: #364760;border: none;color: white;font-size: 20px;border: 1px solid black;";
+
+    cssSubmitButtonWrapper.appendChild(cssSubmit);
+
+    optionHolder.appendChild(cssTextarea);
+    optionHolder.appendChild(cssSubmitButtonWrapper);
+
+    document.getElementById('rightDiv').appendChild(optionHolder);
+
+    // onclick cssSubmit
+
+    const customCSS = "";
+
+    cssSubmit.addEventListener('click', function() {
+        customCSS = cssTextarea.value;
+        console.log(customCSS)
+    });
+
+    // css
+    let skincss = document.createElement('style');
+    skincss.innerText = "@import 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap';*{z-index:1000;margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}.skinwrapper{position:absolute;top:50%;left:50%;max-width:750px;width:100%;background:#2a394f;/*has to stay like that, else the menu is see trough under header*/transform:translate(-50%,-50%);border:solid 1px #000;color:#fff;height:335px;}.skinwrapper header{font-size:23px;font-weight:500;padding:17px 30px;border-bottom:1px solid #000;text-align:center;border-top-left-radius: 10px;border-top-right-radius: 10px;}.skinwrapper header.skinactive{cursor:move;user-select:none;}.skinwrapper .skincontent{display:flex;flex-direction:wrap;flex-wrap:wrap;justify-content:center;background:#2a394f}.skincontent .title{margin:15px 0;font-size:29px;font-weight:500}.skincontent p{font-size:16px;text-align:center;display:flex}.skinbutton{width:100%;height:50px;background-color:" + skinButtonColor + ";border:none;color:#fff;font-size:20px}.skinbutton:hover{background-color:" + skinButtonHoverColor + "}.skinclose{color:grey;position:absolute;top:0;right:0;margin-right:15px;margin-top:-6px;background-color:" + skinCloseColor + ";border:none;font-size:35px}.skinclose:hover{color:#fff}p{font-size:20px}input[type=text]{float:right;margin:14px 25px 10px 0;font-weight:700;color:grey}input[type=range]{float:right;margin:16px 20px 10px 0}input[type=checkbox]{float:right;transform:scale(2);margin:14px 25px 5px 0;width:35px;font-weight:700;color:grey;}.optiondescr{float:left;margin:10px 0 10px 20px}.optionholder{background-color:" + optionColor + "}hr{width:100%;border:.1px solid #000}select{float:right;margin:14px 25px 10px 0;width:50px}.skinCategory:hover{background-color:#0798fc}/* doesn't work lol*/" + customCSS;
+    document.head.appendChild(skincss);
 
 
     // shortcuts
@@ -691,7 +794,23 @@ document.addEventListener("DOMContentLoaded", function() {
             wrapperElement.style.display = wrapperElement.style.display === "none" ? "" : "none";
         }
     });
-      
+
+    function pasteToConsole(content) {
+        console.log(content);
+    }
+    
+    const keyContentMap = {
+    'a': "Hello, World!",
+    'b': "Goodbye, World!",
+    'c': "Foo",
+    'd': "Bar"
+    };
+    
+    document.addEventListener('keydown', function(event) {
+        if (event.key in keyContentMap) {
+            pasteToConsole(keyContentMap[event.key]);
+        }
+    });
 
     // offline / online status
 
