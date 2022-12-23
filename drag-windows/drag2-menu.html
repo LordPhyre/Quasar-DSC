@@ -122,6 +122,16 @@
       width: 100%; 
       border: 0.1px solid black;
     }
+    .skinCategory {
+      padding: 10px 12.5px 10px 12.5px;
+      background-color: #364760;
+      border: none;
+      color: white;
+      font-size: 20px;
+    }
+    .skinCategory:hover{
+      background-color: #0798fc;
+    }
  </style>
 </head>
 <body>
@@ -166,10 +176,11 @@
           <hr> <!-- IMPORTANT fixes weird bug -->
 
           <div class="optionholder">
-            <p class="optiondescr">Option Name</p>
-            <input type="text" class="normalinput">
-            <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
-            <div style="height: 50px;"></div>
+            <div style="display: flex; justify-content: center;">
+              <button class="skinCategory">AWP</button>
+              <button class="skinCategory">AR2</button>
+              <button class="skinCategory">Vector</button>
+            </div>
           </div>
 
           <hr> <!-- IMPORTANT fixes weird bug -->

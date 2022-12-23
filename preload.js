@@ -462,6 +462,75 @@ document.addEventListener("DOMContentLoaded", function() {
 
     optionholders.forEach(holder => rightDivReference.appendChild(holder));
 
+    // create skin selector buttons
+
+    /*const createCategoryElement = (type, className, id, innerText) => {
+    const element = document.createCategoryElement(type);
+    element.className = className;
+    element.id = id;
+    element.innerText = innerText;
+    return element;
+    };
+
+    const optionHolder = createCategoryElement('div', 'optionholder', '', '');
+
+    const buttonWrapper = createCategoryElement('div', '', '', '');
+    buttonWrapper.style.display = 'flex';
+    buttonWrapper.style.justifyContent = 'center';
+
+    const awpButton = createCategoryElement('button', 'skinCategory', '', 'AWP');
+    const ar2Button = createCategoryElement('button', 'skinCategory', '', 'AR2');
+    const vectorButton = createCategoryElement('button', 'skinCategory', '', 'Vector');
+
+    buttonWrapper.appendChild(awpButton);
+    buttonWrapper.appendChild(ar2Button);
+    buttonWrapper.appendChild(vectorButton);
+
+    optionHolder.appendChild(buttonWrapper);
+
+    rightDivReference.appendChild(optionHolder);*/
+
+    // create skin category selector
+
+    const optionHolder = document.createElement('div');
+    optionHolder.className = 'optionholder';
+
+    const buttonWrapper = document.createElement('div');
+    buttonWrapper.style.display = 'flex';
+    buttonWrapper.style.justifyContent = 'center';
+
+    const awpButton = document.createElement('button');
+    //awpButton.className = 'skinCategory';
+    awpButton.style = "padding: 10px 12.5px 10px 12.5px;background-color: #364760;border: none;color: white;font-size: 20px;";
+
+    // idk what I am doing, also it doesn't work
+    awpButton.addEventListener('mouseenter', () => {
+        awpButton.style.color = 'background-color: #0798fc;';
+    });
+      
+    awpButton.addEventListener('mouseleave', () => {
+        awpButton.style.color = 'background-color: #364760;';
+    });
+
+    awpButton.textContent = 'AWP';
+
+    const ar2Button = document.createElement('button');
+    //ar2Button.className = 'skinCategory';
+    ar2Button.textContent = 'AR2';
+
+    const vectorButton = document.createElement('button');
+    //vectorButton.className = 'skinCategory';
+    vectorButton.textContent = 'Vector';
+
+    buttonWrapper.appendChild(awpButton);
+    buttonWrapper.appendChild(ar2Button);
+    buttonWrapper.appendChild(vectorButton);
+
+    optionHolder.appendChild(buttonWrapper);
+
+    rightDiv.appendChild(optionHolder);
+
+
     /*document.addEventListener('change', event => {
     const target = event.target;
     if (target.className === 'optioninput') {

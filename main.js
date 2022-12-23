@@ -211,6 +211,15 @@ app.whenReady().then(() => {
   
       const webpFiles = files.filter(file => file.endsWith('.webp'));
   
+      // sometimes we get this error, even if the file is already copied
+
+      /*[Error: EBUSY: resource busy or locked, unlink 'C:\Users\jesse\OneDrive\Dokumente\DeadshotClient\Resource Swapper\weapons\vector\vectorcomp.webp'] {
+        errno: -4082,
+        code: 'EBUSY',
+        syscall: 'unlink',
+        path: 'C:\\Users\\[your_username]\\OneDrive\\Dokumente\\DeadshotClient\\Resource Swapper\\weapons\\vector\\vectorcomp.webp'
+      }*/
+
       webpFiles.forEach(file => {
         fs.unlink(`${folderPath}/${file}`, err => {
           if (err) {
