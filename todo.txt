@@ -12,6 +12,8 @@
 - "No Internet" screen (not that easy as i thought)
 - ***custom*** fps counter (allows changing colors and stuff through the menu)
 - custom client keybinds
+- add hard reload button to skin loader
+- auto create skin folders (to prevent confusion)
 
 Not really possible:
 
