@@ -195,7 +195,56 @@ app.whenReady().then(() => {
     "filepaths-vector"
   );
 
-  ipcMain.on('text', (event, message) => {
+  function handleFilepathEvent(event, message, folderName, destFileName) {
+    console.log(`should be ${message}`);
+  
+    const srcPath = message.toString();
+  
+    const folderPath = path.join(app.getPath("documents"), `DeadshotClient/Resource Swapper/weapons/${folderName}/`);
+    console.log(`to ${folderPath}`);
+  
+    fs.readdir(folderPath, (err, files) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+  
+      const webpFiles = files.filter(file => file.endsWith('.webp'));
+  
+      webpFiles.forEach(file => {
+        fs.unlink(`${folderPath}/${file}`, err => {
+          if (err) {
+            console.error(err);
+          }
+        });
+      });
+    });
+  
+    const destPath = path.join(app.getPath("documents"), `DeadshotClient/Resource Swapper/weapons/${folderName}/${destFileName}`);
+  
+    fs.copyFile(srcPath, destPath, (err) => {
+      if (err) {
+        console.error(err);
+      } else {
+        console.log('Image copied successfully! With new name...');
+      }
+    });
+  }
+  
+  ipcMain.on('filepath-awp', (event, message) => {
+    handleFilepathEvent(event, message, 'awp', 'newawpcomp.webp');
+  });
+  
+  ipcMain.on('filepath-ar2', (event, message) => {
+    handleFilepathEvent(event, message, 'ar2', 'arcomp.webp');
+  });
+  
+  ipcMain.on('filepath-vector', (event, message) => {
+    handleFilepathEvent(event, message, 'vector', 'vectorcomp.webp');
+  });
+    
+
+  /*ipcMain.on('filepath-awp', (event, message) => {
     // do something with the skin path here
 
     console.log("should be " + message);
@@ -205,6 +254,7 @@ app.whenReady().then(() => {
     // clear folder
 
     const folderPath = path.join(app.getPath("documents"), "DeadshotClient/Resource Swapper/weapons/awp/");
+    console.log("to " + folderPath);
 
     fs.readdir(folderPath, (err, files) => {
       if (err) {
@@ -226,7 +276,6 @@ app.whenReady().then(() => {
     // copy, paste and rename file
 
     const destPath = path.join(app.getPath("documents"), "DeadshotClient/Resource Swapper/weapons/awp/newawpcomp.webp");
-    //C:\Users\jesse\OneDrive\Dokumente\DeadshotClient\Resource Swapper\weapons\awp
 
     fs.copyFile(srcPath, destPath, (err) => {
       if (err) {
@@ -235,14 +284,95 @@ app.whenReady().then(() => {
         console.log('Image copied successfully! With new name...');
       }
     });
-
-    //receivedData = message;
-    //handleReceivedData(message);
   });
+
+  ipcMain.on('filepath-ar2', (event, message) => {
+    // do something with the skin path here
+
+    console.log("should be " + message);
+
+    const srcPath = message.toString();
+
+    // clear folder
+
+    const folderPath = path.join(app.getPath("documents"), "DeadshotClient/Resource Swapper/weapons/ar2/");
+    console.log("to " + folderPath);
+
+    fs.readdir(folderPath, (err, files) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+
+      const webpFiles = files.filter(file => file.endsWith('.webp'));
+
+      webpFiles.forEach(file => {
+        fs.unlink(`${folderPath}/${file}`, err => {
+          if (err) {
+            console.error(err);
+          }
+        });
+      });
+    });
+
+    // copy, paste and rename file
+
+    const destPath = path.join(app.getPath("documents"), "DeadshotClient/Resource Swapper/weapons/ar2/arcomp.webp");
+
+    fs.copyFile(srcPath, destPath, (err) => {
+      if (err) {
+        console.error(err);
+      } else {
+        console.log('Image copied successfully! With new name...');
+      }
+    });
+  });
+
+  ipcMain.on('filepath-vector', (event, message) => {
+    // do something with the skin path here
+
+    console.log("should be " + message);
+
+    const srcPath = message.toString();
+
+    // clear folder
+
+    const folderPath = path.join(app.getPath("documents"), "DeadshotClient/Resource Swapper/weapons/vector/");
+    console.log("to " + folderPath);
+
+    fs.readdir(folderPath, (err, files) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+
+      const webpFiles = files.filter(file => file.endsWith('.webp'));
+
+      webpFiles.forEach(file => {
+        fs.unlink(`${folderPath}/${file}`, err => {
+          if (err) {
+            console.error(err);
+          }
+        });
+      });
+    });
+
+    // copy, paste and rename file
+
+    const destPath = path.join(app.getPath("documents"), "DeadshotClient/Resource Swapper/weapons/vector/vectorcomp.webp");
+
+    fs.copyFile(srcPath, destPath, (err) => {
+      if (err) {
+        console.error(err);
+      } else {
+        console.log('Image copied successfully! With new name...');
+      }
+    });
+  });*/
 
   ////////////////////////////////////////////////////////
 
-    //Swapper -> Credits to Captain Cool 💪
+    // Swapper -> Credits to Captain Cool 💪
 
     swapper.replaceResources(win, app);
 

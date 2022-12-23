@@ -237,49 +237,48 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // handle skins
     function skinPathHandlerAwp(src) {
-        console.log("skinpathhandler received the following path: " + src)
-
-        require('electron').ipcRenderer.send('text', src)
-
-        console.log("sent")
+        require('electron').ipcRenderer.send('filepath-awp', src)
     }
 
     function skinPathHandlerAr2(src) {
-        console.log("skinpathhandler received the following path: " + src)
-
-        require('electron').ipcRenderer.send('text', src)
-
-        console.log("sent")
+        require('electron').ipcRenderer.send('filepath-ar2', src)
     }
 
     function skinPathHandlerVector(src) {
-        console.log("skinpathhandler received the following path: " + src)
-
-        require('electron').ipcRenderer.send('text', src)
-
-        console.log("sent")
+        require('electron').ipcRenderer.send('filepath-vector', src)
     }
 
-    // get skins
+    // get skins -> they all override awp atm fix later
 
-    function processSkins(skins) {
+    var skipper = 1;
+
+    function processSkins(skins, handler) {
         console.log(skins);
         console.log(skins.length);
         
         for (let i = 0; i < skins.length; i++) {
             let element;
-            if (i > 0) {
-            let flexSquareClone = flexSquare.cloneNode(true);
-            flexSquareClone.setAttribute('src', skins[i]);
-            element = flexSquareClone;
+            if (skipper > 0) {
+                let flexSquareClone = flexSquare.cloneNode(true);
+                flexSquareClone.setAttribute('src', skins[i]);
+                element = flexSquareClone;
+                skipper++;
             } else {
-            flexSquare.src = skins[i];
-            element = flexSquare;
+                flexSquare.src = skins[i];
+                element = flexSquare;
             }
         
             element.addEventListener('click', function() {
-            let src = this.getAttribute('src');
-            console.log("The source of the selected skin is: " + src);
+                let src = this.getAttribute('src');
+                console.log("The source of the selected skin is: " + src);
+                // need to run this thing here (ykwim)
+                if (handler == 1) {
+                    skinPathHandlerAwp(src);
+                } else if (handler == 2) {
+                    skinPathHandlerAr2(src);
+                } else if (handler == 3) {
+                    skinPathHandlerVector(src);
+                }
             });
         
             skincontentselector.appendChild(element);
@@ -287,21 +286,19 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     
     require('electron').ipcRenderer.on('filepaths-awp', (event, message) => {
-        processSkins(message);
-        skinPathHandlerAwp(src);
+        processSkins(message, 1);
+        //skinPathHandlerAwp(src);
     });
-
-    // if I don't comment these out the last skin folder is shown (in this case awp) -> the error that only one skin is hsown has something to do with the cresting of the element (there are "no" bugs)
     
-    /*require('electron').ipcRenderer.on('filepaths-ar2', (event, message) => {
-        processSkins(message);
-        skinPathHandlerAr2(src);
+    require('electron').ipcRenderer.on('filepaths-ar2', (event, message) => {
+        processSkins(message, 2);
+        //skinPathHandlerAr2(src);
     });
     
     require('electron').ipcRenderer.on('filepaths-vector', (event, message) => {
-        processSkins(message);
-        skinPathHandlerVector(src);
-    });*/
+        processSkins(message, 3);
+        //skinPathHandlerVector(src);
+    });
 
       
     /*require('electron').ipcRenderer.on('filepaths-awp', (event, message) => {
@@ -542,7 +539,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // hide
     skincontent.style.display = "none";
 
-    const options = ["fpsDisplayOptionHolder", "onlineDisplayOptionHolder", "shortcutDisplayOptionHolder", "skincontent", "behindOptionsColorOptionHolder", "menuHeaderColorOptionHolder", "skinButtonColorOptionHolder", "opacityOptionHolder", "windowBorderOptionHolder"];
+    const options = ["fpsDisplayOptionHolder", "onlineDisplayOptionHolder", "shortcutDisplayOptionHolder", "skincontent", "behindOptionsColorOptionHolder", "menuHeaderColorOptionHolder", "skinButtonColorOptionHolder", "opacityOptionHolder", "windowBorderOptionHolder", "shortcutOptionHolder"];
 
     
     document.getElementById("allOptions").addEventListener("click", function() {
@@ -567,6 +564,7 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById(option).style.display = "none";
         });
         document.getElementById("shortcutDisplayOptionHolder").style.display = "";
+        document.getElementById("shortcutOptionHolder").style.display = "";
     });
 
     document.getElementById("skinmenu").addEventListener("click", function() {
