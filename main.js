@@ -142,6 +142,7 @@ app.whenReady().then(() => {
         console.error(err);
       } else {
         console.log('Image copied successfully! With new name...');
+        webContents.reload({ ignoreCache: true })
       }
     });
   }

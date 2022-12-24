@@ -1,5 +1,6 @@
 const { readFileSync } = require('fs'); // just in case
 const { ipcMain } = require('electron');
+const { workerData } = require('worker_threads');
 //window.$ = window.jQuery = require('./node_modules/jquery/dist/jquery.min.js');
 document.addEventListener("DOMContentLoaded", function() {
 
@@ -363,7 +364,6 @@ document.addEventListener("DOMContentLoaded", function() {
             element.addEventListener('click', function() {
                 let src = this.getAttribute('src');
                 console.log("The source of the selected skin is: " + src);
-                // need to run this thing here (ykwim)
                 if (handler == 1) {
                     skinPathHandlerAwp(src);
                 } else if (handler == 2) {
@@ -391,7 +391,6 @@ document.addEventListener("DOMContentLoaded", function() {
         processSkins(message, 3, 'vector');
         //skinPathHandlerVector(src);
     });
-
       
     /*require('electron').ipcRenderer.on('filepaths-awp', (event, message) => {
         var skins = message;
@@ -502,6 +501,8 @@ document.addEventListener("DOMContentLoaded", function() {
         return element;
     };
 
+    /*let keyNumber = 1;
+
     const createOptionHolder = (id, descrText, inputId) => {
         const optionHolder = createElement('div', 'optionholder', id, '');
         const optionDescr = createElement('p', 'optiondescr', '', descrText);
@@ -513,21 +514,29 @@ document.addEventListener("DOMContentLoaded", function() {
             optionInput.placeholder = 'e.g. 0.95';
         } else if (id == "windowBorderOptionHolder") {
             optionInput.placeholder = 'e.g. 10';
-        } else if (id == "shortcutOptionHolder") {
+        } else if (id.includes("shortcutOptionHolder")) {
             optionInput.placeholder = 'very nice kill';
             optionInput.style.width = '140px';
         
-            const select = document.createElement('select');
-            select.style.width = "35px";
+            /*const select = document.createElement('select');
+            select.style.width = "35px";*/
+
+            /*const input = document.createElement('input');
+            input.type = "text";
+            input.style.width = "35px";
+            input.disabled = "true";
+            input.value = keyNumber;
+
+            keyNumber++;*/
         
-            for (let i = 1; i <= 10; i++) {
+            /*for (let i = 1; i <= 10; i++) {
                 const option = document.createElement('option');
                 option.value = i;
                 option.innerText = i;
                 select.appendChild(option);
-            }
+            }*/
         
-            optionHolder.appendChild(select);
+            /*optionHolder.appendChild(input);
         }
          else {
             optionInput.placeholder = 'e.g. #2a394f';
@@ -549,9 +558,139 @@ document.addEventListener("DOMContentLoaded", function() {
     createOptionHolder('opacityOptionHolder', 'Opacity', 'opacityOptionInput');
     createOptionHolder('windowBorderOptionHolder', 'Window Border', 'windowBorderOptionInput');
     createOptionHolder('shortcutOptionHolder', 'Shortcut Option', 'shortcutOptionInput');
+    createOptionHolder('shortcutOptionHolder2', 'Shortcut Option2', 'shortcutOptionInput2');
+    createOptionHolder('shortcutOptionHolder3', 'Shortcut Option3', 'shortcutOptionInput3');
+    createOptionHolder('shortcutOptionHolder4', 'Shortcut Option4', 'shortcutOptionInput4');
+    createOptionHolder('shortcutOptionHolder5', 'Shortcut Option5', 'shortcutOptionInput5');*/
+
+    let keyNumber = 1;
+
+    const createOptionHolder = (id, descrText, inputId) => {
+        const optionHolder = createElement('div', 'optionholder', id, '');
+        const optionDescr = createElement('p', 'optiondescr', '', descrText);
+        const optionInput = createElement('input', '', inputId, '');
+        optionInput.type = 'text';
+        optionInput.style.width = '100px';
+        if (id == 'opacityOptionHolder') {
+            optionInput.placeholder = 'e.g. 0.95';
+        } else if (id == 'windowBorderOptionHolder') {
+            optionInput.placeholder = 'e.g. 10';
+        } else if (id.includes('shortcutOptionHolder')) {
+            optionInput.placeholder = 'very nice kill';
+            optionInput.style.width = '140px';
+            optionInput.name = inputId;
+            optionInput.id = keyNumber++;
+            optionInput.setAttribute('value','My default value');
+
+            /*const input = document.createElement('input');
+            input.type = 'text';
+            input.style.width = '35px';
+            input.disabled = 'true';
+            input.value = keyNumber;*/
+
+            //optionHolder.appendChild(input);
+        } else {
+            optionInput.placeholder = 'e.g. #2a394f';
+        }
+
+        optionholders.push(optionHolder);
+        optiondescrs.push(optionDescr);
+        optioninputs.push(optionInput);
+
+        optionHolder.appendChild(optionDescr);
+        optionHolder.appendChild(optionInput);
+        optionHolder.appendChild(optionSpaceThing);
+        optionHolder.appendChild(optionHr);
+    };
+
+    createOptionHolder('menuHeaderColorOptionHolder', 'Header Color', 'menuHeaderColorOptionInput');
+    createOptionHolder('behindOptionsColorOptionHolder', 'Behind-Options Color', 'behindOptionsColorOptionInput');
+    createOptionHolder('skinButtonColorOptionHolder', 'Skin Button Color', 'skinButtonColorOptionInput');
+    createOptionHolder('opacityOptionHolder', 'Opacity', 'opacityOptionInput');
+    createOptionHolder('windowBorderOptionHolder', 'Window Border', 'windowBorderOptionInput');
+    createOptionHolder('shortcutOptionHolder', 'Shortcut Option [1]', 'shortcutOptionInput');
+    createOptionHolder('shortcutOptionHolder2', 'Shortcut Option [2]', 'shortcutOptionInput2');
+    createOptionHolder('shortcutOptionHolder3', 'Shortcut Option [3]', 'shortcutOptionInput3');
+    createOptionHolder('shortcutOptionHolder4', 'Shortcut Option [4]', 'shortcutOptionInput4');
+    createOptionHolder('shortcutOptionHolder5', 'Shortcut Option [5]', 'shortcutOptionInput5');
 
     optionholders.forEach(holder => rightDiv.appendChild(holder));
 
+    // get the shortcut values to later reuse
+    const one = document.getElementsByName('shortcutOptionInput')[0].id;
+    const two = document.getElementsByName('shortcutOptionInput2')[0].id;
+    const three = document.getElementsByName('shortcutOptionInput3')[0].id;
+    const four = document.getElementsByName('shortcutOptionInput4')[0].id;
+    const five = document.getElementsByName('shortcutOptionInput5')[0].id;
+
+    var oneValue = document.getElementsByName('shortcutOptionInput')[0].value;
+    var twoValue = document.getElementsByName('shortcutOptionInput')[0].value;
+    var threeValue = document.getElementsByName('shortcutOptionInput')[0].value;
+    var fourValue = document.getElementsByName('shortcutOptionInput')[0].value;
+    var fiveValue = document.getElementsByName('shortcutOptionInput')[0].value;
+
+    var keyContentMap = {
+        [one]: [oneValue],
+        [two]: [twoValue],
+        [three]: [threeValue],
+        [four]: [fourValue],
+        [five]: [fiveValue],
+    };
+
+    console.log(keyContentMap);
+
+    const inputs = ['shortcutOptionInput', 'shortcutOptionInput2', 'shortcutOptionInput3', 'shortcutOptionInput4', 'shortcutOptionInput5'];
+
+    inputs.forEach((input, index) => {
+    const element = document.getElementsByName(input)[0];
+        element.addEventListener('change', function() {
+            const variableName = `${input.substring(0, 1).toLowerCase()}${input.substring(1)}`; //shortcutOptionInput
+            window[variableName] = element.id;
+            window[`${variableName}Value`] = element.value;
+            console.log(element.value);
+
+            if (element.id == 1) {
+                oneValue = element.value;
+            } else if (element.id == 2) {
+                twoValue = element.value;
+            } else if (element.id == 3) {
+                threeValue = element.value;
+            } else if (element.id == 4) {
+                fourValue = element.value;
+            } else if (element.id == 5) {
+                fiveValue = element.value;
+            }
+
+            /* update value:
+                1.  element.id*/
+
+            keyContentMap = {
+                [one]: [oneValue],
+                [two]: [twoValue],
+                [three]: [threeValue],
+                [four]: [fourValue],
+                [five]: [fiveValue],
+            };
+
+            console.log(keyContentMap);
+        });
+    });
+    
+    document.addEventListener('keydown', function(event) {
+        const chatInput = document.querySelector('input[placeholder="[Enter] to use chat"]');
+        const event222 = new KeyboardEvent('keydown', {
+          keyCode: 13,
+          bubbles: true,
+          cancelable: true
+        });
+
+        if (event.key in keyContentMap) {
+            chatInput.value = keyContentMap[event.key];
+            chatInput.dispatchEvent(event222);
+            chatInput.dispatchEvent(event222);
+        }
+    });
+    
     // create skin selector buttons
 
     /*const createCategoryElement = (type, className, id, innerText) => {
@@ -689,7 +828,18 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     document.getElementById("skinmenu").addEventListener("click", function() {
-        h2.innerHTML = "Skins";
+        //h2.innerHTML = 'Skins <button id="reload">Reload</button>';
+        h2.innerHTML = 'Skins'
+
+        const reloadButton = document.createElement("button")
+        reloadButton.innerHTML = "Reload";
+        reloadButton.id = "reload";
+        h2.appendChild(reloadButton);
+
+        reloadButton.addEventListener("click", function() {
+            webContents.reload({ ignoreCache: true }) // doesn't work, send to main via ipc and do from there
+        });
+        
         options.forEach(option => {
             document.getElementById(option).style.display = "none";
         });
@@ -774,43 +924,22 @@ document.addEventListener("DOMContentLoaded", function() {
     // shortcuts
 
     document.body.addEventListener('keypress', (e) => {
-        const chatInput = document.querySelector('input[placeholder="[Enter] to use chat"]');
-        const event = new KeyboardEvent('keydown', {
-          keyCode: 13,
-          bubbles: true,
-          cancelable: true
-        });
-      
-        if (e.key == '1') {
-            chatInput.value = 'GG';
-            chatInput.dispatchEvent(event);
-            chatInput.dispatchEvent(event);
-        } else if (e.key == '2') {
+        if (e.key == 'Tab') {
+            const wrapperElement = document.getElementById("skinWrapper");
+            wrapperElement.style.display = wrapperElement.style.display === "none" ? "" : "none";
+        } /*else if (e.key == '2') {
             chatInput.value = 'hello guys';
             chatInput.dispatchEvent(event);
             chatInput.dispatchEvent(event);
         } else if (e.key == '3') {
             const wrapperElement = document.getElementById("skinWrapper");
             wrapperElement.style.display = wrapperElement.style.display === "none" ? "" : "none";
-        }
+        }*/
     });
 
     function pasteToConsole(content) {
         console.log(content);
     }
-    
-    const keyContentMap = {
-    'a': "Hello, World!",
-    'b': "Goodbye, World!",
-    'c': "Foo",
-    'd': "Bar"
-    };
-    
-    document.addEventListener('keydown', function(event) {
-        if (event.key in keyContentMap) {
-            pasteToConsole(keyContentMap[event.key]);
-        }
-    });
 
     // offline / online status
 
