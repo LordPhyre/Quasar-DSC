@@ -78,6 +78,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const buttonData = [
         { text: 'All Options', id: 'allOptions' },
         { text: 'General', id: 'general' },
+        { text: 'Stats', id: 'stats' },
         { text: 'Shortcuts', id: 'shortcuts' },
         { text: 'Skins', id: 'skinmenu' },
         { text: 'Aimbot', id: 'aimbot' },
@@ -121,9 +122,44 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const optionList = [
     {
+        holderId: "platformDisplayOptionHolder",
+        descrText: "Platform",
+        checkId: "platformDisplayCheck",
+    },
+    {
         holderId: "fpsDisplayOptionHolder",
         descrText: "FPS-Counter",
         checkId: "fpsDisplayCheck",
+    },
+    {
+        holderId: "cpuUsageDisplayOptionHolder",
+        descrText: "CPU Usage",
+        checkId: "cpuUsageDisplayCheck",
+    },
+    {
+        holderId: "memoryUsageDisplayOptionHolder",
+        descrText: "Memory Usage",
+        checkId: "memoryUsageDisplayCheck",
+    },
+    {
+        holderId: "totalMemoryDisplayOptionHolder",
+        descrText: "Total Memory",
+        checkId: "totalMemoryDisplayCheck",
+    },
+    {
+        holderId: "cpuCoresDisplayOptionHolder",
+        descrText: "CPU Cores",
+        checkId: "cpuCoresDisplayCheck",
+    },
+    {
+        holderId: "uptimeDisplayOptionHolder",
+        descrText: "Uptime",
+        checkId: "uptimeDisplayCheck",
+    },
+    {
+        holderId: "onlineDisplayOptionHolder",
+        descrText: "Network Status",
+        checkId: "onlineDisplayCheck",
         /*onChange: e => {
         if (e.target.checked) {
             fpscounter.hidden = false;
@@ -133,19 +169,9 @@ document.addEventListener("DOMContentLoaded", function() {
         }*/
     },
     {
-        holderId: "onlineDisplayOptionHolder",
-        descrText: "Network Status",
-        checkId: "onlineDisplayCheck",
-    },
-    {
         holderId: "shortcutDisplayOptionHolder",
         descrText: "Show Shortcuts",
         checkId: "shortcutDisplayCheck",
-    },
-    {
-        holderId: "generalStatsDisplayOptionHolder",
-        descrText: "General Stats",
-        checkId: "generalStatsDisplayCheck",
     },
     ];
       
@@ -180,7 +206,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // only including this bc the others don't work lol
     fpsDisplayCheck.addEventListener('change', e => {
         if(e.target.checked){
-            fpscounter.style.display = "initial"; // initial works better for skill, use that in the future instead of ""
+            fpscounter.style.display = "block";
         } else {
             fpscounter.style.display = "none";
         }
@@ -188,7 +214,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     onlineDisplayCheck.addEventListener('change', e => {
         if(e.target.checked){
-            status.style.display = "initial";
+            status.style.display = "block";
         } else {
             status.style.display = "none";
         }
@@ -196,17 +222,57 @@ document.addEventListener("DOMContentLoaded", function() {
 
     shortcutDisplayCheck.addEventListener('change', e => {
         if(e.target.checked){
-            shortcuts.style.display = "initial";
+            shortcuts.style.display = "block";
         } else {
             shortcuts.style.display = "none";
         }
     });
 
-    generalStatsDisplayCheck.addEventListener('change', e => {
+    platformDisplayCheck.addEventListener('change', e => {
         if(e.target.checked){
-            statsHolder.style.display = "initial";
+            platform.style.display = "block";
         } else {
-            statsHolder.style.display = "none";
+            platform.style.display = "none";
+        }
+    });
+
+    cpuUsageDisplayCheck.addEventListener('change', e => {
+        if(e.target.checked){
+            cpu.style.display = "block";
+        } else {
+            cpu.style.display = "none";
+        }
+    });
+
+    memoryUsageDisplayCheck.addEventListener('change', e => {
+        if(e.target.checked){
+            mem.style.display = "block";
+        } else {
+            mem.style.display = "none";
+        }
+    });
+
+    totalMemoryDisplayCheck.addEventListener('change', e => {
+        if(e.target.checked){
+            totalMem.style.display = "block";
+        } else {
+            totalMem.style.display = "none";
+        }
+    });
+
+    cpuCoresDisplayCheck.addEventListener('change', e => {
+        if(e.target.checked){
+            cpuCount.style.display = "block";
+        } else {
+            cpuCount.style.display = "none";
+        }
+    });
+
+    uptimeDisplayCheck.addEventListener('change', e => {
+        if(e.target.checked){
+            uptime.style.display = "block";
+        } else {
+            uptime.style.display = "none";
         }
     });
 
@@ -712,7 +778,9 @@ document.addEventListener("DOMContentLoaded", function() {
     // disable, bc key is already taken
     document.getElementsByName('shortcutOptionInput')[0].disabled = true;
 
-    const options = ["fpsDisplayOptionHolder", "onlineDisplayOptionHolder", "shortcutDisplayOptionHolder", "skincontent", "behindOptionsColorOptionHolder", "menuHeaderColorOptionHolder", "skinButtonColorOptionHolder", "opacityOptionHolder", "windowBorderOptionHolder", "skinCategoryoptionHolder", "customCSSOptionHolder", "shortcutOptionHolder", "shortcutOptionHolder2", "shortcutOptionHolder3", "shortcutOptionHolder4", "shortcutOptionHolder5", "generalStatsDisplayOptionHolder"];
+
+
+    const options = ["fpsDisplayOptionHolder", "onlineDisplayOptionHolder", "shortcutDisplayOptionHolder", "skincontent", "behindOptionsColorOptionHolder", "menuHeaderColorOptionHolder", "skinButtonColorOptionHolder", "opacityOptionHolder", "windowBorderOptionHolder", "skinCategoryoptionHolder", "customCSSOptionHolder", "shortcutOptionHolder", "shortcutOptionHolder2", "shortcutOptionHolder3", "shortcutOptionHolder4", "shortcutOptionHolder5", "platformDisplayOptionHolder", "cpuUsageDisplayOptionHolder", "memoryUsageDisplayOptionHolder", "totalMemoryDisplayOptionHolder", "cpuCoresDisplayOptionHolder", "uptimeDisplayOptionHolder"];
     
     document.getElementById("allOptions").addEventListener("click", function() {
         h2.innerHTML = "All Options";
@@ -726,9 +794,21 @@ document.addEventListener("DOMContentLoaded", function() {
         options.forEach(option => {
             document.getElementById(option).style.display = "none";
         });
-        document.getElementById("fpsDisplayOptionHolder").style.display = "";
         document.getElementById("onlineDisplayOptionHolder").style.display = "";
-        document.getElementById("generalStatsDisplayOptionHolder").style.display = "";
+    });
+
+    document.getElementById("stats").addEventListener("click", function() {
+        h2.innerHTML = "Stats";
+        options.forEach(option => {
+            document.getElementById(option).style.display = "none";
+        });
+        document.getElementById("platformDisplayOptionHolder").style.display = "";
+        document.getElementById("fpsDisplayOptionHolder").style.display = "";
+        document.getElementById("cpuUsageDisplayOptionHolder").style.display = "";
+        document.getElementById("memoryUsageDisplayOptionHolder").style.display = "";
+        document.getElementById("totalMemoryDisplayOptionHolder").style.display = "";
+        document.getElementById("cpuCoresDisplayOptionHolder").style.display = "";
+        document.getElementById("uptimeDisplayOptionHolder").style.display = "";
     });
 
     document.getElementById("shortcuts").addEventListener("click", function() {
@@ -890,90 +970,39 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const statsHolder = document.createElement("div");
     statsHolder.id = "statsHolder";
-    statsHolder.style = "position: absolute; left: 100;top: 100; z-index: 1000; color: grey; margin-left: 7.5px; font-size: 100%; display: none;";
+    statsHolder.style = "position: absolute; left: 0;top: 100; z-index: 1000; color: grey; margin-left: 5px; font-size: 100%;";
     document.body.appendChild(statsHolder);
 
-    // FPS-Counter
-
-    const fpscounter = document.createElement("h2");
-    fpscounter.innerHTML = "FPS Counter";
-    fpscounter.id = "fpscounter";
-    fpscounter.style = "position: absolute; left: 100;top: 100; z-index: 1000; color: grey; margin-left: 7.5px; font-size: 100%; display: none;";
-    statsHolder.appendChild(fpscounter);
-
-    let fps = 0;
-    let frameCount = 0;
-    let startTime = 0;
-
-    function updateFps() {
-        frameCount++;
-
-        const elapsedTime = (performance.now() - startTime) / 1000;
-
-        if (elapsedTime > 1) {
-            fps = frameCount / elapsedTime;
-            startTime = performance.now();
-            frameCount = 0;
-        }
-
-        document.getElementById('fpscounter').innerText = 'FPS: ' + fps.toFixed(2);
-
-        requestAnimationFrame(updateFps);
-    }
-
-    updateFps();
-
+    
     const electron = require('electron');
     const ipcRenderer = electron.ipcRenderer; // apply that later to everything
+    
+    const elementIds = ['fpscounter', 'platform', 'cpu', 'mem', 'totalMem', 'cpuCount', 'uptime'];
+    const styles = "z-index: 1000; color: grey; font-size: 100%; display: none;";
+    
+    for (const id of elementIds) {
+      const element = document.createElement("h2");
+      element.innerHTML = "loading...";
+      element.id = id;
+      element.style = styles;
+      statsHolder.appendChild(element);
 
-    const platform = document.createElement("h2");
-    platform.innerHTML = "loading...";
-    platform.id = "platform";
-    platform.style = "z-index: 1000; color: grey; margin-left: 7.5px; font-size: 100%;"; //display: none;";
-    statsHolder.appendChild(platform);
-
-    const cpu = document.createElement("h2");
-    cpu.innerHTML = "loading...";
-    cpu.id = "cpu";
-    cpu.style = "z-index: 1000; color: grey; margin-left: 7.5px; font-size: 100%;"; //display: none;";
-    statsHolder.appendChild(cpu);
-
-    const mem = document.createElement("h2");
-    mem.innerHTML = "loading...";
-    mem.id = "mem";
-    mem.style = "z-index: 1000; color: grey; margin-left: 7.5px; font-size: 100%;"; //display: none;";
-    statsHolder.appendChild(mem);
-
-    const totalMem = document.createElement("h2");
-    totalMem.innerHTML = "loading...";
-    totalMem.id = "totalMem";
-    totalMem.style = "z-index: 1000; color: grey; margin-left: 7.5px; font-size: 100%;"; //display: none;";
-    statsHolder.appendChild(totalMem);
+      /*const br = document.createElement("br");
+      statsHolder.appendChild(br);*/
+    }    
 
     /*const freeMem = document.createElement("h2");
     freeMem.innerHTML = "loading...";
     freeMem.id = "freeMem";
     freeMem.style = "z-index: 1000; color: grey; margin-left: 7.5px; font-size: 100%;"; //display: none;";
     statsHolder.appendChild(freeMem);*/
-
-    const cpuCount = document.createElement("h2");
-    cpuCount.innerHTML = "loading...";
-    cpuCount.id = "cpuCount";
-    cpuCount.style = "z-index: 1000; color: grey; margin-left: 7.5px; font-size: 100%;"; //display: none;";
-    statsHolder.appendChild(cpuCount);
-
-    const uptime = document.createElement("h2");
-    uptime.innerHTML = "loading...";
-    uptime.id = "uptime";
-    uptime.style = "z-index: 1000; color: grey; margin-left: 7.5px; font-size: 100%;"; //display: none;";
-    statsHolder.appendChild(uptime);
-
+    
     /*const ram = document.createElement("h2");
     ram.innerHTML = "loading...";
     ram.id = "ram";
     ram.style = "z-index: 1000; color: grey; margin-left: 7.5px; font-size: 100%;"; //display: none;";
     statsHolder.appendChild(ram);*/
-
+    
     ipcRenderer.on('platform',(event,data) => {
         document.getElementById('platform').innerHTML = "Platform: " + data;
     });
@@ -998,46 +1027,36 @@ document.addEventListener("DOMContentLoaded", function() {
     ipcRenderer.on('uptime',(event,data) => {
         document.getElementById('uptime').innerHTML = "Uptime: " + data.toFixed(2) + "s";
     });
+    
+    // FPS-Counter
 
-    /*const os = require('os');
-    const { cpuUsage } = require('process');
-    
-    // Initialize the cpuUsage function to ensure the values are properly initialized
-    cpuUsage();
-    
-    setInterval(() => {
-      // Retrieve the CPU usage
-      try {
-        const cpuUsageData = cpuUsage();
-        const numCores = os.cpus().length;
-        if (typeof cpuUsageData.percentCPUUsage === 'number') {
-          const cpuUsageGHz = (cpuUsageData.percentCPUUsage / 100) * numCores;
-          console.log(`CPU usage: ${cpuUsageGHz.toFixed(2)} GHz`);
-        } else {
-          console.error('Invalid CPU usage data:', cpuUsageData);
+    /*const fpscounter = document.createElement("h2");
+    fpscounter.innerHTML = "FPS Counter";
+    fpscounter.id = "fpscounter";
+    fpscounter.style = "position: absolute; left: 100;top: 100; z-index: 1000; color: grey; margin-left: 7.5px; font-size: 100%; display: none;";
+    statsHolder.appendChild(fpscounter);*/
+
+    let fps = 0;
+    let frameCount = 0;
+    let startTime = 0;
+
+    function updateFps() {
+        frameCount++;
+
+        const elapsedTime = (performance.now() - startTime) / 1000;
+
+        if (elapsedTime > 1) {
+            fps = frameCount / elapsedTime;
+            startTime = performance.now();
+            frameCount = 0;
         }
-      } catch (error) {
-        console.error(error);
-      }
-    
-      // Retrieve the memory usage
-      console.log(`Free memory: ${(os.freemem() / (1024 ** 3)).toFixed(2)} GB`);
-      console.log(`Total memory: ${(os.totalmem() / (1024 ** 3)).toFixed(2)} GB`);
-    }, 1000);
 
-    const gpuMonitor = require('nvidia-gpu-monitor');
+        document.getElementById('fpscounter').innerText = 'FPS: ' + fps.toFixed(2);
 
-    // Initialize the GPU monitor
-    gpuMonitor.init().then(() => {
-    console.log('GPU monitor initialized');
+        requestAnimationFrame(updateFps);
+    }
 
-    // Retrieve the GPU usage every second
-    setInterval(() => {
-        gpuMonitor.getUsage().then((usage) => {
-        console.log(`GPU usage: ${usage}%`);
-        });
-    }, 1000);
-    });*/
+    updateFps();
 
 
     // alternative fps chart
