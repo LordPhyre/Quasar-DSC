@@ -15,15 +15,6 @@ document.addEventListener("DOMContentLoaded", function() {
     var opacity = 0.95;
     var skinWrapperBorderRadius = "10";
 
-    // shortcutdisplay
-
-    const shortcuts = document.createElement("h2");
-    shortcuts.innerHTML = "[1] GG  [2] hello guys  [3] show  [4] hide";
-    shortcuts.type = "submit";
-    shortcuts.id = "shortcutsdisplay";
-    shortcuts.style = "position: absolute; left: 0; bottom: 0; z-index: 1000; color: grey; background-color: transparent; outline: none; margin-bottom: 4px; margin-left: 7.5px; outline: none; border: none; font-size: 100%; display: none;";
-    document.body.appendChild(shortcuts);
-
     // draggable window | make all of this easier with modules -> https://stackoverflow.com/questions/950087/how-do-i-include-a-javascript-file-in-another-javascript-file
 
     // wrapper
@@ -629,6 +620,8 @@ document.addEventListener("DOMContentLoaded", function() {
     var fourValue = document.getElementsByName('shortcutOptionInput')[0].value;
     var fiveValue = document.getElementsByName('shortcutOptionInput')[0].value;
 
+    // shortcut initialisation
+
     var keyContentMap = {
         [one]: [oneValue],
         [two]: [twoValue],
@@ -638,6 +631,15 @@ document.addEventListener("DOMContentLoaded", function() {
     };
 
     console.log(keyContentMap);
+
+    // shortcutdisplay
+
+    const shortcuts = document.createElement("h2");
+    shortcuts.innerHTML = "[" + one + "] On/Off  [" + two + "] " + twoValue + "  [" + three + "] " + threeValue + "  [" + four + "] " + fourValue + "  [" + five + "] " + fiveValue;
+    shortcuts.type = "submit";
+    shortcuts.id = "shortcutsdisplay";
+    shortcuts.style = "position: absolute; left: 0; bottom: 0; z-index: 1000; color: grey; background-color: transparent; outline: none; margin-bottom: 4px; margin-left: 7.5px; outline: none; border: none; font-size: 100%; display: none;";
+    document.body.appendChild(shortcuts);
 
     const inputs = ['shortcutOptionInput', 'shortcutOptionInput2', 'shortcutOptionInput3', 'shortcutOptionInput4', 'shortcutOptionInput5'];
 
@@ -671,6 +673,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 [four]: [fourValue],
                 [five]: [fiveValue],
             };
+
+            shortcuts.innerHTML = "[" + one + "] On/Off  [" + two + "] " + twoValue + "  [" + three + "] " + threeValue + "  [" + four + "] " + fourValue + "  [" + five + "] " + fiveValue;
 
             console.log(keyContentMap);
         });
