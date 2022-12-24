@@ -979,13 +979,20 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // ping | doesn't work | jquery is the problem | look at ping.txt in saveforlater
 
+    // stats holder
+
+    const statsHolder = document.createElement("div");
+    statsHolder.id = "statsHolder";
+    statsHolder.style = "position: absolute; left: 100;top: 100; z-index: 1000; color: grey; margin-left: 7.5px; font-size: 100%;";
+    document.body.appendChild(statsHolder);
+
     // FPS-Counter
 
     const fpscounter = document.createElement("h2");
     fpscounter.innerHTML = "FPS Counter";
     fpscounter.id = "fpscounter";
     fpscounter.style = "position: absolute; left: 100;top: 100; z-index: 1000; color: grey; margin-left: 7.5px; font-size: 100%; display: none;";
-    document.body.appendChild(fpscounter);
+    statsHolder.appendChild(fpscounter);
 
     let fps = 0;
     let frameCount = 0;
@@ -1008,6 +1015,82 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     updateFps();
+
+    const electron = require('electron');
+    const ipcRenderer = electron.ipcRenderer; // apply that later to everything
+
+    const platform = document.createElement("h2");
+    platform.innerHTML = "loading...";
+    platform.id = "platform";
+    platform.style = "z-index: 1000; color: grey; margin-left: 7.5px; font-size: 100%;"; //display: none;";
+    statsHolder.appendChild(platform);
+
+    const cpu = document.createElement("h2");
+    cpu.innerHTML = "loading...";
+    cpu.id = "cpu";
+    cpu.style = "z-index: 1000; color: grey; margin-left: 7.5px; font-size: 100%;"; //display: none;";
+    statsHolder.appendChild(cpu);
+
+    const mem = document.createElement("h2");
+    mem.innerHTML = "loading...";
+    mem.id = "mem";
+    mem.style = "z-index: 1000; color: grey; margin-left: 7.5px; font-size: 100%;"; //display: none;";
+    statsHolder.appendChild(mem);
+
+    const totalMem = document.createElement("h2");
+    totalMem.innerHTML = "loading...";
+    totalMem.id = "totalMem";
+    totalMem.style = "z-index: 1000; color: grey; margin-left: 7.5px; font-size: 100%;"; //display: none;";
+    statsHolder.appendChild(totalMem);
+
+    /*const freeMem = document.createElement("h2");
+    freeMem.innerHTML = "loading...";
+    freeMem.id = "freeMem";
+    freeMem.style = "z-index: 1000; color: grey; margin-left: 7.5px; font-size: 100%;"; //display: none;";
+    statsHolder.appendChild(freeMem);*/
+
+    const cpuCount = document.createElement("h2");
+    cpuCount.innerHTML = "loading...";
+    cpuCount.id = "cpuCount";
+    cpuCount.style = "z-index: 1000; color: grey; margin-left: 7.5px; font-size: 100%;"; //display: none;";
+    statsHolder.appendChild(cpuCount);
+
+    const uptime = document.createElement("h2");
+    uptime.innerHTML = "loading...";
+    uptime.id = "uptime";
+    uptime.style = "z-index: 1000; color: grey; margin-left: 7.5px; font-size: 100%;"; //display: none;";
+    statsHolder.appendChild(uptime);
+
+    /*const ram = document.createElement("h2");
+    ram.innerHTML = "loading...";
+    ram.id = "ram";
+    ram.style = "z-index: 1000; color: grey; margin-left: 7.5px; font-size: 100%;"; //display: none;";
+    statsHolder.appendChild(ram);*/
+
+    ipcRenderer.on('platform',(event,data) => {
+        document.getElementById('platform').innerHTML = "Platform: " + data;
+    });
+    ipcRenderer.on('cpu',(event,data) => {
+        document.getElementById('cpu').innerHTML = "CPU: " + data.toFixed(2) + "%";
+    });
+    ipcRenderer.on('mem',(event,data) => {
+        document.getElementById('mem').innerHTML = "Memory: " + data.toFixed(2);
+    });
+    ipcRenderer.on('total-mem',(event,data) => {
+        document.getElementById('totalMem').innerHTML = "Tot. Mem.: " + data.toFixed(2) + "%";
+    });
+    /*ipcRenderer.on('freemem',(event,data) => {
+        document.getElementById('freemem').innerHTML = "Free Mem.: " + data.toFixed(2);
+    });
+    ipcRenderer.on('ram',(event,data) => {
+        document.getElementById('ram').innerHTML = "RAM: " + data.toFixed(2);
+    });*/
+    ipcRenderer.on('cpu-count',(event,data) => {
+        document.getElementById('cpuCount').innerHTML = "CPU Cores: " + data;
+    });
+    ipcRenderer.on('uptime',(event,data) => {
+        document.getElementById('uptime').innerHTML = "Uptime: " + data.toFixed(2) + "s";
+    });
 
     /*const os = require('os');
     const { cpuUsage } = require('process');

@@ -1,0 +1,1 @@
+In this example it works (didn't look at the code yet but could be worth it): https://github.com/rocksdanister/system-stats-wallpaper

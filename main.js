@@ -2,6 +2,8 @@ const { app, BrowserWindow, ipcMain, protocol, globalShortcut} = require('electr
 const path = require('path');
 const fs = require('fs');
 const DiscordRpc = require("discord-rpc");
+const os = require('os-utils');
+//const { memoryUsage } = require('process');
 let win = null
 
 //Swapper
@@ -168,6 +170,21 @@ app.whenReady().then(() => {
         path: path.normalize(request.url.replace(/^swap:/, ''))
     });
   });
+
+  // all options https://github.com/oscmejia/os-utils
+
+  setInterval(() => {
+    os.cpuUsage(function(v){
+      win.webContents.send('cpu',v*100);
+      win.webContents.send('mem',os.freememPercentage()*100);
+      //win.webContents.send('freemem',os.freemem());
+      win.webContents.send('platform',os.platform());
+      win.webContents.send('cpu-count',os.cpuCount());
+      win.webContents.send('total-mem',os.totalmem()/1024);
+      win.webContents.send('uptime',os.processUptime());
+      //win.webContents.send('ram',memoryUsage());
+    });
+  },1000);
 })
 
 const appDataPath = app.getPath('appData');
