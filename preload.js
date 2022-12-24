@@ -136,25 +136,16 @@ document.addEventListener("DOMContentLoaded", function() {
         holderId: "onlineDisplayOptionHolder",
         descrText: "Network Status",
         checkId: "onlineDisplayCheck",
-        /*onChange: e => {
-        if (e.target.checked) {
-            status.hidden = false;
-        } else {
-            status.hidden = true;
-        }
-        }*/
     },
     {
         holderId: "shortcutDisplayOptionHolder",
         descrText: "Show Shortcuts",
         checkId: "shortcutDisplayCheck",
-        /*onChange: e => {
-        if (e.target.checked) {
-            shortcuts.hidden = false;
-        } else {
-            shortcuts.hidden = true;
-        }
-        }*/
+    },
+    {
+        holderId: "generalStatsDisplayOptionHolder",
+        descrText: "General Stats",
+        checkId: "generalStatsDisplayCheck",
     },
     ];
       
@@ -197,7 +188,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     onlineDisplayCheck.addEventListener('change', e => {
         if(e.target.checked){
-            status.style.display = "";
+            status.style.display = "initial";
         } else {
             status.style.display = "none";
         }
@@ -205,9 +196,17 @@ document.addEventListener("DOMContentLoaded", function() {
 
     shortcutDisplayCheck.addEventListener('change', e => {
         if(e.target.checked){
-            shortcuts.style.display = "";
+            shortcuts.style.display = "initial";
         } else {
             shortcuts.style.display = "none";
+        }
+    });
+
+    generalStatsDisplayCheck.addEventListener('change', e => {
+        if(e.target.checked){
+            statsHolder.style.display = "initial";
+        } else {
+            statsHolder.style.display = "none";
         }
     });
 
@@ -382,99 +381,6 @@ document.addEventListener("DOMContentLoaded", function() {
         processSkins(message, 3, 'vector');
         //skinPathHandlerVector(src);
     });
-      
-    /*require('electron').ipcRenderer.on('filepaths-awp', (event, message) => {
-        var skins = message;
-        console.log(skins);
-        console.log(skins.length);
-
-        for (let i = 0; i < skins.length; i++) {
-            let element;
-            if ([i] > 0) {
-              let flexSquareClone = flexSquare.cloneNode(true);
-              flexSquareClone.setAttribute('src', skins[i]);
-              element = flexSquareClone;
-            } else {
-              flexSquare.src = skins[i];
-              element = flexSquare;
-            }
-          
-            element.addEventListener('click', function() {
-              let src = this.getAttribute('src');
-              console.log("The source of the selected skin is: " + src);
-              skinPathHandlerAwp(src);
-            });
-          
-            skincontentselector.appendChild(element);
-        }
-    });
-
-    require('electron').ipcRenderer.on('filepaths-ar2', (event, message) => {
-        var skins = message;
-        console.log(skins);
-        console.log(skins.length);
-
-        for (let i = 0; i < skins.length; i++) {
-            let element;
-            if ([i] > 0) {
-              let flexSquareClone = flexSquare.cloneNode(true);
-              flexSquareClone.setAttribute('src', skins[i]);
-              element = flexSquareClone;
-            } else {
-              flexSquare.src = skins[i];
-              element = flexSquare;
-            }
-          
-            element.addEventListener('click', function() {
-              let src = this.getAttribute('src');
-              console.log("The source of the selected skin is: " + src);
-              skinPathHandlerAr2(src);
-            });
-          
-            skincontentselector.appendChild(element);
-        }
-    });
-
-    require('electron').ipcRenderer.on('filepaths-vector', (event, message) => {
-        var skins = message;
-        console.log(skins);
-        console.log(skins.length);
-
-        for (let i = 0; i < skins.length; i++) {
-            let element;
-            if ([i] > 0) {
-              let flexSquareClone = flexSquare.cloneNode(true);
-              flexSquareClone.setAttribute('src', skins[i]);
-              element = flexSquareClone;
-            } else {
-              flexSquare.src = skins[i];
-              element = flexSquare;
-            }
-          
-            element.addEventListener('click', function() {
-              let src = this.getAttribute('src');
-              console.log("The source of the selected skin is: " + src);
-              skinPathHandlerVector(src);
-            });
-          
-            skincontentselector.appendChild(element);
-        }
-    });*/
-
-    /* Sooo... just writing my thoughts down. 
-    To make the skinswapper work we need to allow the user 
-    to click on a certain skin (get linked path),
-    then we need to send that path to the settings (via ipc)
-    and take this file, rename it to the default skin name,
-    put it into the swapper folder and yeah, thats it... 
-    
-    1. On click event
-    2. send linked src via ipc
-    3. copy image
-    4. change name
-    5. paste into the swapper folder
-    6. reload the client
-    (no need to save to settings then)*/
 
     ////////////////////////////////////////////////////////
 
@@ -806,7 +712,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // disable, bc key is already taken
     document.getElementsByName('shortcutOptionInput')[0].disabled = true;
 
-    const options = ["fpsDisplayOptionHolder", "onlineDisplayOptionHolder", "shortcutDisplayOptionHolder", "skincontent", "behindOptionsColorOptionHolder", "menuHeaderColorOptionHolder", "skinButtonColorOptionHolder", "opacityOptionHolder", "windowBorderOptionHolder", "skinCategoryoptionHolder", "customCSSOptionHolder", "shortcutOptionHolder", "shortcutOptionHolder2", "shortcutOptionHolder3", "shortcutOptionHolder4", "shortcutOptionHolder5"];
+    const options = ["fpsDisplayOptionHolder", "onlineDisplayOptionHolder", "shortcutDisplayOptionHolder", "skincontent", "behindOptionsColorOptionHolder", "menuHeaderColorOptionHolder", "skinButtonColorOptionHolder", "opacityOptionHolder", "windowBorderOptionHolder", "skinCategoryoptionHolder", "customCSSOptionHolder", "shortcutOptionHolder", "shortcutOptionHolder2", "shortcutOptionHolder3", "shortcutOptionHolder4", "shortcutOptionHolder5", "generalStatsDisplayOptionHolder"];
     
     document.getElementById("allOptions").addEventListener("click", function() {
         h2.innerHTML = "All Options";
@@ -822,6 +728,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
         document.getElementById("fpsDisplayOptionHolder").style.display = "";
         document.getElementById("onlineDisplayOptionHolder").style.display = "";
+        document.getElementById("generalStatsDisplayOptionHolder").style.display = "";
     });
 
     document.getElementById("shortcuts").addEventListener("click", function() {
@@ -983,7 +890,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const statsHolder = document.createElement("div");
     statsHolder.id = "statsHolder";
-    statsHolder.style = "position: absolute; left: 100;top: 100; z-index: 1000; color: grey; margin-left: 7.5px; font-size: 100%;";
+    statsHolder.style = "position: absolute; left: 100;top: 100; z-index: 1000; color: grey; margin-left: 7.5px; font-size: 100%; display: none;";
     document.body.appendChild(statsHolder);
 
     // FPS-Counter
