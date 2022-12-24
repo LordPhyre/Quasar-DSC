@@ -580,7 +580,7 @@ document.addEventListener("DOMContentLoaded", function() {
             optionInput.style.width = '140px';
             optionInput.name = inputId;
             optionInput.id = keyNumber++;
-            optionInput.setAttribute('value','My default value');
+            optionInput.setAttribute('value','');
 
             /*const input = document.createElement('input');
             input.type = 'text';
@@ -799,8 +799,10 @@ document.addEventListener("DOMContentLoaded", function() {
     // hide
     skincontent.style.display = "none";
 
-    const options = ["fpsDisplayOptionHolder", "onlineDisplayOptionHolder", "shortcutDisplayOptionHolder", "skincontent", "behindOptionsColorOptionHolder", "menuHeaderColorOptionHolder", "skinButtonColorOptionHolder", "opacityOptionHolder", "windowBorderOptionHolder", "shortcutOptionHolder", "skinCategoryoptionHolder", "customCSSOptionHolder"];
+    // disable, bc key is already taken
+    document.getElementsByName('shortcutOptionInput')[0].disabled = true;
 
+    const options = ["fpsDisplayOptionHolder", "onlineDisplayOptionHolder", "shortcutDisplayOptionHolder", "skincontent", "behindOptionsColorOptionHolder", "menuHeaderColorOptionHolder", "skinButtonColorOptionHolder", "opacityOptionHolder", "windowBorderOptionHolder", "skinCategoryoptionHolder", "customCSSOptionHolder", "shortcutOptionHolder", "shortcutOptionHolder2", "shortcutOptionHolder3", "shortcutOptionHolder4", "shortcutOptionHolder5"];
     
     document.getElementById("allOptions").addEventListener("click", function() {
         h2.innerHTML = "All Options";
@@ -825,6 +827,10 @@ document.addEventListener("DOMContentLoaded", function() {
         });
         document.getElementById("shortcutDisplayOptionHolder").style.display = "";
         document.getElementById("shortcutOptionHolder").style.display = "";
+        document.getElementById("shortcutOptionHolder2").style.display = "";
+        document.getElementById("shortcutOptionHolder3").style.display = "";
+        document.getElementById("shortcutOptionHolder4").style.display = "";
+        document.getElementById("shortcutOptionHolder5").style.display = "";
     });
 
     document.getElementById("skinmenu").addEventListener("click", function() {
@@ -924,7 +930,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // shortcuts
 
     document.body.addEventListener('keypress', (e) => {
-        if (e.key == 'Tab') {
+        if (e.key == '1') {
             const wrapperElement = document.getElementById("skinWrapper");
             wrapperElement.style.display = wrapperElement.style.display === "none" ? "" : "none";
         } /*else if (e.key == '2') {
@@ -998,6 +1004,91 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     updateFps();
+
+    /*const os = require('os');
+    const { cpuUsage } = require('process');
+    
+    // Initialize the cpuUsage function to ensure the values are properly initialized
+    cpuUsage();
+    
+    setInterval(() => {
+      // Retrieve the CPU usage
+      try {
+        const cpuUsageData = cpuUsage();
+        const numCores = os.cpus().length;
+        if (typeof cpuUsageData.percentCPUUsage === 'number') {
+          const cpuUsageGHz = (cpuUsageData.percentCPUUsage / 100) * numCores;
+          console.log(`CPU usage: ${cpuUsageGHz.toFixed(2)} GHz`);
+        } else {
+          console.error('Invalid CPU usage data:', cpuUsageData);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    
+      // Retrieve the memory usage
+      console.log(`Free memory: ${(os.freemem() / (1024 ** 3)).toFixed(2)} GB`);
+      console.log(`Total memory: ${(os.totalmem() / (1024 ** 3)).toFixed(2)} GB`);
+    }, 1000);
+
+    const gpuMonitor = require('nvidia-gpu-monitor');
+
+    // Initialize the GPU monitor
+    gpuMonitor.init().then(() => {
+    console.log('GPU monitor initialized');
+
+    // Retrieve the GPU usage every second
+    setInterval(() => {
+        gpuMonitor.getUsage().then((usage) => {
+        console.log(`GPU usage: ${usage}%`);
+        });
+    }, 1000);
+    });*/
+
+
+    // alternative fps chart
+
+    /*const chartScript = `
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+        <canvas id="myChart"></canvas>
+        <script>
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['', '', '', '', '', '', '', '', '', '', '', ''],
+                datasets: [{
+                    label: 'FPS',
+                    data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                },
+                animation: false
+            }
+        });
+
+        // just to get some random values
+        setInterval(function() {
+            var newValue = Math.random() * 100;
+
+            chart.data.datasets[0].data.push(newValue);
+
+            chart.data.datasets[0].data.shift();
+
+            chart.update();
+        }, 2000);
+        </script>
+    `;*/
     
     // Settings Page (Redundant but maybe will re-use)
     //document.getElementById("settingsDiv").innerHTML += readFileSync('settingsPage.html').toString();

@@ -18,6 +18,7 @@
   "dependencies": {
     "discord-rpc": "^4.0.1",
     "gamecontroller": "^0.0.2",
-    "jquery": "^3.6.3"
+    "jquery": "^3.6.3",
+    "nvidia-gpu-monitor": "^2.0.1"
   }
 }
