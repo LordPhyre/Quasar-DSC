@@ -1,21 +1,31 @@
 const { readFileSync } = require('fs'); // just in case
 const { ipcMain } = require('electron');
 const { workerData } = require('worker_threads');
-const { webFrame } = require('electron')
+const { webFrame } = require('electron');
 //window.$ = window.jQuery = require('./node_modules/jquery/dist/jquery.min.js');
 document.addEventListener("DOMContentLoaded", function() {
 
     // colors
 
-    var menuHeaderColor = "#2a394f";
-    var optionsColor = "#364760";
-    var behindOptionsColor = "#2a394f";
-    var skinButtonColor = "#364760";
-    var skinButtonHoverColor = "#0798fc";
-    var skinCloseColor = "#ffffff00";
-    var optionColor = "#364760";
-    var opacity = 0.95;
-    var skinWrapperBorderRadius = "10";
+    var menuHeaderColor = "#232429"; //"#2a394f";
+    //var optionsColor = ""; //"#364760";
+    var behindOptionsColor = "#232429"; //"#2a394f";
+    var skinButtonColor = "#222327"; //"#364760";
+    var skinButtonHoverColor = "#0798fc"; //"#0798fc";
+    var skinCloseColor = "#ffffff00"; //"#ffffff00";
+    var optionColor = "#25272e"; //"#364760";
+    var opacity = "1"; //0.95;
+    var skinWrapperBorderRadius = "10"; //"10";
+
+    let scrollcss = document.createElement('style');
+    scrollcss.innerText = `
+    ::-webkit-scrollbar { width: 8px; height: 3px;}
+    ::-webkit-scrollbar-track {  background-color: #646464;}
+    ::-webkit-scrollbar-track-piece { background-color: #000;}
+    ::-webkit-scrollbar-thumb { height: 50px; background-color: #666; border-radius: 3px;}
+    ::-webkit-scrollbar-corner { background-color: #646464;}}
+    ::-webkit-resizer { background-color: #666;}`;
+    document.head.appendChild(scrollcss);
 
     // draggable window | make all of this easier with modules -> https://stackoverflow.com/questions/950087/how-do-i-include-a-javascript-file-in-another-javascript-file
 
@@ -122,11 +132,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const optionList = [
     {
-        holderId: "platformDisplayOptionHolder",
-        descrText: "Platform",
-        checkId: "platformDisplayCheck",
-    },
-    {
         holderId: "fpsDisplayOptionHolder",
         descrText: "FPS-Counter",
         checkId: "fpsDisplayCheck",
@@ -135,6 +140,11 @@ document.addEventListener("DOMContentLoaded", function() {
         holderId: "pingDisplayOptionHolder",
         descrText: "Ping",
         checkId: "pingDisplayCheck",
+    },
+    {
+        holderId: "platformDisplayOptionHolder",
+        descrText: "Platform",
+        checkId: "platformDisplayCheck",
     },
     {
         holderId: "cpuUsageDisplayOptionHolder",
@@ -302,27 +312,27 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const allButton = document.createElement('button');
     allButton.className = 'skinCategory';
-    allButton.style = "padding: 10px 12.5px 10px 12.5px;background-color: #364760;border: none;color: white;font-size: 20px;";
+    allButton.style = "padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;";
     allButton.textContent = 'All';
 
     const awpButton = document.createElement('button');
     awpButton.className = 'skinCategory';
-    awpButton.style = "padding: 10px 12.5px 10px 12.5px;background-color: #364760;border: none;color: white;font-size: 20px;";
+    awpButton.style = "padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;";
     awpButton.textContent = 'AWP';
 
     const ar2Button = document.createElement('button');
     ar2Button.className = 'skinCategory';
-    ar2Button.style = "padding: 10px 12.5px 10px 12.5px;background-color: #364760;border: none;color: white;font-size: 20px;";
+    ar2Button.style = "padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;";
     ar2Button.textContent = 'AR2';
 
     const vectorButton = document.createElement('button');
     vectorButton.className = 'skinCategory';
-    vectorButton.style = "padding: 10px 12.5px 10px 12.5px;background-color: #364760;border: none;color: white;font-size: 20px;";
+    vectorButton.style = "padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;";
     vectorButton.textContent = 'Vector';
 
     const skinFolderButton = document.createElement('button');
     skinFolderButton.className = 'skinCategory';
-    skinFolderButton.style = "padding: 10px 12.5px 10px 12.5px;background-color: #364760;border: none;color: white;font-size: 20px;";
+    skinFolderButton.style = "padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;";
     skinFolderButton.textContent = '| Folder';
 
     buttonWrapper.appendChild(allButton);
@@ -385,6 +395,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const skincontent = document.createElement("div");
     skincontent.id = "skincontent";
     skincontent.classList.add('skincontent');
+    skincontent.style.background = optionColor;
 
     document.getElementById('rightDiv').appendChild(skincontent);
 
@@ -574,7 +585,7 @@ document.addEventListener("DOMContentLoaded", function() {
     shortcuts.innerHTML = "[" + one + "] On/Off  [" + two + "] " + twoValue + "  [" + three + "] " + threeValue + "  [" + four + "] " + fourValue + "  [" + five + "] " + fiveValue;
     shortcuts.type = "submit";
     shortcuts.id = "shortcutsdisplay";
-    shortcuts.style = "position: absolute; left: 0; bottom: 0; z-index: 1000; color: grey; background-color: transparent; outline: none; margin-bottom: 4px; margin-left: 7.5px; outline: none; border: none; font-size: 100%; display: none;";
+    shortcuts.style = "position: absolute; left: 0; bottom: 0; z-index: 1000; color: grey; background-color: transparent; outline: none; margin-bottom: 2px; margin-left: 5px; outline: none; border: none; font-size: 100%; display: none;";
     document.body.appendChild(shortcuts);
 
     const inputs = ['shortcutOptionInput', 'shortcutOptionInput2', 'shortcutOptionInput3', 'shortcutOptionInput4', 'shortcutOptionInput5'];
@@ -743,7 +754,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     document.getElementById("skinmenu").addEventListener("click", function() {
         //h2.innerHTML = 'Skins <button id="reload">Reload</button>';
-        h2.innerHTML = 'Skins <p style="color: red; font-size: 17.5px">ATTENTION: Need to restart client to apply Skins</p>'
+        h2.innerHTML = 'Skins <p style="color: red; font-size: 17.5px">ATTENTION: Need to restart client to apply skins</p>'
         
         options.forEach(option => {
             document.getElementById(option).style.display = "none";
@@ -822,7 +833,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // css
     let skincss = document.createElement('style');
-    skincss.innerText = "@import 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap';*{z-index:1000;margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}.skinwrapper{position:absolute;top:50%;left:50%;max-width:750px;width:100%;background:#2a394f;/*has to stay like that, else the menu is see trough under header*/transform:translate(-50%,-50%);border:solid 1px #000;color:#fff;height:335px;}.skinwrapper header{font-size:23px;font-weight:500;padding:17px 30px;border-bottom:1px solid #000;text-align:center;border-top-left-radius: 10px;border-top-right-radius: 10px;}.skinwrapper header.skinactive{cursor:move;user-select:none;}.skinwrapper .skincontent{display:flex;flex-direction:wrap;flex-wrap:wrap;justify-content:center;background:#2a394f}.skincontent .title{margin:15px 0;font-size:29px;font-weight:500}.skincontent p{font-size:16px;text-align:center;display:flex}.skinbutton{width:100%;height:50px;background-color:" + skinButtonColor + ";border:none;color:#fff;font-size:20px}.skinbutton:hover{background-color:" + skinButtonHoverColor + "}.skinclose{color:grey;position:absolute;top:0;right:0;margin-right:15px;margin-top:-6px;background-color:" + skinCloseColor + ";border:none;font-size:35px}.skinclose:hover{color:#fff}p{font-size:20px}input[type=text]{float:right;margin:14px 25px 10px 0;font-weight:700;color:grey}input[type=range]{float:right;margin:16px 20px 10px 0}input[type=checkbox]{float:right;transform:scale(2);margin:14px 25px 5px 0;width:35px;font-weight:700;color:grey;}.optiondescr{float:left;margin:10px 0 10px 20px}.optionholder{background-color:" + optionColor + "}hr{width:100%;border:.1px solid #000}select{float:right;margin:14px 25px 10px 0;width:50px}.skinCategory:hover{background-color:#0798fc}/* doesn't work lol*/" + customCSS;
+    skincss.innerText = "@import 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap';*{z-index:1000;margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}.skinwrapper{position:absolute;top:50%;left:50%;max-width:750px;width:100%;background:#2a394f;/*has to stay like that, else the menu is see trough under header*/transform:translate(-50%,-50%);border:solid 1px #000;color:#fff;height:335px;}.skinwrapper header{font-size:23px;font-weight:500;padding:17px 30px;border-bottom:1px solid #000;text-align:center;border-top-left-radius: 10px;border-top-right-radius: 10px;}.skinwrapper header.skinactive{cursor:move;user-select:none;}.skinwrapper .skincontent{display:flex;flex-direction:wrap;flex-wrap:wrap;justify-content:center;}.skincontent .title{margin:15px 0;font-size:29px;font-weight:500}.skincontent p{font-size:16px;text-align:center;display:flex}.skinbutton{width:100%;height:50px;background-color:" + skinButtonColor + ";border:none;color:#fff;font-size:20px}.skinbutton:hover{background-color:" + skinButtonHoverColor + "}.skinclose{color:grey;position:absolute;top:0;right:0;margin-right:15px;margin-top:-6px;background-color:" + skinCloseColor + ";border:none;font-size:35px}.skinclose:hover{color:#fff}p{font-size:20px}input[type=text]{float:right;margin:14px 25px 10px 0;font-weight:700;color:grey}input[type=range]{float:right;margin:16px 20px 10px 0}input[type=checkbox]{float:right;transform:scale(2);margin:14px 25px 5px 0;width:35px;font-weight:700;color:grey;}.optiondescr{float:left;margin:10px 0 10px 20px}.optionholder{background-color:" + optionColor + "}hr{width:100%;border:.1px solid #000}select{float:right;margin:14px 25px 10px 0;width:50px}.skinCategory:hover{background-color:#0798fc}/* doesn't work lol*/" + customCSS;
     document.head.appendChild(skincss);
 
     // wheel | huge credits to this codepen repo: https://codepen.io/Brojos/pen/pYVKMe | emojis etc don't work, still keeping it in
@@ -1020,7 +1031,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const statsHolder = document.createElement("div");
     statsHolder.id = "statsHolder";
-    statsHolder.style = "z-index: 1000; /*top: 50%;*/ color: grey; padding-left: 5px; font-size: 100%; background: #191919;";
+    statsHolder.style = "z-index: 1000; /*top: 50%;*/ color: grey; padding-left: 5px; font-size: 100%; background: #191919; opacity: 0.9;";
     statsHolderWrapper.appendChild(statsHolder);
 
     

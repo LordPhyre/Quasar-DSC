@@ -1,0 +1,296 @@
+<head>
+    <link href="https://fonts.cdnfonts.com/css/aquire" rel="stylesheet">
+</head>
+<style>
+    @import url('https://fonts.cdnfonts.com/css/aquire');
+    html {
+        background: linear-gradient(to left, #195DCA, #6cd8ff);
+        font-family: 'Aquire', sans-serif;
+    }
+    body { margin:0; padding:0; height:100%; width:100%; }
+    .button {
+        display: inline-block;
+        border: none;
+        padding: 8px 16px;
+        margin: 2.5px;
+        font-size: 16px;
+        cursor: pointer;
+        text-align: center;
+        /*opacity: 0.5;*/
+        border-radius: 10px;
+        height: 47.5px;
+        /* From https://css.glass */
+        background: rgba(255, 255, 255, 0.07);
+        border-radius: 16px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        color: white;
+        font-family: 'Aquire', sans-serif;
+    }
+    .row {
+    display: flex;
+    justify-content: center;
+    }
+    .column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    }
+    .container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    }
+    .center {
+    width: 50%;
+    height: 20%;
+    }
+    .title {
+        color: white;
+        font-size: 50px;
+        line-height: 1;
+    }
+
+    /* Window */
+    *{
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    .skinwrapper{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    max-width: 750px;
+    width: 100%;
+    background: #2a394f;
+    transform: translate(-50%, -50%);
+    border: solid 1px black;
+    color: white;
+    height: 350px;
+    border-radius: 10px;
+    opacity: 1;
+    }
+    .skinwrapper header{
+    font-size: 23px;
+    font-weight: 500;
+    padding: 17px 30px;
+    border-bottom: 1px solid rgb(0, 0, 0);
+    background: #2a394f;
+    text-align: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    }
+    .skinwrapper header.skinactive{
+    cursor: move;
+    user-select: none;
+    }
+    .skinwrapper .skincontent{
+    display: flex;
+    flex-direction: wrap;
+    flex-wrap: wrap;
+    justify-content: center;
+    background: #2a394f;
+    }
+    .skincontent .title{
+    margin: 15px 0;
+    font-size: 29px;
+    font-weight: 500;
+    }
+    .skincontent p{
+    font-size: 16px;
+    text-align: center;
+    display: flex;
+    }
+    .skinbutton {
+      width: 100%;
+      height: 50px;
+      background-color: #364760;
+      border: none;
+      color: white;
+      font-size: 20px;
+    }
+    .skinbutton:hover{
+      background-color: #0798fc;
+    }
+    .skinclose{
+      color: grey;
+      position: absolute;
+      top: 0;
+      right: 0;
+      margin-right: 15px;
+      margin-top: -6px;
+      background-color: #ffffff00;
+      border: none;
+      font-size: 35px;
+    }
+    .skinclose:hover{
+      color: white;
+    }
+    p {
+      font-size: 20px;
+    }
+    input[type=text] {
+      float: right; 
+      margin: 14px 25px 10px 0; 
+      /*width: 35px;*/
+      font-weight: bold; 
+      color: grey;
+    }
+    input[type=range] {
+      float: right; 
+      margin: 16px 20px 10px 0;
+    }
+    input[type=checkbox] {
+      float: right; 
+      transform: scale(2);
+      margin: 14px 25px 10px 0; 
+      width: 35px; 
+      font-weight: bold; 
+      color: grey;
+    }
+    select {
+      float: right; 
+      margin: 14px 25px 10px 0; 
+      width: 50px;
+    }
+    .normalinput {
+      width: 35px;
+    }
+    .shortcutinput {
+      width: 175px;
+    }
+    .optiondescr {
+      float:left; 
+      margin: 10px 0 10px 20px;
+    }
+    .optionholder {
+      background-color: #364760;
+    }
+    hr {
+      width: 100%; 
+      border: 0.1px solid black;
+    }
+    .skinCategory {
+      padding: 10px 12.5px 10px 12.5px;
+      background-color: #364760;
+      border: none;
+      color: white;
+      font-size: 20px;
+    }
+    .skinCategory:hover{
+      background-color: #0798fc;
+    }
+</style>
+
+<div class="container">
+    <div class="center">
+        <h2 style="text-align: center;" class="title">Quasar</h2>
+        <div class="row">
+            <button class="button">Button 1</button>
+            <button class="button">Button 2</button>
+            </div>
+            <div class="row">
+            <button class="button">Button 3</button>
+            <button class="button">Button 4</button>
+            </div>
+            <div class="row">
+            <button class="button">Button 5</button>
+            <button class="button">Button 6</button>
+            </div>
+    </div>
+</div>
+
+<!DOCTYPE html>
+<head>
+ <style>
+ </style>
+</head>
+<body>
+  <div class="skinwrapper">
+    <button class="skinclose" onclick="close()">_</button>
+    <header id="skinheader">Main Menu</header>
+    <div id="maindiv" style="background-color: #2a394f">
+      <div id="left" style="float: left; width: 40%; height: 280px; overflow: scroll;border-bottom-left-radius: 10px;">
+        <button class="skinbutton">Option</button>
+        <button class="skinbutton">Option</button>
+        <button class="skinbutton">Option</button>
+        <button class="skinbutton">Option</button>
+        <button class="skinbutton">Option</button>
+        <button class="skinbutton">Option</button>
+        <button class="skinbutton">Option</button>
+      </div>
+      <div id="right" style="float: right; width: 60%; height: 280px; overflow-x: hidden; border-bottom-right-radius: 10px;">
+          <h2 style="text-align: center; margin: 10px 0 10px 0;">Option Name</h2>
+
+          <div class="optionholder">
+            <p class="optiondescr">Option Name</p>
+            <input type="text" class="shortcutinput">
+            <select>
+              <option value="actual value 1">Display Text 1</option>
+              <option value="actual value 2">Display Text 2</option>
+              <option value="actual value 3">Display Text 3</option>
+            </select>
+            <div style="height: 50px;"></div>
+          </div>
+
+          <hr> <!-- IMPORTANT fixes weird bug -->
+
+          <div class="optionholder">
+            <div style="display: flex; justify-content: center;">
+              <button class="skinCategory">AWP</button>
+              <button class="skinCategory">AR2</button>
+              <button class="skinCategory">Vector</button>
+            </div>
+          </div>
+
+          <hr> <!-- IMPORTANT fixes weird bug -->
+
+          <div class="optionholder">
+            <p class="optiondescr">Option Name</p>
+            <input type="text" class="normalinput">
+            <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+            <div style="height: 50px;"></div>
+          </div>
+
+          <hr> <!-- IMPORTANT fixes weird bug -->
+
+          <div class="optionholder">
+            <p class="optiondescr">Option Name</p>
+            <input type="checkbox">
+            <div style="height: 50px;"></div>
+          </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const skinwrapper1 = document.querySelector(".skinwrapper"),
+    skinheader1 = document.getElementById("skinheader");
+
+    function onDrag({movementX, movementY}){
+      let getStyle = window.getComputedStyle(skinwrapper1);
+      let leftVal = parseInt(getStyle.left);
+      let topVal = parseInt(getStyle.top);
+      skinwrapper1.style.left = `${leftVal + movementX}px`;
+      skinwrapper1.style.top = `${topVal + movementY}px`;
+    }
+
+    skinheader1.addEventListener("mousedown", ()=>{
+      skinheader1.classList.add("skinactive");
+      skinheader1.addEventListener("mousemove", onDrag);
+    });
+
+    document.addEventListener("mouseup", ()=>{
+      skinheader1.classList.remove("skinactive");
+      skinheader1.removeEventListener("mousemove", onDrag);
+    });
+
+    function close(){document.getElementById("skinwrapper").style.display = "none";}
+  </script>
+
+</body>
+</html>

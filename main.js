@@ -18,6 +18,7 @@ app.whenReady().then(() => {
     width: 800, 
     height: 600,
     show: false,
+    fullscreen: true,
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
@@ -34,10 +35,10 @@ app.whenReady().then(() => {
     height: 300, 
     transparent: true, 
     frame: false,
-    alwaysOnTop: true 
+    alwaysOnTop: true,
   });
 
-  splash.loadFile('splash.html');
+  splash.loadFile('splash-new.html');
   splash.center();
 
   setTimeout(function () {
@@ -45,8 +46,8 @@ app.whenReady().then(() => {
     win.show();
   }, 5000);
 
-  win.webContents.muted = true // doesn't work
   win.loadURL('https://deadshot.io')
+  win.setMenuBarVisibility(false);
 
   globalShortcut.register('F6', () => win.loadURL('https://deadshot.io/'));
   globalShortcut.register('F5', () => win.reload());
