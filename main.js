@@ -27,6 +27,8 @@ app.whenReady().then(() => {
     }
   })
 
+  win.$ = win.jQuery = require('./node_modules/jquery/dist/jquery.min.js');
+
   var splash = new BrowserWindow({
     width: 500, 
     height: 300, 

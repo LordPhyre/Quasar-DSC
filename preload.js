@@ -960,6 +960,23 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // ping | doesn't work | jquery is the problem | look at ping.txt in saveforlater
 
+    function ping2() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/ping', true);
+        xhr.send();
+        
+        var startTime = performance.now();
+        
+        xhr.onload = function() {
+            var endTime = performance.now();
+            var pingTime = endTime - startTime;
+            console.log('Ping time: ' + pingTime + 'ms');
+        };
+    }
+    
+    // call ping every x seconds
+    ping2();
+
     // custom scope
 
     const scope = document.createElement("div");
