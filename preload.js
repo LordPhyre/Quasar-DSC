@@ -1260,3 +1260,4 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     //document.getElementById("settingsDiv").innerHTML += readFileSync('settingsPage.html').toString();
 
 });
+});
