@@ -132,6 +132,11 @@ document.addEventListener("DOMContentLoaded", function() {
         checkId: "fpsDisplayCheck",
     },
     {
+        holderId: "pingDisplayOptionHolder",
+        descrText: "Ping",
+        checkId: "pingDisplayCheck",
+    },
+    {
         holderId: "cpuUsageDisplayOptionHolder",
         descrText: "CPU Usage",
         checkId: "cpuUsageDisplayCheck",
@@ -209,6 +214,14 @@ document.addEventListener("DOMContentLoaded", function() {
             fpscounter.style.display = "block";
         } else {
             fpscounter.style.display = "none";
+        }
+    });
+
+    pingDisplayCheck.addEventListener('change', e => {
+        if(e.target.checked){
+            ping.style.display = "block";
+        } else {
+            ping.style.display = "none";
         }
     });
 
@@ -960,11 +973,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // ping | with errors haha
 
-    const ping = document.createElement("p");
+    /*const ping = document.createElement("p");
     ping.innerHTML = "loading...";
     ping.id = "ping";
     ping.style = "position: absolute; width: 100%; text-align: center; z-index: 1000; color: red";
-    document.body.appendChild(ping);
+    document.body.appendChild(ping);*/
 
     function ping2() {
         var xhr = new XMLHttpRequest();
@@ -977,7 +990,7 @@ document.addEventListener("DOMContentLoaded", function() {
             var endTime = performance.now();
             var pingTime = endTime - startTime;
             //console.log('Ping time: ' + pingTime + 'ms');
-            ping.innerHTML = 'Ping: ' + pingTime.toFixed(0) + 'ms';
+            document.getElementById('ping').innerHTML = "Ping: " + pingTime.toFixed(0) + "ms";
         };
     }
 
@@ -1013,7 +1026,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const electron = require('electron');
     const ipcRenderer = electron.ipcRenderer; // apply that later to everything
     
-    const elementIds = ['fpscounter', 'platform', 'cpu', 'mem', 'totalMem', 'cpuCount', 'uptime'];
+    const elementIds = ['fpscounter', 'ping', 'platform', 'cpu', 'mem', 'totalMem', 'cpuCount', 'uptime'];
     const styles = "z-index: 1000; color: grey; font-size: 100%; display: none;";
     
     for (const id of elementIds) {
