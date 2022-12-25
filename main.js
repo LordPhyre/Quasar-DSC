@@ -52,6 +52,27 @@ app.whenReady().then(() => {
   globalShortcut.register('F7', () => win.webContents.toggleDevTools());
   globalShortcut.register('F11', () => { win.fullScreen = !win.fullScreen;});
 
+  ///////////////////////////////////////////////////////////////////////////
+  const fs = require('fs');
+
+  fs.readFile('C:\\Users\\jesse\\OneDrive\\Dokumente\\DeadshotClient\\settings.json', 'utf8', (err, data) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+
+    const settings = JSON.parse(data);
+
+    if (settings.settings) {
+      console.log('settings: true');
+    }
+
+    if (settings.devMode) {
+      console.log('devMode: true');
+    }
+  });
+  ///////////////////////////////////////////////////////////////////////////
+
   var swapperFolder = path.join(app.getPath("documents"), "DeadshotClient");
 
   if (!fs.existsSync(swapperFolder)) {

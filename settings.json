@@ -1,1 +1,4 @@
-{ "fpsUncap": true, "fpsCounter": true, "fullscreen": false, "resourceSwapper": false, "chromiumFlags": true, "inProcessGPU": false, "disableAccelerated2D": false }
+{
+    "settings": true,
+    "devMode": false
+}
