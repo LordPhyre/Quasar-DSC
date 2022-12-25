@@ -696,7 +696,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-    const options = ["fpsDisplayOptionHolder", "onlineDisplayOptionHolder", "shortcutDisplayOptionHolder", "skincontent", "optionColorOptionHolder", "behindOptionsColorOptionHolder", "menuHeaderColorOptionHolder", "skinButtonColorOptionHolder", "opacityOptionHolder", "windowBorderOptionHolder", "skinCategoryoptionHolder", "shortcutOptionHolder", "shortcutOptionHolder2", "shortcutOptionHolder3", "shortcutOptionHolder4", "shortcutOptionHolder5", "platformDisplayOptionHolder", "cpuUsageDisplayOptionHolder", "memoryUsageDisplayOptionHolder", "totalMemoryDisplayOptionHolder", "cpuCoresDisplayOptionHolder", "uptimeDisplayOptionHolder"];
+    const options = ["fpsDisplayOptionHolder", "pingDisplayOptionHolder", "onlineDisplayOptionHolder", "shortcutDisplayOptionHolder", "skincontent", "optionColorOptionHolder", "behindOptionsColorOptionHolder", "menuHeaderColorOptionHolder", "skinButtonColorOptionHolder", "opacityOptionHolder", "windowBorderOptionHolder", "skinCategoryoptionHolder", "shortcutOptionHolder", "shortcutOptionHolder2", "shortcutOptionHolder3", "shortcutOptionHolder4", "shortcutOptionHolder5", "platformDisplayOptionHolder", "cpuUsageDisplayOptionHolder", "memoryUsageDisplayOptionHolder", "totalMemoryDisplayOptionHolder", "cpuCoresDisplayOptionHolder", "uptimeDisplayOptionHolder"];
     
     document.getElementById("allOptions").addEventListener("click", function() {
         h2.innerHTML = "All Options";
@@ -718,8 +718,9 @@ document.addEventListener("DOMContentLoaded", function() {
         options.forEach(option => {
             document.getElementById(option).style.display = "none";
         });
-        document.getElementById("platformDisplayOptionHolder").style.display = "";
         document.getElementById("fpsDisplayOptionHolder").style.display = "";
+        document.getElementById("pingDisplayOptionHolder").style.display = "";
+        document.getElementById("platformDisplayOptionHolder").style.display = "";
         document.getElementById("cpuUsageDisplayOptionHolder").style.display = "";
         document.getElementById("memoryUsageDisplayOptionHolder").style.display = "";
         document.getElementById("totalMemoryDisplayOptionHolder").style.display = "";
