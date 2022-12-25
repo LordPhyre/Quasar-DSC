@@ -1,20 +1,15 @@
 - switch "wallpaper"
-- custom gun skins
-	-> library with skins and nice menu (in-game windows)
-- auto rejoin
 - random cool looking gui elements
 - texture pack loader
 - gamma editor (changes lighting)
 - fov slider (DIFFICULT!) // we could scale the canvas and then do something with the zoom
-- toggleable wasd detector thing (you know what i mean) // yeah, where you see the button clicks /// thats right, yeah
-- wireframe? // wdym? | https://i.imgur.com/GoLZfPe.jpeg // without the enemies
-- sreenshake (only with readable html and trees help)
-- "No Internet" screen (not that easy as i thought)
+- toggleable wasd detector thing (ykwim) // yeah, where you see the button clicks /// thats right, yeah
+- wireframe? // wdym? | https://i.imgur.com/GoLZfPe.jpeg // without the enemies, just local player
 - ***custom*** fps counter (allows changing colors and stuff through the menu)
 - custom client keybinds
-- add hard reload button to skin loader
-- auto create skin folders (to prevent confusion)
-- add option color option (lol ykwim)
+- fix skin color thing
+
+- clan badges
 
 Not really possible:
 
@@ -22,3 +17,5 @@ Not really possible:
 - permanent small version of scoreboard // depends what you mean, might be possible if the javascript isnt randomized
 - better tab scoreboard
 - auto-gg setting (no need for button press) // how do we see if the user got killed?
+- auto rejoin
+- sreenshake (only with readable html and trees help)
