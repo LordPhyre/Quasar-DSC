@@ -1,7 +1,7 @@
 const { app, BrowserWindow, ipcMain, protocol, globalShortcut} = require('electron');
 const path = require('path');
 const fs = require('fs');
-const DiscordRpc = require("discord-rpc");
+//const DiscordRpc = require("discord-rpc");
 const os = require('os-utils');
 const { webFrame } = require('electron')
 const { shell } = require('electron');
