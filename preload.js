@@ -979,7 +979,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // custom scope
 
-    const scope = document.createElement("div");
+    /*const scope = document.createElement("div");
     scope.id = "scope";
     scope.style = "position: absolute; z-index: 1000; top: 50.5%; left: 50%; transform: translate(-50%, -50%);";
     document.body.appendChild(scope);
@@ -989,7 +989,7 @@ document.addEventListener("DOMContentLoaded", function() {
     scopeImg.style = "height: 300px";
     //scopeImg.src = "https://www.freepnglogos.com/uploads/scope-png/scope-simple-sniper-crosshair-fallout-new-vegas-mods-and-5.png";
     scopeImg.src = "https://i.ibb.co/WpDfGzN/Png-Item-93100.png";
-    scope.appendChild(scopeImg);
+    scope.appendChild(scopeImg);*/
 
     // stats holder
 
