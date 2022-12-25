@@ -1,10 +1,33 @@
-const { readFileSync } = require('fs'); // just in case
-const { ipcMain } = require('electron');
+const fs = require('fs');
+const path = require('path');
+const { ipcMain, webFrame } = require('electron');
 const { workerData } = require('worker_threads');
-const { webFrame } = require('electron')
 //window.$ = window.jQuery = require('./node_modules/jquery/dist/jquery.min.js');
+
+
 document.addEventListener("DOMContentLoaded", function() {
 
+//Receive user datapath and save as variable
+require('electron').ipcRenderer.on('SendUserData', (event, message) => {
+
+    const userDataPath = message;
+    const jsonpath = path.join(userDataPath, '/Settings.json');
+    console.log(jsonpath);
+    
+    //Check if JSON exists first
+    if (!fs.existsSync(jsonpath)) {
+        // file does not exist, create it
+        const jsonsettings = { FPS: true, Online: false, Shortcuts: true, Platform: false, CPU: true, memory: true, Tmemory: false, Cores: false, Uptime: false};
+        fs.writeFileSync(jsonpath, JSON.stringify(jsonsettings));
+    } else {
+        console.log("File exists");
+    };
+
+    // Parse the contents of the file into a JavaScript object
+    let jsonobj = JSON.parse(fs.readFileSync(jsonpath, 'utf8'));
+    console.log(jsonobj);
+    
+    
     // colors
 
     var menuHeaderColor = "#2a394f";
@@ -207,85 +230,115 @@ document.addEventListener("DOMContentLoaded", function() {
         
         rightDiv.appendChild(optionHolder);
     }
-
-    // only including this bc the others don't work lol
+    
+    
+   
+    //Checkbox State and function saving to JSON
+    
+    document.getElementById("fpsDisplayCheck").checked = jsonobj.FPS;
     fpsDisplayCheck.addEventListener('change', e => {
         if(e.target.checked){
             fpscounter.style.display = "block";
+            jsonobj.FPS = true;
+            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
+        
         } else {
             fpscounter.style.display = "none";
+            jsonobj.FPS = false;
+            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         }
     });
-
-    pingDisplayCheck.addEventListener('change', e => {
-        if(e.target.checked){
-            ping.style.display = "block";
-        } else {
-            ping.style.display = "none";
-        }
-    });
-
+    
+    document.getElementById("onlineDisplayCheck").checked = jsonobj.Online;
     onlineDisplayCheck.addEventListener('change', e => {
         if(e.target.checked){
             status.style.display = "block";
+            jsonobj.Online = true;
+            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
+
         } else {
             status.style.display = "none";
+            jsonobj.Online = false;
+            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         }
     });
 
-    shortcutDisplayCheck.addEventListener('change', e => {
-        if(e.target.checked){
-            shortcuts.style.display = "block";
-        } else {
-            shortcuts.style.display = "none";
-        }
-    });
-
+    document.getElementById("platformDisplayCheck").checked = jsonobj.Platform;
     platformDisplayCheck.addEventListener('change', e => {
         if(e.target.checked){
             platform.style.display = "block";
+            jsonobj.Platform = true;
+            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
+
         } else {
             platform.style.display = "none";
+            jsonobj.Platform = false;
+            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         }
     });
 
+    document.getElementById("cpuUsageDisplayCheck").checked = jsonobj.CPU;
     cpuUsageDisplayCheck.addEventListener('change', e => {
         if(e.target.checked){
             cpu.style.display = "block";
+            jsonobj.CPU = true;
+            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         } else {
             cpu.style.display = "none";
+            jsonobj.CPU = false;
+            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         }
     });
 
+    document.getElementById("memoryUsageDisplayCheck").checked = jsonobj.memory;
     memoryUsageDisplayCheck.addEventListener('change', e => {
         if(e.target.checked){
             mem.style.display = "block";
+            jsonobj.memory = true;
+            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         } else {
             mem.style.display = "none";
+            jsonobj.memory = false;
+            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         }
     });
 
+    document.getElementById("totalMemoryDisplayCheck").checked = jsonobj.Tmemory;
     totalMemoryDisplayCheck.addEventListener('change', e => {
         if(e.target.checked){
             totalMem.style.display = "block";
+            jsonobj.Tmemory = true;
+            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         } else {
             totalMem.style.display = "none";
+            jsonobj.Tmemory = false;
+            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         }
     });
 
+    document.getElementById("cpuCoresDisplayCheck").checked = jsonobj.Cores;
     cpuCoresDisplayCheck.addEventListener('change', e => {
         if(e.target.checked){
             cpuCount.style.display = "block";
+            jsonobj.Cores = true;
+            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         } else {
             cpuCount.style.display = "none";
+            jsonobj.Cores = false;
+            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         }
     });
 
+    document.getElementById("uptimeDisplayCheck").checked = jsonobj.Uptime;
     uptimeDisplayCheck.addEventListener('change', e => {
         if(e.target.checked){
             uptime.style.display = "block";
+            jsonobj.Uptime = true;
+            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         } else {
             uptime.style.display = "none";
+            jsonobj.Uptime = false;
+            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         }
     });
 
@@ -576,7 +629,14 @@ document.addEventListener("DOMContentLoaded", function() {
     shortcuts.id = "shortcutsdisplay";
     shortcuts.style = "position: absolute; left: 0; bottom: 0; z-index: 1000; color: grey; background-color: transparent; outline: none; margin-bottom: 4px; margin-left: 7.5px; outline: none; border: none; font-size: 100%; display: none;";
     document.body.appendChild(shortcuts);
-
+    
+    //Show or Hide Shortcuts based on JSON
+    if(jsonobj.Shortcuts) {
+        shortcuts.style.display = "initial";
+    } else if (!jsonobj.Shortcuts) {
+        shortcuts.style.display = "none";
+    };
+    
     const inputs = ['shortcutOptionInput', 'shortcutOptionInput2', 'shortcutOptionInput3', 'shortcutOptionInput4', 'shortcutOptionInput5'];
 
     inputs.forEach((input, index) => {
@@ -954,6 +1014,13 @@ document.addEventListener("DOMContentLoaded", function() {
     status.style = "position: absolute; width: 100%; text-align: center; z-index: 1000; color: lightgreen; font-size: 100%; display: none;";
     document.body.appendChild(status);
 
+    //Show or Hide Online Status based on JSON
+    if(jsonobj.Online) {
+        status.style.display = "initial";
+    } else if (!jsonobj.Online) {
+        status.style.display = "none";
+    };
+    
     const updateOnlineStatus = () => {
         document.getElementById('status').innerHTML = navigator.onLine ? 'online' : 'offline'
 
@@ -1037,7 +1104,52 @@ document.addEventListener("DOMContentLoaded", function() {
       element.style = styles;
       statsHolder.appendChild(element);
     }    
-
+    
+    
+    //Show or Hide the element based on JSON
+    if(jsonobj.FPS) {
+        fpscounter.style.display = "block";
+    } else if (!jsonobj.FPS) {
+        fpscounter.style.display = "none";
+    };
+    
+    if(jsonobj.Platform) {
+        platform.style.display = "block";
+    } else if (!jsonobj.Platform) {
+        platform.style.display = "none";
+    };
+    
+    if(jsonobj.CPU) {
+        cpu.style.display = "block";
+    } else if (!jsonobj.CPU) {
+        cpu.style.display = "none";
+    };
+    
+    if(jsonobj.memory) {
+        mem.style.display = "block";
+    } else if (!jsonobj.memory) {
+        mem.style.display = "none";
+    };
+    
+    if(jsonobj.Tmemory) {
+        totalMem.style.display = "block";
+    } else if (!jsonobj.Tmemory) {
+        totalMem.style.display = "none";
+    };
+    
+    if(jsonobj.Cores) {
+        cpuCount.style.display = "block";
+    } else if (!jsonobj.Cores) {
+        cpuCount.style.display = "none";
+    };
+    
+    if(jsonobj.Uptime) {
+        uptime.style.display = "block";
+    } else if (!jsonobj.Uptime) {
+        uptime.style.display = "none";
+    };
+    
+    
     /*const freeMem = document.createElement("h2");
     freeMem.innerHTML = "loading...";
     freeMem.id = "freeMem";
