@@ -973,9 +973,8 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log('Ping time: ' + pingTime + 'ms');
         };
     }
-    
-    // call ping every x seconds
-    ping2();
+
+    setInterval(ping2, 1000);
 
     // custom scope
 
