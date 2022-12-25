@@ -3,6 +3,8 @@ const path = require('path');
 const fs = require('fs');
 const DiscordRpc = require("discord-rpc");
 const os = require('os-utils');
+const { webFrame } = require('electron')
+const { shell } = require('electron');
 //const { memoryUsage } = require('process');
 let win = null
 
@@ -41,6 +43,7 @@ app.whenReady().then(() => {
     win.show();
   }, 5000);
 
+  win.webContents.muted = true // doesn't work
   win.loadURL('https://deadshot.io')
 
   globalShortcut.register('F6', () => win.loadURL('https://deadshot.io/'));
@@ -54,8 +57,30 @@ app.whenReady().then(() => {
   if (!fs.existsSync(swapperFolder)) {
       fs.mkdirSync(swapperFolder, { recursive: true });
   };
+
+  // gun skins
   if (!fs.existsSync(path.join(swapperFolder, "/gunskins"))) {
       fs.mkdirSync(path.join(swapperFolder, "/gunskins"), { recursive: true });
+  };
+  if (!fs.existsSync(path.join(swapperFolder, "/gunskins/ar2"))) {
+    fs.mkdirSync(path.join(swapperFolder, "/gunskins/ar2"), { recursive: true });
+  };
+  if (!fs.existsSync(path.join(swapperFolder, "/gunskins/awp"))) {
+    fs.mkdirSync(path.join(swapperFolder, "/gunskins/awp"), { recursive: true });
+  };
+  if (!fs.existsSync(path.join(swapperFolder, "/gunskins/vector"))) {
+    fs.mkdirSync(path.join(swapperFolder, "/gunskins/vector"), { recursive: true });
+  };
+
+  // resource swapper
+  if (!fs.existsSync(path.join(swapperFolder, "Resource Swapper/weapons/ar2"))) {
+    fs.mkdirSync(path.join(swapperFolder, "Resource Swapper/weapons/ar2"), { recursive: true });
+  };
+  if (!fs.existsSync(path.join(swapperFolder, "Resource Swapper/weapons/awp"))) {
+    fs.mkdirSync(path.join(swapperFolder, "Resource Swapper/weapons/awp"), { recursive: true });
+  };
+  if (!fs.existsSync(path.join(swapperFolder, "Resource Swapper/weapons/vector"))) {
+    fs.mkdirSync(path.join(swapperFolder, "Resource Swapper/weapons/vector"), { recursive: true });
   };
 
   function readDirectory(dirPath, fileExtension, eventName) {
@@ -144,7 +169,7 @@ app.whenReady().then(() => {
         console.error(err);
       } else {
         console.log('Image copied successfully! With new name...');
-        webContents.reload({ ignoreCache: true })
+        //win.reload() need to reopen!!!
       }
     });
   }
@@ -152,13 +177,17 @@ app.whenReady().then(() => {
   ipcMain.on('filepath-awp', (event, message) => {
     handleFilepathEvent(event, message, 'awp', 'newawpcomp.webp');
   });
-  
   ipcMain.on('filepath-ar2', (event, message) => {
     handleFilepathEvent(event, message, 'ar2', 'arcomp.webp');
   });
-  
   ipcMain.on('filepath-vector', (event, message) => {
     handleFilepathEvent(event, message, 'vector', 'vectorcomp.webp');
+  });
+
+  const { spawn } = require('child_process');
+
+  ipcMain.on('openSkinFolder', (event) => {
+    spawn('explorer.exe', [path.join(app.getPath("documents"), "DeadshotClient/gunskins")]);
   });
     
   // Swapper -> Credits to Captain Cool 💪
@@ -187,7 +216,42 @@ app.whenReady().then(() => {
   },1000);
 })
 
-const appDataPath = app.getPath('appData');
-const subdirectoryPath = path.join(appDataPath, app.getName());
+// discord rpc
 
-console.log(subdirectoryPath);
+const DiscordRPC = require('discord-rpc');
+const clientId = '1054074293975273594';
+
+// Register your application with Discord
+DiscordRPC.register(clientId);
+
+// Initialize the Discord Rich Presence client with the IPC transport
+const rpc = new DiscordRPC.Client({ transport: 'ipc' });
+
+// Set the activity when the client is ready
+rpc.on('ready', () => {
+  console.log('Discord Rich Presence is ready!');
+  setActivity();
+});
+
+// Handle any errors that occur
+rpc.on('error', (error) => {
+  console.error(error);
+});
+
+// Log in to Discord with your client ID
+rpc.login({ clientId }).catch((error) => {
+  console.error(error);
+});
+
+// Function to set the activity
+function setActivity() {
+  rpc.setActivity({
+    details: 'Playing my Electron game',
+    state: 'Level 1',
+    largeImageKey: 'icon',
+    smallImageKey: 'play',
+    instance: false,
+  }).catch((error) => {
+    console.error(error);
+  });
+}
