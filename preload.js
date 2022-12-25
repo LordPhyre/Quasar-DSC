@@ -960,12 +960,31 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // ping | doesn't work | jquery is the problem | look at ping.txt in saveforlater
 
+    // custom scope
+
+    const scope = document.createElement("div");
+    scope.id = "scope";
+    scope.style = "position: absolute; z-index: 1000; top: 50.5%; left: 50%; transform: translate(-50%, -50%);";
+    document.body.appendChild(scope);
+
+    const scopeImg = document.createElement("img");
+    scopeImg.id = "scopeImg";
+    scopeImg.style = "height: 300px";
+    //scopeImg.src = "https://www.freepnglogos.com/uploads/scope-png/scope-simple-sniper-crosshair-fallout-new-vegas-mods-and-5.png";
+    scopeImg.src = "https://i.ibb.co/WpDfGzN/Png-Item-93100.png";
+    scope.appendChild(scopeImg);
+
     // stats holder
+
+    const statsHolderWrapper = document.createElement("div");
+    statsHolderWrapper.id = "statsHolderWrapper";
+    statsHolderWrapper.style = "position: absolute; left: 0;top: 35%; z-index: 1000; margin-left: 5px; font-size: 100%; height: 100%;";
+    document.body.appendChild(statsHolderWrapper);
 
     const statsHolder = document.createElement("div");
     statsHolder.id = "statsHolder";
-    statsHolder.style = "position: absolute; left: 0;top: 100; z-index: 1000; color: grey; margin-left: 5px; font-size: 100%;";
-    document.body.appendChild(statsHolder);
+    statsHolder.style = "z-index: 1000; /*top: 50%;*/ color: grey; padding-left: 5px; font-size: 100%; background: #191919;";
+    statsHolderWrapper.appendChild(statsHolder);
 
     
     const electron = require('electron');
