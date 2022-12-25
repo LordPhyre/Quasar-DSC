@@ -958,7 +958,13 @@ document.addEventListener("DOMContentLoaded", function() {
     
     updateOnlineStatus()
 
-    // ping | doesn't work | jquery is the problem | look at ping.txt in saveforlater
+    // ping | with errors haha
+
+    const ping = document.createElement("p");
+    ping.innerHTML = "loading...";
+    ping.id = "ping";
+    ping.style = "position: absolute; width: 100%; text-align: center; z-index: 1000; color: red";
+    document.body.appendChild(ping);
 
     function ping2() {
         var xhr = new XMLHttpRequest();
@@ -970,7 +976,8 @@ document.addEventListener("DOMContentLoaded", function() {
         xhr.onload = function() {
             var endTime = performance.now();
             var pingTime = endTime - startTime;
-            console.log('Ping time: ' + pingTime + 'ms');
+            //console.log('Ping time: ' + pingTime + 'ms');
+            ping.innerHTML = 'Ping: ' + pingTime.toFixed(0) + 'ms';
         };
     }
 
