@@ -30,6 +30,7 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 - [x] Resource Swapper [Weapons, Sky, Map-Textures, Scripts]
 - [ ] Texture-Pack loading
 - [ ] FPS-Boost Texture-Pack
+- [x] Chromium Flags
 - [ ] Custom Resource Marketplace
 - [ ] FOV Slider
 - [x] PC Stats

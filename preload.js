@@ -114,6 +114,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         { text: 'Stats', id: 'stats' },
         { text: 'Shortcuts', id: 'shortcuts' },
         { text: 'Skins', id: 'skinmenu' },
+        { text: 'Texture Packs', id: 'texturepacks' },
         { text: 'Aimbot', id: 'aimbot' },
         { text: 'Color Settings', id: 'colorsettings' },
         /*{ text: 'Custom CSS', id: 'customcss' },
@@ -377,8 +378,6 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         }
     });
 
-
-
     // SKIN-DISPLAY
 
     const skinCategoryoptionHolder = document.createElement('div');
@@ -604,8 +603,14 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         const optionHolder = createElement('div', 'optionholder', id, '');
         const optionDescr = createElement('p', 'optiondescr', '', descrText);
         const optionInput = createElement('input', '', inputId, '');
-        optionInput.type = 'text';
-        optionInput.style.width = '100px';
+        if (id == "texturePackOptionHolder") {
+            optionInput.type = 'file';
+            optionInput.accept = '.zip'; // add custom file type later
+            optionInput.style.width = '110px';
+        } else {
+            optionInput.type = 'text';
+            optionInput.style.width = '100px';
+        }
         if (id == 'opacityOptionHolder') {
             optionInput.placeholder = 'e.g. 0.95';
         } else if (id == 'windowBorderOptionHolder') {
@@ -655,6 +660,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     createOptionHolder('shortcutOptionHolder3', 'Shortcut Option [3]', 'shortcutOptionInput3');
     createOptionHolder('shortcutOptionHolder4', 'Shortcut Option [4]', 'shortcutOptionInput4');
     createOptionHolder('shortcutOptionHolder5', 'Shortcut Option [5]', 'shortcutOptionInput5');
+    createOptionHolder('texturePackOptionHolder', 'Texture Pack', 'texturePackOptionInput');
 
     optionholders.forEach(holder => rightDiv.appendChild(holder));
 
@@ -800,6 +806,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         skinWrapper.style.borderRadius = skinWrapperBorderRadius + "px";
     });
 
+
     // menu title
     h2.innerHTML = "All Options";
 
@@ -818,7 +825,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
 
 
 
-    const options = ["fpsDisplayOptionHolder", "pingDisplayOptionHolder", "onlineDisplayOptionHolder", "shortcutDisplayOptionHolder", "skincontent", "optionColorOptionHolder", "behindOptionsColorOptionHolder", "menuHeaderColorOptionHolder", "skinButtonColorOptionHolder", "opacityOptionHolder", "windowBorderOptionHolder", "skinCategoryoptionHolder", "shortcutOptionHolder", "shortcutOptionHolder2", "shortcutOptionHolder3", "shortcutOptionHolder4", "shortcutOptionHolder5", "platformDisplayOptionHolder", "cpuUsageDisplayOptionHolder", "memoryUsageDisplayOptionHolder", "totalMemoryDisplayOptionHolder", "cpuCoresDisplayOptionHolder", "uptimeDisplayOptionHolder"];
+    const options = ["fpsDisplayOptionHolder", "pingDisplayOptionHolder", "onlineDisplayOptionHolder", "shortcutDisplayOptionHolder", "skincontent", "optionColorOptionHolder", "behindOptionsColorOptionHolder", "menuHeaderColorOptionHolder", "skinButtonColorOptionHolder", "opacityOptionHolder", "windowBorderOptionHolder", "skinCategoryoptionHolder", "shortcutOptionHolder", "shortcutOptionHolder2", "shortcutOptionHolder3", "shortcutOptionHolder4", "shortcutOptionHolder5", "platformDisplayOptionHolder", "cpuUsageDisplayOptionHolder", "memoryUsageDisplayOptionHolder", "totalMemoryDisplayOptionHolder", "cpuCoresDisplayOptionHolder", "uptimeDisplayOptionHolder", "texturePackOptionHolder"];
     
     document.getElementById("allOptions").addEventListener("click", function() {
         h2.innerHTML = "All Options";
@@ -855,7 +862,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         options.forEach(option => {
             document.getElementById(option).style.display = "none";
         });
-        document.getElementById("shortcutDisplayOptionHolder").style.display = "";
+        document.getElementById("shortcutDisplayOptionHolder").style.display = "";skinCategoryoptionHolder
         document.getElementById("shortcutOptionHolder").style.display = "";
         document.getElementById("shortcutOptionHolder2").style.display = "";
         document.getElementById("shortcutOptionHolder3").style.display = "";
@@ -872,6 +879,15 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         });
         document.getElementById("skinCategoryoptionHolder").style.display = "";
         document.getElementById("skincontent").style.display = "flex";
+    });
+
+    document.getElementById("texturepacks").addEventListener("click", function() {
+        h2.innerHTML = 'Texture Packs'
+        
+        options.forEach(option => {
+            document.getElementById(option).style.display = "none";
+        });
+        document.getElementById("texturePackOptionHolder").style.display = "";
     });
 
     document.getElementById("aimbot").addEventListener("click", function() {
@@ -944,7 +960,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
 
     // css
     let skincss = document.createElement('style');
-    skincss.innerText = "@import 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap';*{z-index:1000;margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}.skinwrapper{position:absolute;top:50%;left:50%;max-width:750px;width:100%;background:#2a394f;/*has to stay like that, else the menu is see trough under header*/transform:translate(-50%,-50%);border:solid 1px #000;color:#fff;height:335px;}.skinwrapper header{font-size:23px;font-weight:500;padding:17px 30px;border-bottom:1px solid #000;text-align:center;border-top-left-radius: 10px;border-top-right-radius: 10px;}.skinwrapper header.skinactive{cursor:move;user-select:none;}.skinwrapper .skincontent{display:flex;flex-direction:wrap;flex-wrap:wrap;justify-content:center;}.skincontent .title{margin:15px 0;font-size:29px;font-weight:500}.skincontent p{font-size:16px;text-align:center;display:flex}.skinbutton{width:100%;height:50px;background-color:" + skinButtonColor + ";border:none;color:#fff;font-size:20px}.skinbutton:hover{background-color:" + skinButtonHoverColor + "}.skinclose{color:grey;position:absolute;top:0;right:0;margin-right:15px;margin-top:-6px;background-color:" + skinCloseColor + ";border:none;font-size:35px}.skinclose:hover{color:#fff}p{font-size:20px}input[type=text]{float:right;margin:14px 25px 10px 0;font-weight:700;color:grey}input[type=range]{float:right;margin:16px 20px 10px 0}input[type=checkbox]{float:right;transform:scale(2);margin:14px 25px 5px 0;width:35px;font-weight:700;color:grey;}.optiondescr{float:left;margin:10px 0 10px 20px}.optionholder{background-color:" + optionColor + "}hr{width:100%;border:.1px solid #000}select{float:right;margin:14px 25px 10px 0;width:50px}.skinCategory:hover{background-color:#0798fc}/* doesn't work lol*/" + customCSS;
+    skincss.innerText = "@import 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap';*{z-index:1000;margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}.skinwrapper{position:absolute;top:50%;left:50%;max-width:750px;width:100%;background:#2a394f;/*has to stay like that, else the menu is see trough under header*/transform:translate(-50%,-50%);border:solid 1px #000;color:#fff;height:335px;}.skinwrapper header{font-size:23px;font-weight:500;padding:17px 30px;border-bottom:1px solid #000;text-align:center;border-top-left-radius: 10px;border-top-right-radius: 10px;}.skinwrapper header.skinactive{cursor:move;user-select:none;}.skinwrapper .skincontent{display:flex;flex-direction:wrap;flex-wrap:wrap;justify-content:center;}.skincontent .title{margin:15px 0;font-size:29px;font-weight:500}.skincontent p{font-size:16px;text-align:center;display:flex}.skinbutton{width:100%;height:50px;background-color:" + skinButtonColor + ";border:none;color:#fff;font-size:20px}.skinbutton:hover{background-color:" + skinButtonHoverColor + "}.skinclose{color:grey;position:absolute;top:0;right:0;margin-right:15px;margin-top:-6px;background-color:" + skinCloseColor + ";border:none;font-size:35px}.skinclose:hover{color:#fff}p{font-size:20px}input[type=text]{float:right;margin:14px 25px 10px 0;font-weight:700;color:grey}input[type=range]{float:right;margin:16px 20px 10px 0}input[type=checkbox]{float:right;transform:scale(2);margin:14px 25px 5px 0;width:35px;font-weight:700;color:grey;}input[type=file]{float:right;margin:14px 25px 10px 0;}.optiondescr{float:left;margin:10px 0 10px 20px}.optionholder{background-color:" + optionColor + "}hr{width:100%;border:.1px solid #000}select{float:right;margin:14px 25px 10px 0;width:50px}.skinCategory:hover{background-color:#0798fc}/* doesn't work lol*/" + customCSS;
     document.head.appendChild(skincss);
 
     // wheel | huge credits to this codepen repo: https://codepen.io/Brojos/pen/pYVKMe | emojis etc don't work, still keeping it in
@@ -1227,6 +1243,72 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     }
 
     updateFps();
+
+    // AWSD thing
+
+    /*<div style="position: absolute; width: 100%">
+        <div style="display: flex; color: white; align-items: center; justify-content: center;">
+            <div style="background: black; width: 75px; height: 75px; margin: 5px;">W</div>
+        </div>
+        <div style="display: flex; color: white; align-items: center; justify-content: center;">
+            <div style="background: black; width: 75px; height: 75px; margin: 5px;">A</div>
+            <div style="background: black; width: 75px; height: 75px; margin: 5px;">S</div>
+            <div style="background: black; width: 75px; height: 75px; margin: 5px;">D</div>
+        </div>
+    </div>*/
+
+    // make this more beautiful with classes lmao
+    const WASD = document.createElement("div");
+    WASD.style = "position: absolute; width: 750px; bottom: 0; right: 0;";
+    WASD.innerHTML = `
+        <div style="display: flex; color: white; align-items: center; justify-content: center;">
+            <div id="w" style="background: black; width: 75px; height: 75px; margin: 5px;">W</div>
+        </div>
+        <div style="display: flex; color: white; align-items: center; justify-content: center;">
+            <div id="a" style="background: black; width: 75px; height: 75px; margin: 5px;">A</div>
+            <div id="s" style="background: black; width: 75px; height: 75px; margin: 5px;">S</div>
+            <div id="d" style="background: black; width: 75px; height: 75px; margin: 5px;">D</div>
+        </div>`;
+    WASD.id = "WASD";
+    document.body.appendChild(WASD);
+
+    const WASDJS = document.createElement("script");
+    WASDJS.innerHTML = `
+    const wElement = document.getElementById('w');
+    const aElement = document.getElementById('a');
+    const sElement = document.getElementById('s');
+    const dElement = document.getElementById('d');
+    
+    const keys = {
+      w: false,
+      a: false,
+      s: false,
+      d: false
+    };
+
+    document.addEventListener('keydown', event => {
+      const key = event.key.toLowerCase();
+      if (key in keys) {
+        keys[key] = true;
+        updateElements();
+      }
+    });
+    
+    document.addEventListener('keyup', event => {
+      const key = event.key.toLowerCase();
+      if (key in keys) {
+        keys[key] = false;
+        updateElements();
+      }
+    });
+    
+    function updateElements() {
+      wElement.style.color = keys.w ? 'red' : 'white';
+      aElement.style.color = keys.a ? 'red' : 'white';
+      sElement.style.color = keys.s ? 'red' : 'white';
+      dElement.style.color = keys.d ? 'red' : 'white';
+    }`;
+    document.getElementsByTagName('head')[0].appendChild(WASDJS);
 
 
     // alternative fps chart

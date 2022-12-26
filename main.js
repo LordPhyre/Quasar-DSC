@@ -3,14 +3,42 @@ const path = require('path');
 const fs = require('fs');
 //const DiscordRpc = require("discord-rpc");
 const os = require('os-utils');
-const { webFrame } = require('electron')
-const { shell } = require('electron');
-//const { memoryUsage } = require('process');
+const { autoUpdater } = require('electron-updater');
+
 let win = null
 
 //Swapper
 const swapper = require('./swapper.js');
 
+// chromium flags -> credits to gatos | makes everything slow af
+/*
+// json
+app.commandLine.appendSwitch("disable-print-preview");
+app.commandLine.appendSwitch("enable-javascript-harmony");
+app.commandLine.appendSwitch("enable-webgl2-compute-context");
+app.commandLine.appendSwitch("renderer-process-limit", 100);
+app.commandLine.appendSwitch("max-active-webgl-contexts", 100);
+app.commandLine.appendSwitch("ignore-gpu-blacklist");
+app.commandLine.appendSwitch("disable-2d-canvas-clip-aa");
+app.commandLine.appendSwitch("disable-bundled-ppapi-flash");
+app.commandLine.appendSwitch("disable-logging");
+app.commandLine.appendSwitch("disable-web-security");
+app.commandLine.appendSwitch("webrtc-max-cpu-consumption-percentage=100");
+console.log('Enabled Experiments');
+
+// json
+app.commandLine.appendSwitch('disable-frame-rate-limit');
+app.commandLine.appendSwitch("disable-gpu-vsync");
+console.log('Removed FPS Cap');
+
+// json
+app.commandLine.appendSwitch("in-process-gpu");
+console.log('In Process GPU is active');
+
+// json
+app.commandLine.appendSwitch("disable-accelerated-2d-canvas", "true");
+console.log('Disabled Accelerated 2D canvas');
+*/
 app.whenReady().then(() => {
   //app.commandLine.appendSwitch('fps', '1')
 
@@ -145,7 +173,7 @@ app.whenReady().then(() => {
       imageFiles.forEach(function(imageFile) {
         var pathcontainer = `${dirPath}/${imageFile}`;
   
-        console.log(`Processing image file: ${imageFile} pathcontainer: ${pathcontainer}`);
+        //console.log(`Processing image file: ${imageFile} pathcontainer: ${pathcontainer}`);
   
         // push file names to skin-array
         skins.push(pathcontainer);
@@ -236,7 +264,22 @@ app.whenReady().then(() => {
   ipcMain.on('openSkinFolder', (event) => {
     spawn('explorer.exe', [path.join(app.getPath("documents"), "DeadshotClient/gunskins")]);
   });
-    
+
+  // texture pack loader
+
+  /*const JSZip = require('jszip');
+
+  const zipData = fs.readFileSync('path/to/zipfile.zip', 'binary');
+
+  const zip = new JSZip();
+  zip.loadAsync(zipData, { base64: true }).then(function(zip) {
+    zip.forEach(function(relativePath, zipEntry) {
+      zip.file(relativePath).async('nodebuffer').then(function(content) {
+        fs.writeFileSync('path/to/extract/folder/' + zipEntry.name, content);
+      });
+    });
+  });*/
+
   // Swapper -> Credits to Captain Cool 💪
 
   swapper.replaceResources(win, app);
@@ -271,7 +314,7 @@ app.whenReady().then(() => {
 
 // discord rpc
 
-const DiscordRPC = require('discord-rpc');
+/*const DiscordRPC = require('discord-rpc');
 const clientId = '1054074293975273594';
 
 // Register your application with Discord
@@ -307,4 +350,4 @@ function setActivity() {
   }).catch((error) => {
     console.error(error);
   });
-}
+}*/
