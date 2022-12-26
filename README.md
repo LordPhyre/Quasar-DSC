@@ -19,11 +19,12 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 * **Classy08/Captain Cool:** Resource Swapper
 * **Alez:** Original Deadshot Client
 * **Gato:** (we stole his ideas. teehee)
-* **And of course, All the members of Cosmic [`csm`] who contributed with great ideas.**
+* **And of course, all the members of Cosmic [csm] who contributed with great ideas.**
 
 #
 
 ### To-Do List:
+- [ ] Fix JSON Loading Glitches and Elements not Functioning
 - [x] GG Button
 - [x] Random Cool Looking GUI Elements 😎
 - [ ] Gamma Editor
