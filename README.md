@@ -34,7 +34,7 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 - [ ] Custom Resource Marketplace
 - [ ] FOV Slider
 - [ ] WASD Detector
-- [ ] local Player Wireframe
+- [ ] Local Player Wireframe
 - [x] Custom Chat Shortcuts
 - [ ] Custom Client Keybinds
 - [x] Customizable UI
