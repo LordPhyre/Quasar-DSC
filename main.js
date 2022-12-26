@@ -75,7 +75,19 @@ app.whenReady().then(() => {
     fs.mkdirSync(path.join(swapperFolder, "/gunskins/vector"), { recursive: true });
   };
 
+  // textures
+  if (!fs.existsSync(path.join(swapperFolder, "/textures"))) {
+    fs.mkdirSync(path.join(swapperFolder, "/textures"), { recursive: true });
+  };
+
+  // maps/industry/out/compressedTextures
+  /*if (!fs.existsSync(path.join(swapperFolder, "/maps/industry/out/compressedTextures"))) {
+    fs.mkdirSync(path.join(swapperFolder, "/maps/industry/out/compressedTextures"), { recursive: true });
+  };*/
+
   // resource swapper
+
+  // gun skins
   if (!fs.existsSync(path.join(swapperFolder, "Resource Swapper/weapons/ar2"))) {
     fs.mkdirSync(path.join(swapperFolder, "Resource Swapper/weapons/ar2"), { recursive: true });
   };
