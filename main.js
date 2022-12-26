@@ -12,13 +12,13 @@ let win = null
 const swapper = require('./swapper.js');
 
 app.whenReady().then(() => {
-  app.commandLine.appendSwitch('fps', '1')
+  //app.commandLine.appendSwitch('fps', '1')
+  
 
   win = new BrowserWindow({ 
-    width: 800, 
-    height: 600,
+    width: 852,
+    height: 480,
     show: false,
-    fullscreen: true,
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
@@ -44,6 +44,7 @@ app.whenReady().then(() => {
   setTimeout(function () {
     splash.close();
     win.show();
+    win.maximize() 
   }, 5000);
 
   win.loadURL('https://deadshot.io')
