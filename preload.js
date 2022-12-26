@@ -1262,12 +1262,12 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     WASD.style = "position: absolute; width: 750px; bottom: 0; right: 0;";
     WASD.innerHTML = `
         <div style="display: flex; color: white; align-items: center; justify-content: center;">
-            <div id="w" style="background: black; width: 75px; height: 75px; margin: 5px;">W</div>
+            <div id="w" style="background: #232429; width: 75px; height: 75px; margin: 5px;">W</div>
         </div>
         <div style="display: flex; color: white; align-items: center; justify-content: center;">
-            <div id="a" style="background: black; width: 75px; height: 75px; margin: 5px;">A</div>
-            <div id="s" style="background: black; width: 75px; height: 75px; margin: 5px;">S</div>
-            <div id="d" style="background: black; width: 75px; height: 75px; margin: 5px;">D</div>
+            <div id="a" style="background: #232429; width: 75px; height: 75px; margin: 5px;">A</div>
+            <div id="s" style="background: #232429; width: 75px; height: 75px; margin: 5px;">S</div>
+            <div id="d" style="background: #232429; width: 75px; height: 75px; margin: 5px;">D</div>
         </div>`;
     WASD.id = "WASD";
     document.body.appendChild(WASD);
@@ -1303,10 +1303,10 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     });
     
     function updateElements() {
-      wElement.style.color = keys.w ? 'red' : 'white';
-      aElement.style.color = keys.a ? 'red' : 'white';
-      sElement.style.color = keys.s ? 'red' : 'white';
-      dElement.style.color = keys.d ? 'red' : 'white';
+      wElement.style.background = keys.w ? '#0798fc' : '#232429';
+      aElement.style.background = keys.a ? '#0798fc' : '#232429';
+      sElement.style.background = keys.s ? '#0798fc' : '#232429';
+      dElement.style.background = keys.d ? '#0798fc' : '#232429';
     }`;
     document.getElementsByTagName('head')[0].appendChild(WASDJS);
 
