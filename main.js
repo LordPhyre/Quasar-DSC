@@ -81,9 +81,31 @@ app.whenReady().then(() => {
   };
 
   // maps/industry/out/compressedTextures
-  /*if (!fs.existsSync(path.join(swapperFolder, "/maps/industry/out/compressedTextures"))) {
+  if (!fs.existsSync(path.join(swapperFolder, "/maps"))) {
+    fs.mkdirSync(path.join(swapperFolder, "/maps"), { recursive: true });
+  };
+  if (!fs.existsSync(path.join(swapperFolder, "/maps/industry"))) {
+    fs.mkdirSync(path.join(swapperFolder, "/maps/industry"), { recursive: true });
+  };
+  if (!fs.existsSync(path.join(swapperFolder, "/maps/industry/out"))) {
+    fs.mkdirSync(path.join(swapperFolder, "/maps/industry/out"), { recursive: true });
+  };
+  if (!fs.existsSync(path.join(swapperFolder, "/maps/industry/out/compressedTextures"))) {
     fs.mkdirSync(path.join(swapperFolder, "/maps/industry/out/compressedTextures"), { recursive: true });
-  };*/
+  };
+
+  if (!fs.existsSync(path.join(swapperFolder, "Resource Swapper/maps"))) {
+    fs.mkdirSync(path.join(swapperFolder, "Resource Swapper/maps"), { recursive: true });
+  };
+  if (!fs.existsSync(path.join(swapperFolder, "Resource Swapper/maps/industry"))) {
+    fs.mkdirSync(path.join(swapperFolder, "Resource Swapper/maps/industry"), { recursive: true });
+  };
+  if (!fs.existsSync(path.join(swapperFolder, "Resource Swapper/maps/industry/out"))) {
+    fs.mkdirSync(path.join(swapperFolder, "Resource Swapper/maps/industry/out"), { recursive: true });
+  };
+  if (!fs.existsSync(path.join(swapperFolder, "Resource Swapper/maps/industry/out/compressedTextures"))) {
+    fs.mkdirSync(path.join(swapperFolder, "Resource Swapper/maps/industry/out/compressedTextures"), { recursive: true });
+  };
 
   // resource swapper
 
