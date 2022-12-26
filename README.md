@@ -14,12 +14,12 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 
 ### Credits
 
-* LordPhyre/skill: Project Manager
-* jcjms: Lead Developer
-* Classy08/Captain Cool: Resource Swapper
-* Alez: Original Deadshot Client
-* Gato: (we stole his ideas. teehee)
-* And of course, All the members of Cosmic who contributed with great ideas.
+* **LordPhyre/skill:** Project Manager/Developer
+* **jcjms:** Lead Developer
+* **Classy08/Captain Cool:** Resource Swapper
+* **Alez:** Original Deadshot Client
+* **Gato:** (we stole his ideas. teehee)
+* **And of course, All the members of Cosmic who contributed with great ideas.**
 
 #
 
