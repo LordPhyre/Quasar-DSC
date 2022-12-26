@@ -25,17 +25,20 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 
 ### To-Do List:
 - [x] GG Button
-- [x] Auto-GG
+- [ ] Auto-GG
 - [ ] Custom Background/Wallpaper
-- [x] Random Cool Looking GUI Elements
-- [x] Texture Swapper
+- [x] Random Cool Looking GUI Elements 😎
 - [ ] Gamma Editor
+- [x] Resource Swapper [Weapons, Sky, Map-Textures, Scripts]
+- [ ] Custom Resource Marketplace
 - [ ] FOV Slider
 - [ ] WASD Detector
-- [ ] Player Arm Wireframe
-- [x] Custom Client Keybinds
-- [ ] Fix Skin Color Thing
+- [ ] local Player Wireframe
+- [x] Custom Chat Shortcuts
+- [ ] Custom Client Keybinds
 - [x] Customizable UI
 - [ ] Auto Rejoin
 - [ ] Screenshake
 - [x] Aimbot
+- [ ] Custom Damage Vignette
+- [ ] Sound Swapper
