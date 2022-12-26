@@ -61,7 +61,9 @@ app.whenReady().then(() => {
     directory: '/path/to/save/the/file',
     filename: 'BlueIndoorWall.webp'
   }).then(dl => console.log(`Finished downloading to ${dl.getSavePath()}`))
-    .catch(console.error);*/
+    .catch(console.error);
+    
+  wget -r -np -P /path/to/save/directory https://deadshot.io/maps/tf/out/compressedTextures/ */
 
   var swapperFolder = path.join(app.getPath("documents"), "DeadshotClient");
 
