@@ -212,6 +212,11 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         descrText: "Show Shortcuts",
         checkId: "shortcutDisplayCheck",
     },
+    {
+        holderId: "WASDDisplayOptionHolder",
+        descrText: "Show WASD",
+        checkId: "WASDDisplayCheck",
+    },
     ];
       
     const optionHr = document.createElement('hr');
@@ -375,6 +380,19 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
             uptime.style.display = "none";
             jsonobj.Uptime = false;
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
+        }
+    });
+
+    //document.getElementById("WASDDisplayCheck").checked = jsonobj.Uptime;
+    WASDDisplayCheck.addEventListener('change', e => {
+        if(e.target.checked){
+            WASD.style.display = "block";
+            //jsonobj.Uptime = true;
+            //fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
+        } else {
+            WASD.style.display = "none";
+            //jsonobj.Uptime = false;
+            //fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         }
     });
 
@@ -810,13 +828,6 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     // menu title
     h2.innerHTML = "All Options";
 
-    // show all options
-
-    fpsDisplayOptionHolder.style.display = "";
-    onlineDisplayOptionHolder.style.display = "";
-    shortcutDisplayOptionHolder.style.display = "";
-    //skincontent.style.display = "flex";
-
     // hide
     skincontent.style.display = "none";
 
@@ -825,7 +836,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
 
 
 
-    const options = ["fpsDisplayOptionHolder", "pingDisplayOptionHolder", "onlineDisplayOptionHolder", "shortcutDisplayOptionHolder", "skincontent", "optionColorOptionHolder", "behindOptionsColorOptionHolder", "menuHeaderColorOptionHolder", "skinButtonColorOptionHolder", "opacityOptionHolder", "windowBorderOptionHolder", "skinCategoryoptionHolder", "shortcutOptionHolder", "shortcutOptionHolder2", "shortcutOptionHolder3", "shortcutOptionHolder4", "shortcutOptionHolder5", "platformDisplayOptionHolder", "cpuUsageDisplayOptionHolder", "memoryUsageDisplayOptionHolder", "totalMemoryDisplayOptionHolder", "cpuCoresDisplayOptionHolder", "uptimeDisplayOptionHolder", "texturePackOptionHolder"];
+    const options = ["fpsDisplayOptionHolder", "pingDisplayOptionHolder", "onlineDisplayOptionHolder", "shortcutDisplayOptionHolder", "skincontent", "optionColorOptionHolder", "behindOptionsColorOptionHolder", "menuHeaderColorOptionHolder", "skinButtonColorOptionHolder", "opacityOptionHolder", "windowBorderOptionHolder", "skinCategoryoptionHolder", "shortcutOptionHolder", "shortcutOptionHolder2", "shortcutOptionHolder3", "shortcutOptionHolder4", "shortcutOptionHolder5", "platformDisplayOptionHolder", "cpuUsageDisplayOptionHolder", "memoryUsageDisplayOptionHolder", "totalMemoryDisplayOptionHolder", "cpuCoresDisplayOptionHolder", "uptimeDisplayOptionHolder", "texturePackOptionHolder", "WASDDisplayOptionHolder"];
     
     document.getElementById("allOptions").addEventListener("click", function() {
         h2.innerHTML = "All Options";
@@ -840,6 +851,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
             document.getElementById(option).style.display = "none";
         });
         document.getElementById("onlineDisplayOptionHolder").style.display = "";
+        document.getElementById("WASDDisplayOptionHolder").style.display = "";
     });
 
     document.getElementById("stats").addEventListener("click", function() {
@@ -1259,7 +1271,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
 
     // make this more beautiful with classes lmao
     const WASD = document.createElement("div");
-    WASD.style = "position: absolute; width: 750px; bottom: 0; right: 0;";
+    WASD.style = "position: absolute; width: 750px; bottom: 0; right: 0; display: none;";
     WASD.innerHTML = `
         <div style="display: flex; color: white; align-items: center; justify-content: center;">
             <div id="w" style="background: #232429; width: 75px; height: 75px; margin: 5px;">W</div>
