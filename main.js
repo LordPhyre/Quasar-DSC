@@ -13,7 +13,6 @@ const swapper = require('./swapper.js');
 
 app.whenReady().then(() => {
   //app.commandLine.appendSwitch('fps', '1')
-  
 
   win = new BrowserWindow({ 
     width: 852,
@@ -55,6 +54,14 @@ app.whenReady().then(() => {
   globalShortcut.register('Escape', () => win.webContents.executeJavaScript('document.exitPointerLock()', true));
   globalShortcut.register('F7', () => win.webContents.toggleDevTools());
   globalShortcut.register('F11', () => { win.fullScreen = !win.fullScreen;});
+
+  // save for later
+  /*const { download } = require('electron-dl');
+  download(win, 'https://deadshot.io/maps/tf/out/compressedTextures/BlueIndoorWall.webp', {
+    directory: '/path/to/save/the/file',
+    filename: 'BlueIndoorWall.webp'
+  }).then(dl => console.log(`Finished downloading to ${dl.getSavePath()}`))
+    .catch(console.error);*/
 
   var swapperFolder = path.join(app.getPath("documents"), "DeadshotClient");
 
