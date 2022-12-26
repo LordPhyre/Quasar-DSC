@@ -26,6 +26,7 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 ### To-Do List:
 - [x] GG Button
 - [x] Auto-GG
+- [ ] Restart Button
 - [ ] Custom Background/Wallpaper
 - [x] Random Cool Looking GUI Elements
 - [x] Texture Swapper
