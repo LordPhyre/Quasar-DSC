@@ -32,6 +32,7 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 - [ ] FPS-Boost Texture-Pack
 - [ ] Custom Resource Marketplace
 - [ ] FOV Slider
+- [x] PC Stats
 - [ ] WASD Detector
 - [ ] Local Player Wireframe
 - [x] Custom Chat Shortcuts
