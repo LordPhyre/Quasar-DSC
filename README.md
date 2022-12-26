@@ -1,6 +1,6 @@
 # Quasar Deadshot Client
 
-Introducing the most advanced and simultaneously user-friendly client for [Deadshot.io](https://deadshot.io/) that exist and will ever exist. Hopefully.
+Introducing the most advanced and simultaneously user-friendly client for [Deadshot.io](https://deadshot.io/) that exists and will ever exist. Hopefully.
 
 This client contains many unique features found nowhere else, such as a fully customizable Graphical User Interface, with many performance and cosmetic options. It also includes a completely easy to use skin and resource swapper to completely change the look and feel of your game. 
 
@@ -19,7 +19,7 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 * **Classy08/Captain Cool:** Resource Swapper
 * **Alez:** Original Deadshot Client
 * **Gato:** (we stole his ideas. teehee)
-* **And of course, All the members of Cosmic who contributed with great ideas.**
+* **And of course, All the members of Cosmic [csm] who contributed with great ideas.**
 
 #
 
@@ -31,6 +31,7 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 - [x] Random Cool Looking GUI Elements 😎
 - [ ] Gamma Editor
 - [x] Resource Swapper [Weapons, Sky, Map-Textures, Scripts]
+- [ ] FPS-Boost Texture-Pack
 - [ ] Custom Resource Marketplace
 - [ ] FOV Slider
 - [ ] WASD Detector
