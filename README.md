@@ -28,6 +28,7 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 - [x] Random Cool Looking GUI Elements 😎
 - [ ] Gamma Editor
 - [x] Resource Swapper [Weapons, Sky, Map-Textures, Scripts]
+- [ ] Texture-Pack loading
 - [ ] FPS-Boost Texture-Pack
 - [ ] Custom Resource Marketplace
 - [ ] FOV Slider
