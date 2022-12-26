@@ -25,8 +25,6 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 
 ### To-Do List:
 - [x] GG Button
-- [ ] Auto-GG
-- [ ] Restart Button
 - [ ] Custom Background/Wallpaper
 - [x] Random Cool Looking GUI Elements 😎
 - [ ] Gamma Editor
@@ -39,8 +37,13 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 - [x] Custom Chat Shortcuts
 - [ ] Custom Client Keybinds
 - [x] Customizable UI
-- [ ] Auto Rejoin
-- [ ] Screenshake
 - [x] Aimbot
-- [ ] Custom Damage Vignette
 - [ ] Sound Swapper
+
+### Featues that will only be possible with the help of our friend tree : ):
+- [ ] Auto-GG
+- [ ] Auto Re-Join Button
+- [ ] Screenshake
+- [ ] Custom Damage Vignette
+- [ ] Reload Warning
+- [ ] Auto Reload
