@@ -25,7 +25,6 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 
 ### To-Do List:
 - [x] GG Button
-- [ ] Custom Background/Wallpaper
 - [x] Random Cool Looking GUI Elements 😎
 - [ ] Gamma Editor
 - [x] Resource Swapper [Weapons, Sky, Map-Textures, Scripts]
@@ -42,9 +41,10 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 - [ ] Sound Swapper
 
 ### Featues that will only be possible with the help of our friend tree : ):
-- [ ] Auto-GG
-- [ ] Auto Re-Join Button
-- [ ] Screenshake
-- [ ] Custom Damage Vignette
-- [ ] Reload Warning
-- [ ] Auto Reload
+- [ ] Auto-GG (need to know round status + name of killer)
+- [ ] Auto Re-Join Button (need to know round status)
+- [ ] Screenshake (need to know if damage)
+- [ ] Custom Damage Vignette (need to know if damage)
+- [ ] Reload Warning (need to know ammo amount)
+- [ ] Auto Reload (need to know ammo amount)
+- [ ] Custom Background/Wallpaper (need to know if round started to remove img)
