@@ -1144,12 +1144,12 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
 
     const statsHolderWrapper = document.createElement("div");
     statsHolderWrapper.id = "statsHolderWrapper";
-    statsHolderWrapper.style = "position: absolute; left: 0;top: 35%; z-index: 1000; margin-left: 5px; font-size: 100%; height: 100%;";
+    statsHolderWrapper.style = "position: absolute; right: 0;top: 25%; z-index: 1000; margin-right: 6px; font-size: 100%; height: 100%;";
     document.body.appendChild(statsHolderWrapper);
 
     const statsHolder = document.createElement("div");
     statsHolder.id = "statsHolder";
-    statsHolder.style = "z-index: 1000; /*top: 50%;*/ color: grey; padding-left: 5px; font-size: 100%; background: #191919; opacity: 0.9;";
+    statsHolder.style = "z-index: 1000; /*top: 50%;*/ color: white; padding-right: 5px; font-size: 100%; background: #191919; opacity: 0.9;";
     statsHolderWrapper.appendChild(statsHolder);
 
     
