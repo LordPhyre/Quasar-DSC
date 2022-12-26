@@ -1157,7 +1157,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     const ipcRenderer = electron.ipcRenderer; // apply that later to everything
     
     const elementIds = ['fpscounter', 'ping', 'platform', 'cpu', 'mem', 'totalMem', 'cpuCount', 'uptime'];
-    const styles = "z-index: 1000; color: grey; font-size: 100%; display: none;";
+    const styles = "z-index: 1000; color: white; font-size: 100%; display: none;";
     
     for (const id of elementIds) {
       const element = document.createElement("h2");
