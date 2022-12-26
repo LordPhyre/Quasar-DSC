@@ -38,6 +38,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     var optionColor = "#25272e"; //"#364760";
     var opacity = "1"; //0.95;
     var skinWrapperBorderRadius = "10"; //"10";
+    var msgBoxColor = "#232429"; //"#2a394f";
 
     let scrollcss = document.createElement('style');
     scrollcss.innerText = `
@@ -446,23 +447,23 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     allButton.addEventListener('click', function() {
         const allSkins = document.querySelectorAll('#awp, #ar2, #vector');
         allSkins.forEach((skin) => {
-            skin.style.display = "";
+            skin.style.display = "initial";
         });
     });
     awpButton.addEventListener('click', function() {
         const awpSkins = document.getElementById("awp");
         toggleSkins("none");
-        awpSkins.style.display = "";
+        awpSkins.style.display = "initial";
     });
     ar2Button.addEventListener('click', function() {
         const ar2Skins = document.getElementById("ar2");
         toggleSkins("none");
-        ar2Skins.style.display = "";
+        ar2Skins.style.display = "initial";
     });
     vectorButton.addEventListener('click', function() {
         const vectorSkins = document.getElementById("vector");
         toggleSkins("none");
-        vectorSkins.style.display = "";
+        vectorSkins.style.display = "initial";
     });
     skinFolderButton.addEventListener('click', function() {
         require('electron').ipcRenderer.send('openSkinFolder')
@@ -489,6 +490,23 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     ////////////////////////////////////////////////////////
     ///// data exchange between main.js and preload.js /////
     ////////////////////////////////////////////////////////
+
+    // create message boxes
+
+    const msgBoxWrapper = document.createElement('div');
+    msgBoxWrapper.style = "position: absolute; width: 100%; z-index: 1001; display: flex; justify-content: center; align-items: center; margin-top: 10px;"
+    msgBoxWrapper.id = "msgBoxWrapper"
+    document.body.appendChild(msgBoxWrapper);
+
+    const msgBox = document.createElement('div');
+    msgBox.style = "text-align: center; z-index: 1001; border-radius: 10px; font-size: 20px; color: white; display: none;"
+    msgBox.innerHTML = "<p style='line-height: 2.2'>Skin applied successfully...</p>"
+    msgBox.style.background = msgBoxColor;
+    msgBox.style.width = '325px';
+    msgBox.style.height = '45px';
+    msgBox.style.border = '1px solid black';
+    msgBoxWrapper.appendChild(msgBox);
+
 
     // handle skins
     function skinPathHandlerAwp(src) {
@@ -528,6 +546,14 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
             element.addEventListener('click', function() {
                 let src = this.getAttribute('src');
                 console.log("The source of the selected skin is: " + src);
+
+                // message
+                msgBox.style.display = "initial";
+
+                setTimeout(function() {
+                    msgBox.style.display = "none";
+                }, 2000);
+
                 if (handler == 1) {
                     skinPathHandlerAwp(src);
                 } else if (handler == 2) {
