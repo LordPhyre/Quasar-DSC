@@ -1,4 +1,4 @@
-# Quasar Deadshot Client [`BETA 1.0`]
+# Quasar Deadshot Client `BETA 1.0`
 
 Introducing the most advanced and simultaneously user-friendly client for [Deadshot.io](https://deadshot.io/) that exists and will ever exist. Hopefully.
 
