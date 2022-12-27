@@ -23,6 +23,11 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 
 #
 
+### What we are currently working on:
+- [ ] Online / Offline Message // jcjms
+- [ ] Texture-Pack loading // jcjms
+- [ ] JSON Settings // skill
+
 ### To-Do List:
 - [x] Fix JSON Loading Glitches and Elements not Functioning
 - [x] GG Shortcut
