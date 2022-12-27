@@ -17,7 +17,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     //Check if JSON exists first
     if (!fs.existsSync(jsonpath)) {
         // file does not exist, create it
-        const jsonsettings = { FPS: true, Online: false, Shortcuts: true, Platform: false, CPU: true, memory: true, Tmemory: false, Cores: false, Uptime: false, Ping: true};
+        const jsonsettings = { FPS: true, Online: false, Shortcuts: true, Platform: false, CPU: true, memory: true, Tmemory: false, Cores: false, Uptime: false, Ping: true,  WASD: false};
         fs.writeFileSync(jsonpath, JSON.stringify(jsonsettings));
     } else {
         console.log("File exists");
@@ -381,16 +381,16 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         }
     });
 
-    //document.getElementById("WASDDisplayCheck").checked = jsonobj.Uptime;
+    document.getElementById("WASDDisplayCheck").checked = jsonobj.WASD;
     WASDDisplayCheck.addEventListener('change', e => {
         if(e.target.checked){
             WASD.style.display = "block";
-            //jsonobj.Uptime = true;
-            //fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
+            jsonobj.WASD = true;
+            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         } else {
             WASD.style.display = "none";
-            //jsonobj.Uptime = false;
-            //fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
+            jsonobj.WASD = false;
+            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         }
     });
 
@@ -1251,7 +1251,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
 
     // make this more efficient with classes lmao
     const WASD = document.createElement("div");
-    WASD.style = "position: absolute; width: 160px; top: 90px; left: 5px; display: block;";
+    WASD.style = "position: absolute; width: 160px; top: 90px; left: 5px; display: none;";
     WASD.innerHTML = `
         <div style="display: flex; color: white; align-items: center; justify-content: center;">
             <div id="w" style="background: rgba(255, 255, 255, .2); width: 45px; height: 45px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">W</div>
@@ -1264,6 +1264,12 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     WASD.id = "WASD";
     document.body.appendChild(WASD);
 
+    if(jsonobj.WASD) {
+        WASD.style.display = "block";
+    } else if (!jsonobj.WASD) {
+        uptime.style.display = "none";
+    };
+    
     const WASDJS = document.createElement("script");
     WASDJS.innerHTML = `
     const wElement = document.getElementById('w');
