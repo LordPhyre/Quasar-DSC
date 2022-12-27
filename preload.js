@@ -1253,10 +1253,10 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     const WASD = document.createElement("div");
     WASD.style = "position: absolute; width: 160px; top: 90px; left: 5px; display: block;";
     WASD.innerHTML = `
-        <div id="wasdtop" style="display: flex; color: white; align-items: center; justify-content: center;">
+        <div style="display: flex; color: white; align-items: center; justify-content: center;">
             <div id="w" style="background: rgba(255, 255, 255, .2); width: 45px; height: 45px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">W</div>
         </div>
-        <div id="wasdbottom" style="display: flex; color: white; align-items: center; justify-content: center;">
+        <div style="display: flex; color: white; align-items: center; justify-content: center;">
             <div id="a" style="background: rgba(255, 255, 255, .2); width: 45px; height: 45px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">A</div>
             <div id="s" style="background: rgba(255, 255, 255, .2); width: 45px; height: 45px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">S</div>
             <div id="d" style="background: rgba(255, 255, 255, .2); width: 45px; height: 45px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">D</div>
@@ -1270,8 +1270,6 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     const aElement = document.getElementById('a');
     const sElement = document.getElementById('s');
     const dElement = document.getElementById('d');
-    const wasdTopElement = document.getElementById('wasdtop');
-    const wasdBottomElement = document.getElementById('wasdbottom');
     
     const keys = {
       w: false,
