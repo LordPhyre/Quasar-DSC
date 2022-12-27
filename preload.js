@@ -332,11 +332,11 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     document.getElementById("memoryUsageDisplayCheck").checked = jsonobj.memory;
     memoryUsageDisplayCheck.addEventListener('change', e => {
         if(e.target.checked){
-            mem.style.display = "block";
+            memory.style.display = "block";
             jsonobj.memory = true;
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         } else {
-            mem.style.display = "none";
+            memory.style.display = "none";
             jsonobj.memory = false;
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         }
@@ -1247,19 +1247,19 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
 
     updateFps();
 
-    // AWSD thing
+    // WASD thing
 
     // make this more efficient with classes lmao
     const WASD = document.createElement("div");
-    WASD.style = "position: absolute; width: 750px; bottom: 0; right: 0; display: none;";
+    WASD.style = "position: absolute; width: 160px; top: 90px; left: 5px; display: block;";
     WASD.innerHTML = `
-        <div style="display: flex; color: white; align-items: center; justify-content: center;">
-            <div id="w" style="background: #232429; width: 75px; height: 75px; margin: 5px;">W</div>
+        <div id="wasdtop" style="display: flex; color: white; align-items: center; justify-content: center;">
+            <div id="w" style="background: rgba(255, 255, 255, .2); width: 45px; height: 45px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">W</div>
         </div>
-        <div style="display: flex; color: white; align-items: center; justify-content: center;">
-            <div id="a" style="background: #232429; width: 75px; height: 75px; margin: 5px;">A</div>
-            <div id="s" style="background: #232429; width: 75px; height: 75px; margin: 5px;">S</div>
-            <div id="d" style="background: #232429; width: 75px; height: 75px; margin: 5px;">D</div>
+        <div id="wasdbottom" style="display: flex; color: white; align-items: center; justify-content: center;">
+            <div id="a" style="background: rgba(255, 255, 255, .2); width: 45px; height: 45px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">A</div>
+            <div id="s" style="background: rgba(255, 255, 255, .2); width: 45px; height: 45px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">S</div>
+            <div id="d" style="background: rgba(255, 255, 255, .2); width: 45px; height: 45px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">D</div>
         </div>`;
     WASD.id = "WASD";
     document.body.appendChild(WASD);
@@ -1270,6 +1270,8 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     const aElement = document.getElementById('a');
     const sElement = document.getElementById('s');
     const dElement = document.getElementById('d');
+    const wasdTopElement = document.getElementById('wasdtop');
+    const wasdBottomElement = document.getElementById('wasdbottom');
     
     const keys = {
       w: false,
@@ -1295,10 +1297,10 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     });
     
     function updateElements() {
-      wElement.style.background = keys.w ? '#0798fc' : '#232429';
-      aElement.style.background = keys.a ? '#0798fc' : '#232429';
-      sElement.style.background = keys.s ? '#0798fc' : '#232429';
-      dElement.style.background = keys.d ? '#0798fc' : '#232429';
+      wElement.style.background = keys.w ? '#232429' : 'rgba(255, 255, 255, .2)';
+      aElement.style.background = keys.a ? '#232429' : 'rgba(255, 255, 255, .2)';
+      sElement.style.background = keys.s ? '#232429' : 'rgba(255, 255, 255, .2)';
+      dElement.style.background = keys.d ? '#232429' : 'rgba(255, 255, 255, .2)';
     }`;
     document.getElementsByTagName('head')[0].appendChild(WASDJS);
 
