@@ -1148,7 +1148,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
             var endTime = performance.now();
             var pingTime = endTime - startTime;
             //console.log('Ping time: ' + pingTime + 'ms');
-            document.getElementById('ping').innerHTML = "Ping: " + pingTime.toFixed(0) + "ms";
+            document.getElementById('ping').innerHTML = "Ping: " + pingTime.toFixed(0) + "ms<br>";
         };
     }
 
@@ -1179,13 +1179,12 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     statsHolder.id = "statsHolder";
     statsHolder.style = "z-index: 1000; /*top: 50%;*/ color: white; padding-right: 5px; font-size: 100%; background: #191919; opacity: 0.9;";
     statsHolderWrapper.appendChild(statsHolder);
-
     
     const electron = require('electron');
     const ipcRenderer = electron.ipcRenderer; // apply that later to everything
     
     const elementIds = ['fpscounter', 'ping', 'platform', 'cpu', 'mem', 'totalMem', 'cpuCount', 'uptime'];
-    const styles = "z-index: 1000; color: white; font-size: 100%; display: none;";
+    const styles = "z-index: 1000; color: white; font-size: 100%; display: none; white-space: nowrap;";
     
     for (const id of elementIds) {
       const element = document.createElement("h2");
@@ -1193,7 +1192,56 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
       element.id = id;
       element.style = styles;
       statsHolder.appendChild(element);
-    }    
+    }
+
+    //Show or Hide Online Status based on JSON
+    if(jsonobj.FPS) {
+        fpscounter.style.display = "initial";
+    } else if (!jsonobj.FPS) {
+        fpscounter.style.display = "none";
+    };
+
+    if(jsonobj.Ping) {
+        ping.style.display = "initial";
+    } else if (!jsonobj.Ping) {
+        ping.style.display = "none";
+    };
+
+    if(jsonobj.Platform) {
+        platform.style.display = "initial";
+    } else if (!jsonobj.Platform) {
+        platform.style.display = "none";
+    };
+
+    if(jsonobj.CPU) {
+        cpu.style.display = "initial";
+    } else if (!jsonobj.CPU) {
+        cpu.style.display = "none";
+    };
+
+    if(jsonobj.Mem) {
+        mem.style.display = "initial";
+    } else if (!jsonobj.Mem) {
+        mem.style.display = "none";
+    };
+
+    if(jsonobj.Tmemory) {
+        totalMem.style.display = "initial";
+    } else if (!jsonobj.Tmemory) {
+        totalMem.style.display = "none";
+    };
+
+    if(jsonobj.Cores) {
+        cpuCount.style.display = "initial";
+    } else if (!jsonobj.Cores) {
+        cpuCount.style.display = "none";
+    };
+
+    if(jsonobj.Uptime) {
+        uptime.style.display = "initial";
+    } else if (!jsonobj.Online) {
+        uptime.style.display = "none";
+    };
 
     /*const freeMem = document.createElement("h2");
     freeMem.innerHTML = "loading...";
@@ -1208,16 +1256,16 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     statsHolder.appendChild(ram);*/
     
     ipcRenderer.on('platform',(event,data) => {
-        document.getElementById('platform').innerHTML = "Platform: " + data;
+        document.getElementById('platform').innerHTML = "Platform: " + data + "<br>";
     });
     ipcRenderer.on('cpu',(event,data) => {
-        document.getElementById('cpu').innerHTML = "CPU: " + data.toFixed(2) + "%";
+        document.getElementById('cpu').innerHTML = "CPU: " + data.toFixed(2) + "%<br>";
     });
     ipcRenderer.on('mem',(event,data) => {
-        document.getElementById('mem').innerHTML = "Memory: " + data.toFixed(2);
+        document.getElementById('mem').innerHTML = "Memory: " + data.toFixed(2) + "<br>";
     });
     ipcRenderer.on('total-mem',(event,data) => {
-        document.getElementById('totalMem').innerHTML = "Tot. Mem.: " + data.toFixed(2) + "%";
+        document.getElementById('totalMem').innerHTML = "Tot. Mem.: " + data.toFixed(2) + "%<br>";
     });
     /*ipcRenderer.on('freemem',(event,data) => {
         document.getElementById('freemem').innerHTML = "Free Mem.: " + data.toFixed(2);
@@ -1226,10 +1274,10 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         document.getElementById('ram').innerHTML = "RAM: " + data.toFixed(2);
     });*/
     ipcRenderer.on('cpu-count',(event,data) => {
-        document.getElementById('cpuCount').innerHTML = "CPU Cores: " + data;
+        document.getElementById('cpuCount').innerHTML = "CPU Cores: " + data + "<br>";
     });
     ipcRenderer.on('uptime',(event,data) => {
-        document.getElementById('uptime').innerHTML = "Uptime: " + data.toFixed(2) + "s";
+        document.getElementById('uptime').innerHTML = "Uptime: " + data.toFixed(2) + "s<br>";
     });
     
     // FPS-Counter
@@ -1249,7 +1297,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
             frameCount = 0;
         }
 
-        document.getElementById('fpscounter').innerText = 'FPS: ' + fps.toFixed(2);
+        document.getElementById('fpscounter').innerHTML = 'FPS: ' + fps.toFixed(2) + "<br>";
 
         requestAnimationFrame(updateFps);
     }
@@ -1258,18 +1306,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
 
     // AWSD thing
 
-    /*<div style="position: absolute; width: 100%">
-        <div style="display: flex; color: white; align-items: center; justify-content: center;">
-            <div style="background: black; width: 75px; height: 75px; margin: 5px;">W</div>
-        </div>
-        <div style="display: flex; color: white; align-items: center; justify-content: center;">
-            <div style="background: black; width: 75px; height: 75px; margin: 5px;">A</div>
-            <div style="background: black; width: 75px; height: 75px; margin: 5px;">S</div>
-            <div style="background: black; width: 75px; height: 75px; margin: 5px;">D</div>
-        </div>
-    </div>*/
-
-    // make this more beautiful with classes lmao
+    // make this more efficient with classes lmao
     const WASD = document.createElement("div");
     WASD.style = "position: absolute; width: 750px; bottom: 0; right: 0; display: none;";
     WASD.innerHTML = `
