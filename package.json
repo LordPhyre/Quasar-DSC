@@ -24,8 +24,10 @@
     "gamecontroller": "^0.0.2",
     "jquery": "^3.6.3",
     "jszip": "^3.10.1",
+    "net": "^1.0.2",
     "nvidia-gpu-monitor": "^2.0.1",
     "os-utils": "^0.0.14",
+    "request": "^2.88.2",
     "unzipper": "^0.10.11"
   }
 }
