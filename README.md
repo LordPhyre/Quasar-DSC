@@ -25,7 +25,7 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 
 ### To-Do List:
 - [ ] Fix JSON Loading Glitches and Elements not Functioning
-- [ ] GG Shortcut
+- [x] GG Shortcut
 - [x] Random Cool Looking GUI Elements 😎
 - [ ] Gamma Editor
 - [x] Resource Swapper [Weapons, Sky, Map-Textures, Scripts]
