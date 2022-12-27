@@ -1247,41 +1247,45 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
 
     updateFps();
 
-    // WASD thing
+    
+    // WASD Detector
 
     // make this more efficient with classes lmao
     const WASD = document.createElement("div");
-    WASD.style = "position: absolute; width: 160px; top: 90px; left: 5px; display: none;";
+    WASD.style = "position: absolute; top: 90px; left: 5px; display: none;";
     WASD.innerHTML = `
-        <div style="display: flex; color: white; align-items: center; justify-content: center;">
+        <div style="width: 177px; display: flex; color: white; align-items: center; justify-content: center;">
             <div id="w" style="background: rgba(255, 255, 255, .2); width: 45px; height: 45px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">W</div>
         </div>
-        <div style="display: flex; color: white; align-items: center; justify-content: center;">
+        <div style="width: 291px; display: flex; color: white; align-items: center; justify-content: center;">
             <div id="a" style="background: rgba(255, 255, 255, .2); width: 45px; height: 45px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">A</div>
             <div id="s" style="background: rgba(255, 255, 255, .2); width: 45px; height: 45px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">S</div>
             <div id="d" style="background: rgba(255, 255, 255, .2); width: 45px; height: 45px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">D</div>
+            <div id="shift" style="background: rgba(255, 255, 255, .2); width: 100px; height: 45px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">shift</div>
         </div>`;
     WASD.id = "WASD";
     document.body.appendChild(WASD);
-
+    
     if(jsonobj.WASD) {
         WASD.style.display = "block";
     } else if (!jsonobj.WASD) {
         uptime.style.display = "none";
     };
-    
+
     const WASDJS = document.createElement("script");
     WASDJS.innerHTML = `
     const wElement = document.getElementById('w');
     const aElement = document.getElementById('a');
     const sElement = document.getElementById('s');
     const dElement = document.getElementById('d');
+    const shiftElement = document.getElementById('shift');
     
     const keys = {
       w: false,
       a: false,
       s: false,
-      d: false
+      d: false,
+      shift: false
     };
 
     document.addEventListener('keydown', event => {
@@ -1305,9 +1309,10 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
       aElement.style.background = keys.a ? '#232429' : 'rgba(255, 255, 255, .2)';
       sElement.style.background = keys.s ? '#232429' : 'rgba(255, 255, 255, .2)';
       dElement.style.background = keys.d ? '#232429' : 'rgba(255, 255, 255, .2)';
+      shiftElement.style.background = keys.shift ? '#232429' : 'rgba(255, 255, 255, .2)';
     }`;
     document.getElementsByTagName('head')[0].appendChild(WASDJS);
-
+    
 
     // alternative fps chart
 
