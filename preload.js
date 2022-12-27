@@ -146,7 +146,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     const logo = document.createElement('h2');
     logo.style = 'font-family: "Aquire", sans-serif; text-align: center; color: white; font-size: 75px; margin-top: 30px;';
     logo.id = "logo";
-    logo.innerText = "Quasar";
+    logo.innerHTML = "Quasar<br>";
     document.getElementById('rightDiv').appendChild(logo);
 
     const version = document.createElement('h2');
@@ -798,6 +798,8 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         options.forEach(option => {
             document.getElementById(option).style.display = "none";
         });
+        logo.style.display = "block";
+        version.style.display = "block";
     });
 
     document.getElementById("general").addEventListener("click", function() {
@@ -807,6 +809,9 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         });
         document.getElementById("onlineDisplayOptionHolder").style.display = "";
         document.getElementById("WASDDisplayOptionHolder").style.display = "";
+
+        logo.style.display = "none";
+        version.style.display = "none";
     });
 
     document.getElementById("stats").addEventListener("click", function() {
@@ -822,6 +827,9 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         document.getElementById("totalMemoryDisplayOptionHolder").style.display = "";
         document.getElementById("cpuCoresDisplayOptionHolder").style.display = "";
         document.getElementById("uptimeDisplayOptionHolder").style.display = "";
+
+        logo.style.display = "none";
+        version.style.display = "none";
     });
 
     document.getElementById("shortcuts").addEventListener("click", function() {
@@ -835,6 +843,9 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         document.getElementById("shortcutOptionHolder3").style.display = "";
         document.getElementById("shortcutOptionHolder4").style.display = "";
         document.getElementById("shortcutOptionHolder5").style.display = "";
+
+        logo.style.display = "none";
+        version.style.display = "none";
     });
 
     document.getElementById("skinmenu").addEventListener("click", function() {
@@ -846,6 +857,9 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         });
         document.getElementById("skinCategoryoptionHolder").style.display = "";
         document.getElementById("skincontent").style.display = "flex";
+
+        logo.style.display = "none";
+        version.style.display = "none";
     });
 
     document.getElementById("texturepacks").addEventListener("click", function() {
@@ -855,6 +869,9 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
             document.getElementById(option).style.display = "none";
         });
         document.getElementById("texturePackOptionHolder").style.display = "";
+
+        logo.style.display = "none";
+        version.style.display = "none";
     });
 
     document.getElementById("aimbot").addEventListener("click", function() {
@@ -862,6 +879,9 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         options.forEach(option => {
             document.getElementById(option).style.display = "none";
         });
+
+        logo.style.display = "none";
+        version.style.display = "none";
     });
 
     document.getElementById("colorsettings").addEventListener("click", function() {
@@ -875,6 +895,9 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         document.getElementById("skinButtonColorOptionHolder").style.display = "";
         document.getElementById("opacityOptionHolder").style.display = "";
         document.getElementById("windowBorderOptionHolder").style.display = "";
+
+        logo.style.display = "none";
+        version.style.display = "none";
     });
 
     /*document.getElementById("customcss").addEventListener("click", function() {
