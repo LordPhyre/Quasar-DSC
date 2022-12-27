@@ -42,6 +42,7 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 - [x] Customizable UI
 - [x] Aimbot
 - [ ] Sound Swapper
+- [ ] Controller Support
 
 ### Featues that will only be possible with the help of our friend tree : ):
 - [ ] Auto-GG (need to know round status + name of killer)
