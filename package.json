@@ -25,6 +25,7 @@
     "jquery": "^3.6.3",
     "jszip": "^3.10.1",
     "nvidia-gpu-monitor": "^2.0.1",
-    "os-utils": "^0.0.14"
+    "os-utils": "^0.0.14",
+    "unzipper": "^0.10.11"
   }
 }

@@ -131,18 +131,6 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         leftDivReference.appendChild(optionButton);
     });
 
-    // menu construction
-    // right part of the menu (sub-options)
-    /*const rightDiv = document.createElement('div');
-    rightDiv.style.float = 'right';
-    rightDiv.style.width = '60%';
-    rightDiv.style.height = '263px';
-    rightDiv.style.overflow = 'scroll';
-    rightDiv.style.overflowX = 'hidden';
-    rightDiv.style.overflowY = 'auto';
-    rightDiv.id = "rightDiv";
-    document.getElementById('mainDiv').appendChild(rightDiv);*/
-
     // title of sub options (demo)
     const h2 = document.createElement('h2');
     h2.style.textAlign = 'center';
@@ -199,13 +187,6 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         holderId: "onlineDisplayOptionHolder",
         descrText: "Network Status",
         checkId: "onlineDisplayCheck",
-        /*onChange: e => {
-        if (e.target.checked) {
-            fpscounter.hidden = false;
-        } else {
-            fpscounter.hidden = true;
-        }
-        }*/
     },
     {
         holderId: "shortcutDisplayOptionHolder",
@@ -248,7 +229,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     }
 
 
-    //Checkbox State and function saving to JSON
+    //Checkbox State and function saving to JSON | optimizing later with GPT3
     
     document.getElementById("fpsDisplayCheck").checked = jsonobj.FPS;
     fpsDisplayCheck.addEventListener('change', e => {
@@ -403,53 +384,20 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     skinCategoryoptionHolder.id = 'skinCategoryoptionHolder';
 
     const buttonWrapper = document.createElement('div');
-    buttonWrapper.style.display = 'flex';
-    buttonWrapper.style.justifyContent = 'center';
-
-    const allButton = document.createElement('button');
-    allButton.className = 'skinCategory';
-    allButton.style = "padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;";
-    allButton.textContent = 'All';
-
-    const awpButton = document.createElement('button');
-    awpButton.className = 'skinCategory';
-    awpButton.style = "padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;";
-    awpButton.textContent = 'AWP';
-
-    const ar2Button = document.createElement('button');
-    ar2Button.className = 'skinCategory';
-    ar2Button.style = "padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;";
-    ar2Button.textContent = 'AR2';
-
-    const vectorButton = document.createElement('button');
-    vectorButton.className = 'skinCategory';
-    vectorButton.style = "padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;";
-    vectorButton.textContent = 'Vector';
-
-    const skinFolderButton = document.createElement('button');
-    skinFolderButton.className = 'skinCategory';
-    skinFolderButton.style = "padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;";
-    skinFolderButton.textContent = '| Folder';
-
-    buttonWrapper.appendChild(allButton);
-    buttonWrapper.appendChild(awpButton);
-    buttonWrapper.appendChild(ar2Button);
-    buttonWrapper.appendChild(vectorButton);
-    buttonWrapper.appendChild(skinFolderButton);
+    buttonWrapper.style = 'display: flex; justify-content: center;';
+    buttonWrapper.innerHTML = `
+        <button class="skinCategory" id="allButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;">All</button>
+        <button class="skinCategory" id="awpButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;">AWP</button>
+        <button class="skinCategory" id="ar2Button" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;">AR2</button>
+        <button class="skinCategory" id="vectorButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;">Vector</button>
+        <button class="skinCategory" id="skinFolderButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;">| Folder</button>
+    `;
 
     skinCategoryoptionHolder.appendChild(buttonWrapper);
 
     rightDiv.appendChild(skinCategoryoptionHolder);
 
     // hide and show skins on click
-
-    // lol sidenote, didn't know that you can doo al this by doing just that, lmao, adding later
-    /*const html = `
-        <div>
-            <h1>Hello World</h1>
-            <p>Lorem ipsum dolor sit amet</p>
-        </div>
-    `;*/
 
     function toggleSkins(displayType) {
         const awpSkins = document.getElementById("awp");
@@ -461,28 +409,28 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         vectorSkins.style.display = displayType;
     }
 
-    allButton.addEventListener('click', function() {
+    document.getElementById('allButton').addEventListener('click', function() {
         const allSkins = document.querySelectorAll('#awp, #ar2, #vector');
         allSkins.forEach((skin) => {
             skin.style.display = "initial";
         });
     });
-    awpButton.addEventListener('click', function() {
+    document.getElementById('awpButton').addEventListener('click', function() {
         const awpSkins = document.getElementById("awp");
         toggleSkins("none");
         awpSkins.style.display = "initial";
     });
-    ar2Button.addEventListener('click', function() {
+    document.getElementById('ar2Button').addEventListener('click', function() {
         const ar2Skins = document.getElementById("ar2");
         toggleSkins("none");
         ar2Skins.style.display = "initial";
     });
-    vectorButton.addEventListener('click', function() {
+    document.getElementById('vectorButton').addEventListener('click', function() {
         const vectorSkins = document.getElementById("vector");
         toggleSkins("none");
         vectorSkins.style.display = "initial";
     });
-    skinFolderButton.addEventListener('click', function() {
+    document.getElementById('skinFolderButton').addEventListener('click', function() {
         require('electron').ipcRenderer.send('openSkinFolder')
     });
 
@@ -498,11 +446,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     var skincontentselector = document.getElementById('skincontent');
 
     const flexSquare = document.createElement('img');
-    flexSquare.style.width = '100px';
-    flexSquare.style.height = '100px';
-    flexSquare.style.border = '1px solid black';
-    flexSquare.style.margin = '10px';
-    flexSquare.style.backgroundColor = '#ffffff';
+    flexSquare.style = 'width: 100px; height: 100px; border: 1px solid black; margin: 10px;';
 
     ////////////////////////////////////////////////////////
     ///// data exchange between main.js and preload.js /////
@@ -513,17 +457,12 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     const msgBoxWrapper = document.createElement('div');
     msgBoxWrapper.style = "position: absolute; width: 100%; z-index: 1001; display: flex; justify-content: center; align-items: center; margin-top: 10px;"
     msgBoxWrapper.id = "msgBoxWrapper"
+    msgBoxWrapper.innerHTML = `
+        <div id="msgBox" style="background: ${msgBoxColor}; text-align: center; z-index: 1001; border-radius: 10px; font-size: 20px; color: white; display: none;">
+            <p style='line-height: 2.2; width: 325px; height: 45px; border: 1px solid black;'>Skin applied successfully...</p>
+        </div>
+    `;
     document.body.appendChild(msgBoxWrapper);
-
-    const msgBox = document.createElement('div');
-    msgBox.style = "text-align: center; z-index: 1001; border-radius: 10px; font-size: 20px; color: white; display: none;"
-    msgBox.innerHTML = "<p style='line-height: 2.2'>Skin applied successfully...</p>"
-    msgBox.style.background = msgBoxColor;
-    msgBox.style.width = '325px';
-    msgBox.style.height = '45px';
-    msgBox.style.border = '1px solid black';
-    msgBoxWrapper.appendChild(msgBox);
-
 
     // handle skins
     function skinPathHandlerAwp(src) {
@@ -565,10 +504,10 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
                 console.log("The source of the selected skin is: " + src);
 
                 // message
-                msgBox.style.display = "initial";
+                document.getElementById('msgBox').style.display = "initial";
 
                 setTimeout(function() {
-                    msgBox.style.display = "none";
+                    document.getElementById('msgBox').style.display = "none";
                 }, 2000);
 
                 if (handler == 1) {
@@ -622,8 +561,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         const optionDescr = createElement('p', 'optiondescr', '', descrText);
         const optionInput = createElement('input', '', inputId, '');
         if (id == "texturePackOptionHolder") {
-            optionInput.type = 'file';
-            optionInput.accept = '.zip'; // add custom file type later
+            optionInput.type = 'submit';
             optionInput.style.width = '110px';
         } else {
             optionInput.type = 'text';
@@ -647,8 +585,8 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
                 optionInput.placeholder = 'lmao';
                 optionInput.setAttribute('value','lmao');
             } else if (id == 'shortcutOptionHolder5') {
-                optionInput.placeholder = 'SH*T UP YOU F*CKING B*CH';
-                optionInput.setAttribute('value','SH*T UP YOU F*CKING B*CH');
+                optionInput.placeholder = '';
+                optionInput.setAttribute('value','');
             } 
             optionInput.style.width = '140px';
             optionInput.name = inputId;
@@ -823,7 +761,6 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         console.log(skinWrapperBorderRadius);
         skinWrapper.style.borderRadius = skinWrapperBorderRadius + "px";
     });
-
 
     // menu title
     h2.innerHTML = "All Options";
@@ -1092,10 +1029,6 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         }
     });
 
-    function pasteToConsole(content) {
-        console.log(content);
-    }
-
     // offline / online status
 
     const status = document.createElement("h2");
@@ -1130,12 +1063,6 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     updateOnlineStatus()
 
     // ping | with errors haha
-
-    /*const ping = document.createElement("p");
-    ping.innerHTML = "loading...";
-    ping.id = "ping";
-    ping.style = "position: absolute; width: 100%; text-align: center; z-index: 1000; color: red";
-    document.body.appendChild(ping);*/
 
     function ping2() {
         var xhr = new XMLHttpRequest();
@@ -1173,12 +1100,10 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     const statsHolderWrapper = document.createElement("div");
     statsHolderWrapper.id = "statsHolderWrapper";
     statsHolderWrapper.style = "position: absolute; right: 0;top: 25%; z-index: 1000; margin-right: 6px; font-size: 100%; height: 100%;";
+    statsHolderWrapper.innerHTML = `
+        <div id="statsHolder" style="z-index: 1000; /*top: 50%;*/ color: white; padding-right: 5px; font-size: 100%; background: #191919; opacity: 0.9;">
+    `;
     document.body.appendChild(statsHolderWrapper);
-
-    const statsHolder = document.createElement("div");
-    statsHolder.id = "statsHolder";
-    statsHolder.style = "z-index: 1000; /*top: 50%;*/ color: white; padding-right: 5px; font-size: 100%; background: #191919; opacity: 0.9;";
-    statsHolderWrapper.appendChild(statsHolder);
     
     const electron = require('electron');
     const ipcRenderer = electron.ipcRenderer; // apply that later to everything
@@ -1191,7 +1116,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
       element.innerHTML = "loading...";
       element.id = id;
       element.style = styles;
-      statsHolder.appendChild(element);
+      document.getElementById('statsHolder').appendChild(element);
     }
 
     //Show or Hide Online Status based on JSON
