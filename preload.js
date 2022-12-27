@@ -109,7 +109,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     // menu buttons
 
     const buttonData = [
-        { text: 'All Options', id: 'allOptions' },
+        { text: 'Home', id: 'allOptions' },
         { text: 'General', id: 'general' },
         { text: 'Stats', id: 'stats' },
         { text: 'Shortcuts', id: 'shortcuts' },
@@ -131,12 +131,29 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         leftDivReference.appendChild(optionButton);
     });
 
-    // title of sub options (demo)
+    // title of sub options
     const h2 = document.createElement('h2');
     h2.style.textAlign = 'center';
     h2.style.margin = '10px 0 10px 0';
     h2.innerText = 'Option Name';
     document.getElementById('rightDiv').appendChild(h2);
+
+    const logoFont = document.createElement('link')
+    logoFont.href = "https://fonts.cdnfonts.com/css/aquire";
+    logoFont.rel = "stylesheet";
+    document.getElementsByTagName('head')[0].appendChild(logoFont);
+
+    const logo = document.createElement('h2');
+    logo.style = 'font-family: "Aquire", sans-serif; text-align: center; color: white; font-size: 75px; margin-top: 30px;';
+    logo.id = "logo";
+    logo.innerText = "Quasar";
+    document.getElementById('rightDiv').appendChild(logo);
+
+    const version = document.createElement('h2');
+    version.style = 'font-family: "Aquire", sans-serif; text-align: center; color: white; font-size: 17.5px;';
+    version.id = "version";
+    version.innerText = "v1.0 - BETA";
+    document.getElementById('rightDiv').appendChild(version);
 
     document.body.append(skinWrapper);
 
@@ -762,23 +779,24 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         skinWrapper.style.borderRadius = skinWrapperBorderRadius + "px";
     });
 
-    // menu title
-    h2.innerHTML = "All Options";
-
-    // hide
-    skincontent.style.display = "none";
+    // options
+    
+    const options = ["fpsDisplayOptionHolder", "pingDisplayOptionHolder", "onlineDisplayOptionHolder", "shortcutDisplayOptionHolder", "skincontent", "optionColorOptionHolder", "behindOptionsColorOptionHolder", "menuHeaderColorOptionHolder", "skinButtonColorOptionHolder", "opacityOptionHolder", "windowBorderOptionHolder", "skinCategoryoptionHolder", "shortcutOptionHolder", "shortcutOptionHolder2", "shortcutOptionHolder3", "shortcutOptionHolder4", "shortcutOptionHolder5", "platformDisplayOptionHolder", "cpuUsageDisplayOptionHolder", "memoryUsageDisplayOptionHolder", "totalMemoryDisplayOptionHolder", "cpuCoresDisplayOptionHolder", "uptimeDisplayOptionHolder", "texturePackOptionHolder", "WASDDisplayOptionHolder"];
+    
+    // default title
+    h2.innerHTML = "Home";
 
     // disable, bc key is already taken
     document.getElementsByName('shortcutOptionInput')[0].disabled = true;
 
+    options.forEach(option => {
+        document.getElementById(option).style.display = "none";
+    });
 
-
-    const options = ["fpsDisplayOptionHolder", "pingDisplayOptionHolder", "onlineDisplayOptionHolder", "shortcutDisplayOptionHolder", "skincontent", "optionColorOptionHolder", "behindOptionsColorOptionHolder", "menuHeaderColorOptionHolder", "skinButtonColorOptionHolder", "opacityOptionHolder", "windowBorderOptionHolder", "skinCategoryoptionHolder", "shortcutOptionHolder", "shortcutOptionHolder2", "shortcutOptionHolder3", "shortcutOptionHolder4", "shortcutOptionHolder5", "platformDisplayOptionHolder", "cpuUsageDisplayOptionHolder", "memoryUsageDisplayOptionHolder", "totalMemoryDisplayOptionHolder", "cpuCoresDisplayOptionHolder", "uptimeDisplayOptionHolder", "texturePackOptionHolder", "WASDDisplayOptionHolder"];
-    
     document.getElementById("allOptions").addEventListener("click", function() {
-        h2.innerHTML = "All Options";
+        h2.innerHTML = "Home";
         options.forEach(option => {
-            document.getElementById(option).style.display = "";
+            document.getElementById(option).style.display = "none";
         });
     });
 
