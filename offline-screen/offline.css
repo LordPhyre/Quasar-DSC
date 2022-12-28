@@ -1,0 +1,47 @@
+@import url('https://fonts.cdnfonts.com/css/aquire');
+html {
+    background: linear-gradient(to left, #195DCA, #6cd8ff);
+    font-family: 'Aquire', sans-serif;
+}
+body { margin:0; padding:0; height:100%; width:100%; }
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+.center {
+  width: 50%;
+  height: 20%;
+}
+.title {
+  color: white;
+  font-size: 80px;
+  line-height: 0.1;
+  margin-bottom: 27.5px;
+}
+.status {
+  color: white;
+  font-size: 20px;
+  line-height: 1;
+}
+.loader {
+  width:1em;
+  height:1em;
+  margin-top:21px;
+  margin-left: 15px;
+  border-radius:50%;
+  border:4px solid white;
+  animation: circ-anim .7s linear infinite; 
+  border-width:0px;
+  border-top: 3px solid white;
+  border-right: 3px solid transparent;
+}
+@keyframes circ-anim {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

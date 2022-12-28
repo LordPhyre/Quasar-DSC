@@ -68,4 +68,5 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 -> npm i --save-dev electron
 
 to run type "npm run start"
+
 to build type "npm run start"

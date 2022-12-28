@@ -1,4 +1,0 @@
--> npm i --save-dev electron
-
-to run type "npm run start"
-to build type "npm run start"

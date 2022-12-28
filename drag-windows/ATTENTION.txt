@@ -1,1 +1,0 @@
-This is only the 'template' code, this gets converted to pure js and then used in the website code!

@@ -74,7 +74,7 @@ app.whenReady().then(() => {
     alwaysOnTop: true,
   });
 
-  splash.loadFile('splash-new.html');
+  splash.loadFile('splash-screen/splash.html');
   splash.center();
 
   const noInternetConnectionScreen = new BrowserWindow({
@@ -85,7 +85,7 @@ app.whenReady().then(() => {
 
   noInternetConnectionScreen.setMenuBarVisibility(false);
 
-  noInternetConnectionScreen.loadFile('offline.html');
+  noInternetConnectionScreen.loadFile('offline-screen/offline.html');
 
   const intervalId = setInterval(() => {
     if (condition !== 0) {
@@ -105,7 +105,7 @@ app.whenReady().then(() => {
         }
       })
 
-      win.$ = win.jQuery = require('./node_modules/jquery/dist/jquery.min.js');
+      win.$ = win.jQuery = require('jquery/dist/jquery.min.js');
 
       if (condition)
       {

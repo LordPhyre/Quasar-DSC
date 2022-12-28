@@ -1,8 +1,8 @@
 {
-  "name": "BestestBestBetterGoodDeadshotClient",
+  "name": "Quazar-DSC",
   "version": "1.0.0",
-  "description": "",
-  "main": "main.js",
+  "description": "The most advanced and simultaneously user-friendly client for Deadshot.io that exists and will ever exist. Hopefully.",
+  "main": "src/main.js",
   "scripts": {
     "start": "electron-forge start",
     "dist": "electron-builder",
