@@ -1293,15 +1293,22 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     const WASD = document.createElement("div");
     WASD.style = "position: absolute; top: 90px; left: 5px; display: none;";
     WASD.innerHTML = `
-        <div style="width: 177px; display: flex; color: white; align-items: center; justify-content: center;">
-            <div id="w" style="background: rgba(255, 255, 255, .2); width: 45px; height: 45px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">W</div>
-        </div>
-        <div style="width: 291px; display: flex; color: white; align-items: center; justify-content: center;">
-            <div id="a" style="background: rgba(255, 255, 255, .2); width: 45px; height: 45px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">A</div>
-            <div id="s" style="background: rgba(255, 255, 255, .2); width: 45px; height: 45px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">S</div>
-            <div id="d" style="background: rgba(255, 255, 255, .2); width: 45px; height: 45px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">D</div>
-            <div id="shift" style="background: rgba(255, 255, 255, .2); width: 100px; height: 45px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">shift</div>
-        </div>`;
+    <div style="width: 291px; display: flex; color: white; align-items: center; justify-content: center;">
+        <div style="opacity: 0; width: 59px; height: 45px;"></div>
+        <div id="w" style="background: rgba(255, 255, 255, .2); width: 45px; height: 45px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">W</div>
+        <div style="opacity: 0; width: 88px; height: 45px;"></div>
+        <div id="r" style="background: rgba(255, 255, 255, .2); width: 45px; height: 45px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">R</div>
+        <div style="opacity: 0; width: 26px; height: 45px;"></div>
+    </div>
+    <div style="width: 291px; display: flex; color: white; align-items: center; justify-content: center;">
+        <div id="a" style="background: rgba(255, 255, 255, .2); width: 45px; height: 45px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">A</div>
+        <div id="s" style="background: rgba(255, 255, 255, .2); width: 45px; height: 45px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">S</div>
+        <div id="d" style="background: rgba(255, 255, 255, .2); width: 45px; height: 45px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">D</div>
+        <div id="shift" style="background: rgba(255, 255, 255, .2); width: 100px; height: 45px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">shift</div>
+    </div>
+    <div style="width: 291px; display: flex; color: white; align-items: center; justify-content: center;">
+        <div id="space" style="background: rgba(255, 255, 255, .2); width: 225px; height: 40px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;"></div>
+    </div>`;
     WASD.id = "WASD";
     document.body.appendChild(WASD);
     
@@ -1317,13 +1324,16 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     const aElement = document.getElementById('a');
     const sElement = document.getElementById('s');
     const dElement = document.getElementById('d');
+    const rElement = document.getElementById('r');
     const shiftElement = document.getElementById('shift');
+    const spaceElement = document.getElementById('space');
     
     const keys = {
       w: false,
       a: false,
       s: false,
       d: false,
+      r: false,
       shift: false
     };
 
@@ -1348,8 +1358,23 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
       aElement.style.background = keys.a ? '#232429' : 'rgba(255, 255, 255, .2)';
       sElement.style.background = keys.s ? '#232429' : 'rgba(255, 255, 255, .2)';
       dElement.style.background = keys.d ? '#232429' : 'rgba(255, 255, 255, .2)';
+      rElement.style.background = keys.r ? '#232429' : 'rgba(255, 255, 255, .2)';
       shiftElement.style.background = keys.shift ? '#232429' : 'rgba(255, 255, 255, .2)';
-    }`;
+    };
+    
+    document.addEventListener('keydown', (event) => {
+        if (event.code === 'Space') {
+            spaceElement.style.background = '#232429';
+        }
+    });
+
+    document.addEventListener('keyup', (event) => {
+        if (event.code === 'Space') {
+            spaceElement.style.background = 'rgba(255, 255, 255, .2)';
+        }
+    });
+    `;
+    
     document.getElementsByTagName('head')[0].appendChild(WASDJS);
     
 
