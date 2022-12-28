@@ -1,4 +1,4 @@
 -> npm i --save-dev electron
--> npm i discord-rpc
 
-to run type "npm run start nvm"
+to run type "npm run start"
+to build type "npm run start"
