@@ -40,17 +40,19 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 - [x] Chromium Flags
 - [x] Offline Screen
 - [ ] Custom Resource Marketplace
-- [ ] FOV Slider
 - [x] PC Stats
 - [x] extended WASD Detector
-- [ ] Local Player Wireframe
 - [x] Custom Chat Shortcuts
 - [ ] Custom Client Keybinds
 - [x] Customizable UI
 - [x] Aimbot
 - [ ] Sound Swapper
+
+### Later... (~3-5 years)
 - [ ] Controller Support
 - [ ] Automatic Debug Disable
+- [ ] Local Player Wireframe
+- [ ] FOV Slider
 
 ### Featues that will only be possible with the help of our friend tree : ):
 - [ ] Auto-GG (need to know round status + name of killer)
