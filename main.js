@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs');
 //const DiscordRpc = require("discord-rpc");
 const os = require('os-utils');
-const unzipper = require('unzipper');
+//const unzipper = require('unzipper');
 const { autoUpdater } = require('electron-updater'); // implement
 
 let win = null
@@ -309,7 +309,7 @@ app.whenReady().then(() => {
         spawn('explorer.exe', [path.join(app.getPath("documents"), "DeadshotClient/gunskins")]);
       });
 
-      ipcMain.on('OpenTexturePackFolder', (event, file) => {
+      ipcMain.on('openTexturePackFolder', (event, file) => {
         spawn('explorer.exe', [path.join(app.getPath("documents"), "DeadshotClient/Resource Swapper")]);
       });
 

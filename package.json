@@ -17,17 +17,11 @@
     "electron-builder": "^22.10.3"
   },
   "dependencies": {
-    "decompress-zip": "^0.3.3",
-    "discord-rpc": "^4.0.1",
     "electron-updater": "^5.3.0",
     "fs": "^0.0.1-security",
-    "gamecontroller": "^0.0.2",
     "jquery": "^3.6.3",
-    "jszip": "^3.10.1",
     "net": "^1.0.2",
-    "nvidia-gpu-monitor": "^2.0.1",
     "os-utils": "^0.0.14",
-    "request": "^2.88.2",
-    "unzipper": "^0.10.11"
+    "request": "^2.88.2"
   }
 }
