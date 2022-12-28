@@ -17,7 +17,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     //Check if JSON exists first
     if (!fs.existsSync(jsonpath)) {
         // file does not exist, create it
-        const jsonsettings = { FPS: true, Online: false, Shortcuts: true, Platform: false, CPU: true, memory: true, Tmemory: false, Cores: false, Uptime: false, Ping: true,  WASD: false};
+        const jsonsettings = { FPS: true, Online: false, Shortcuts: true, Platform: false, CPU: true, Memory: true, Tmemory: false, Cores: false, Uptime: false, Ping: true,  WASD: false};
         fs.writeFileSync(jsonpath, JSON.stringify(jsonsettings));
     } else {
         console.log("File exists");
@@ -329,15 +329,15 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         }
     });
 
-    document.getElementById("memoryUsageDisplayCheck").checked = jsonobj.memory;
+    document.getElementById("memoryUsageDisplayCheck").checked = jsonobj.Memory;
     memoryUsageDisplayCheck.addEventListener('change', e => {
         if(e.target.checked){
-            memory.style.display = "block";
-            jsonobj.memory = true;
+            mem.style.display = "block";
+            jsonobj.Memory = true;
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         } else {
-            memory.style.display = "none";
-            jsonobj.memory = false;
+            mem.style.display = "none";
+            jsonobj.Memory = false;
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         }
     });
@@ -1201,7 +1201,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         cpu.style.display = "none";
     };
 
-    if(jsonobj.Mem) {
+    if(jsonobj.Memory) {
         mem.style.display = "initial";
     } else if (!jsonobj.Mem) {
         mem.style.display = "none";
@@ -1221,7 +1221,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
 
     if(jsonobj.Uptime) {
         uptime.style.display = "initial";
-    } else if (!jsonobj.Online) {
+    } else if (!jsonobj.Uptime) {
         uptime.style.display = "none";
     };
 
@@ -1315,7 +1315,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     if(jsonobj.WASD) {
         WASD.style.display = "block";
     } else if (!jsonobj.WASD) {
-        uptime.style.display = "none";
+        WASD.style.display = "none";
     };
 
     const WASDJS = document.createElement("script");
