@@ -137,7 +137,7 @@ app.whenReady().then(() => {
         
       wget -r -np -P /path/to/save/directory https://deadshot.io/maps/tf/out/compressedTextures/ */
 
-      var swapperFolder = path.join(app.getPath("documents"), "DeadshotClient");
+      var swapperFolder = path.join(app.getPath("documents"), "Quasar-DSC");
 
       if (!fs.existsSync(swapperFolder)) {
           fs.mkdirSync(swapperFolder, { recursive: true });
@@ -230,19 +230,19 @@ app.whenReady().then(() => {
       }
       
       readDirectory(
-        path.join(app.getPath("documents"), "DeadshotClient/gunskins/awp"),
+        path.join(app.getPath("documents"), "Quasar-DSC/gunskins/awp"),
         ".webp",
         "filepaths-awp"
       );
       
       readDirectory(
-        path.join(app.getPath("documents"), "DeadshotClient/gunskins/ar2"),
+        path.join(app.getPath("documents"), "Quasar-DSC/gunskins/ar2"),
         ".webp",
         "filepaths-ar2"
       );
       
       readDirectory(
-        path.join(app.getPath("documents"), "DeadshotClient/gunskins/vector"),
+        path.join(app.getPath("documents"), "Quasar-DSC/gunskins/vector"),
         ".webp",
         "filepaths-vector"
       );
@@ -252,7 +252,7 @@ app.whenReady().then(() => {
       
         const srcPath = message.toString();
       
-        const folderPath = path.join(app.getPath("documents"), `DeadshotClient/Resource Swapper/weapons/${folderName}/`);
+        const folderPath = path.join(app.getPath("documents"), `Quasar-DSC/Resource Swapper/weapons/${folderName}/`);
         console.log(`to ${folderPath}`);
       
         fs.readdir(folderPath, (err, files) => {
@@ -265,11 +265,11 @@ app.whenReady().then(() => {
       
           // sometimes we get this error, even if the file is already copied
 
-          /*[Error: EBUSY: resource busy or locked, unlink 'C:\Users\jesse\OneDrive\Dokumente\DeadshotClient\Resource Swapper\weapons\vector\vectorcomp.webp'] {
+          /*[Error: EBUSY: resource busy or locked, unlink 'C:\Users\jesse\OneDrive\Dokumente\Quasar-DSC\Resource Swapper\weapons\vector\vectorcomp.webp'] {
             errno: -4082,
             code: 'EBUSY',
             syscall: 'unlink',
-            path: 'C:\\Users\\[your_username]\\OneDrive\\Dokumente\\DeadshotClient\\Resource Swapper\\weapons\\vector\\vectorcomp.webp'
+            path: 'C:\\Users\\[your_username]\\OneDrive\\Dokumente\\Quasar-DSC\\Resource Swapper\\weapons\\vector\\vectorcomp.webp'
           }*/
 
           webpFiles.forEach(file => {
@@ -281,7 +281,7 @@ app.whenReady().then(() => {
           });
         });
       
-        const destPath = path.join(app.getPath("documents"), `DeadshotClient/Resource Swapper/weapons/${folderName}/${destFileName}`);
+        const destPath = path.join(app.getPath("documents"), `Quasar-DSC/Resource Swapper/weapons/${folderName}/${destFileName}`);
       
         fs.copyFile(srcPath, destPath, (err) => {
           if (err) {
@@ -306,11 +306,11 @@ app.whenReady().then(() => {
       const { spawn } = require('child_process');
 
       ipcMain.on('openSkinFolder', (event) => {
-        spawn('explorer.exe', [path.join(app.getPath("documents"), "DeadshotClient/gunskins")]);
+        spawn('explorer.exe', [path.join(app.getPath("documents"), "Quasar-DSC/gunskins")]);
       });
 
       ipcMain.on('openTexturePackFolder', (event, file) => {
-        spawn('explorer.exe', [path.join(app.getPath("documents"), "DeadshotClient/Resource Swapper")]);
+        spawn('explorer.exe', [path.join(app.getPath("documents"), "Quasar-DSC/Resource Swapper")]);
       });
 
       // texture pack loader
