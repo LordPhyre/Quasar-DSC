@@ -42,7 +42,7 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 - [ ] Custom Resource Marketplace
 - [ ] FOV Slider
 - [x] PC Stats
-- [x] WASD Detector
+- [x] extended WASD Detector
 - [ ] Local Player Wireframe
 - [x] Custom Chat Shortcuts
 - [ ] Custom Client Keybinds
