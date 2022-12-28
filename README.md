@@ -25,6 +25,9 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 
 ### What we are currently working on:
 - [ ] JSON Settings // skill
+- [ ] Better WASD Detector // skill
+- [ ] Killing Bugs
+
 
 ### To-Do List:
 - [x] Fix JSON Loading Glitches and Elements not Functioning
@@ -35,6 +38,7 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 - [x] Texture-Pack loading (make it cool later)
 - [ ] FPS-Boost Texture-Pack
 - [x] Chromium Flags
+- [x] Offline Screen
 - [ ] Custom Resource Marketplace
 - [ ] FOV Slider
 - [x] PC Stats
