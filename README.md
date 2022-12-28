@@ -46,13 +46,13 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 - [ ] Custom Client Keybinds
 - [x] Customizable UI
 - [x] Aimbot
-- [ ] Sound Swapper
 
 ### Later... (~3-5 years)
 - [ ] Controller Support
 - [ ] Automatic Debug Disable
 - [ ] Local Player Wireframe
 - [ ] FOV Slider
+- [ ] Sound Swapper
 
 ### Featues that will only be possible with the help of our friend tree : ):
 - [ ] Auto-GG (need to know round status + name of killer)
