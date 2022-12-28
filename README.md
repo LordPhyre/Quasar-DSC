@@ -24,7 +24,6 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 #
 
 ### What we are currently working on:
-- [ ] Texture-Pack loading // jcjms
 - [ ] JSON Settings // skill
 
 ### To-Do List:
@@ -33,7 +32,7 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 - [x] Random Cool Looking GUI Elements 😎
 - [ ] Gamma Editor
 - [x] Resource Swapper [Weapons, Sky, Map-Textures, Scripts]
-- [ ] Texture-Pack loading
+- [x] Texture-Pack loading (make it cool later)
 - [ ] FPS-Boost Texture-Pack
 - [x] Chromium Flags
 - [ ] Custom Resource Marketplace
