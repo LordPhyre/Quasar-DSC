@@ -9,7 +9,7 @@ Never before such power has been instilled into a downloadable software client f
 I highly encourage everyone to try it out. Truly a game-changing experience.
  
 # 
-![Splash Screen Logo](splash.png)
+![Splash Screen Logo](splash-screen/splash.png)
 #
 
 ### Credits
