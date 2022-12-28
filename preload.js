@@ -200,11 +200,11 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         descrText: "Uptime",
         checkId: "uptimeDisplayCheck",
     },
-    {
+    /*{
         holderId: "onlineDisplayOptionHolder",
         descrText: "Network Status",
         checkId: "onlineDisplayCheck",
-    },
+    },*/
     {
         holderId: "shortcutDisplayOptionHolder",
         descrText: "Show Shortcuts",
@@ -262,7 +262,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         }
     });
     
-    document.getElementById("onlineDisplayCheck").checked = jsonobj.Online;
+    /*document.getElementById("onlineDisplayCheck").checked = jsonobj.Online;
     onlineDisplayCheck.addEventListener('change', e => {
         if(e.target.checked){
             status.style.display = "block";
@@ -274,7 +274,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
             jsonobj.Online = false;
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         }
-    });
+    });*/
 
     document.getElementById("shortcutDisplayCheck").checked = jsonobj.Shortcuts;
     shortcutDisplayCheck.addEventListener('change', e => {
@@ -476,7 +476,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     msgBoxWrapper.id = "msgBoxWrapper"
     msgBoxWrapper.innerHTML = `
         <div id="msgBox" style="background: ${msgBoxColor}; text-align: center; z-index: 1001; border-radius: 10px; font-size: 20px; color: white; display: none;">
-            <p style='line-height: 2.2; width: 325px; height: 45px; border: 1px solid black;'>Skin applied successfully...</p>
+            <p id="msgBoxText" style='line-height: 2.2; width: 325px; height: 45px; border: 1px solid black;'></p>
         </div>
     `;
     document.body.appendChild(msgBoxWrapper);
@@ -521,6 +521,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
                 console.log("The source of the selected skin is: " + src);
 
                 // message
+                document.getElementById('msgBoxText').innerHTML = "Skin applied successfully...";
                 document.getElementById('msgBox').style.display = "initial";
 
                 setTimeout(function() {
@@ -781,7 +782,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
 
     // options
     
-    const options = ["fpsDisplayOptionHolder", "pingDisplayOptionHolder", "onlineDisplayOptionHolder", "shortcutDisplayOptionHolder", "skincontent", "optionColorOptionHolder", "behindOptionsColorOptionHolder", "menuHeaderColorOptionHolder", "skinButtonColorOptionHolder", "opacityOptionHolder", "windowBorderOptionHolder", "skinCategoryoptionHolder", "shortcutOptionHolder", "shortcutOptionHolder2", "shortcutOptionHolder3", "shortcutOptionHolder4", "shortcutOptionHolder5", "platformDisplayOptionHolder", "cpuUsageDisplayOptionHolder", "memoryUsageDisplayOptionHolder", "totalMemoryDisplayOptionHolder", "cpuCoresDisplayOptionHolder", "uptimeDisplayOptionHolder", "texturePackOptionHolder", "WASDDisplayOptionHolder"];
+    const options = ["fpsDisplayOptionHolder", "pingDisplayOptionHolder", /*"onlineDisplayOptionHolder",*/ "shortcutDisplayOptionHolder", "skincontent", "optionColorOptionHolder", "behindOptionsColorOptionHolder", "menuHeaderColorOptionHolder", "skinButtonColorOptionHolder", "opacityOptionHolder", "windowBorderOptionHolder", "skinCategoryoptionHolder", "shortcutOptionHolder", "shortcutOptionHolder2", "shortcutOptionHolder3", "shortcutOptionHolder4", "shortcutOptionHolder5", "platformDisplayOptionHolder", "cpuUsageDisplayOptionHolder", "memoryUsageDisplayOptionHolder", "totalMemoryDisplayOptionHolder", "cpuCoresDisplayOptionHolder", "uptimeDisplayOptionHolder", "texturePackOptionHolder", "WASDDisplayOptionHolder"];
     
     // default title
     h2.innerHTML = "Home";
@@ -807,7 +808,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         options.forEach(option => {
             document.getElementById(option).style.display = "none";
         });
-        document.getElementById("onlineDisplayOptionHolder").style.display = "";
+        //document.getElementById("onlineDisplayOptionHolder").style.display = "";
         document.getElementById("WASDDisplayOptionHolder").style.display = "";
 
         logo.style.display = "none";
@@ -1072,28 +1073,35 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
 
     // offline / online status
 
-    const status = document.createElement("h2");
+    /*const status = document.createElement("h2");
     status.innerHTML = "Network Status";
     status.id = "status";
     status.style = "position: absolute; width: 100%; text-align: center; z-index: 1000; color: lightgreen; font-size: 100%; display: none;";
-    document.body.appendChild(status);
+    document.body.appendChild(status);*/
 
     //Show or Hide Online Status based on JSON
-    if(jsonobj.Online) {
+    /*if(jsonobj.Online) {
         status.style.display = "block";
     } else if (!jsonobj.Online) {
         status.style.display = "none";
-    };
+    };*/
 
     const updateOnlineStatus = () => {
-        document.getElementById('status').innerHTML = navigator.onLine ? 'online' : 'offline'
+        //document.getElementById('status').innerHTML = navigator.onLine ? 'online' : 'offline'
 
         if (navigator.onLine == 1)
         {
-            status.style.color = "lightgreen";
+            //status.style.color = "lightgreen";
+            document.getElementById('msgBoxText').innerHTML = "Connected...";
+            document.getElementById('msgBox').style.display = "initial";
+
+            setTimeout(function() {
+                document.getElementById('msgBox').style.display = "none";
+            }, 2000);
         } else {
-            status.style.color = "red";
-            mainWindow.loadFile('index.html')
+            //status.style.color = "red";
+            document.getElementById('msgBoxText').innerHTML = "Lost connection...";
+            document.getElementById('msgBox').style.display = "initial";
         }
 
     }
@@ -1160,7 +1168,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
       document.getElementById('statsHolder').appendChild(element);
     }
 
-    //Show or Hide Online Status based on JSON
+    //Show or Hide based on JSON
     if(jsonobj.FPS) {
         fpscounter.style.display = "initial";
     } else if (!jsonobj.FPS) {
