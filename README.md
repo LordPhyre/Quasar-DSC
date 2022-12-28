@@ -24,9 +24,9 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 #
 
 ### What we are currently working on:
+- [ ] Quasar Texture-Pack // jcjms
 - [ ] JSON Settings // skill
-- [ ] Better WASD Detector // skill
-- [ ] Killing Bugs
+- [ ] Killing Bugs // everyone lmao
 
 
 ### To-Do List:
