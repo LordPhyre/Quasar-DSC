@@ -39,6 +39,7 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 - [x] Texture-Pack loading (make it cool later)
 - [ ] FPS-Boost Texture-Pack
 - [x] Chromium Flags
+- [ ] Control every single Chromium Flag
 - [x] Offline Screen
 - [ ] Custom Resource Marketplace
 - [x] PC Stats
@@ -54,6 +55,9 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 - [ ] Local Player Wireframe
 - [ ] FOV Slider
 - [ ] Sound Swapper
+
+### Known bugs 🚨🪲
+- [ ] os-utils error on exit
 
 ### Featues that will only be possible with the help of our friend tree : ):
 - [ ] Auto-GG (need to know round status + name of killer)
