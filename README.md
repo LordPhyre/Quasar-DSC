@@ -77,7 +77,7 @@ If so, you can follow the steps below.
 
 - Extract the folder or use git clone then open command prompt inside the directory.
 - Type `npm i --save-dev electron` to install required dependencies.
-- To run the application, type `npm run start nvm`
+- To run the application, type `npm run start`
 - If you have applied code changes, you will need to restart the application by closing it and running it again.
 - If you have a feature request or bug fix, please test it out locally before starting a pull request.
 
