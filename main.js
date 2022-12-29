@@ -1,15 +1,14 @@
 const { app, BrowserWindow, ipcMain, protocol, globalShortcut} = require('electron');
 const path = require('path');
 const fs = require('fs');
-//const DiscordRpc = require("discord-rpc");
 const os = require('os-utils');
 //const unzipper = require('unzipper');
-const { autoUpdater } = require('electron-updater'); // implement
+const { autoUpdater } = require('electron-updater'); // implement later
 
 let win = null
 
 //Swapper
-const swapper = require('./swapper.js');
+const swapper = require('./src/swapper.js');
 
 // chromium flags -> credits to gatos | makes everything slow af
 /*
@@ -399,42 +398,10 @@ app.whenReady().then(() => {
   }
 })
 
-// discord rpc
-
-/*const DiscordRPC = require('discord-rpc');
-const clientId = '1054074293975273594';
-
-// Register your application with Discord
-DiscordRPC.register(clientId);
-
-// Initialize the Discord Rich Presence client with the IPC transport
-const rpc = new DiscordRPC.Client({ transport: 'ipc' });
-
-// Set the activity when the client is ready
-rpc.on('ready', () => {
-  console.log('Discord Rich Presence is ready!');
-  setActivity();
+app.on('window-all-closed', function() {
+  if (process.platform !== 'darwin') app.quit();
 });
 
-// Handle any errors that occur
-rpc.on('error', (error) => {
-  console.error(error);
+app.on('activate', function() {
+  if (mainWindow === null) createWindow();
 });
-
-// Log in to Discord with your client ID
-rpc.login({ clientId }).catch((error) => {
-  console.error(error);
-});
-
-// Function to set the activity
-function setActivity() {
-  rpc.setActivity({
-    details: 'Playing my Electron game',
-    state: 'Level 1',
-    largeImageKey: 'icon',
-    smallImageKey: 'play',
-    instance: false,
-  }).catch((error) => {
-    console.error(error);
-  });
-}*/
