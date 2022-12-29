@@ -29,7 +29,6 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 
 
 ### To-Do List:
-- [x] Fix JSON Loading Glitches and Elements not Functioning
 - [x] Fully functioning JSON-Based Settings Saver
 - [ ] Persistent Color Settings 
 - [x] GG Shortcut
