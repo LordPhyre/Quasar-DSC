@@ -58,6 +58,7 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 - [ ] Sound Swapper
 
 ### Known bugs 🚨🪲
+- [ ] scroll error (since hour 0)
 - [ ] os-utils error on exit
 - [ ] Cannot change Region (dropdown obscured by other settings)
 
