@@ -10,22 +10,13 @@ document.addEventListener("DOMContentLoaded", function() {
 //Receive user datapath and save as variable
 require('electron').ipcRenderer.on('SendUserData', (event, message) => {
 
-    const userDataPath = message;
-    const jsonpath = path.join(userDataPath, '/Settings.json');
+    const jsonpath = message;
     console.log(jsonpath);
-
-    //Check if JSON exists first
-    if (!fs.existsSync(jsonpath)) {
-        // file does not exist, create it
-        const jsonsettings = { FPS: true, Online: false, Shortcuts: true, Platform: false, CPU: true, Memory: true, Tmemory: false, Cores: false, Uptime: false, Ping: true,  WASD: false};
-        fs.writeFileSync(jsonpath, JSON.stringify(jsonsettings));
-    } else {
-        console.log("File exists");
-    };
 
     // Parse the contents of the file into a JavaScript object
     let jsonobj = JSON.parse(fs.readFileSync(jsonpath, 'utf8'));
     console.log(jsonobj);
+
 
     // colors
 
