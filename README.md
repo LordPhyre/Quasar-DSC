@@ -48,6 +48,7 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 - [ ] Custom Client Keybinds
 - [x] Customizable UI
 - [x] Aimbot
+- [ ] Discord RPC
 
 ### Later... (~3-5 years)
 - [ ] Controller Support
