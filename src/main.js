@@ -3,42 +3,49 @@ const path = require('path');
 const fs = require('fs');
 const os = require('os-utils');
 //const unzipper = require('unzipper');
-const { autoUpdater } = require('electron-updater'); // implement later
+const { autoUpdater } = require('electron-updater'); // implement
+const swapper = require('./swapper.js'); // Swapper
 
 let win = null
+const userDataPath = path.join(app.getPath('appData'), app.getName())
+const jsonpath = path.join(userDataPath, '/Settings.json');
+console.log(jsonpath);
 
-//Swapper
-const swapper = require('./swapper.js');
+//Check if JSON exists first
+if (!fs.existsSync(jsonpath)) {
+    // file does not exist, create it
+    const jsonsettings = { FPS: true, Online: false, Shortcuts: true, Platform: false, CPU: true, memory: true, Tmemory: false, Cores: false, Uptime: false, Ping: true,  WASD: false, Flags: false};
+    fs.writeFileSync(jsonpath, JSON.stringify(jsonsettings));
+} else {
+    console.log("File exists");
+};
 
-// chromium flags -> credits to gatos | makes everything slow af
-/*
-// json
-app.commandLine.appendSwitch("disable-print-preview");
-app.commandLine.appendSwitch("enable-javascript-harmony");
-app.commandLine.appendSwitch("enable-webgl2-compute-context");
-app.commandLine.appendSwitch("renderer-process-limit", 100);
-app.commandLine.appendSwitch("max-active-webgl-contexts", 100);
-app.commandLine.appendSwitch("ignore-gpu-blacklist");
-app.commandLine.appendSwitch("disable-2d-canvas-clip-aa");
-app.commandLine.appendSwitch("disable-bundled-ppapi-flash");
-app.commandLine.appendSwitch("disable-logging");
-app.commandLine.appendSwitch("disable-web-security");
-app.commandLine.appendSwitch("webrtc-max-cpu-consumption-percentage=100");
-console.log('Enabled Experiments');
+// Parse the contents of the file into a JavaScript object
+let jsonobj = JSON.parse(fs.readFileSync(jsonpath, 'utf8'));
+console.log(jsonobj);
 
-// json
-app.commandLine.appendSwitch('disable-frame-rate-limit');
-app.commandLine.appendSwitch("disable-gpu-vsync");
-console.log('Removed FPS Cap');
 
-// json
-app.commandLine.appendSwitch("in-process-gpu");
-console.log('In Process GPU is active');
+// Chromium Flags based on JSON
+if(jsonobj.Flags) {
+    app.commandLine.appendSwitch("disable-print-preview");
+    app.commandLine.appendSwitch("javascript-harmony");
+    app.commandLine.appendSwitch("renderer-process-limit", 100);
+    app.commandLine.appendSwitch("max-active-webgl-contexts", 100);
+    app.commandLine.appendSwitch("ignore-gpu-blocklist");
+    app.commandLine.appendSwitch("disable-2d-canvas-clip-aa");
+    app.commandLine.appendSwitch("disable-logging");
+    console.log('Enabled Experiments');
 
-// json
-app.commandLine.appendSwitch("disable-accelerated-2d-canvas", "true");
-console.log('Disabled Accelerated 2D canvas');
-*/
+    app.commandLine.appendSwitch("in-process-gpu");
+    console.log('In Process GPU is active');
+
+    app.commandLine.appendSwitch("disable-accelerated-2d-canvas", "true");
+    console.log('Disabled Accelerated 2D canvas');
+} else if (!jsonobj.Flags) {
+    console.log('Command Line Switches Off')
+};
+
+
 app.whenReady().then(() => {
 
   ///////////////////////////////////////////////////////////////////////////////////////////
@@ -364,7 +371,7 @@ app.whenReady().then(() => {
         
       //Send user datapath to preload.js
       win.webContents.on('did-finish-load', () => {
-          win.webContents.send('SendUserData', path.join(app.getPath('appData'), app.getName()));
+          win.webContents.send('SendUserData', jsonpath);
       });
 
     }
