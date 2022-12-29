@@ -8,7 +8,7 @@ const { autoUpdater } = require('electron-updater'); // implement later
 let win = null
 
 //Swapper
-const swapper = require('./src/swapper.js');
+const swapper = require('./swapper.js');
 
 // chromium flags -> credits to gatos | makes everything slow af
 /*
