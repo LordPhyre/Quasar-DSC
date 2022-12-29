@@ -64,3 +64,15 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 - [ ] Auto Reload (need to know ammo amount)
 - [ ] Custom Background/Wallpaper (need to know if round started to remove img)
 
+
+# Building Guide
+Do you want to build Quasar from source to test out the latest changes or make your own? 
+If so, you can follow the steps below.
+
+- Extract the folder or use git clone then open command prompt inside the directory.
+- Type `npm i --save-dev electron` to install required dependencies.
+- To run the application, type `npm run start nvm`
+- If you have applied code changes, you will need to restart the application by closing it and running it again.
+- If you have a feature request or bug fix, please test it out locally before starting a pull request.
+
+Good luck!
