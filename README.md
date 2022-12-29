@@ -59,6 +59,7 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 
 ### Known bugs 🚨🪲
 - [ ] os-utils error on exit
+- [ ] Cannot change Region (dropdown obscured by other settings)
 
 ### Featues that will only be possible with the help of our friend tree : ):
 - [ ] Auto-GG (need to know round status + name of killer)
