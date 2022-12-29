@@ -149,6 +149,14 @@ app.whenReady().then(() => {
           fs.mkdirSync(swapperFolder, { recursive: true });
       };
 
+      ///////////////////////////////////////////////////////////////////
+      // importing QUASAR texturepack
+
+      // do that later
+      // IMPORTANT: don't override the folders every launch, check if user wants to, maybe check in json for first launch = true
+      
+      ///////////////////////////////////////////////////////////////////
+
       // gun skins
       if (!fs.existsSync(path.join(swapperFolder, "/gunskins"))) {
           fs.mkdirSync(path.join(swapperFolder, "/gunskins"), { recursive: true });
@@ -167,8 +175,9 @@ app.whenReady().then(() => {
       if (!fs.existsSync(path.join(swapperFolder, "/textures"))) {
         fs.mkdirSync(path.join(swapperFolder, "/textures"), { recursive: true });
       };
-
-      // maps/industry/out/compressedTextures
+      if (!fs.existsSync(path.join(swapperFolder, "/skyboxes"))) {
+        fs.mkdirSync(path.join(swapperFolder, "/skyboxes"), { recursive: true });
+      };
       if (!fs.existsSync(path.join(swapperFolder, "/maps"))) {
         fs.mkdirSync(path.join(swapperFolder, "/maps"), { recursive: true });
       };
@@ -181,7 +190,9 @@ app.whenReady().then(() => {
       if (!fs.existsSync(path.join(swapperFolder, "/maps/industry/out/compressedTextures"))) {
         fs.mkdirSync(path.join(swapperFolder, "/maps/industry/out/compressedTextures"), { recursive: true });
       };
-
+      if (!fs.existsSync(path.join(swapperFolder, "Resource Swapper/textures"))) {
+        fs.mkdirSync(path.join(swapperFolder, "Resource Swapper/textures"), { recursive: true });
+      };
       if (!fs.existsSync(path.join(swapperFolder, "Resource Swapper/maps"))) {
         fs.mkdirSync(path.join(swapperFolder, "Resource Swapper/maps"), { recursive: true });
       };
@@ -194,10 +205,6 @@ app.whenReady().then(() => {
       if (!fs.existsSync(path.join(swapperFolder, "Resource Swapper/maps/industry/out/compressedTextures"))) {
         fs.mkdirSync(path.join(swapperFolder, "Resource Swapper/maps/industry/out/compressedTextures"), { recursive: true });
       };
-
-      // resource swapper
-
-      // gun skins
       if (!fs.existsSync(path.join(swapperFolder, "Resource Swapper/weapons/ar2"))) {
         fs.mkdirSync(path.join(swapperFolder, "Resource Swapper/weapons/ar2"), { recursive: true });
       };
@@ -253,12 +260,22 @@ app.whenReady().then(() => {
         "filepaths-vector"
       );
 
+      readDirectory(
+        path.join(app.getPath("documents"), "Quasar-DSC/skyboxes"),
+        ".webp",
+        "filepaths-skybox"
+      );
+
       function handleFilepathEvent(event, message, folderName, destFileName) {
         console.log(`should be ${message}`);
       
         const srcPath = message.toString();
       
-        const folderPath = path.join(app.getPath("documents"), `Quasar-DSC/Resource Swapper/weapons/${folderName}/`);
+        if (destFileName == "skybox.webp") {
+          var folderPath = path.join(app.getPath("documents"), `Quasar-DSC/Resource Swapper/${folderName}/`);
+        } else {
+          var folderPath = path.join(app.getPath("documents"), `Quasar-DSC/Resource Swapper/weapons/${folderName}/`);
+        }
         console.log(`to ${folderPath}`);
       
         fs.readdir(folderPath, (err, files) => {
@@ -287,7 +304,11 @@ app.whenReady().then(() => {
           });
         });
       
-        const destPath = path.join(app.getPath("documents"), `Quasar-DSC/Resource Swapper/weapons/${folderName}/${destFileName}`);
+        if (destFileName == "skybox.webp") {
+          var destPath = path.join(app.getPath("documents"), `Quasar-DSC/Resource Swapper/${folderName}/${destFileName}`);
+        } else {
+          var destPath = path.join(app.getPath("documents"), `Quasar-DSC/Resource Swapper/weapons/${folderName}/${destFileName}`);
+        }
       
         fs.copyFile(srcPath, destPath, (err) => {
           if (err) {
@@ -308,13 +329,18 @@ app.whenReady().then(() => {
       ipcMain.on('filepath-vector', (event, message) => {
         handleFilepathEvent(event, message, 'vector', 'vectorcomp.webp');
       });
+      ipcMain.on('filepath-skybox', (event, message) => {
+        handleFilepathEvent(event, message, 'textures', 'skybox.webp');
+      });
 
       const { spawn } = require('child_process');
 
       ipcMain.on('openSkinFolder', (event) => {
         spawn('explorer.exe', [path.join(app.getPath("documents"), "Quasar-DSC/gunskins")]);
       });
-
+      ipcMain.on('openSkyboxFolder', (event, file) => {
+        spawn('explorer.exe', [path.join(app.getPath("documents"), "Quasar-DSC/skyboxes")]);
+      });
       ipcMain.on('openTexturePackFolder', (event, file) => {
         spawn('explorer.exe', [path.join(app.getPath("documents"), "Quasar-DSC/Resource Swapper")]);
       });

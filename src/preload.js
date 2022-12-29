@@ -105,6 +105,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         { text: 'Stats', id: 'stats' },
         { text: 'Shortcuts', id: 'shortcuts' },
         { text: 'Skins', id: 'skinmenu' },
+        { text: 'Skyboxes', id: 'skyboxes' },
         { text: 'Texture Packs', id: 'texturepacks' },
         { text: 'Chromium Flags', id: 'chromiumflags' },
         { text: 'Aimbot', id: 'aimbot' },
@@ -473,10 +474,6 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     const flexSquare = document.createElement('img');
     flexSquare.style = 'width: 100px; height: 100px; border: 1px solid black; margin: 10px;';
 
-    ////////////////////////////////////////////////////////
-    ///// data exchange between main.js and preload.js /////
-    ////////////////////////////////////////////////////////
-
     // create message boxes
 
     const msgBoxWrapper = document.createElement('div');
@@ -566,6 +563,92 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
 
     ////////////////////////////////////////////////////////
 
+    // SKYBOX-DISPLAY
+
+    const skyboxoptionHolder = document.createElement('div');
+    skyboxoptionHolder.className = 'optionholder';
+    skyboxoptionHolder.id = 'skyboxoptionHolder';
+
+    const skyboxButtonWrapper = document.createElement('div');
+    skyboxButtonWrapper.style = 'display: flex; justify-content: center;';
+    skyboxButtonWrapper.innerHTML = `
+        <button class="skinCategory" id="skyboxFolderButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;">Folder</button>
+    `;
+
+    skyboxoptionHolder.appendChild(skyboxButtonWrapper);
+skincontent
+    rightDiv.appendChild(skyboxoptionHolder);
+
+    document.getElementById('skyboxFolderButton').addEventListener('click', function() {
+        require('electron').ipcRenderer.send('openSkyboxFolder')
+    });
+
+    // skybox content + images
+
+    const skyboxcontent = document.createElement("div");
+    skyboxcontent.id = "skyboxcontent";
+    skyboxcontent.classList.add('skyboxcontent'); // if breaks try skincontent
+    skyboxcontent.style.background = optionColor;
+
+    document.getElementById('rightDiv').appendChild(skyboxcontent);
+
+    var skyboxcontentselector = document.getElementById('skyboxcontent');
+
+    const skyboxflexSquare = document.createElement('img');
+    skyboxflexSquare.style = 'width: 100px; height: 100px; border: 1px solid black; margin: 10px;';
+
+    // handle skyboxes
+    function skyboxPathHandler(src) {
+        require('electron').ipcRenderer.send('filepath-skybox', src)
+    }
+
+    // get skins -> they all override awp atm fix later
+
+    var SkyboxSkipper = 1;
+
+    function processSkyboxes(skyboxes, id) {
+        console.log(skyboxes);
+        console.log(skyboxes.length);
+        
+        for (let i = 0; i < skyboxes.length; i++) {
+            let element;
+            if (skipper > 0) {
+                let skyboxflexSquareClone = skyboxflexSquare.cloneNode(true);
+                skyboxflexSquareClone.setAttribute('src', skyboxes[i]);
+                skyboxflexSquareClone.setAttribute('id', id);
+                element = skyboxflexSquareClone;
+                SkyboxSkipper++;
+            } else {
+                skyboxflexSquare.src = skyboxes[i];
+                skyboxflexSquare.id = id;
+                element = skyboxflexSquare;
+            }
+        
+            element.addEventListener('click', function() {
+                let src = this.getAttribute('src');
+                console.log("The source of the selected skybox is: " + src);
+
+                // message
+                document.getElementById('msgBoxText').innerHTML = "Skybox applied successfully...";
+                document.getElementById('msgBox').style.display = "initial";
+
+                setTimeout(function() {
+                    document.getElementById('msgBox').style.display = "none";
+                }, 2000);
+
+                skyboxPathHandler(src);
+            });
+        
+            skyboxcontentselector.appendChild(element);
+        }
+    }
+    
+    require('electron').ipcRenderer.on('filepaths-skybox', (event, message) => {
+        processSkyboxes(message, 'skybox');
+    });
+
+    ////////////////////////////////////////////////////////
+
     // COLOR-DISPLAY Settings
 
     const optionholders = [];
@@ -589,6 +672,11 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         if (id == "texturePackOptionHolder") {
             optionInput.type = 'button'; // normally I wouldn't do this, just so I can make it more efficient
             optionInput.value = 'Open Folder';
+            //optionInput.placeholder = '';
+            optionInput.style.width = '110px';
+        } else if (id == "downloadTexturePackOptionHolder") {
+            optionInput.type = 'button';
+            optionInput.value = 'Download Pack';
             //optionInput.placeholder = '';
             optionInput.style.width = '110px';
         } else {
@@ -619,7 +707,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
             optionInput.style.width = '140px';
             optionInput.name = inputId;
             optionInput.id = keyNumber++;
-        } else if (id == 'texturePackOptionHolder') {
+        } else if (id == 'texturePackOptionHolder' || id == "downloadTexturePackOptionHolder") {
             optionInput.placeholder = '';
         } else {
             optionInput.placeholder = 'e.g. #2a394f';
@@ -647,6 +735,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     createOptionHolder('shortcutOptionHolder4', 'Shortcut Option [4]', 'shortcutOptionInput4');
     createOptionHolder('shortcutOptionHolder5', 'Shortcut Option [5]', 'shortcutOptionInput5');
     createOptionHolder('texturePackOptionHolder', 'Texture Pack', 'texturePackOptionInput');
+    createOptionHolder('downloadTexturePackOptionHolder', 'Download QUASAR Pack', 'downloadTexturePackOptionInput');
 
     optionholders.forEach(holder => rightDiv.appendChild(holder));
 
@@ -796,9 +885,13 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         require('electron').ipcRenderer.send('openTexturePackFolder');
     });
 
+    downloadTexturePackOptionInput.addEventListener("click", function() {
+        window.open("https://github.com/jcjms/Quasar-DSC-Texturepack/archive/refs/heads/main.zip", "Texturepack Download", "height=500,width=500");
+    });
+
     // options
     
-    const options = ["fpsDisplayOptionHolder", "pingDisplayOptionHolder", /*"onlineDisplayOptionHolder",*/ "shortcutDisplayOptionHolder", "skincontent", "optionColorOptionHolder", "behindOptionsColorOptionHolder", "menuHeaderColorOptionHolder", "skinButtonColorOptionHolder", "opacityOptionHolder", "windowBorderOptionHolder", "skinCategoryoptionHolder", "shortcutOptionHolder", "shortcutOptionHolder2", "shortcutOptionHolder3", "shortcutOptionHolder4", "shortcutOptionHolder5", "platformDisplayOptionHolder", "cpuUsageDisplayOptionHolder", "memoryUsageDisplayOptionHolder", "totalMemoryDisplayOptionHolder", "cpuCoresDisplayOptionHolder", "uptimeDisplayOptionHolder", "texturePackOptionHolder", "WASDDisplayOptionHolder", "chromiumFlagsOptionHolder"];
+    const options = ["fpsDisplayOptionHolder", "pingDisplayOptionHolder", /*"onlineDisplayOptionHolder",*/ "shortcutDisplayOptionHolder", "skincontent", "skyboxcontent", "optionColorOptionHolder", "behindOptionsColorOptionHolder", "menuHeaderColorOptionHolder", "skinButtonColorOptionHolder", "opacityOptionHolder", "windowBorderOptionHolder", "skinCategoryoptionHolder", "skyboxoptionHolder", "shortcutOptionHolder", "shortcutOptionHolder2", "shortcutOptionHolder3", "shortcutOptionHolder4", "shortcutOptionHolder5", "platformDisplayOptionHolder", "cpuUsageDisplayOptionHolder", "memoryUsageDisplayOptionHolder", "totalMemoryDisplayOptionHolder", "cpuCoresDisplayOptionHolder", "uptimeDisplayOptionHolder", "texturePackOptionHolder", "downloadTexturePackOptionHolder", "WASDDisplayOptionHolder", "chromiumFlagsOptionHolder"];
     
     // default title
     h2.innerHTML = "Home";
@@ -854,7 +947,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         options.forEach(option => {
             document.getElementById(option).style.display = "none";
         });
-        document.getElementById("shortcutDisplayOptionHolder").style.display = "";skinCategoryoptionHolder
+        document.getElementById("shortcutDisplayOptionHolder").style.display = "";
         document.getElementById("shortcutOptionHolder").style.display = "";
         document.getElementById("shortcutOptionHolder2").style.display = "";
         document.getElementById("shortcutOptionHolder3").style.display = "";
@@ -879,6 +972,19 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         version.style.display = "none";
     });
 
+    document.getElementById("skyboxes").addEventListener("click", function() {
+        h2.innerHTML = 'Skyboxes <p style="color: red; font-size: 17.5px">ATTENTION: Need to restart client to apply skyboxes</p>'
+        
+        options.forEach(option => {
+            document.getElementById(option).style.display = "none";
+        });
+        document.getElementById("skyboxoptionHolder").style.display = "";
+        document.getElementById("skyboxcontent").style.display = "flex";
+
+        logo.style.display = "none";
+        version.style.display = "none";
+    });
+
     document.getElementById("texturepacks").addEventListener("click", function() {
         h2.innerHTML = 'Texture Packs'
         
@@ -886,6 +992,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
             document.getElementById(option).style.display = "none";
         });
         document.getElementById("texturePackOptionHolder").style.display = "";
+        document.getElementById("downloadTexturePackOptionHolder").style.display = "";
 
         logo.style.display = "none";
         version.style.display = "none";
