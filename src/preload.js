@@ -106,6 +106,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         { text: 'Shortcuts', id: 'shortcuts' },
         { text: 'Skins', id: 'skinmenu' },
         { text: 'Texture Packs', id: 'texturepacks' },
+        { text: 'Chromium Flags', id: 'chromiumflags' },
         { text: 'Aimbot', id: 'aimbot' },
         { text: 'Color Settings', id: 'colorsettings' },
         /*{ text: 'Custom CSS', id: 'customcss' },
@@ -205,6 +206,11 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         holderId: "WASDDisplayOptionHolder",
         descrText: "Show WASD",
         checkId: "WASDDisplayCheck",
+    },
+    {
+        holderId: "chromiumFlagsOptionHolder",
+        descrText: "Chromium Flags",
+        checkId: "chromiumFlagsCheck",
     },
     ];
       
@@ -381,6 +387,17 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         } else {
             WASD.style.display = "none";
             jsonobj.WASD = false;
+            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
+        }
+    });
+
+    document.getElementById("chromiumFlagsCheck").checked = jsonobj.Flags;
+    chromiumFlagsCheck.addEventListener('change', e => {
+        if(e.target.checked){
+            jsonobj.Flags = true;
+            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
+        } else {
+            jsonobj.Flags = false;
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         }
     });
@@ -781,7 +798,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
 
     // options
     
-    const options = ["fpsDisplayOptionHolder", "pingDisplayOptionHolder", /*"onlineDisplayOptionHolder",*/ "shortcutDisplayOptionHolder", "skincontent", "optionColorOptionHolder", "behindOptionsColorOptionHolder", "menuHeaderColorOptionHolder", "skinButtonColorOptionHolder", "opacityOptionHolder", "windowBorderOptionHolder", "skinCategoryoptionHolder", "shortcutOptionHolder", "shortcutOptionHolder2", "shortcutOptionHolder3", "shortcutOptionHolder4", "shortcutOptionHolder5", "platformDisplayOptionHolder", "cpuUsageDisplayOptionHolder", "memoryUsageDisplayOptionHolder", "totalMemoryDisplayOptionHolder", "cpuCoresDisplayOptionHolder", "uptimeDisplayOptionHolder", "texturePackOptionHolder", "WASDDisplayOptionHolder"];
+    const options = ["fpsDisplayOptionHolder", "pingDisplayOptionHolder", /*"onlineDisplayOptionHolder",*/ "shortcutDisplayOptionHolder", "skincontent", "optionColorOptionHolder", "behindOptionsColorOptionHolder", "menuHeaderColorOptionHolder", "skinButtonColorOptionHolder", "opacityOptionHolder", "windowBorderOptionHolder", "skinCategoryoptionHolder", "shortcutOptionHolder", "shortcutOptionHolder2", "shortcutOptionHolder3", "shortcutOptionHolder4", "shortcutOptionHolder5", "platformDisplayOptionHolder", "cpuUsageDisplayOptionHolder", "memoryUsageDisplayOptionHolder", "totalMemoryDisplayOptionHolder", "cpuCoresDisplayOptionHolder", "uptimeDisplayOptionHolder", "texturePackOptionHolder", "WASDDisplayOptionHolder", "chromiumFlagsOptionHolder"];
     
     // default title
     h2.innerHTML = "Home";
@@ -869,6 +886,18 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
             document.getElementById(option).style.display = "none";
         });
         document.getElementById("texturePackOptionHolder").style.display = "";
+
+        logo.style.display = "none";
+        version.style.display = "none";
+    });
+
+    document.getElementById("chromiumflags").addEventListener("click", function() {
+        h2.innerHTML = 'Chromium Flags'
+        
+        options.forEach(option => {
+            document.getElementById(option).style.display = "none";
+        });
+        document.getElementById("chromiumFlagsOptionHolder").style.display = "";
 
         logo.style.display = "none";
         version.style.display = "none";
