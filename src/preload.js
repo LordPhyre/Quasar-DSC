@@ -1293,22 +1293,22 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     const WASD = document.createElement("div");
     WASD.style = "position: absolute; top: 90px; left: 5px; display: none;";
     WASD.innerHTML = `
-    <div style="width: 291px; display: flex; color: white; align-items: center; justify-content: center;">
-        <div style="opacity: 0; width: 59px; height: 45px;"></div>
-        <div id="w" style="background: rgba(255, 255, 255, .2); width: 45px; height: 45px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">W</div>
-        <div style="opacity: 0; width: 88px; height: 45px;"></div>
-        <div id="r" style="background: rgba(255, 255, 255, .2); width: 45px; height: 45px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">R</div>
-        <div style="opacity: 0; width: 26px; height: 45px;"></div>
-    </div>
-    <div style="width: 291px; display: flex; color: white; align-items: center; justify-content: center;">
-        <div id="a" style="background: rgba(255, 255, 255, .2); width: 45px; height: 45px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">A</div>
-        <div id="s" style="background: rgba(255, 255, 255, .2); width: 45px; height: 45px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">S</div>
-        <div id="d" style="background: rgba(255, 255, 255, .2); width: 45px; height: 45px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">D</div>
-        <div id="shift" style="background: rgba(255, 255, 255, .2); width: 100px; height: 45px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">shift</div>
-    </div>
-    <div style="width: 291px; display: flex; color: white; align-items: center; justify-content: center;">
-        <div id="space" style="background: rgba(255, 255, 255, .2); width: 225px; height: 40px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;"></div>
-    </div>`;
+<div style="width: 276px; display: flex; color: white; align-items: center; justify-content: center;">
+    <div style="opacity: 0; width: 54px; height: 40px;"></div>
+    <div id="w" style="background: rgba(255, 255, 255, .2); width: 40px; height: 40px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">W</div>
+    <div style="opacity: 0; width: 86px; height: 40px;"></div>
+    <div id="r" style="background: rgba(255, 255, 255, .2); width: 40px; height: 40px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">R</div>
+    <div style="opacity: 0; width: 28px; height: 40px;"></div>
+</div>
+<div style="width: 276px; display: flex; color: white; align-items: center; justify-content: center;">
+    <div id="a" style="background: rgba(255, 255, 255, .2); width: 40px; height: 40px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">A</div>
+    <div id="s" style="background: rgba(255, 255, 255, .2); width: 40px; height: 40px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">S</div>
+    <div id="d" style="background: rgba(255, 255, 255, .2); width: 40px; height: 40px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">D</div>
+    <div id="shift" style="background: rgba(255, 255, 255, .2); width: 100px; height: 40px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">shift</div>
+</div>
+<div style="width: 276px; display: flex; color: white; align-items: center; justify-content: center;">
+    <div id="space" style="background: rgba(255, 255, 255, .2); width: 220px; height: 34px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;"></div>
+</div>`;
     WASD.id = "WASD";
     document.body.appendChild(WASD);
     
