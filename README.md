@@ -25,12 +25,13 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 
 ### What we are currently working on:
 - [ ] Quasar Texture-Pack // jcjms
-- [ ] JSON Settings // skill
 - [ ] Killing Bugs // everyone lmao
 
 
 ### To-Do List:
 - [x] Fix JSON Loading Glitches and Elements not Functioning
+- [x] Fully functioning JSON-Based Settings Saver
+- [ ] Persistent Color Settings 
 - [x] GG Shortcut
 - [x] Random Cool Looking GUI Elements 😎
 - [ ] Gamma Editor
@@ -63,10 +64,3 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 - [ ] Auto Reload (need to know ammo amount)
 - [ ] Custom Background/Wallpaper (need to know if round started to remove img)
 
-# Setup Guide (continue later)
-
--> npm i --save-dev electron
-
-to run type "npm run start"
-
-to build type "npm run start"
