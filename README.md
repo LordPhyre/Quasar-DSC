@@ -24,8 +24,8 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 #
 
 ### What we are currently working on:
-- [ ] Quasar Texture-Pack // jcjms
 - [ ] Killing Bugs // everyone lmao
+- [ ] Marketplace // jcjms
 
 
 ### To-Do List:
