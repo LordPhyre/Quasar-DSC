@@ -12,9 +12,9 @@ module.exports = {
             return folder;
         }
 
-        checkCreateFolder(app.getPath('documents') + "\\DeadshotClient\\Resource Swapper\\");
+        checkCreateFolder(app.getPath('documents') + "\\Quasar-DSC\\Resource Swapper\\");
     
-        let swapDirectory = path.normalize(`${app.getPath('documents')}/DeadshotClient/Resource Swapper`)
+        let swapDirectory = path.normalize(`${app.getPath('documents')}/Quasar-DSC/Resource Swapper`)
         
         if(!fs.existsSync(swapDirectory)) {
             fs.mkdirSync(swapDirectory, {
