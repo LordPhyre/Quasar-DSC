@@ -1,9 +1,4 @@
 const fs = require('fs');
-const path = require('path');
-const { ipcMain, webFrame } = require('electron');
-const { workerData } = require('worker_threads');
-//window.$ = window.jQuery = require('./node_modules/jquery/dist/jquery.min.js');
-
 
 document.addEventListener("DOMContentLoaded", function() {
 
