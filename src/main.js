@@ -2,8 +2,6 @@ const { app, BrowserWindow, ipcMain, protocol, globalShortcut} = require('electr
 const path = require('path');
 const fs = require('fs');
 const os = require('os-utils');
-//const unzipper = require('unzipper');
-const { autoUpdater } = require('electron-updater'); // implement
 const swapper = require('./swapper.js'); // Swapper
 
 let win = null
