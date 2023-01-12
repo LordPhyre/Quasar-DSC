@@ -9,7 +9,15 @@ const userDataPath = path.join(app.getPath('appData'), app.getName())
 const jsonpath = path.join(userDataPath, '/Settings.json');
 console.log(jsonpath);
 
-//Check if JSON exists first
+//Check if folder exists first
+if (!fs.existsSync(userDataPath)) {
+    // folder does not exist, create it
+    fs.mkdirSync(userDataPath);
+} else {
+    console.log("Folder exists");
+};
+
+//Then check if JSON exists
 if (!fs.existsSync(jsonpath)) {
     // file does not exist, create it
     const jsonsettings = { FPS: true, Online: false, Shortcuts: true, Platform: false, CPU: true, memory: true, Tmemory: false, Cores: false, Uptime: false, Ping: true,  WASD: false, Flags: false};
@@ -19,7 +27,7 @@ if (!fs.existsSync(jsonpath)) {
 };
 
 // Parse the contents of the file into a JavaScript object
-let jsonobj = JSON.parse(fs.readFileSync(jsonpath, 'utf8'));
+let jsonobj = JSON.parse(fs.readFileSync(jsonpath, 'utf8')); //*
 console.log(jsonobj);
 
 
