@@ -36,7 +36,6 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 - [ ] Gamma Editor
 - [x] Resource Swapper [Weapons, Sky, Map-Textures, Scripts]
 - [x] Texture-Pack loading (make it cool later)
-- [ ] FPS-Boost Texture-Pack
 - [x] Chromium Flags
 - [ ] Control every single Chromium Flag
 - [x] Offline Screen
