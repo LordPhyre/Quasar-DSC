@@ -370,27 +370,22 @@ app.whenReady().then(() => {
 
       // all options https://github.com/oscmejia/os-utils
 
-      const stats = setInterval(() => {
-        if (!win.isDestroyed()) {
-          os.cpuUsage(function(v){
-            win.webContents.send('cpu',v*100);
-            win.webContents.send('mem',os.freememPercentage()*100);
-            //win.webContents.send('freemem',os.freemem());
-            win.webContents.send('platform',os.platform());
-            win.webContents.send('cpu-count',os.cpuCount());
-            win.webContents.send('total-mem',os.totalmem()/1024);
-            win.webContents.send('uptime',os.processUptime());
-            //win.webContents.send('ram',memoryUsage());
-          });
-        } else {
-          clearInterval(stats);
+      let stats;
 
-          // destroy all windows | splash should already be closed
-          if (!noInternetConnectionScreen.isDestroyed()) {
-            noInternetConnectionScreen.close();
-          }
-          app.exit();
-        }
+      win.on('close', () => {
+        clearInterval(stats);
+        app.exit();
+      });
+
+      stats = setInterval(() => {
+        os.cpuUsage(function(v){
+          win.webContents.send('cpu',v*100);
+          win.webContents.send('mem',os.freememPercentage()*100);
+          win.webContents.send('platform',os.platform());
+          win.webContents.send('cpu-count',os.cpuCount());
+          win.webContents.send('total-mem',os.totalmem()/1024);
+          win.webContents.send('uptime',os.processUptime());
+        });
       },1000);
         
       //Send user datapath to preload.js
