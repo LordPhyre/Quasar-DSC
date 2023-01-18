@@ -20,7 +20,36 @@ if (!fs.existsSync(userDataPath)) {
 //Then check if JSON exists
 if (!fs.existsSync(jsonpath)) {
     // file does not exist, create it
-    const jsonsettings = { FPS: true, Online: false, Shortcuts: true, Platform: false, CPU: true, memory: true, Tmemory: false, Cores: false, Uptime: false, Ping: true,  WASD: false, Flags: false};
+    const jsonsettings = {
+
+    "Stats": {
+        "FPS": true,
+        "Online": false,
+        "Shortcuts": true,
+        "Platform": false,
+        "CPU": true,
+        "memory": true,
+        "Tmemory": false,
+        "Cores": false,
+        "Uptime": false,
+        "Ping": true
+    },
+    "WASD": false,
+    "Flags": false,
+    "Colors": {
+        "menuHeaderColor": "#232429",
+        "behindOptionsColor": "#232429",
+        "skinButtonColor": "#222327",
+        "skinButtonHoverColor": "#0798fc",
+        "skinCloseColor": "#ffffff00",
+        "optionColor": "#25272e",
+        "opacity": "1",
+        "skinWrapperBorderRadius": "10",
+        "msgBoxColor": "#232429",   
+    }
+
+};
+
     fs.writeFileSync(jsonpath, JSON.stringify(jsonsettings));
 } else {
     console.log("File exists");
