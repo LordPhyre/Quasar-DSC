@@ -42,8 +42,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     const skinWrapper = document.createElement('div');
     skinWrapper.className = 'skinwrapper';
     skinWrapper.id = "skinWrapper";
-    //+ ::-webkit-scrollbar{border:1px solid #d5d5d5}; +
-    skinWrapper.style = "opacity:" + opacity + ";border-radius: " + skinWrapperBorderRadius + "px; z-index: 9999;";
+    skinWrapper.style = "::-webkit-scrollbar{border:1px solid #d5d5d5};opacity:" + opacity + ";border-radius: " + skinWrapperBorderRadius + "px; z-index: 9999;";
     document.body.appendChild(skinWrapper);
 
     // title
@@ -127,19 +126,19 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     h2.innerText = 'Option Name';
     document.getElementById('rightDiv').appendChild(h2);
 
-    //const logoFont = document.createElement('link')
-    //logoFont.href = "https://fonts.cdnfonts.com/css/aquire";
-    //logoFont.rel = "stylesheet";
-    //document.getElementsByTagName('head')[0].appendChild(logoFont);
+    const logoFont = document.createElement('link')
+    logoFont.href = "https://fonts.cdnfonts.com/css/aquire";
+    logoFont.rel = "stylesheet";
+    document.getElementsByTagName('head')[0].appendChild(logoFont);
 
     const logo = document.createElement('h2');
-    //logo.style = 'font-family: "Aquire", sans-serif; text-align: center; color: white; font-size: 75px; margin-top: 30px;';
+    logo.style = 'font-family: "Aquire", sans-serif; text-align: center; color: white; font-size: 75px; margin-top: 30px;';
     logo.id = "logo";
     logo.innerHTML = "Quasar<br>";
     document.getElementById('rightDiv').appendChild(logo);
 
     const version = document.createElement('h2');
-    //version.style = 'font-family: "Aquire", sans-serif; text-align: center; color: white; font-size: 17.5px;';
+    version.style = 'font-family: "Aquire", sans-serif; text-align: center; color: white; font-size: 17.5px;';
     version.id = "version";
     version.innerText = "v1.0 - BETA";
     document.getElementById('rightDiv').appendChild(version);
