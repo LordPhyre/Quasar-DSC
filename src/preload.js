@@ -13,18 +13,16 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     console.log(jsonobj);
 
 
-    // colors
-
-    var menuHeaderColor = "#232429"; //"#2a394f";
-    //var optionsColor = ""; //"#364760";
-    var behindOptionsColor = "#232429"; //"#2a394f";
-    var skinButtonColor = "#222327"; //"#364760";
-    var skinButtonHoverColor = "#0798fc"; //"#0798fc";
-    var skinCloseColor = "#ffffff00"; //"#ffffff00";
-    var optionColor = "#25272e"; //"#364760";
-    var opacity = "1"; //0.95;
-    var skinWrapperBorderRadius = "10"; //"10";
-    var msgBoxColor = "#232429"; //"#2a394f";
+    // Colors (Now with JSON)
+    var menuHeaderColor = jsonobj.Colors.menuHeaderColor; //"#2a394f";
+    var behindOptionsColor = jsonobj.Colors.behindOptionsColor; //"#2a394f";
+    var skinButtonColor = jsonobj.Colors.skinButtonColor; //"#364760";
+    var skinButtonHoverColor = jsonobj.Colors.skinButtonHoverColor; //"#0798fc";
+    var skinCloseColor = jsonobj.Colors.skinCloseColor; //"#ffffff00";
+    var optionColor = jsonobj.Colors.optionColor; //"#364760";
+    var opacity = jsonobj.Colors.opacity; //0.95;
+    var skinWrapperBorderRadius = jsonobj.Colors.skinWrapperBorderRadius; //"10";
+    var msgBoxColor = jsonobj.Colors.msgBoxColor; //"#2a394f";
 
     let scrollcss = document.createElement('style');
     scrollcss.innerText = `
