@@ -15,6 +15,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
 
     // Colors (Now with JSON)
     var menuHeaderColor = jsonobj.Colors.menuHeaderColor; //"#2a394f";
+    var optionsColor = jsonobj.Colors.optionsColor; //"#364760";
     var behindOptionsColor = jsonobj.Colors.behindOptionsColor; //"#2a394f";
     var skinButtonColor = jsonobj.Colors.skinButtonColor; //"#364760";
     var skinButtonHoverColor = jsonobj.Colors.skinButtonHoverColor; //"#0798fc";
