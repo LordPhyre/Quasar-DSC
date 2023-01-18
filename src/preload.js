@@ -42,7 +42,8 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     const skinWrapper = document.createElement('div');
     skinWrapper.className = 'skinwrapper';
     skinWrapper.id = "skinWrapper";
-    skinWrapper.style = "::-webkit-scrollbar{border:1px solid #d5d5d5};opacity:" + opacity + ";border-radius: " + skinWrapperBorderRadius + "px; z-index: 9999;";
+    //+ ::-webkit-scrollbar{border:1px solid #d5d5d5}; +
+    skinWrapper.style = "opacity:" + opacity + ";border-radius: " + skinWrapperBorderRadius + "px; z-index: 9999;";
     document.body.appendChild(skinWrapper);
 
     // title
@@ -126,19 +127,19 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     h2.innerText = 'Option Name';
     document.getElementById('rightDiv').appendChild(h2);
 
-    const logoFont = document.createElement('link')
-    logoFont.href = "https://fonts.cdnfonts.com/css/aquire";
-    logoFont.rel = "stylesheet";
-    document.getElementsByTagName('head')[0].appendChild(logoFont);
+    //const logoFont = document.createElement('link')
+    //logoFont.href = "https://fonts.cdnfonts.com/css/aquire";
+    //logoFont.rel = "stylesheet";
+    //document.getElementsByTagName('head')[0].appendChild(logoFont);
 
     const logo = document.createElement('h2');
-    logo.style = 'font-family: "Aquire", sans-serif; text-align: center; color: white; font-size: 75px; margin-top: 30px;';
+    //logo.style = 'font-family: "Aquire", sans-serif; text-align: center; color: white; font-size: 75px; margin-top: 30px;';
     logo.id = "logo";
     logo.innerHTML = "Quasar<br>";
     document.getElementById('rightDiv').appendChild(logo);
 
     const version = document.createElement('h2');
-    version.style = 'font-family: "Aquire", sans-serif; text-align: center; color: white; font-size: 17.5px;';
+    //version.style = 'font-family: "Aquire", sans-serif; text-align: center; color: white; font-size: 17.5px;';
     version.id = "version";
     version.innerText = "v1.0 - BETA";
     document.getElementById('rightDiv').appendChild(version);
@@ -241,135 +242,135 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
 
     //Checkbox State and function saving to JSON | optimizing later with GPT3
     
-    document.getElementById("fpsDisplayCheck").checked = jsonobj.FPS;
+    document.getElementById("fpsDisplayCheck").checked = jsonobj.Stats.FPS;
     fpsDisplayCheck.addEventListener('change', e => {
         if(e.target.checked){
             fpscounter.style.display = "block";
-            jsonobj.FPS = true;
+            jsonobj.Stats.FPS = true;
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         
         } else {
             fpscounter.style.display = "none";
-            jsonobj.FPS = false;
+            jsonobj.Stats.FPS = false;
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         }
     });
     
-    /*document.getElementById("onlineDisplayCheck").checked = jsonobj.Online;
+    /*document.getElementById("onlineDisplayCheck").checked = jsonobj.Stats.Online;
     onlineDisplayCheck.addEventListener('change', e => {
         if(e.target.checked){
             status.style.display = "block";
-            jsonobj.Online = true;
+            jsonobj.Stats.Online = true;
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
 
         } else {
             status.style.display = "none";
-            jsonobj.Online = false;
+            jsonobj.Stats.Online = false;
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         }
     });*/
 
-    document.getElementById("shortcutDisplayCheck").checked = jsonobj.Shortcuts;
+    document.getElementById("shortcutDisplayCheck").checked = jsonobj.Stats.Shortcuts;
     shortcutDisplayCheck.addEventListener('change', e => {
         if(e.target.checked){
             shortcuts.style.display = "block";
-            jsonobj.Shortcuts = true;
+            jsonobj.Stats.Shortcuts = true;
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         } else {
             shortcuts.style.display = "none";
-            jsonobj.Shortcuts = false;
+            jsonobj.Stats.Shortcuts = false;
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         }
     });
 
-    document.getElementById("platformDisplayCheck").checked = jsonobj.Platform;
+    document.getElementById("platformDisplayCheck").checked = jsonobj.Stats.Platform;
     platformDisplayCheck.addEventListener('change', e => {
         if(e.target.checked){
             platform.style.display = "block";
-            jsonobj.Platform = true;
+            jsonobj.Stats.Platform = true;
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
 
         } else {
             platform.style.display = "none";
-            jsonobj.Platform = false;
+            jsonobj.Stats.Platform = false;
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         }
     });
 
-    document.getElementById("pingDisplayCheck").checked = jsonobj.Ping;
+    document.getElementById("pingDisplayCheck").checked = jsonobj.Stats.Ping;
     pingDisplayCheck.addEventListener('change', e => {
         if(e.target.checked){
             ping.style.display = "block";
-            jsonobj.Ping = true;
+            jsonobj.Stats.Ping = true;
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         } else {
             ping.style.display = "none";
-            jsonobj.Ping = false;
+            jsonobj.Stats.Ping = false;
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         }
     });
 
-    document.getElementById("cpuUsageDisplayCheck").checked = jsonobj.CPU;
+    document.getElementById("cpuUsageDisplayCheck").checked = jsonobj.Stats.CPU;
     cpuUsageDisplayCheck.addEventListener('change', e => {
         if(e.target.checked){
             cpu.style.display = "block";
-            jsonobj.CPU = true;
+            jsonobj.Stats.CPU = true;
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         } else {
             cpu.style.display = "none";
-            jsonobj.CPU = false;
+            jsonobj.Stats.CPU = false;
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         }
     });
 
-    document.getElementById("memoryUsageDisplayCheck").checked = jsonobj.Memory;
+    document.getElementById("memoryUsageDisplayCheck").checked = jsonobj.Stats.memory;
     memoryUsageDisplayCheck.addEventListener('change', e => {
         if(e.target.checked){
             mem.style.display = "block";
-            jsonobj.Memory = true;
+            jsonobj.Stats.memory = true;
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         } else {
             mem.style.display = "none";
-            jsonobj.Memory = false;
+            jsonobj.Stats.memory = false;
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         }
     });
 
-    document.getElementById("totalMemoryDisplayCheck").checked = jsonobj.Tmemory;
+    document.getElementById("totalMemoryDisplayCheck").checked = jsonobj.Stats.Tmemory;
     totalMemoryDisplayCheck.addEventListener('change', e => {
         if(e.target.checked){
             totalMem.style.display = "block";
-            jsonobj.Tmemory = true;
+            jsonobj.Stats.Tmemory = true;
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         } else {
             totalMem.style.display = "none";
-            jsonobj.Tmemory = false;
+            jsonobj.Stats.Tmemory = false;
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         }
     });
 
-    document.getElementById("cpuCoresDisplayCheck").checked = jsonobj.Cores;
+    document.getElementById("cpuCoresDisplayCheck").checked = jsonobj.Stats.Cores;
     cpuCoresDisplayCheck.addEventListener('change', e => {
         if(e.target.checked){
             cpuCount.style.display = "block";
-            jsonobj.Cores = true;
+            jsonobj.Stats.Cores = true;
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         } else {
             cpuCount.style.display = "none";
-            jsonobj.Cores = false;
+            jsonobj.Stats.Cores = false;
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         }
     });
 
-    document.getElementById("uptimeDisplayCheck").checked = jsonobj.Uptime;
+    document.getElementById("uptimeDisplayCheck").checked = jsonobj.Stats.Uptime;
     uptimeDisplayCheck.addEventListener('change', e => {
         if(e.target.checked){
             uptime.style.display = "block";
-            jsonobj.Uptime = true;
+            jsonobj.Stats.Uptime = true;
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         } else {
             uptime.style.display = "none";
-            jsonobj.Uptime = false;
+            jsonobj.Stats.Uptime = false;
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         }
     });
@@ -769,9 +770,9 @@ skincontent
     document.body.appendChild(shortcuts);
 
     //Show or Hide Shortcuts based on JSON
-    if(jsonobj.Shortcuts) {
+    if(jsonobj.Stats.Shortcuts) {
         shortcuts.style.display = "block";
-    } else if (!jsonobj.Shortcuts) {
+    } else if (!jsonobj.Stats.Shortcuts) {
         shortcuts.style.display = "none";
     };
 
@@ -1210,9 +1211,9 @@ skincontent
     document.body.appendChild(status);*/
 
     //Show or Hide Online Status based on JSON
-    /*if(jsonobj.Online) {
+    /*if(jsonobj.Stats.Online) {
         status.style.display = "block";
-    } else if (!jsonobj.Online) {
+    } else if (!jsonobj.Stats.Online) {
         status.style.display = "none";
     };*/
 
@@ -1299,51 +1300,51 @@ skincontent
     }
 
     //Show or Hide based on JSON
-    if(jsonobj.FPS) {
+    if(jsonobj.Stats.FPS) {
         fpscounter.style.display = "initial";
-    } else if (!jsonobj.FPS) {
+    } else if (!jsonobj.Stats.FPS) {
         fpscounter.style.display = "none";
     };
 
-    if(jsonobj.Ping) {
+    if(jsonobj.Stats.Ping) {
         ping.style.display = "initial";
-    } else if (!jsonobj.Ping) {
+    } else if (!jsonobj.Stats.Ping) {
         ping.style.display = "none";
     };
 
-    if(jsonobj.Platform) {
+    if(jsonobj.Stats.Platform) {
         platform.style.display = "initial";
-    } else if (!jsonobj.Platform) {
+    } else if (!jsonobj.Stats.Platform) {
         platform.style.display = "none";
     };
 
-    if(jsonobj.CPU) {
+    if(jsonobj.Stats.CPU) {
         cpu.style.display = "initial";
-    } else if (!jsonobj.CPU) {
+    } else if (!jsonobj.Stats.CPU) {
         cpu.style.display = "none";
     };
 
-    if(jsonobj.Memory) {
+    if(jsonobj.Stats.memory) {
         mem.style.display = "initial";
     } else if (!jsonobj.Mem) {
         mem.style.display = "none";
     };
 
-    if(jsonobj.Tmemory) {
+    if(jsonobj.Stats.Tmemory) {
         totalMem.style.display = "initial";
-    } else if (!jsonobj.Tmemory) {
+    } else if (!jsonobj.Stats.Tmemory) {
         totalMem.style.display = "none";
     };
 
-    if(jsonobj.Cores) {
+    if(jsonobj.Stats.Cores) {
         cpuCount.style.display = "initial";
-    } else if (!jsonobj.Cores) {
+    } else if (!jsonobj.Stats.Cores) {
         cpuCount.style.display = "none";
     };
 
-    if(jsonobj.Uptime) {
+    if(jsonobj.Stats.Uptime) {
         uptime.style.display = "initial";
-    } else if (!jsonobj.Uptime) {
+    } else if (!jsonobj.Stats.Uptime) {
         uptime.style.display = "none";
     };
 
