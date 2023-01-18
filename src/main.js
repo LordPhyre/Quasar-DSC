@@ -38,6 +38,7 @@ if (!fs.existsSync(jsonpath)) {
     "Flags": false,
     "Colors": {
         "menuHeaderColor": "#232429",
+        "optionsColor": "",
         "behindOptionsColor": "#232429",
         "skinButtonColor": "#222327",
         "skinButtonHoverColor": "#0798fc",
