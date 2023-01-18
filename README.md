@@ -60,6 +60,7 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 ### Known bugs 🚨🪲
 - [ ] Scrolling Issues
 - [ ] Dropdown Formatting Issues
+- [ ] Typing Numbers activate Shortcuts
 
 ### Featues that will only be possible with the help of our friend tree : ):
 - [ ] Auto Re-Join Button (need to know round status)
