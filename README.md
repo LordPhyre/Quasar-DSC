@@ -4,7 +4,7 @@ Introducing the most advanced and simultaneously user-friendly client for [Deads
 
 This client contains many unique features found nowhere else, such as a fully customizable Graphical User Interface, with many performance and cosmetic options. It also includes a completely easy to use skin and resource swapper to completely change the look and feel of your game. 
 
-Additionally, 
+Additionally, although there are many advanced features planned for the future, why wait? Download the latest version to try it out for yourself.
 
 I highly encourage everyone to try it out. Truly a game-changing experience.
  
@@ -35,25 +35,27 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 - [ ] Control Chromium Flags Individually
 - [ ] Custom Resource Marketplace
 - [ ] Discord RPC
+- [ ] Client Updater (Prompt Only)
 - [x] GG Shortcut
 - [x] Customizable UI
 - [x] Custom Chat Shortcuts
 - [x] Fully functioning JSON-Based Settings Saver
 - [x] Offline Screen
 - [x] PC Stats
-- [x] Resource Swapper [Weapons, Sky, Map-Textures, Scripts]
+- [x] Resource Swapper [Weapons, Sky, Map Textures, Scripts]
 - [x] Texture-Pack loading
 - [x] Chromium Flags
 - [x] WASD Detector
 - [x] Aimbot 😱
 
-### Later... (~3-5 years)
+### Later.....
 - [ ] Controller Support
 - [ ] Automatic Debug Disable
 - [ ] Local Player Wireframe
 - [ ] FOV Slider
 - [ ] Sound Swapper
 - [ ] Gamma Editor
+- [ ] Instant-180
 
 ### Known bugs 🚨🪲
 - [ ] Scrolling Issues
