@@ -828,14 +828,19 @@ skincontent
         }
     });
 
+    //Color Customizations
     menuHeaderColorOptionInput.addEventListener('change', function() {
         menuHeaderColor = menuHeaderColorOptionInput.value;
+        jsonobj.Colors.menuHeaderColor = menuHeaderColorOptionInput.value;
+        fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         console.log(menuHeaderColor);
         skinHeader.style.background = menuHeaderColor;
     });
 
     optionColorOptionInput.addEventListener('change', function() {
         optionColor = optionColorOptionInput.value;
+        jsonobj.Colors.optionColor = optionColorOptionInput.value;
+        fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         console.log(optionColor);
 
         const elements = document.querySelectorAll('.optionholder');
@@ -846,12 +851,16 @@ skincontent
 
     behindOptionsColorOptionInput.addEventListener('change', function() {
         behindOptionsColor = behindOptionsColorOptionInput.value;
+        jsonobj.Colors.behindOptionsColor = behindOptionsColorOptionInput.value;
+        fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         console.log(behindOptionsColor);
         mainDiv.style.background = behindOptionsColor;
     });
 
     skinButtonColorOptionInput.addEventListener('change', function() {
         skinButtonColor = skinButtonColorOptionInput.value;
+        jsonobj.Colors.skinButtonColor = skinButtonColorOptionInput.value;
+        fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         console.log(skinButtonColor);
         //skinbutton.style.background = skinButtonColor; - its a class, won't work
 
@@ -865,12 +874,16 @@ skincontent
 
     opacityOptionInput.addEventListener('change', function() {
         opacity = opacityOptionInput.value;
+        jsonobj.Colors.opacity = opacityOptionInput.value;
+        fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         console.log(opacity);
         skinWrapper.style.opacity = opacity;
     });
 
     windowBorderOptionInput.addEventListener('change', function() {
         skinWrapperBorderRadius = windowBorderOptionInput.value;
+        jsonobj.Colors.skinWrapperBorderRadius = windowBorderOptionInput.value;
+        fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         console.log(skinWrapperBorderRadius);
         skinWrapper.style.borderRadius = skinWrapperBorderRadius + "px";
     });
