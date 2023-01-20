@@ -24,9 +24,8 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 #
 
 ### What we are currently working on:
-- [ ] Killing Bugs // everyone lmao
+- [ ] Color Saving // skill & jcjms
 - [ ] Marketplace // jcjms
-
 
 ### Features / To-Do List:
 - [ ] Custom Background/Wallpaper
@@ -62,8 +61,7 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 - [ ] Dropdown Formatting Issues
 - [ ] Typing Numbers activate Shortcuts
 
-### Featues that will only be possible with the help of our friend tree : ):
-- [ ] Auto Re-Join Button (need to know round status)
+### Featues that will only be possible with the help of our friend tree 🙂:
 - [ ] Screenshake (need to know if damage)
 - [ ] Custom Damage Vignette (need to know if damage)
 - [ ] Reload Warning (need to know ammo amount)
