@@ -55,6 +55,7 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 - [ ] Sound Swapper
 - [ ] Gamma Editor
 - [ ] Instant-180
+- [ ] Leaderboard rewards 👀
 
 ### Known bugs 🚨🪲
 - [ ] Scrolling Issues
