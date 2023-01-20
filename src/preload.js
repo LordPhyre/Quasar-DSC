@@ -673,6 +673,11 @@ skincontent
             optionInput.value = 'Download Pack';
             //optionInput.placeholder = '';
             optionInput.style.width = '110px';
+        } else if (id == "resetColorOptionHolder") {
+            optionInput.type = 'button';
+            optionInput.value = 'Reset Color';
+            //optionInput.placeholder = '';
+            optionInput.style.width = '110px';
         } else {
             optionInput.type = 'text';
             optionInput.style.width = '100px';
@@ -717,11 +722,16 @@ skincontent
         optionHolder.appendChild(optionHr);
     };
 
+    createOptionHolder('resetColorOptionHolder', 'Reset Color', 'resetColorOptionInput');
+
+    // color
     createOptionHolder('menuHeaderColorOptionHolder', 'Header Color', 'menuHeaderColorOptionInput');
+    //menuHeaderColorOptionInput.value = jsonobj.Colors.menuHeaderColor;
     createOptionHolder('optionColorOptionHolder', 'Option Color', 'optionColorOptionInput');
     createOptionHolder('behindOptionsColorOptionHolder', 'Behind-Options Color', 'behindOptionsColorOptionInput');
     createOptionHolder('skinButtonColorOptionHolder', 'Skin Button Color', 'skinButtonColorOptionInput');
     createOptionHolder('opacityOptionHolder', 'Opacity', 'opacityOptionInput');
+
     createOptionHolder('windowBorderOptionHolder', 'Window Border', 'windowBorderOptionInput');
     createOptionHolder('shortcutOptionHolder', 'Shortcut Option [1]', 'shortcutOptionInput');
     createOptionHolder('shortcutOptionHolder2', 'Shortcut Option [2]', 'shortcutOptionInput2');
@@ -896,10 +906,52 @@ skincontent
         window.open("https://github.com/jcjms/Quasar-DSC-Texturepack/archive/refs/heads/main.zip", "Texturepack Download", "height=500,width=500");
     });
 
+    resetColorOptionInput.addEventListener("click", function() {
+        require('electron').ipcRenderer.send('resetColorSettings');
+    });
+
     // options
     
-    const options = ["fpsDisplayOptionHolder", "pingDisplayOptionHolder", /*"onlineDisplayOptionHolder",*/ "shortcutDisplayOptionHolder", "skincontent", "skyboxcontent", "optionColorOptionHolder", "behindOptionsColorOptionHolder", "menuHeaderColorOptionHolder", "skinButtonColorOptionHolder", "opacityOptionHolder", "windowBorderOptionHolder", "skinCategoryoptionHolder", "skyboxoptionHolder", "shortcutOptionHolder", "shortcutOptionHolder2", "shortcutOptionHolder3", "shortcutOptionHolder4", "shortcutOptionHolder5", "platformDisplayOptionHolder", "cpuUsageDisplayOptionHolder", "memoryUsageDisplayOptionHolder", "totalMemoryDisplayOptionHolder", "cpuCoresDisplayOptionHolder", "uptimeDisplayOptionHolder", "texturePackOptionHolder", "downloadTexturePackOptionHolder", "WASDDisplayOptionHolder", "chromiumFlagsOptionHolder"];
+    const options = [
+        "fpsDisplayOptionHolder", 
+        "pingDisplayOptionHolder", 
+        /*"onlineDisplayOptionHolder",*/ 
+        "shortcutDisplayOptionHolder", 
+        "skincontent", 
+        "skyboxcontent", 
+        "optionColorOptionHolder", 
+        "behindOptionsColorOptionHolder", 
+        "menuHeaderColorOptionHolder", 
+        "skinButtonColorOptionHolder", 
+        "opacityOptionHolder", 
+        "windowBorderOptionHolder", 
+        "skinCategoryoptionHolder", 
+        "skyboxoptionHolder", 
+        "shortcutOptionHolder", 
+        "shortcutOptionHolder2", 
+        "shortcutOptionHolder3", 
+        "shortcutOptionHolder4", 
+        "shortcutOptionHolder5", 
+        "platformDisplayOptionHolder", 
+        "cpuUsageDisplayOptionHolder", 
+        "memoryUsageDisplayOptionHolder", 
+        "totalMemoryDisplayOptionHolder", 
+        "cpuCoresDisplayOptionHolder", 
+        "uptimeDisplayOptionHolder", 
+        "texturePackOptionHolder", 
+        "downloadTexturePackOptionHolder", 
+        "WASDDisplayOptionHolder", 
+        "chromiumFlagsOptionHolder", 
+        "resetColorOptionHolder"
+    ];
     
+    menuHeaderColorOptionInput.value = jsonobj.Colors.menuHeaderColor;
+    behindOptionsColorOptionInput.value = jsonobj.Colors.behindOptionsColor;
+    skinButtonColorOptionInput.value = jsonobj.Colors.skinButtonColor;
+    optionColorOptionInput.value = jsonobj.Colors.optionColor;
+    opacityOptionInput.value = jsonobj.Colors.opacity;
+    windowBorderOptionInput.value = jsonobj.Colors.skinWrapperBorderRadius;
+
     // default title
     h2.innerHTML = "Home";
 
@@ -1038,6 +1090,7 @@ skincontent
         document.getElementById("skinButtonColorOptionHolder").style.display = "";
         document.getElementById("opacityOptionHolder").style.display = "";
         document.getElementById("windowBorderOptionHolder").style.display = "";
+        document.getElementById("resetColorOptionHolder").style.display = "";
 
         logo.style.display = "none";
         version.style.display = "none";

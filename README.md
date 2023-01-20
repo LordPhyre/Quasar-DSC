@@ -24,13 +24,14 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 #
 
 ### What we are currently working on:
-- [ ] Color Saving // skill & jcjms
+- [ ] Color Reset // skill
+- [ ] displaying the saved color values // jcjms
 
 ### Features / To-Do List:
 - [ ] Custom Background/Wallpaper
-- [ ] Persistent Color Settings
 - [ ] Control Chromium Flags Individually
 - [ ] Auto Updates
+- [x] Persistent Color Settings
 - [x] GG Shortcut
 - [x] Customizable UI
 - [x] Custom Chat Shortcuts
