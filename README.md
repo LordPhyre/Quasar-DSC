@@ -25,15 +25,11 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 
 ### What we are currently working on:
 - [ ] Color Saving // skill & jcjms
-- [ ] Marketplace // jcjms
 
 ### Features / To-Do List:
 - [ ] Custom Background/Wallpaper
 - [ ] Persistent Color Settings
-- [ ] Custom Client Keybinds
 - [ ] Control Chromium Flags Individually
-- [ ] Custom Resource Marketplace
-- [ ] Discord RPC
 - [ ] Auto Updates
 - [x] GG Shortcut
 - [x] Customizable UI
@@ -51,11 +47,14 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 - [ ] Controller Support
 - [ ] Automatic Debug Disable
 - [ ] Local Player Wireframe
-- [ ] FOV Slider
+- [ ] FOV Slider 🤔
 - [ ] Sound Swapper
 - [ ] Gamma Editor
 - [ ] Instant-180
 - [ ] Leaderboard rewards 👀
+- [ ] Custom Client Keybinds
+- [ ] Custom Resource Marketplace
+- [ ] Discord RPC
 
 ### Known bugs 🚨🪲
 - [ ] Scrolling Issues
