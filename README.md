@@ -34,7 +34,7 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 - [ ] Control Chromium Flags Individually
 - [ ] Custom Resource Marketplace
 - [ ] Discord RPC
-- [ ] Client Updater (Prompt Only)
+- [ ] Auto Updates
 - [x] GG Shortcut
 - [x] Customizable UI
 - [x] Custom Chat Shortcuts
