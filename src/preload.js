@@ -389,10 +389,26 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     document.getElementById("chromiumFlagsCheck").checked = jsonobj.Flags;
     chromiumFlagsCheck.addEventListener('change', e => {
         if(e.target.checked){
-            jsonobj.Flags = true;
+            jsonobj.Flags.Print = true;
+            jsonobj.Flags.Harmony = true;
+            jsonobj.Flags.Limit = true;
+            jsonobj.Flags.Contexts = true;
+            jsonobj.Flags.GPUblocklist = true;
+            jsonobj.Flags.CanvasClip = true;
+            jsonobj.Flags.Logging = true;
+            jsonobj.Flags.ProcessGPU = true;
+            jsonobj.Flags.AcceleratedCanvas = true;
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         } else {
-            jsonobj.Flags = false;
+            jsonobj.Flags.Print = false;
+            jsonobj.Flags.Harmony = false;
+            jsonobj.Flags.Limit = false;
+            jsonobj.Flags.Contexts = false;
+            jsonobj.Flags.GPUblocklist = false;
+            jsonobj.Flags.CanvasClip = false;
+            jsonobj.Flags.Logging = false;
+            jsonobj.Flags.ProcessGPU = false;
+            jsonobj.Flags.AcceleratedCanvas = false;
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         }
     });
