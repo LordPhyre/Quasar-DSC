@@ -47,8 +47,18 @@ if (!fs.existsSync(jsonpath)) {
         "opacity": "1",
         "skinWrapperBorderRadius": "10",
         "msgBoxColor": "#232429",   
+    },
+    "Flags": {
+        "Print": false,
+        "Harmony": false,
+        "Limit": false,
+        "Contexts": false,
+        "GPUblocklist": false,
+        "CanvasClip": false,
+        "Logging": false,
+        "ProcessGPU": false,
+        "AcceleratedCanvas": false,
     }
-
 };
 
     fs.writeFileSync(jsonpath, JSON.stringify(jsonsettings));
@@ -62,24 +72,15 @@ console.log(jsonobj);
 
 
 // Chromium Flags based on JSON
-if(jsonobj.Flags) {
-    app.commandLine.appendSwitch("disable-print-preview");
-    app.commandLine.appendSwitch("javascript-harmony");
-    app.commandLine.appendSwitch("renderer-process-limit", 100);
-    app.commandLine.appendSwitch("max-active-webgl-contexts", 100);
-    app.commandLine.appendSwitch("ignore-gpu-blocklist");
-    app.commandLine.appendSwitch("disable-2d-canvas-clip-aa");
-    app.commandLine.appendSwitch("disable-logging");
-    console.log('Enabled Experiments');
-
-    app.commandLine.appendSwitch("in-process-gpu");
-    console.log('In Process GPU is active');
-
-    app.commandLine.appendSwitch("disable-accelerated-2d-canvas", "true");
-    console.log('Disabled Accelerated 2D canvas');
-} else if (!jsonobj.Flags) {
-    console.log('Command Line Switches Off')
-};
+if(jsonobj.Flags.Print) { app.commandLine.appendSwitch("disable-print-preview"); };
+if(jsonobj.Flags.Harmony) { app.commandLine.appendSwitch("javascript-harmony"); };
+if(jsonobj.Flags.Limit) { app.commandLine.appendSwitch("renderer-process-limit", 100); };
+if(jsonobj.Flags.Contexts) { app.commandLine.appendSwitch("max-active-webgl-contexts", 100); };
+if(jsonobj.Flags.GPUblocklist) { app.commandLine.appendSwitch("ignore-gpu-blocklist"); };
+if(jsonobj.Flags.CanvasClip) { app.commandLine.appendSwitch("disable-2d-canvas-clip-aa"); };
+if(jsonobj.Flags.Logging) { app.commandLine.appendSwitch("disable-logging"); };
+if(jsonobj.Flags.ProcessGPU) { app.commandLine.appendSwitch("in-process-gpu"); };
+if(jsonobj.Flags.AcceleratedCanvas) { app.commandLine.appendSwitch("disable-accelerated-2d-canvas", "true"); };
 
 
 app.whenReady().then(() => {
