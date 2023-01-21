@@ -24,11 +24,10 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 #
 
 ### What we are currently working on:
-- [ ] Color Reset // skill
+- [ ] Control Chromium Flags Individually // skill
 
 ### Features / To-Do List:
 - [ ] Custom Background/Wallpaper
-- [ ] Control Chromium Flags Individually
 - [ ] Auto Updates
 - [x] Persistent Color Settings
 - [x] GG Shortcut

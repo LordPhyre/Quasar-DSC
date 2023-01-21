@@ -207,6 +207,51 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         descrText: "Chromium Flags",
         checkId: "chromiumFlagsCheck",
     },
+    {
+        holderId: "disable-print-previewOptionHolder",
+        descrText: "disable-print-preview",
+        checkId: "disable-print-previewCheck",
+    },
+    {
+        holderId: "javascript-harmonyOptionHolder",
+        descrText: "javascript-harmony",
+        checkId: "javascript-harmonyCheck",
+    },
+    {
+        holderId: "renderer-process-limitOptionHolder",
+        descrText: "renderer-process-limit",
+        checkId: "renderer-process-limitCheck",
+    },
+    {
+        holderId: "max-active-webgl-contextsOptionHolder",
+        descrText: "max-active-webgl-contexts",
+        checkId: "max-active-webgl-contextsCheck",
+    },
+    {
+        holderId: "ignore-gpu-blocklistOptionHolder",
+        descrText: "ignore-gpu-blocklist",
+        checkId: "ignore-gpu-blocklistCheck",
+    },
+    {
+        holderId: "disable-2d-canvas-clip-aaOptionHolder",
+        descrText: "disable-2d-canvas-clip-aa",
+        checkId: "disable-2d-canvas-clip-aaCheck",
+    },
+    {
+        holderId: "disable-loggingOptionHolder",
+        descrText: "disable-logging",
+        checkId: "disable-loggingCheck",
+    },
+    {
+        holderId: "in-process-gpuOptionHolder",
+        descrText: "in-process-gpu",
+        checkId: "in-process-gpuCheck",
+    },
+    {
+        holderId: "disable-accelerated-2d-canvasOptionHolder",
+        descrText: "disable-accelerated-2d-canvas",
+        checkId: "disable-accelerated-2d-canvasCheck",
+    },
     ];
       
     const optionHr = document.createElement('hr');
@@ -981,7 +1026,16 @@ skincontent
         "downloadTexturePackOptionHolder", 
         "WASDDisplayOptionHolder", 
         "chromiumFlagsOptionHolder", 
-        "resetColorOptionHolder"
+        "resetColorOptionHolder",
+        "disable-print-previewOptionHolder",
+        "javascript-harmonyOptionHolder",
+        "renderer-process-limitOptionHolder",
+        "max-active-webgl-contextsOptionHolder",
+        "ignore-gpu-blocklistOptionHolder",
+        "disable-2d-canvas-clip-aaOptionHolder",
+        "disable-loggingOptionHolder",
+        "in-process-gpuOptionHolder",
+        "disable-accelerated-2d-canvasOptionHolder",
     ];
     
     menuHeaderColorOptionInput.value = jsonobj.Colors.menuHeaderColor;
@@ -1103,6 +1157,16 @@ skincontent
             document.getElementById(option).style.display = "none";
         });
         document.getElementById("chromiumFlagsOptionHolder").style.display = "";
+
+        document.getElementById("disable-print-previewOptionHolder").style.display = "";
+        document.getElementById("javascript-harmonyOptionHolder").style.display = "";
+        document.getElementById("renderer-process-limitOptionHolder").style.display = "";
+        document.getElementById("max-active-webgl-contextsOptionHolder").style.display = "";
+        document.getElementById("ignore-gpu-blocklistOptionHolder").style.display = "";
+        document.getElementById("disable-2d-canvas-clip-aaOptionHolder").style.display = "";
+        document.getElementById("disable-loggingOptionHolder").style.display = "";
+        document.getElementById("in-process-gpuOptionHolder").style.display = "";
+        document.getElementById("disable-accelerated-2d-canvasOptionHolder").style.display = "";
 
         logo.style.display = "none";
         version.style.display = "none";
