@@ -922,8 +922,31 @@ skincontent
         window.open("https://github.com/jcjms/Quasar-DSC-Texturepack/archive/refs/heads/main.zip", "Texturepack Download", "height=500,width=500");
     });
 
+    
+    //Color Reset Button
     resetColorOptionInput.addEventListener("click", function() {
-        require('electron').ipcRenderer.send('resetColorSettings');
+    
+        var menuHeaderColor = "#232429";
+        skinHeader.style.background = menuHeaderColor;
+        jsonobj.Colors.menuHeaderColor = menuHeaderColor;
+        var optionColor = "";
+        document.querySelectorAll('.optionholder').forEach(element => { element.style.background = optionColor; });
+        jsonobj.Colors.optionColor = optionColor;
+        var behindOptionsColor = "#232429";
+        mainDiv.style.background = behindOptionsColor;
+        jsonobj.Colors.behindOptionsColor = behindOptionsColor;
+        var skinButtonColor = "#222327";
+        var skinbuttons = document.getElementsByClassName("skinbutton");
+        for (var i = 0; i < skinbuttons.length; i++) { skinbuttons[i].style.backgroundColor = skinButtonColor; }
+        jsonobj.Colors.skinButtonColor = skinButtonColor;
+        var opacity = 1;
+        skinWrapper.style.opacity = opacity;
+        jsonobj.Colors.opacity = opacity;
+        var skinWrapperBorderRadius = "10";
+        skinWrapper.style.borderRadius = skinWrapperBorderRadius + "px";
+        jsonobj.Colors.skinWrapperBorderRadius = skinWrapperBorderRadius;
+    
+        fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
     });
 
     // options
