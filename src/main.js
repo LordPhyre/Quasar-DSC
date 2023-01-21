@@ -381,9 +381,6 @@ app.whenReady().then(() => {
       ipcMain.on('openTexturePackFolder', (event, file) => {
         spawn('explorer.exe', [path.join(app.getPath("documents"), "Quasar-DSC/Resource Swapper")]);
       });
-      ipcMain.on('resetColorSettings', (event, file) => {
-        // reset color settings
-      });
 
       // texture pack loader
 
