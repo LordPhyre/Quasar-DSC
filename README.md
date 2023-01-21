@@ -24,7 +24,8 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 #
 
 ### What we are currently working on:
-- [ ] Control Chromium Flags Individually // skill
+- [ ] Custom Background/Wallpaper // skill & jcjms
+- [ ] Auto Updates // jcjms
 
 ### Features / To-Do List:
 - [ ] Custom Background/Wallpaper
