@@ -416,6 +416,16 @@ app.whenReady().then(() => {
         app.exit();
       });
 
+      splash.on('close', () => {
+        clearInterval(stats);
+        app.exit();
+      });
+
+      noInternetConnectionScreen.on('close', () => {
+        clearInterval(stats);
+        app.exit();
+      });
+
       stats = setInterval(() => {
         os.cpuUsage(function(v){
           win.webContents.send('cpu',v*100);
