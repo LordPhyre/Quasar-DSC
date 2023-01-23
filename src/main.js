@@ -115,6 +115,7 @@ app.whenReady().then(() => {
     transparent: true, 
     frame: false,
     alwaysOnTop: true,
+    icon: "icons/favicon-96x96.ico",	
   });
 
   splash.loadFile('splash-screen/splash.html');
@@ -123,7 +124,8 @@ app.whenReady().then(() => {
   const noInternetConnectionScreen = new BrowserWindow({
     width: 852,
     height: 480,
-    show: false
+    show: false,
+    icon: "icons/favicon-96x96.ico",	
   });
 
   noInternetConnectionScreen.setMenuBarVisibility(false);
@@ -139,6 +141,7 @@ app.whenReady().then(() => {
         width: 852,
         height: 480,
         show: false,
+        icon: "icons/favicon-96x96.ico",	
         webPreferences: {
           nodeIntegration: true,
           enableRemoteModule: true,
