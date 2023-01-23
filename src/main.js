@@ -142,6 +142,7 @@ app.whenReady().then(() => {
         height: 480,
         show: false,
         icon: "icon/logoicon.ico",	
+        title: "Quasar",
         webPreferences: {
           nodeIntegration: true,
           enableRemoteModule: true,
@@ -410,6 +411,10 @@ app.whenReady().then(() => {
         });
       });
 
+      win.on('page-title-updated', function(e) {
+        e.preventDefault()
+      });
+
       // all options https://github.com/oscmejia/os-utils
 
       let stats;
@@ -424,14 +429,28 @@ app.whenReady().then(() => {
         app.exit();
       });
 
+      // please excuse this ugly code, I just don't want it to give an error
+      // I am using this ma ny if statements, so it checks before *every* execute
+      // if you are complaining and have a better idea... fix it. Kind regards, jcjms : )
+
       stats = setInterval(() => {
         os.cpuUsage(function(v){
           if (win) {
             win.webContents.send('cpu',v*100);
+          }
+          if (win) {
             win.webContents.send('mem',os.freememPercentage()*100);
+          }
+          if (win) {
             win.webContents.send('platform',os.platform());
+          }
+          if (win) {
             win.webContents.send('cpu-count',os.cpuCount());
+          }
+          if (win) {
             win.webContents.send('total-mem',os.totalmem()/1024);
+          }
+          if (win) {
             win.webContents.send('uptime',os.processUptime());
           }
         });
