@@ -416,11 +416,6 @@ app.whenReady().then(() => {
         app.exit();
       });
 
-      splash.on('close', () => {
-        clearInterval(stats);
-        app.exit();
-      });
-
       noInternetConnectionScreen.on('close', () => {
         clearInterval(stats);
         app.exit();
