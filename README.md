@@ -25,7 +25,6 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 
 ### What we are currently working on:
 - [ ] Custom Background/Wallpaper // skill & jcjms
-- [ ] Auto Updates // jcjms
 
 ### Features / To-Do List:
 - [ ] Custom Background/Wallpaper
@@ -58,7 +57,6 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 
 ### Known bugs 🚨🪲
 - [ ] Scrolling Issues
-- [ ] Dropdown Formatting Issues
 - [ ] Typing Numbers activate Shortcuts
 
 ### Featues that will only be possible with the help of our friend tree 🙂:
