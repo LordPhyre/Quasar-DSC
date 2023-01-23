@@ -89,7 +89,7 @@ app.whenReady().then(() => {
 
   const request = require("request");
   let condition = 0;
-  let preloadPath = path.resolve(__dirname, './preload.js');
+  //let preloadPath = path.resolve(__dirname, './preload.js');
 
   request("http://www.deadshot.io", function(error, response, body) {
     if (error || response.statusCode !== 200) {
