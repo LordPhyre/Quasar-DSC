@@ -426,18 +426,21 @@ app.whenReady().then(() => {
 
       stats = setInterval(() => {
         os.cpuUsage(function(v){
-          win.webContents.send('cpu',v*100);
-          win.webContents.send('mem',os.freememPercentage()*100);
-          win.webContents.send('platform',os.platform());
-          win.webContents.send('cpu-count',os.cpuCount());
-          win.webContents.send('total-mem',os.totalmem()/1024);
-          win.webContents.send('uptime',os.processUptime());
+          if (win) {
+            win.webContents.send('cpu',v*100);
+            win.webContents.send('mem',os.freememPercentage()*100);
+            win.webContents.send('platform',os.platform());
+            win.webContents.send('cpu-count',os.cpuCount());
+            win.webContents.send('total-mem',os.totalmem()/1024);
+            win.webContents.send('uptime',os.processUptime());
+          }
         });
       },1000);
-        
-      //Send user datapath to preload.js
+
       win.webContents.on('did-finish-load', () => {
+        if (win) {
           win.webContents.send('SendUserData', jsonpath);
+        }
       });
 
     }
@@ -460,7 +463,7 @@ app.whenReady().then(() => {
             win.loadURL('https://deadshot.io');
             win.show();
             win.maximize() 
-            noInternetConnectionScreen.close();
+            noInternetConnectionScreen.minimize();
             condition = true;
           }
         });
