@@ -24,10 +24,9 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 #
 
 ### What we are currently working on:
-- [ ] Custom Background/Wallpaper // skill & jcjms
+- [ ] Preparing everything for official v1
 
 ### Features / To-Do List:
-- [ ] Custom Background/Wallpaper
 - [ ] Auto Updates
 - [x] Persistent Color Settings
 - [x] GG Shortcut
@@ -54,6 +53,7 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 - [ ] Custom Client Keybinds
 - [ ] Custom Resource Marketplace
 - [ ] Discord RPC
+- [ ] Custom Background/Wallpaper
 
 ### Known bugs 🚨🪲
 - [ ] Scrolling Issues
