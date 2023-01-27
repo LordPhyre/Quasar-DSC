@@ -148,7 +148,7 @@ app.whenReady().then(() => {
         height: 480,
         show: false,
         icon: "icon/logoicon.ico",	
-        title: "Quasar",
+        title: "Quasar DSC",
         webPreferences: {
           nodeIntegration: true,
           enableRemoteModule: true,
@@ -461,6 +461,8 @@ app.whenReady().then(() => {
           }
         });
       },1000);
+
+      stats.unref();
 
       win.webContents.on('did-finish-load', () => {
         if (win) {
