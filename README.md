@@ -8,10 +8,8 @@ Additionally, although there are many advanced features planned for the future, 
 
 I highly encourage everyone to try it out. Truly a game-changing experience.
  
-# 
-Menu             |  In-Game
-:-------------------------:|:-------------------------:
-![](images/home.png)  |  ![](images/ingame.png)
+#
+![](images/home.png)
 #
 
 ### Credits
