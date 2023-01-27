@@ -9,8 +9,6 @@ Additionally, although there are many advanced features planned for the future, 
 I highly encourage everyone to try it out. Truly a game-changing experience.
  
 # 
-![Splash Screen Logo](splash-screen/splash.png)
-
 Menu             |  In-Game
 :-------------------------:|:-------------------------:
 ![](images/home.png)  |  ![](images/ingame.png)
