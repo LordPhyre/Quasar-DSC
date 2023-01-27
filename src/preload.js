@@ -848,20 +848,20 @@ skincontent
             optionInput.placeholder = 'e.g. 10';
         } else if (id.includes('shortcutOptionHolder')) {
             if (id == 'shortcutOptionHolder') {
-                optionInput.placeholder = 'already off / on';
+                optionInput.placeholder = 'off / on';
                 optionInput.setAttribute('value','');
             } else if (id == 'shortcutOptionHolder2') {
                 optionInput.placeholder = 'GG';
-                optionInput.setAttribute('value','GG');
+                optionInput.setAttribute('value', jsonobj.Shortcuts.two);
             } else if (id == 'shortcutOptionHolder3') {
                 optionInput.placeholder = 'hello guys';
-                optionInput.setAttribute('value','hello guys');
+                optionInput.setAttribute('value', jsonobj.Shortcuts.three);
             } else if (id == 'shortcutOptionHolder4') {
-                optionInput.placeholder = 'lmao';
-                optionInput.setAttribute('value','lmao');
+                optionInput.placeholder = 'noob';
+                optionInput.setAttribute('value', jsonobj.Shortcuts.four);
             } else if (id == 'shortcutOptionHolder5') {
-                optionInput.placeholder = '';
-                optionInput.setAttribute('value','');
+                optionInput.placeholder = 'lmao';
+                optionInput.setAttribute('value', jsonobj.Shortcuts.five);
             } 
             optionInput.style.width = '140px';
             optionInput.name = inputId;
@@ -955,16 +955,22 @@ skincontent
             console.log(element.value);
 
             if (element.id == 1) {
-                oneValue = element.value;
+                //oneValue = element.value;
             } else if (element.id == 2) {
                 twoValue = element.value;
+                jsonobj.Shortcuts.two = element.value;
             } else if (element.id == 3) {
                 threeValue = element.value;
+                jsonobj.Shortcuts.three = element.value;
             } else if (element.id == 4) {
                 fourValue = element.value;
+                jsonobj.Shortcuts.four = element.value;
             } else if (element.id == 5) {
                 fiveValue = element.value;
+                jsonobj.Shortcuts.five = element.value;
             }
+
+            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
 
             /* update value:
                 1.  element.id*/

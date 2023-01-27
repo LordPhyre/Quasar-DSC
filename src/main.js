@@ -58,6 +58,12 @@ if (!fs.existsSync(jsonpath)) {
         "Logging": false,
         "ProcessGPU": false,
         "AcceleratedCanvas": false,
+    },
+    "Shortcuts": {
+        "two": "GG",
+        "three": "hello guys",
+        "four": "noob",
+        "five": "lmao",
     }
 };
 
