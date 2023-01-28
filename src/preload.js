@@ -1,4 +1,5 @@
 const fs = require('fs');
+//const {ipcRenderer} = require('electron'); doesn't work, idk why tbh
 
 document.addEventListener("DOMContentLoaded", function() {
 
@@ -205,6 +206,16 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         holderId: "WASDDisplayOptionHolder",
         descrText: "Show WASD",
         checkId: "WASDDisplayCheck",
+    },
+    {
+        holderId: "AutoFullscreenOptionHolder",
+        descrText: "Auto Fullscreen",
+        checkId: "AutoFullscreenCheck",
+    },
+    {
+        holderId: "FullscreenOptionHolder",
+        descrText: "Fullscreen [F11]",
+        checkId: "FullscreenCheck",
     },
     /*{
         holderId: "chromiumFlagsOptionHolder",
@@ -499,6 +510,34 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         } else {
             WASD.style.display = "none";
             jsonobj.WASD = false;
+            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
+        }
+    });
+
+    document.getElementById("AutoFullscreenCheck").checked = jsonobj.AutoFullscreen;
+    AutoFullscreenCheck.addEventListener('change', e => {
+        if(e.target.checked){
+            jsonobj.AutoFullscreen = true;
+            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
+        } else {
+            jsonobj.AutoFullscreen = false;
+            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
+        }
+    });
+
+    require('electron').ipcRenderer.on('toggleFullscreen',(event,data) => {
+        document.getElementById("FullscreenCheck").checked = data;
+    });
+
+    document.getElementById("FullscreenCheck").checked = jsonobj.Fullscreen;
+    FullscreenCheck.addEventListener('change', e => {
+        if(e.target.checked){
+            jsonobj.Fullscreen = true;
+            require('electron').ipcRenderer.send('makeFullscreen')
+            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
+        } else {
+            jsonobj.Fullscreen = false;
+            require('electron').ipcRenderer.send('disableFullscreen')
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         }
     });
@@ -1248,7 +1287,9 @@ skincontent
         "uptimeDisplayOptionHolder", 
         "texturePackOptionHolder", 
         "downloadTexturePackOptionHolder", 
-        "WASDDisplayOptionHolder", 
+        "WASDDisplayOptionHolder",
+        "AutoFullscreenOptionHolder", 
+        "FullscreenOptionHolder",
         //"chromiumFlagsOptionHolder", 
         "resetColorOptionHolder",
         "massCheckUncheckFlagsOptionHolder",
@@ -1296,6 +1337,8 @@ skincontent
         });
         //document.getElementById("onlineDisplayOptionHolder").style.display = "";
         document.getElementById("WASDDisplayOptionHolder").style.display = "";
+        document.getElementById("AutoFullscreenOptionHolder").style.display = "";
+        document.getElementById("FullscreenOptionHolder").style.display = "";
 
         logo.style.display = "none";
         version.style.display = "none";

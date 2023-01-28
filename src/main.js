@@ -36,6 +36,8 @@ if (!fs.existsSync(jsonpath)) {
     "WASD": false,
     //"Flags": false,
     "Debug": false,
+    "AutoFullscreen": false,
+    "Fullscreen": false,
     "Colors": {
         "menuHeaderColor": "#232429",
         "optionsColor": "",
@@ -134,8 +136,6 @@ app.whenReady().then(() => {
 
   // create offline screen
   const noInternetConnectionScreen = new BrowserWindow({
-    width: 852,
-    height: 480,
     show: false,
     icon: "icon/logoicon.ico",	
   });
@@ -150,8 +150,6 @@ app.whenReady().then(() => {
 
       // create main screen (game window)
       win = new BrowserWindow({ 
-        width: 852,
-        height: 480,
         show: false,
         icon: "icon/logoicon.ico",	
         title: "Quasar DSC",
@@ -183,7 +181,36 @@ app.whenReady().then(() => {
       globalShortcut.register('F5', () => win.reload());
       globalShortcut.register('Escape', () => win.webContents.executeJavaScript('document.exitPointerLock()', true));
       globalShortcut.register('F7', () => win.webContents.toggleDevTools());
-      globalShortcut.register('F11', () => { win.fullScreen = !win.fullScreen;});
+      globalShortcut.register('F11', () => {
+        if (win.isFullScreen()) {
+          win.setFullScreen(false);
+          jsonobj.Fullscreen = false;
+          win.webContents.send('toggleFullscreen',false);
+        } else {
+          win.setFullScreen(true);
+          jsonobj.Fullscreen = true;
+          win.webContents.send('toggleFullscreen',true);
+        }
+        fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
+      });
+
+      // auto fullscreen handling
+      if(jsonobj.AutoFullscreen) {
+        console.log("Enabled AutoFullscreen")
+        win.setFullScreen(true)
+      } else {
+        console.log("Disabled AutoFullscreen")
+      }
+
+      // check if window is already in fullscreen to set json
+      if(win.isFullScreen()) {
+        console.log("Window is in fullscreen")
+        jsonobj.Fullscreen = true;
+        win.webContents.send('toggleFullscreen',true);
+        fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
+      } else {
+        console.log("Window is not in fullscreen")
+      }
 
       // set path of resource folder
       var swapperFolder = path.join(app.getPath("documents"), "Quasar-DSC");
@@ -341,6 +368,12 @@ app.whenReady().then(() => {
       });
       ipcMain.on('openTexturePackFolder', (event, file) => {
         spawn('explorer.exe', [path.join(app.getPath("documents"), "Quasar-DSC/Resource Swapper")]);
+      });
+      ipcMain.on('makeFullscreen', (event, file) => {
+        win.setFullScreen(true)
+      });
+      ipcMain.on('disableFullscreen', (event, file) => {
+        win.setFullScreen(false)
       });
 
       const openFolder = (folderName) => {

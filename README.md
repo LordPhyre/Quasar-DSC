@@ -110,6 +110,7 @@ Good luck!
     - in-process-gpu
     - disable-accelerated-2d-canvas
 - Customizable UI
+- Auto Fullscreen
 - Fully functioning JSON-Based Settings Saver (secure your settings)
 - Offline Screen
 - Debug Mode
