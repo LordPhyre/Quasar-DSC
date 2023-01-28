@@ -77,3 +77,41 @@ If so, you can follow the steps below.
 - If you have a feature request or bug fix, please test it out locally before starting a pull request.
 
 Good luck!
+
+#
+### Detailed list of features:
+
+- WASD Detector
+- PC-Stats:
+    - FPS-Counter
+    - Ping
+    - Platform
+    - CPU Usage
+    - Memory Usage
+    - Total Memory
+    - CPU Cores
+    - Uptime
+- Custom Chat Shortcuts [Keys 2-5]
+    - Shortcut Display
+- Resource Swapper / Loader
+    - Gun Skin Menu
+    - Skybox Menu
+    - General Swapper Folder
+    - Texture Pack Support
+        - Small Quasar Texture Pack
+- Chromium Flags Support
+    - disable-print-preview
+    - javascript-harmony
+    - renderer-process-limit
+    - max-active-webgl-contexts
+    - ignore-gpu-blocklist
+    - disable-2d-canvas-clip-aa
+    - disable-logging
+    - in-process-gpu
+    - disable-accelerated-2d-canvas
+- Customizable UI
+- Fully functioning JSON-Based Settings Saver (secure your settings)
+- Offline Screen
+- Debug Mode
+
+#
