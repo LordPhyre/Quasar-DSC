@@ -12,7 +12,6 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     let jsonobj = JSON.parse(fs.readFileSync(jsonpath, 'utf8'));
     console.log(jsonobj);
 
-
     // Colors (Now with JSON)
     var menuHeaderColor = jsonobj.Colors.menuHeaderColor; //"#2a394f";
     var optionsColor = jsonobj.Colors.optionsColor; //"#364760";
@@ -148,6 +147,11 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
 
     const optionList = [
     {
+        holderId: "massCheckUncheckStatsOptionHolder",
+        descrText: "Check / Un-Check all",
+        checkId: "massCheckUncheckStatsCheck",
+    },
+    {
         holderId: "fpsDisplayOptionHolder",
         descrText: "FPS-Counter",
         checkId: "fpsDisplayCheck",
@@ -207,6 +211,11 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         descrText: "Chromium Flags",
         checkId: "chromiumFlagsCheck",
     },*/
+    {
+        holderId: "massCheckUncheckFlagsOptionHolder",
+        descrText: "Check / Un-Check all",
+        checkId: "massCheckUncheckFlagsCheck",
+    },
     {
         holderId: "disable_print_previewOptionHolder",
         descrText: "disable-print-preview",
@@ -283,8 +292,71 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     }
 
 
-    //Checkbox State and function saving to JSON | optimizing later with GPT3
+    // Checkbox State and function saving to JSON | tried to optimize this part, also tried to use GPT, no luck, please come up with something better
     
+    massCheckUncheckStatsCheck.addEventListener('change', e => {
+        if(e.target.checked){
+            jsonobj.Stats.FPS = true;
+            jsonobj.Stats.Platform = true;
+            jsonobj.Stats.CPU = true;
+            jsonobj.Stats.memory = true;
+            jsonobj.Stats.Tmemory = true;
+            jsonobj.Stats.Cores = true;
+            jsonobj.Stats.Uptime = true;
+            jsonobj.Stats.Ping = true;
+            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
+
+            document.getElementById("fpsDisplayCheck").checked = true;
+            document.getElementById("pingDisplayCheck").checked = true;
+            document.getElementById("platformDisplayCheck").checked = true;
+            document.getElementById("cpuUsageDisplayCheck").checked = true;
+            document.getElementById("memoryUsageDisplayCheck").checked = true;
+            document.getElementById("totalMemoryDisplayCheck").checked = true;
+            document.getElementById("cpuCoresDisplayCheck").checked = true;
+            document.getElementById("uptimeDisplayCheck").checked = true;
+
+            // only doing this, bc it doesn't update on its own for some reason
+            fpscounter.style.display = "block";
+            platform.style.display = "block";
+            ping.style.display = "block";
+            cpu.style.display = "block";
+            mem.style.display = "block";
+            totalMem.style.display = "block";
+            cpuCount.style.display = "block";
+            uptime.style.display = "block";
+        } else {
+            jsonobj.Stats.FPS = false;
+            jsonobj.Stats.Online = false;
+            jsonobj.Stats.Platform = false;
+            jsonobj.Stats.CPU = false;
+            jsonobj.Stats.memory = false;
+            jsonobj.Stats.Tmemory = false;
+            jsonobj.Stats.Cores = false;
+            jsonobj.Stats.Uptime = false;
+            jsonobj.Stats.Ping = false;
+            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
+
+            document.getElementById("fpsDisplayCheck").checked = false;
+            document.getElementById("pingDisplayCheck").checked = false;
+            document.getElementById("platformDisplayCheck").checked = false;
+            document.getElementById("cpuUsageDisplayCheck").checked = false;
+            document.getElementById("memoryUsageDisplayCheck").checked = false;
+            document.getElementById("totalMemoryDisplayCheck").checked = false;
+            document.getElementById("cpuCoresDisplayCheck").checked = false;
+            document.getElementById("uptimeDisplayCheck").checked = false;
+
+            // only doing this, bc it doesn't update on its own for some reason
+            fpscounter.style.display = "none";
+            platform.style.display = "none";
+            ping.style.display = "none";
+            cpu.style.display = "none";
+            mem.style.display = "none";
+            totalMem.style.display = "none";
+            cpuCount.style.display = "none";
+            uptime.style.display = "none";
+        }
+    });
+
     document.getElementById("fpsDisplayCheck").checked = jsonobj.Stats.FPS;
     fpsDisplayCheck.addEventListener('change', e => {
         if(e.target.checked){
@@ -458,6 +530,52 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         }
     });*/
 
+    massCheckUncheckFlagsCheck.addEventListener('change', e => {
+        if(e.target.checked){
+            jsonobj.Flags.Print = true;
+            jsonobj.Flags.Harmony = true;
+            jsonobj.Flags.Limit = true;
+            jsonobj.Flags.Contexts = true;
+            jsonobj.Flags.GPUblocklist = true;
+            jsonobj.Flags.CanvasClip = true;
+            jsonobj.Flags.Logging = true;
+            jsonobj.Flags.ProcessGPU = true;
+            jsonobj.Flags.AcceleratedCanvas = true;
+            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
+
+            document.getElementById("disable_print_previewCheck").checked = true;
+            document.getElementById("javascript_harmonyCheck").checked = true;
+            document.getElementById("renderer_process_limitCheck").checked = true;
+            document.getElementById("max_active_webgl_contextsCheck").checked = true;
+            document.getElementById("ignore_gpu_blocklistCheck").checked = true;
+            document.getElementById("disable_2d_canvas_clip_aaCheck").checked = true;
+            document.getElementById("disable_loggingCheck").checked = true;
+            document.getElementById("in_process_gpuCheck").checked = true;
+            document.getElementById("disable_accelerated_2d_canvasCheck").checked = true;
+        } else {
+            jsonobj.Flags.Print = false;
+            jsonobj.Flags.Harmony = false;
+            jsonobj.Flags.Limit = false;
+            jsonobj.Flags.Contexts = false;
+            jsonobj.Flags.GPUblocklist = false;
+            jsonobj.Flags.CanvasClip = false;
+            jsonobj.Flags.Logging = false;
+            jsonobj.Flags.ProcessGPU = false;
+            jsonobj.Flags.AcceleratedCanvas = false;
+            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
+
+            document.getElementById("disable_print_previewCheck").checked = false;
+            document.getElementById("javascript_harmonyCheck").checked = false;
+            document.getElementById("renderer_process_limitCheck").checked = false;
+            document.getElementById("max_active_webgl_contextsCheck").checked = false;
+            document.getElementById("ignore_gpu_blocklistCheck").checked = false;
+            document.getElementById("disable_2d_canvas_clip_aaCheck").checked = false;
+            document.getElementById("disable_loggingCheck").checked = false;
+            document.getElementById("in_process_gpuCheck").checked = false;
+            document.getElementById("disable_accelerated_2d_canvasCheck").checked = false;
+        }
+    });
+
     document.getElementById("disable_print_previewCheck").checked = jsonobj.Flags.Print;
     disable_print_previewCheck.addEventListener('change', e => {
         if(e.target.checked){
@@ -570,7 +688,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         <button class="skinCategory" id="awpButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;">AWP</button>
         <button class="skinCategory" id="ar2Button" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;">AR2</button>
         <button class="skinCategory" id="vectorButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;">Vector</button>
-        <button class="skinCategory" id="skinFolderButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;">| Folder</button>
+        <button class="skinCategory" id="skinFolderButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;">| <span style="text-decoration: underline; cursor: pointer;">Folder</span></button>
     `;
 
     skinCategoryoptionHolder.appendChild(buttonWrapper);
@@ -726,7 +844,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     const skyboxButtonWrapper = document.createElement('div');
     skyboxButtonWrapper.style = 'display: flex; justify-content: center;';
     skyboxButtonWrapper.innerHTML = `
-        <button class="skinCategory" id="skyboxFolderButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;">Folder</button>
+        <button class="skinCategory" id="skyboxFolderButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px; text-decoration: underline; cursor: pointer;">Open Folder</button>
     `;
 
     skyboxoptionHolder.appendChild(skyboxButtonWrapper);
@@ -1102,6 +1220,7 @@ skincontent
     // options
     
     const options = [
+        "massCheckUncheckStatsOptionHolder",
         "fpsDisplayOptionHolder", 
         "pingDisplayOptionHolder", 
         /*"onlineDisplayOptionHolder",*/ 
@@ -1132,6 +1251,7 @@ skincontent
         "WASDDisplayOptionHolder", 
         //"chromiumFlagsOptionHolder", 
         "resetColorOptionHolder",
+        "massCheckUncheckFlagsOptionHolder",
         "disable_print_previewOptionHolder",
         "javascript_harmonyOptionHolder",
         "renderer_process_limitOptionHolder",
@@ -1186,6 +1306,7 @@ skincontent
         options.forEach(option => {
             document.getElementById(option).style.display = "none";
         });
+        document.getElementById("massCheckUncheckStatsOptionHolder").style.display = "";
         document.getElementById("fpsDisplayOptionHolder").style.display = "";
         document.getElementById("pingDisplayOptionHolder").style.display = "";
         document.getElementById("platformDisplayOptionHolder").style.display = "";
@@ -1217,7 +1338,7 @@ skincontent
 
     document.getElementById("skinmenu").addEventListener("click", function() {
         //h2.innerHTML = 'Skins <button id="reload">Reload</button>';
-        h2.innerHTML = 'Skins <p style="color: red; font-size: 17.5px">ATTENTION: Need to restart client to apply skins</p>'
+        h2.innerHTML = 'Skins <p style="color: red; font-size: 17px">ATTENTION: Need to restart client to apply skins</p>'
         
         options.forEach(option => {
             document.getElementById(option).style.display = "none";
@@ -1230,7 +1351,7 @@ skincontent
     });
 
     document.getElementById("skyboxes").addEventListener("click", function() {
-        h2.innerHTML = 'Skyboxes <p style="color: red; font-size: 17.5px">ATTENTION: Need to restart client to apply skyboxes</p>'
+        h2.innerHTML = 'Skyboxes <p style="color: red; font-size: 17px">ATTENTION: Need to restart client to apply skyboxes</p>'
         
         options.forEach(option => {
             document.getElementById(option).style.display = "none";
@@ -1256,13 +1377,14 @@ skincontent
     });
 
     document.getElementById("chromiumflags").addEventListener("click", function() {
-        h2.innerHTML = 'Chromium Flags <p style="color: red; font-size: 17.5px">ATTENTION: Need to restart client to apply flags</p>'
+        h2.innerHTML = 'Chromium Flags <p style="color: red; font-size: 17px">ATTENTION: Need to restart client to apply flags</p>'
         
         options.forEach(option => {
             document.getElementById(option).style.display = "none";
         });
         //document.getElementById("chromiumFlagsOptionHolder").style.display = "";
 
+        document.getElementById("massCheckUncheckFlagsOptionHolder").style.display = "";
         document.getElementById("disable_print_previewOptionHolder").style.display = "";
         document.getElementById("javascript_harmonyOptionHolder").style.display = "";
         document.getElementById("renderer_process_limitOptionHolder").style.display = "";
@@ -1356,114 +1478,6 @@ skincontent
     let skincss = document.createElement('style');
     skincss.innerText = "@import 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap';*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}.skinwrapper{position:absolute;top:50%;left:50%;max-width:750px;width:100%;background:#232429;/* if I add menuHeaderColor it spawns at a different location lmao, but the color has to stay like that, else the menu is see trough under header*/transform:translate(-50%,-50%);border:solid 1px #000;color:#fff;height:335px;}.skinwrapper header{font-size:23px;font-weight:500;padding:17px 30px;border-bottom:1px solid #000;text-align:center;border-top-left-radius: 10px;border-top-right-radius: 10px;}.skinwrapper header.skinactive{cursor:move;user-select:none;}.skinwrapper .skincontent{display:flex;flex-direction:wrap;flex-wrap:wrap;justify-content:center;}.skincontent .title{margin:15px 0;font-size:29px;font-weight:500}.skincontent p{font-size:16px;text-align:center;display:flex}.skinbutton{width:100%;height:50px;background-color:" + skinButtonColor + ";border:none;color:#fff;font-size:20px}.skinbutton:hover{background-color:" + skinButtonHoverColor + "}.skinclose{color:grey;position:absolute;top:0;right:0;margin-right:15px;margin-top:-6px;background-color:" + skinCloseColor + ";border:none;font-size:35px}.skinclose:hover{color:#fff}p{font-size:20px}input[type=text]{float:right;margin:14px 25px 10px 0;font-weight:700;color:grey}input[type=range]{float:right;margin:16px 20px 10px 0}input[type=checkbox]{float:right;transform:scale(2);margin:14px 25px 5px 0;width:35px;font-weight:700;color:grey;}input[type=button]{float:right;margin:14px 25px 10px 0;}.optiondescr{float:left;margin:10px 0 10px 20px}.optionholder{background-color:" + optionColor + "}hr{width:100%;border:.1px solid #000}/*select{float:right;margin:14px 25px 10px 0;width:50px}*/.skinCategory:hover{background-color:#0798fc}/* doesn't work lol*/" + customCSS;
     document.head.appendChild(skincss);
-
-    // wheel | huge credits to this codepen repo: https://codepen.io/Brojos/pen/pYVKMe | emojis etc don't work, still keeping it in
-
-    /*const emoteSelectorWrapper = document.createElement("div");
-    emoteSelectorWrapper.id = "emote-selector-wrapper";
-    emoteSelectorWrapper.style.display = "none";
-    emoteSelectorWrapper.innerHTML = `
-    <svg height="620px" width="620px">
-        <text text-anchor="middle" id="hovered-emote" x="175" y="400" font-size="18" stroke="none">Select Emote</text>
-        <g onclick="changecurrentEmoteWith(this)" 
-            onmouseover="mouseoverEmote(this)" 
-            onmouseout="onmouseoutEmote()" 
-            data-emote="Marksman Rifle" 
-            >
-        <path d="M 610 310 A 300 300 0 0 1 522.1320343559643 522.1320343559643  L 451.4213562373095 451.4213562373095 A 200 200 0 0 0 510 310  z" fill="rgba(255,255,255,0.3)"/>
-
-        <text x="300" y="620" font-size="18" fill="white">6 / 6</text>
-        </g>
-        
-        <g onclick="changecurrentEmoteWith(this)" 
-            onmouseover="mouseoverEmote(this)" 
-            onmouseout="onmouseoutEmote()" 
-            data-emote="Fist">
-        <path d="M 522.1320343559643 522.1320343559643 A 300 300 0 0 1 310 610  L 310 510 A 200 200 0 0 0 451.4213562373095 451.4213562373095  z" fill="rgba(255,255,255,0.3)"/>
-        </g>
-        
-        <g onclick="changecurrentEmoteWith(this)" 
-            onmouseover="mouseoverEmote(this)" 
-            onmouseout="onmouseoutEmote()" 
-            data-emote="Sawed-Off Shotgun">
-        <path d="M 310 610 A 300 300 0 0 1 97.86796564403576 522.1320343559643  L 168.57864376269052 451.4213562373095 A 200 200 0 0 0 310 510  z" fill="rgba(255,255,255,0.3)"/>
-        <text x="0" y="620" font-size="18" fill="white">1 / 2</text>
-        </g>
-        
-        <g onclick="changecurrentEmoteWith(this)" 
-            onmouseover="mouseoverEmote(this)" 
-            onmouseout="onmouseoutEmote()" 
-            data-emote="Minigun">
-        <path d="M 97.86796564403576 522.1320343559643 A 300 300 0 0 1 10 310.00000000000006  L 110 310 A 200 200 0 0 0 168.57864376269052 451.4213562373095  z" fill="rgba(255,255,255,0.3)"/>
-        <text x="-100" y="460" font-size="18" fill="white">77 / 100</text>
-        </g>
-        
-        <g onclick="changecurrentEmoteWith(this)"
-            onmouseover="mouseoverEmote(this)" 
-            onmouseout="onmouseoutEmote()" 
-            data-emote="Jerry Can">
-        
-        <path d="M 10 310.00000000000006 A 300 300 0 0 1 97.8679656440357 97.86796564403576  L 168.57864376269046 168.57864376269052 A 200 200 0 0 0 110 310  z" fill="rgba(255,255,255,0.3)"/>
-        
-        <text x="-20" y="280" font-size="18" fill="white">6</text>
-        </g>
-        
-        <g onclick="changecurrentEmoteWith(this)" 
-            onmouseover="mouseoverEmote(this)" 
-            onmouseout="onmouseoutEmote()" 
-            data-emote="Pistol">
-        
-        <path d="M 97.8679656440357 97.86796564403576 A 300 300 0 0 1 309.99999999999994 10  L 309.99999999999994 110 A 200 200 0 0 0 168.57864376269046 168.57864376269052  z" fill="rgba(255,255,255,0.3)"/>
-        
-        <text x="150" y="190" font-size="18" fill="white">6 / 12</text>
-        </g>
-        
-        <g onclick="changecurrentEmoteWith(this)" 
-            onmouseover="mouseoverEmote(this)" 
-            onmouseout="onmouseoutEmote()" 
-            data-emote="SMG">
-        
-        <path d="M 309.99999999999994 10 A 300 300 0 0 1 522.1320343559642 97.8679656440357  L 451.4213562373095 168.57864376269046 A 200 200 0 0 0 309.99999999999994 110  z" fill="rgba(255,255,255,0.3)"/>
-        
-        <text x="330" y="280" font-size="18" fill="white">12 / 30</text>
-        </g>
-
-        <g onclick="changecurrentEmoteWith(this)" 
-            onmouseover="mouseoverEmote(this)" 
-            onmouseout="onmouseoutEmote()" 
-            data-emote="Carbine Rifle">
-        
-        <path d="M 522.1320343559642 97.8679656440357 A 300 300 0 0 1 610 309.99999999999994  L 510 309.99999999999994 A 200 200 0 0 0 451.4213562373095 168.57864376269046  z" fill="rgba(255,255,255,0.3)"/>
-        
-        <text x="390" y="460" font-size="18" fill="white">30 / 30</text>
-        </g>
-    </svg>
-    `;
-    document.body.appendChild(emoteSelectorWrapper);
-
-    // emote wheel css
-    let emoteCSS = document.createElement('style');
-    emoteCSS.innerText = "#emote-selector-button{padding:1em 2em;margin:1em;border:none;border-radius:15px;text-transform:uppercase;font-size:16px;font-family:Poppins,sans-serif;font-weight:700;background:#fff;letter-spacing:2px;color:#000;transition:.2s ease-in-out}#emote-selector-button:hover{background:#000;color:#fff;cursor:pointer;box-shadow:0 3px rgba(255,255,255,.5)}#emote-selector-wrapper{width:100%;height:100%;opacity:0;visibility:hidden;transition:background-color .5s ease-in-out;position:absolute;top:0;bottom:0;left:0;display:flex;justify-content:center;align-items:center}#emote-selector-wrapper.active{visibility:visible;opacity:1}svg{transform:rotate(22deg)}svg g image,svg g text,svg text{transform:rotate(-22deg)}g path{stroke:rgba(0,0,0,0.3);stroke-width:5px;stroke-dasharray:235.5 440;transform-origin:center center;transform:scale(.98);transform-box:fill-box}g:hover{cursor:pointer}g:hover path{fill:white;transition:.2s ease-in-out;stroke-width:0};";
-    document.head.appendChild(emoteCSS);
-
-    // emote wheel js
-    var script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.innerHTML = "var selectorModal=document.getElementById('emote-selector-wrapper'),currentEmote=document.getElementById('current-emote'),hoveredEmote=document.getElementById('hovered-emote');function mouseoverEmote(e){hoveredEmote.textContent=e.dataset.emote}function onmouseoutEmote(){hoveredEmote.textContent='Select Emote'}function changecurrentEmoteWith(e){console.log(e.dataset.emote)}selectorModal.classList.add('active');";
-    document.getElementsByTagName('head')[0].appendChild(script);
-
-    document.addEventListener("keydown", function(event) {
-        if (event.code === "KeyC") {
-            emoteSelectorWrapper.style.display = "";
-            document.exitPointerLock()
-        }
-    });
-    
-    document.addEventListener("keyup", function(event) {
-        if (event.code === "KeyC") {
-            emoteSelectorWrapper.style.display = "none";
-        }
-    });*/
 
     // shortcuts
 
@@ -1771,54 +1785,6 @@ skincontent
     `;
     
     document.getElementsByTagName('head')[0].appendChild(WASDJS);
-    
-
-    // alternative fps chart
-
-    /*const chartScript = `
-        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
-        <canvas id="myChart"></canvas>
-        <script>
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var chart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['', '', '', '', '', '', '', '', '', '', '', ''],
-                datasets: [{
-                    label: 'FPS',
-                    data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                },
-                animation: false
-            }
-        });
-
-        // just to get some random values
-        setInterval(function() {
-            var newValue = Math.random() * 100;
-
-            chart.data.datasets[0].data.push(newValue);
-
-            chart.data.datasets[0].data.shift();
-
-            chart.update();
-        }, 2000);
-        </script>
-    `;*/
-    
-    // Settings Page (Redundant but maybe will re-use)
-    //document.getElementById("settingsDiv").innerHTML += readFileSync('settingsPage.html').toString();
 
 });
 });

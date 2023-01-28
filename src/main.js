@@ -2,26 +2,25 @@ const { app, BrowserWindow, ipcMain, protocol, globalShortcut} = require('electr
 const path = require('path');
 const fs = require('fs');
 const os = require('os-utils');
-const swapper = require('./swapper.js'); // Swapper
+const swapper = require('./swapper.js');
+const request = require("request");
+const { spawn } = require('child_process');
 
 let win = null
 const userDataPath = path.join(app.getPath('appData'), app.getName())
 const jsonpath = path.join(userDataPath, '/Settings.json');
 console.log(jsonpath);
 
-//Check if folder exists first
 if (!fs.existsSync(userDataPath)) {
-    // folder does not exist, create it
     fs.mkdirSync(userDataPath);
+    console.log("Quasar folder created");
 } else {
-    console.log("Folder exists");
+    console.log("Quasar folder exists");
 };
 
-//Then check if JSON exists
+// check if settings file exists and if not -> create it
 if (!fs.existsSync(jsonpath)) {
-    // file does not exist, create it
     const jsonsettings = {
-
     "Stats": {
         "FPS": true,
         "Online": false,
@@ -65,17 +64,17 @@ if (!fs.existsSync(jsonpath)) {
         "four": "noob",
         "five": "lmao",
     }
-};
+    };
 
     fs.writeFileSync(jsonpath, JSON.stringify(jsonsettings));
+    console.log("Settings file created");
 } else {
-    console.log("File exists");
+    console.log("Settings file exists");
 };
 
 // Parse the contents of the file into a JavaScript object
-let jsonobj = JSON.parse(fs.readFileSync(jsonpath, 'utf8')); //*
+let jsonobj = JSON.parse(fs.readFileSync(jsonpath, 'utf8'));
 console.log(jsonobj);
-
 
 // Chromium Flags based on JSON
 if(jsonobj.Flags.Print) { app.commandLine.appendSwitch("disable-print-preview"); };
@@ -90,20 +89,16 @@ if(jsonobj.Flags.AcceleratedCanvas) { app.commandLine.appendSwitch("disable-acce
 
 
 app.whenReady().then(() => {
+  let online = 0;
 
-  ///////////////////////////////////////////////////////////////////////////////////////////
-
-  const request = require("request");
-  let condition = 0;
-  //let preloadPath = path.resolve(__dirname, './preload.js');
-
+  // check for internet connection
   request("http://www.deadshot.io", function(error, response, body) {
     if (error || response.statusCode !== 200) {
-      console.log("Offline");
-      condition = false;
+      console.log("Connection status: Offline");
+      online = false;
     } else {
-      console.log("Online");
-      condition = true;
+      console.log("Connection status: Online");
+      online = true;
 
       setTimeout(function () {
         splash.close();
@@ -113,8 +108,7 @@ app.whenReady().then(() => {
     }
   });
 
-  ///////////////////////////////////////////////////////////////////////////////////////////
-
+  // create splash screen
   const splash = new BrowserWindow({
     width: 500, 
     height: 300, 
@@ -127,6 +121,7 @@ app.whenReady().then(() => {
   splash.loadFile('splash-screen/splash.html');
   splash.center();
 
+  // create offline screen
   const noInternetConnectionScreen = new BrowserWindow({
     width: 852,
     height: 480,
@@ -135,14 +130,14 @@ app.whenReady().then(() => {
   });
 
   noInternetConnectionScreen.setMenuBarVisibility(false);
-
   noInternetConnectionScreen.loadFile('offline-screen/offline.html');
 
   const intervalId = setInterval(() => {
-    if (condition !== 0) {
+    if (online !== 0) {
       clearInterval(intervalId);
       reload();
 
+      // create main screen (game window)
       win = new BrowserWindow({ 
         width: 852,
         height: 480,
@@ -156,111 +151,68 @@ app.whenReady().then(() => {
           webSecurity: false, // needed to load local images
           preload: path.join(__dirname, 'preload.js'),
         }
-      })
+      });
 
+      win.setMenuBarVisibility(false);
       win.$ = win.jQuery = require('jquery/dist/jquery.min.js');
 
-      if (condition)
+      // show offline screen depending on connection status
+      if (online)
       {
         win.hide();
         win.loadURL('https://deadshot.io');
       } else {
-        //win.loadFile('offline.html');
         splash.hide();
         noInternetConnectionScreen.show();
         noInternetConnectionScreen.maximize();
       }
 
-      //win.loadURL('https://deadshot.io')
-      win.setMenuBarVisibility(false);
-
+      // some shortcuts
       globalShortcut.register('F6', () => win.loadURL('https://deadshot.io/'));
       globalShortcut.register('F5', () => win.reload());
       globalShortcut.register('Escape', () => win.webContents.executeJavaScript('document.exitPointerLock()', true));
       globalShortcut.register('F7', () => win.webContents.toggleDevTools());
       globalShortcut.register('F11', () => { win.fullScreen = !win.fullScreen;});
 
-      // save for later
-      /*const { download } = require('electron-dl');
-      download(win, 'https://deadshot.io/maps/tf/out/compressedTextures/BlueIndoorWall.webp', {
-        directory: '/path/to/save/the/file',
-        filename: 'BlueIndoorWall.webp'
-      }).then(dl => console.log(`Finished downloading to ${dl.getSavePath()}`))
-        .catch(console.error);
-        
-      wget -r -np -P /path/to/save/directory https://deadshot.io/maps/tf/out/compressedTextures/ */
-
+      // set path of resource folder
       var swapperFolder = path.join(app.getPath("documents"), "Quasar-DSC");
 
+      // create resource folder if it doesn't exist
       if (!fs.existsSync(swapperFolder)) {
           fs.mkdirSync(swapperFolder, { recursive: true });
+          console.log("Resource folder created");
+      } else {
+          console.log("Resource folder exists");
       };
 
-      ///////////////////////////////////////////////////////////////////
-      // importing QUASAR texturepack
+      // create needed resource folders
+      const foldersToCreate = [
+        "/gunskins",
+        "/gunskins/ar2",
+        "/gunskins/awp",
+        "/gunskins/vector",
+        "/textures",
+        "/skyboxes",
+        "/maps",
+        "/maps/industry",
+        "/maps/industry/out",
+        "/maps/industry/out/compressedTextures",
+        "Resource Swapper/textures",
+        "Resource Swapper/maps",
+        "Resource Swapper/maps/industry",
+        "Resource Swapper/maps/industry/out",
+        "Resource Swapper/maps/industry/out/compressedTextures",
+        "Resource Swapper/weapons/ar2",
+        "Resource Swapper/weapons/awp",
+        "Resource Swapper/weapons/vector"
+      ];
 
-      // do that later
-      // IMPORTANT: don't override the folders every launch, check if user wants to, maybe check in json for first launch = true
-      
-      ///////////////////////////////////////////////////////////////////
-
-      // gun skins
-      if (!fs.existsSync(path.join(swapperFolder, "/gunskins"))) {
-          fs.mkdirSync(path.join(swapperFolder, "/gunskins"), { recursive: true });
-      };
-      if (!fs.existsSync(path.join(swapperFolder, "/gunskins/ar2"))) {
-        fs.mkdirSync(path.join(swapperFolder, "/gunskins/ar2"), { recursive: true });
-      };
-      if (!fs.existsSync(path.join(swapperFolder, "/gunskins/awp"))) {
-        fs.mkdirSync(path.join(swapperFolder, "/gunskins/awp"), { recursive: true });
-      };
-      if (!fs.existsSync(path.join(swapperFolder, "/gunskins/vector"))) {
-        fs.mkdirSync(path.join(swapperFolder, "/gunskins/vector"), { recursive: true });
-      };
-
-      // textures
-      if (!fs.existsSync(path.join(swapperFolder, "/textures"))) {
-        fs.mkdirSync(path.join(swapperFolder, "/textures"), { recursive: true });
-      };
-      if (!fs.existsSync(path.join(swapperFolder, "/skyboxes"))) {
-        fs.mkdirSync(path.join(swapperFolder, "/skyboxes"), { recursive: true });
-      };
-      if (!fs.existsSync(path.join(swapperFolder, "/maps"))) {
-        fs.mkdirSync(path.join(swapperFolder, "/maps"), { recursive: true });
-      };
-      if (!fs.existsSync(path.join(swapperFolder, "/maps/industry"))) {
-        fs.mkdirSync(path.join(swapperFolder, "/maps/industry"), { recursive: true });
-      };
-      if (!fs.existsSync(path.join(swapperFolder, "/maps/industry/out"))) {
-        fs.mkdirSync(path.join(swapperFolder, "/maps/industry/out"), { recursive: true });
-      };
-      if (!fs.existsSync(path.join(swapperFolder, "/maps/industry/out/compressedTextures"))) {
-        fs.mkdirSync(path.join(swapperFolder, "/maps/industry/out/compressedTextures"), { recursive: true });
-      };
-      if (!fs.existsSync(path.join(swapperFolder, "Resource Swapper/textures"))) {
-        fs.mkdirSync(path.join(swapperFolder, "Resource Swapper/textures"), { recursive: true });
-      };
-      if (!fs.existsSync(path.join(swapperFolder, "Resource Swapper/maps"))) {
-        fs.mkdirSync(path.join(swapperFolder, "Resource Swapper/maps"), { recursive: true });
-      };
-      if (!fs.existsSync(path.join(swapperFolder, "Resource Swapper/maps/industry"))) {
-        fs.mkdirSync(path.join(swapperFolder, "Resource Swapper/maps/industry"), { recursive: true });
-      };
-      if (!fs.existsSync(path.join(swapperFolder, "Resource Swapper/maps/industry/out"))) {
-        fs.mkdirSync(path.join(swapperFolder, "Resource Swapper/maps/industry/out"), { recursive: true });
-      };
-      if (!fs.existsSync(path.join(swapperFolder, "Resource Swapper/maps/industry/out/compressedTextures"))) {
-        fs.mkdirSync(path.join(swapperFolder, "Resource Swapper/maps/industry/out/compressedTextures"), { recursive: true });
-      };
-      if (!fs.existsSync(path.join(swapperFolder, "Resource Swapper/weapons/ar2"))) {
-        fs.mkdirSync(path.join(swapperFolder, "Resource Swapper/weapons/ar2"), { recursive: true });
-      };
-      if (!fs.existsSync(path.join(swapperFolder, "Resource Swapper/weapons/awp"))) {
-        fs.mkdirSync(path.join(swapperFolder, "Resource Swapper/weapons/awp"), { recursive: true });
-      };
-      if (!fs.existsSync(path.join(swapperFolder, "Resource Swapper/weapons/vector"))) {
-        fs.mkdirSync(path.join(swapperFolder, "Resource Swapper/weapons/vector"), { recursive: true });
-      };
+      foldersToCreate.forEach(folder => {
+        if (!fs.existsSync(path.join(swapperFolder, folder))) {
+          fs.mkdirSync(path.join(swapperFolder, folder), { recursive: true });
+          console.log("Missing resource folders created");
+        }
+      });
 
       function readDirectory(dirPath, fileExtension, eventName) {
         fs.readdir(dirPath, function(err, files) {
@@ -269,7 +221,7 @@ app.whenReady().then(() => {
             return;
           }
       
-          // Filter actual images (.png and .jpg)
+          // Filter actual images (.png & .jpg)
           const imageFiles = files.filter(file => file.endsWith(fileExtension));
       
           var skins = [];
@@ -277,7 +229,7 @@ app.whenReady().then(() => {
           imageFiles.forEach(function(imageFile) {
             var pathcontainer = `${dirPath}/${imageFile}`;
       
-            //console.log(`Processing image file: ${imageFile} pathcontainer: ${pathcontainer}`);
+            console.log(`Processing ${imageFile}, path: ${pathcontainer}`);
       
             // push file names to skin-array
             skins.push(pathcontainer);
@@ -288,33 +240,21 @@ app.whenReady().then(() => {
           });
         });
       }
-      
-      readDirectory(
-        path.join(app.getPath("documents"), "Quasar-DSC/gunskins/awp"),
-        ".webp",
-        "filepaths-awp"
-      );
-      
-      readDirectory(
-        path.join(app.getPath("documents"), "Quasar-DSC/gunskins/ar2"),
-        ".webp",
-        "filepaths-ar2"
-      );
-      
-      readDirectory(
-        path.join(app.getPath("documents"), "Quasar-DSC/gunskins/vector"),
-        ".webp",
-        "filepaths-vector"
-      );
+
+      // take images and execute process
+      const types = ["awp", "ar2", "vector"];
+
+      types.forEach(type => {
+        readDirectory(path.join(app.getPath("documents"), `Quasar-DSC/gunskins/${type}`), ".webp", `filepaths-${type}`);
+      });
 
       readDirectory(
         path.join(app.getPath("documents"), "Quasar-DSC/skyboxes"),
         ".webp",
         "filepaths-skybox"
-      );
+      )
 
       function handleFilepathEvent(event, message, folderName, destFileName) {
-        console.log(`should be ${message}`);
       
         const srcPath = message.toString();
       
@@ -323,7 +263,8 @@ app.whenReady().then(() => {
         } else {
           var folderPath = path.join(app.getPath("documents"), `Quasar-DSC/Resource Swapper/weapons/${folderName}/`);
         }
-        console.log(`to ${folderPath}`);
+
+        console.log(`from: ${message} to ${folderPath}`);
       
         fs.readdir(folderPath, (err, files) => {
           if (err) {
@@ -361,26 +302,25 @@ app.whenReady().then(() => {
           if (err) {
             console.error(err);
           } else {
-            console.log('Image copied successfully! With new name...');
-            //win.reload() need to reopen!!!
+            console.log('Image copied successfully!');
+            //win.reload() ?
           }
         });
       }
-      
-      ipcMain.on('filepath-awp', (event, message) => {
-        handleFilepathEvent(event, message, 'awp', 'newawpcomp.webp');
-      });
-      ipcMain.on('filepath-ar2', (event, message) => {
-        handleFilepathEvent(event, message, 'ar2', 'arcomp.webp');
-      });
-      ipcMain.on('filepath-vector', (event, message) => {
-        handleFilepathEvent(event, message, 'vector', 'vectorcomp.webp');
-      });
-      ipcMain.on('filepath-skybox', (event, message) => {
-        handleFilepathEvent(event, message, 'textures', 'skybox.webp');
-      });
 
-      const { spawn } = require('child_process');
+      // handle skin paths
+      const filepathHandlers = {
+        'filepath-awp': ['awp', 'newawpcomp.webp'],
+        'filepath-ar2': ['ar2', 'arcomp.webp'],
+        'filepath-vector': ['vector', 'vectorcomp.webp'],
+        'filepath-skybox': ['textures', 'skybox.webp']
+      };
+      
+      Object.keys(filepathHandlers).forEach(eventName => {
+        ipcMain.on(eventName, (event, message) => {
+          handleFilepathEvent(event, message, ...filepathHandlers[eventName]);
+        });
+      });      
 
       ipcMain.on('openSkinFolder', (event) => {
         spawn('explorer.exe', [path.join(app.getPath("documents"), "Quasar-DSC/gunskins")]);
@@ -392,20 +332,14 @@ app.whenReady().then(() => {
         spawn('explorer.exe', [path.join(app.getPath("documents"), "Quasar-DSC/Resource Swapper")]);
       });
 
-      // texture pack loader
-
-      /*const JSZip = require('jszip');
-
-      const zipData = fs.readFileSync('path/to/zipfile.zip', 'binary');
-
-      const zip = new JSZip();
-      zip.loadAsync(zipData, { base64: true }).then(function(zip) {
-        zip.forEach(function(relativePath, zipEntry) {
-          zip.file(relativePath).async('nodebuffer').then(function(content) {
-            fs.writeFileSync('path/to/extract/folder/' + zipEntry.name, content);
-          });
+      const openFolder = (folderName) => {
+        ipcMain.on(folderName, (event) => {
+          spawn('explorer.exe', [path.join(app.getPath("documents"), `Quasar-DSC/${folderName}`)]);
         });
-      });*/
+      }
+      openFolder('gunskins');
+      openFolder('skyboxes');
+      openFolder('Resource Swapper');
 
       // Swapper -> Credits to Captain Cool 💪
 
@@ -421,6 +355,7 @@ app.whenReady().then(() => {
         e.preventDefault()
       });
 
+      // read stats from pc
       // all options https://github.com/oscmejia/os-utils
 
       let stats;
@@ -436,7 +371,7 @@ app.whenReady().then(() => {
       });
 
       // please excuse this ugly code, I just don't want it to give an error
-      // I am using this ma ny if statements, so it checks before *every* execute
+      // I am using this many if statements, so it checks before *every* execute
       // if you are complaining and have a better idea... fix it. Kind regards, jcjms : )
 
       stats = setInterval(() => {
@@ -469,29 +404,27 @@ app.whenReady().then(() => {
           win.webContents.send('SendUserData', jsonpath);
         }
       });
-
     }
   }, 1000);
 
-  //if (!condition) {
+  // checking if we are still offline
   function reload() {
     const reload = setInterval(function() {
-      if (!condition) {
+      if (!online) {
         request("http://www.deadshot.io", function(error, response, body) {
           if (error || response.statusCode !== 200) {
-            console.log("Offline");
-            //win.loadFile('offline.html');
+            console.log("Connection status: Offline");
             noInternetConnectionScreen.show();
             noInternetConnectionScreen.maximize() 
             win.hide();
-            condition = false;
+            online = false;
           } else {
-            console.log("Online");
+            console.log("Connection status: Online");
             win.loadURL('https://deadshot.io');
             win.show();
             win.maximize() 
             noInternetConnectionScreen.minimize();
-            condition = true;
+            online = true;
           }
         });
       } else {
