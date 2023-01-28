@@ -34,7 +34,7 @@ if (!fs.existsSync(jsonpath)) {
         "Ping": true
     },
     "WASD": false,
-    "Flags": false,
+    //"Flags": false,
     "Debug": false,
     "Colors": {
         "menuHeaderColor": "#232429",
