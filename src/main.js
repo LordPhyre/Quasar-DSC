@@ -11,11 +11,6 @@ const userDataPath = path.join(app.getPath('appData'), app.getName())
 const jsonpath = path.join(userDataPath, '/Settings.json');
 console.log(jsonpath);
 
-// ignore errors, prevent os-utils error from showing -> maybe add debugging mode later
-process.on('uncaughtException', (error) => {
-  console.log(error);
-});
-
 if (!fs.existsSync(userDataPath)) {
     fs.mkdirSync(userDataPath);
     console.log("Quasar folder created");
@@ -40,6 +35,7 @@ if (!fs.existsSync(jsonpath)) {
     },
     "WASD": false,
     "Flags": false,
+    "Debug": false,
     "Colors": {
         "menuHeaderColor": "#232429",
         "optionsColor": "",
@@ -80,6 +76,16 @@ if (!fs.existsSync(jsonpath)) {
 // Parse the contents of the file into a JavaScript object
 let jsonobj = JSON.parse(fs.readFileSync(jsonpath, 'utf8'));
 console.log(jsonobj);
+
+// debugging mode - ignore errors, prevent os-utils error from showing (and others)
+if(jsonobj.Debug) { 
+  console.log("Enabled errors for debugging.")
+} else {
+  process.on('uncaughtException', (error) => {
+    console.log(error);
+  });
+  console.log("Disabled errors.")
+}
 
 // Chromium Flags based on JSON
 if(jsonobj.Flags.Print) { app.commandLine.appendSwitch("disable-print-preview"); };
