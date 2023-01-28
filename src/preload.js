@@ -104,6 +104,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         { text: 'Chromium Flags', id: 'chromiumflags' },
         { text: 'Aimbot', id: 'aimbot' },
         { text: 'Color Settings', id: 'colorsettings' },
+        { text: 'Dev Settings', id: 'devsettings' },
         /*{ text: 'Custom CSS', id: 'customcss' },
         { text: 'Default Settings', id: 'defaultsettings' }*/
     ];
@@ -139,7 +140,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     const version = document.createElement('h2');
     version.style = 'font-family: "Aquire", sans-serif; text-align: center; color: white; font-size: 17.5px;';
     version.id = "version";
-    version.innerText = "v1.0 - BETA";
+    version.innerText = "v1.0 - PUBLIC";
     document.getElementById('rightDiv').appendChild(version);
 
     document.body.append(skinWrapper);
@@ -271,6 +272,11 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         holderId: "disable_accelerated_2d_canvasOptionHolder",
         descrText: "disable-accelerated-2d-canvas",
         checkId: "disable_accelerated_2d_canvasCheck",
+    },
+    {
+        holderId: "debugOptionHolder",
+        descrText: "Debug Mode",
+        checkId: "debugCheck",
     },
     ];
       
@@ -710,6 +716,17 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         } else {
             jsonobj.Flags.AcceleratedCanvas = false;
+            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
+        }
+    });
+
+    document.getElementById("debugCheck").checked = jsonobj.Debug;
+    debugCheck.addEventListener('change', e => {
+        if(e.target.checked){
+            jsonobj.Debug = true;
+            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
+        } else {
+            jsonobj.Debug = false;
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         }
     });
@@ -1302,6 +1319,7 @@ skincontent
         "disable_loggingOptionHolder",
         "in_process_gpuOptionHolder",
         "disable_accelerated_2d_canvasOptionHolder",
+        "debugOptionHolder",
     ];
     
     menuHeaderColorOptionInput.value = jsonobj.Colors.menuHeaderColor;
@@ -1464,6 +1482,17 @@ skincontent
         document.getElementById("opacityOptionHolder").style.display = "";
         document.getElementById("windowBorderOptionHolder").style.display = "";
         document.getElementById("resetColorOptionHolder").style.display = "";
+
+        logo.style.display = "none";
+        version.style.display = "none";
+    });
+
+    document.getElementById("devsettings").addEventListener("click", function() {
+        h2.innerHTML = 'Dev Settings <p style="color: red; font-size: 17px">ATTENTION: Need to restart client to apply settings</p>'
+        options.forEach(option => {
+            document.getElementById(option).style.display = "none";
+        });
+        document.getElementById("debugOptionHolder").style.display = "";
 
         logo.style.display = "none";
         version.style.display = "none";

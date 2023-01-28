@@ -1,4 +1,4 @@
-# Quasar Deadshot Client `BETA 1.0`
+# Quasar Deadshot Client `PUBLIC 1.0`
 
 Introducing the most advanced and simultaneously user-friendly client for [Deadshot.io](https://deadshot.io/) that exists and will ever exist.
 
@@ -24,10 +24,9 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 #
 
 ### What we are currently working on:
-- [ ] Preparing everything for official v1
+- [x] Preparing everything for official v1
 
 ### Features / To-Do List:
-- [ ] Auto Updates
 - [x] Persistent Color Settings
 - [x] GG Shortcut
 - [x] Customizable UI
@@ -42,6 +41,7 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 - [x] Aimbot 😱
 
 ### Later.....
+- [ ] Auto Updates
 - [ ] Controller Support
 - [ ] Automatic Debug Disable
 - [ ] Local Player Wireframe
@@ -113,6 +113,7 @@ Good luck!
 - Auto Fullscreen
 - Fully functioning JSON-Based Settings Saver (secure your settings)
 - Offline Screen
-- Debug Mode
+- Dev Settings
+    - Debug Mode
 
 #
