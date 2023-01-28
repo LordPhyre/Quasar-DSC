@@ -11,6 +11,11 @@ const userDataPath = path.join(app.getPath('appData'), app.getName())
 const jsonpath = path.join(userDataPath, '/Settings.json');
 console.log(jsonpath);
 
+// ignore errors, prevent os-utils error from showing -> maybe add debugging mode later
+process.on('uncaughtException', (error) => {
+  console.log(error);
+});
+
 if (!fs.existsSync(userDataPath)) {
     fs.mkdirSync(userDataPath);
     console.log("Quasar folder created");
