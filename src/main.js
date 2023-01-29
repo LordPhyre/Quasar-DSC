@@ -40,7 +40,6 @@ if (!fs.existsSync(jsonpath)) {
     "Fullscreen": false,
     "Colors": {
         "menuHeaderColor": "#232429",
-        "optionsColor": "",
         "behindOptionsColor": "#232429",
         "skinButtonColor": "#222327",
         "skinButtonHoverColor": "#0798fc",
@@ -158,7 +157,7 @@ app.whenReady().then(() => {
           enableRemoteModule: true,
           sandbox: false,
           webSecurity: false, // needed to load local images
-          preload: path.join(__dirname, 'preload.js'),
+          preload: path.join(__dirname, 'game_preload.js'),
         }
       });
 
@@ -176,11 +175,34 @@ app.whenReady().then(() => {
         noInternetConnectionScreen.maximize();
       }
 
+      //////////////////////////////////////////////////////////////////////
+      transparentwin = new BrowserWindow ({ 
+        height: 337,
+        width: 750,
+        resizable: false,
+        transparent: true,
+        frame: false,
+        alwaysOnTop: true,
+        webPreferences: {
+          nodeIntegration: true,
+          enableRemoteModule: true,
+          sandbox: false,
+          webSecurity: false, // needed to load local images
+          preload: path.join(__dirname, 'menu_preload.js'),
+        }
+      });
+
+      transparentwin.loadFile('empty.html');
+      //////////////////////////////////////////////////////////////////////
+
       // some shortcuts
       globalShortcut.register('F6', () => win.loadURL('https://deadshot.io/'));
       globalShortcut.register('F5', () => win.reload());
       globalShortcut.register('Escape', () => win.webContents.executeJavaScript('document.exitPointerLock()', true));
-      globalShortcut.register('F7', () => win.webContents.toggleDevTools());
+      globalShortcut.register('F7', () => {
+        win.webContents.toggleDevTools()
+        transparentwin.webContents.toggleDevTools()
+      });
       globalShortcut.register('F11', () => {
         if (win.isFullScreen()) {
           win.setFullScreen(false);
@@ -446,6 +468,7 @@ app.whenReady().then(() => {
       win.webContents.on('did-finish-load', () => {
         if (win) {
           win.webContents.send('SendUserData', jsonpath);
+          transparentwin.webContents.send('SendUserData', jsonpath);
         }
       });
     }
