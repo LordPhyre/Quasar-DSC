@@ -9,7 +9,10 @@
     "package": "electron-forge package",
     "make": "electron-forge make"
   },
-  "author": "",
+  "build": {
+    "icon": "icon/256x256.ico"
+  },
+  "author": "jcjms & LordPhyre",
   "license": "GPL-3.0",
   "devDependencies": {
     "@electron-forge/cli": "^6.0.4",
@@ -23,6 +26,7 @@
     "fs": "^0.0.1-security",
     "jquery": "^3.6.3",
     "net": "^1.0.2",
+    "node-abi": "^3.31.0",
     "os-utils": "^0.0.14",
     "request": "^2.88.2",
     "robotjs": "^0.6.0",
