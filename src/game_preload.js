@@ -303,22 +303,35 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     
     // WASD Detector
 
-    // make this more efficient with classes lmao
     const WASD = document.createElement("div");
     WASD.style = "z-index: 1000; position: absolute; top: 90px; left: 5px; display: none;";
+
+    const keydata = window.localStorage.getItem('keyb');
+    const game_keys = JSON.parse(keydata);
+
+    // {"up":"W","down":"S","left":"A","right":"D","space":"Space","chat":"Enter","pause":"Escape","leaderboard":"Tab","ads":"L","shoot":"K","crouch":"Shift","reload":"R"}
+
+    const up = game_keys.up;
+    const down = game_keys.down;
+    const left = game_keys.left;
+    const right = game_keys.right;
+    const reload = game_keys.reload;
+    const crouch = game_keys.crouch;
+    const space = game_keys.space;
+
     WASD.innerHTML = `
 <div style="width: 276px; display: flex; color: white; align-items: center; justify-content: center;">
     <div style="opacity: 0; width: 54px; height: 40px;"></div>
-    <div id="w" style="background: rgba(255, 255, 255, .2); width: 40px; height: 40px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">W</div>
+    <div id="w" style="background: rgba(255, 255, 255, .2); width: 40px; height: 40px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">${up}</div>
     <div style="opacity: 0; width: 86px; height: 40px;"></div>
-    <div id="r" style="background: rgba(255, 255, 255, .2); width: 40px; height: 40px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">R</div>
+    <div id="r" style="background: rgba(255, 255, 255, .2); width: 40px; height: 40px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">${reload}</div>
     <div style="opacity: 0; width: 28px; height: 40px;"></div>
 </div>
 <div style="width: 276px; display: flex; color: white; align-items: center; justify-content: center;">
-    <div id="a" style="background: rgba(255, 255, 255, .2); width: 40px; height: 40px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">A</div>
-    <div id="s" style="background: rgba(255, 255, 255, .2); width: 40px; height: 40px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">S</div>
-    <div id="d" style="background: rgba(255, 255, 255, .2); width: 40px; height: 40px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">D</div>
-    <div id="shift" style="background: rgba(255, 255, 255, .2); width: 100px; height: 40px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">shift</div>
+    <div id="a" style="background: rgba(255, 255, 255, .2); width: 40px; height: 40px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">${left}</div>
+    <div id="s" style="background: rgba(255, 255, 255, .2); width: 40px; height: 40px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">${down}</div>
+    <div id="d" style="background: rgba(255, 255, 255, .2); width: 40px; height: 40px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">${right}</div>
+    <div id="shift" style="background: rgba(255, 255, 255, .2); width: 100px; height: 40px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;">${crouch}</div>
 </div>
 <div style="width: 276px; display: flex; color: white; align-items: center; justify-content: center;">
     <div id="space" style="background: rgba(255, 255, 255, .2); width: 220px; height: 34px; margin: 5px; border: 2px solid #aaaaaa; border-radius: 5px; font-weight: 700;"></div>
@@ -342,13 +355,14 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     const shiftElement = document.getElementById('shift');
     const spaceElement = document.getElementById('space');
     
+    // this works completely fine, the error is below
     const keys = {
-      w: false,
-      a: false,
-      s: false,
-      d: false,
-      r: false,
-      shift: false
+      ${up.toLowerCase()}: false,
+      ${left.toLowerCase()}: false,
+      ${down.toLowerCase()}: false,
+      ${right.toLowerCase()}: false,
+      ${reload.toLowerCase()}: false,
+      ${crouch.toLowerCase()}: false
     };
 
     document.addEventListener('keydown', event => {
@@ -367,23 +381,24 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
       }
     });
     
+    // here is the error coming from! but how should we handle it else?
     function updateElements() {
-      wElement.style.background = keys.w ? '#232429' : 'rgba(255, 255, 255, .2)';
-      aElement.style.background = keys.a ? '#232429' : 'rgba(255, 255, 255, .2)';
-      sElement.style.background = keys.s ? '#232429' : 'rgba(255, 255, 255, .2)';
-      dElement.style.background = keys.d ? '#232429' : 'rgba(255, 255, 255, .2)';
-      rElement.style.background = keys.r ? '#232429' : 'rgba(255, 255, 255, .2)';
-      shiftElement.style.background = keys.shift ? '#232429' : 'rgba(255, 255, 255, .2)';
+      wElement.style.background = ${up.toLowerCase()} ? '#232429' : 'rgba(255, 255, 255, .2)';
+      aElement.style.background = ${left.toLowerCase()} ? '#232429' : 'rgba(255, 255, 255, .2)';
+      sElement.style.background = ${down.toLowerCase()} ? '#232429' : 'rgba(255, 255, 255, .2)';
+      dElement.style.background = ${right.toLowerCase()} ? '#232429' : 'rgba(255, 255, 255, .2)';
+      rElement.style.background = ${reload.toLowerCase()} ? '#232429' : 'rgba(255, 255, 255, .2)';
+      shiftElement.style.background = ${crouch.toLowerCase()} ? '#232429' : 'rgba(255, 255, 255, .2)';
     };
     
     document.addEventListener('keydown', (event) => {
-        if (event.code === 'Space') {
+        if (event.code === '${space}') {
             spaceElement.style.background = '#232429';
         }
     });
 
     document.addEventListener('keyup', (event) => {
-        if (event.code === 'Space') {
+        if (event.code === '${space}') {
             spaceElement.style.background = 'rgba(255, 255, 255, .2)';
         }
     });
