@@ -127,6 +127,7 @@ app.whenReady().then(() => {
     transparent: true, 
     frame: false,
     alwaysOnTop: true,
+    skipTaskbar: true,
     icon: "icon/logoicon.ico",	
   });
 
@@ -183,6 +184,7 @@ app.whenReady().then(() => {
         transparent: true,
         frame: false,
         alwaysOnTop: true,
+        skipTaskbar: true,
         webPreferences: {
           nodeIntegration: true,
           enableRemoteModule: true,
@@ -219,7 +221,7 @@ app.whenReady().then(() => {
       var visible = true;
       globalShortcut.register('1', () => {
         if (!visible) {
-          mainmenu.show();
+          mainmenu.show()
           visible = true;
         } else {
           mainmenu.hide();
