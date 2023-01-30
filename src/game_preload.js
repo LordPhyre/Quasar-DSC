@@ -319,6 +319,8 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     const crouch = game_keys.crouch;
     const space = game_keys.space;
 
+    // WASD Detector
+    WASD.style = "z-index: 1000; position: absolute; top: 90px; left: 5px; display: none;";
     WASD.innerHTML = `
 <div style="width: 276px; display: flex; color: white; align-items: center; justify-content: center;">
     <div style="opacity: 0; width: 54px; height: 40px;"></div>
@@ -344,7 +346,6 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     } else if (!jsonobj.WASD) {
         WASD.style.display = "none";
     };
-
     const WASDJS = document.createElement("script");
     WASDJS.innerHTML = `
     const wElement = document.getElementById('w');
@@ -355,7 +356,6 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     const shiftElement = document.getElementById('shift');
     const spaceElement = document.getElementById('space');
     
-    // this works completely fine, the error is below
     const keys = {
       ${up.toLowerCase()}: false,
       ${left.toLowerCase()}: false,
@@ -381,14 +381,13 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
       }
     });
     
-    // here is the error coming from! but how should we handle it else?
     function updateElements() {
-      wElement.style.background = ${up.toLowerCase()} ? '#232429' : 'rgba(255, 255, 255, .2)';
-      aElement.style.background = ${left.toLowerCase()} ? '#232429' : 'rgba(255, 255, 255, .2)';
-      sElement.style.background = ${down.toLowerCase()} ? '#232429' : 'rgba(255, 255, 255, .2)';
-      dElement.style.background = ${right.toLowerCase()} ? '#232429' : 'rgba(255, 255, 255, .2)';
-      rElement.style.background = ${reload.toLowerCase()} ? '#232429' : 'rgba(255, 255, 255, .2)';
-      shiftElement.style.background = ${crouch.toLowerCase()} ? '#232429' : 'rgba(255, 255, 255, .2)';
+      wElement.style.background = keys.${up.toLowerCase()} ? '#232429' : 'rgba(255, 255, 255, .2)';
+      aElement.style.background = keys.${left.toLowerCase()} ? '#232429' : 'rgba(255, 255, 255, .2)';
+      sElement.style.background = keys.${down.toLowerCase()} ? '#232429' : 'rgba(255, 255, 255, .2)';
+      dElement.style.background = keys.${right.toLowerCase()} ? '#232429' : 'rgba(255, 255, 255, .2)';
+      rElement.style.background = keys.${reload.toLowerCase()} ? '#232429' : 'rgba(255, 255, 255, .2)';
+      shiftElement.style.background = keys.${crouch.toLowerCase()} ? '#232429' : 'rgba(255, 255, 255, .2)';
     };
     
     document.addEventListener('keydown', (event) => {
@@ -396,7 +395,6 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
             spaceElement.style.background = '#232429';
         }
     });
-
     document.addEventListener('keyup', (event) => {
         if (event.code === '${space}') {
             spaceElement.style.background = 'rgba(255, 255, 255, .2)';
