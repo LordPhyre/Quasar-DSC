@@ -176,7 +176,7 @@ app.whenReady().then(() => {
       }
 
       //////////////////////////////////////////////////////////////////////
-      transparentwin = new BrowserWindow ({ 
+      mainmenu = new BrowserWindow ({ 
         height: 337,
         width: 750,
         resizable: false,
@@ -192,7 +192,8 @@ app.whenReady().then(() => {
         }
       });
 
-      transparentwin.loadFile('empty.html');
+      mainmenu.loadFile('empty.html');
+      mainmenu.setAlwaysOnTop(true);
       //////////////////////////////////////////////////////////////////////
 
       // some shortcuts
@@ -201,7 +202,7 @@ app.whenReady().then(() => {
       globalShortcut.register('Escape', () => win.webContents.executeJavaScript('document.exitPointerLock()', true));
       globalShortcut.register('F7', () => {
         win.webContents.toggleDevTools()
-        transparentwin.webContents.toggleDevTools()
+        mainmenu.webContents.toggleDevTools()
       });
       globalShortcut.register('F11', () => {
         if (win.isFullScreen()) {
@@ -214,6 +215,16 @@ app.whenReady().then(() => {
           win.webContents.send('toggleFullscreen',true);
         }
         fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
+      });
+      var visible = true;
+      globalShortcut.register('1', () => {
+        if (!visible) {
+          mainmenu.show();
+          visible = true;
+        } else {
+          mainmenu.hide();
+          visible = false;
+        }
       });
 
       // auto fullscreen handling
@@ -468,7 +479,7 @@ app.whenReady().then(() => {
       win.webContents.on('did-finish-load', () => {
         if (win) {
           win.webContents.send('SendUserData', jsonpath);
-          transparentwin.webContents.send('SendUserData', jsonpath);
+          mainmenu.webContents.send('SendUserData', jsonpath);
         }
       });
     }

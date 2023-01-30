@@ -1582,11 +1582,22 @@ skincontent
 
     // shortcuts
 
+    /*var hidden = true;
+
     document.body.addEventListener('keypress', (e) => {
         if (e.key == '1') {
-            const wrapperElement = document.getElementById("skinWrapper");
-            wrapperElement.style.display = wrapperElement.style.display === "none" ? "" : "none";
+            //const wrapperElement = document.getElementById("skinWrapper");
+            //wrapperElement.style.display = wrapperElement.style.display === "none" ? "" : "none";
+
+            // hide window bc if we set it to display = none the space is still used somehow
+            if (hidden) {
+                require('electron').ipcRenderer.send('showMenu')
+                hidden = false;
+            } else {
+                require('electron').ipcRenderer.send('hideMenu')
+                hidden = true;
+            }
         }
-    });
+    });*/
 });
 });
