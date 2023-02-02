@@ -61,10 +61,11 @@ if (!fs.existsSync(jsonpath)) {
         "AcceleratedCanvas": false,
     },
     "Shortcuts": {
-        "two": "GG",
-        "three": "hello guys",
-        "four": "noob",
-        "five": "lmao",
+        "one": "GG",
+        "two": "hello guys",
+        "three": "noob",
+        "four": "lmao",
+        "five": "wsg",
     }
     };
 
@@ -185,6 +186,7 @@ app.whenReady().then(() => {
         frame: false,
         alwaysOnTop: true,
         skipTaskbar: true,
+        parent: win,
         webPreferences: {
           nodeIntegration: true,
           enableRemoteModule: true,
@@ -219,13 +221,16 @@ app.whenReady().then(() => {
         fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
       });
       var visible = true;
-      globalShortcut.register('1', () => {
-        if (!visible) {
-          mainmenu.show()
-          visible = true;
-        } else {
+      win.on('minimize', () => {
+        visible = false;
+      });
+      globalShortcut.register('F1', () => {
+        if (visible) {
           mainmenu.hide();
           visible = false;
+        } else {
+          mainmenu.show()
+          visible = true;
         }
       });
 

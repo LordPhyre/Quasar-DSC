@@ -1021,7 +1021,7 @@ skincontent
             //optionHolder.style.display = "inline-block";
             if (id == 'shortcutOptionHolder') {
                 optionInput.placeholder = 'off / on';
-                optionInput.setAttribute('value','');
+                optionInput.setAttribute('value', jsonobj.Shortcuts.one);
                 //optionInput.style.marginLeft = '70px';
             } else if (id == 'shortcutOptionHolder2') {
                 optionInput.placeholder = 'GG';
@@ -1110,24 +1110,6 @@ skincontent
 
     console.log(keyContentMap);
 
-    // shortcutdisplay
-
-    const shortcuts = document.createElement("h2");
-    shortcuts.innerHTML = "[" + one + "] On/Off  [" + two + "] " + twoValue + "  [" + three + "] " + threeValue + "  [" + four + "] " + fourValue + "  [" + five + "] " + fiveValue;
-    shortcuts.type = "submit";
-    shortcuts.id = "shortcutsdisplay";
-    shortcuts.style = "position: absolute; left: 0; bottom: 0; z-index: 1000; color: grey; background-color: transparent; outline: none; margin-bottom: 2px; margin-left: 5px; outline: none; border: none; font-size: 100%; display: none;";
-    document.body.appendChild(shortcuts);
-
-    shortcuts.style.display = "none";
-
-    //Show or Hide Shortcuts based on JSON
-    if(jsonobj.Stats.Shortcuts) {
-        //shortcuts.style.display = "block";
-    } else if (!jsonobj.Stats.Shortcuts) {
-        //shortcuts.style.display = "none";
-    };
-
     const inputs = ['shortcutOptionInput', 'shortcutOptionInput2', 'shortcutOptionInput3', 'shortcutOptionInput4', 'shortcutOptionInput5'];
 
     inputs.forEach((input, index) => {
@@ -1156,9 +1138,6 @@ skincontent
 
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
 
-            /* update value:
-                1.  element.id*/
-
             keyContentMap = {
                 [one]: [oneValue],
                 [two]: [twoValue],
@@ -1167,25 +1146,8 @@ skincontent
                 [five]: [fiveValue],
             };
 
-            shortcuts.innerHTML = "[" + one + "] On/Off  [" + two + "] " + twoValue + "  [" + three + "] " + threeValue + "  [" + four + "] " + fourValue + "  [" + five + "] " + fiveValue;
-
             console.log(keyContentMap);
         });
-    });
-    
-    document.addEventListener('keydown', function(event) {
-        const chatInput = document.querySelector('input[placeholder="[Enter] to use chat"]');
-        const event222 = new KeyboardEvent('keydown', {
-          keyCode: 13,
-          bubbles: true,
-          cancelable: true
-        });
-
-        if (event.key in keyContentMap) {
-            chatInput.value = keyContentMap[event.key];
-            chatInput.dispatchEvent(event222);
-            chatInput.dispatchEvent(event222);
-        }
     });
 
     //Color Customizations
@@ -1341,9 +1303,6 @@ skincontent
 
     // default title
     h2.innerHTML = "Home";
-
-    // disable, bc key is already taken
-    document.getElementsByName('shortcutOptionInput')[0].disabled = true;
 
     options.forEach(option => {
         document.getElementById(option).style.display = "none";

@@ -27,7 +27,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         fourValue = jsonobj.Shortcuts.four;
         fiveValue = jsonobj.Shortcuts.five;
 
-        shortcuts.innerHTML = "[" + one + "] On/Off  [" + two + "] " + twoValue + "  [" + three + "] " + threeValue + "  [" + four + "] " + fourValue + "  [" + five + "] " + fiveValue;
+        shortcuts.innerHTML = "[" + one + "] " + oneValue + "  [" + two + "] " + twoValue + "  [" + three + "] " + threeValue + "  [" + four + "] " + fourValue + "  [" + five + "] " + fiveValue;
         console.log("reloaded json");
 
         if(jsonobj.Stats.Shortcuts) {
@@ -113,7 +113,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     const four = "4";
     const five = "5";
 
-    var oneValue = "";
+    var oneValue = jsonobj.Shortcuts.one;
     var twoValue = jsonobj.Shortcuts.two;
     var threeValue = jsonobj.Shortcuts.three;
     var fourValue = jsonobj.Shortcuts.four;
@@ -131,10 +131,25 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
 
     console.log(keyContentMap);
 
+    document.addEventListener('keydown', function(event) {
+        const chatInput = document.querySelector('input[placeholder="[Enter] to use chat"]');
+        const event222 = new KeyboardEvent('keydown', {
+          keyCode: 13,
+          bubbles: true,
+          cancelable: true
+        });
+
+        if (event.key in keyContentMap) {
+            chatInput.value = keyContentMap[event.key];
+            chatInput.dispatchEvent(event222);
+            chatInput.dispatchEvent(event222);
+        }
+    });
+
     // shortcutdisplay
 
     const shortcuts = document.createElement("h2");
-    shortcuts.innerHTML = "[" + one + "] On/Off  [" + two + "] " + twoValue + "  [" + three + "] " + threeValue + "  [" + four + "] " + fourValue + "  [" + five + "] " + fiveValue;
+    shortcuts.innerHTML = "[" + one + "] " + oneValue + " [" + two + "] " + twoValue + "  [" + three + "] " + threeValue + "  [" + four + "] " + fourValue + "  [" + five + "] " + fiveValue;
     shortcuts.type = "submit";
     shortcuts.id = "shortcutsdisplay";
     shortcuts.style = "position: absolute; left: 0; bottom: 0; z-index: 1000; color: grey; background-color: transparent; outline: none; margin-bottom: 2px; margin-left: 5px; outline: none; border: none; font-size: 100%; display: none;";
