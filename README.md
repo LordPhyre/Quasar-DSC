@@ -49,7 +49,7 @@ Credits: Iniquity#2313 | Owner of [Arbiter Design](https://www.arbiterdesign.net
 ### Known bugs 🚨🪲
 - [ ] Typing Numbers activate Shortcuts
 
-### Featues that will only be possible with the help of our friend tree 🙂:
+### Features that will only be possible with the help of our friend tree 🙂:
 - [ ] Screenshake (need to know if damage)
 - [ ] Custom Damage Vignette (need to know if damage)
 - [ ] Reload Warning (need to know ammo amount)
