@@ -23,22 +23,14 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 
 #
 
-### What we are currently working on:
-- [x] Preparing everything for official v1
+### Key Features:
 
-### Features / To-Do List:
-- [x] Persistent Color Settings
-- [x] GG Shortcut
-- [x] Customizable UI
-- [x] Custom Chat Shortcuts
-- [x] Fully functioning JSON-Based Settings Saver
-- [x] Offline Screen
-- [x] PC Stats
-- [x] Resource Swapper [Weapons, Sky, Map Textures, Scripts]
-- [x] Texture-Pack loading
-- [x] Chromium Flags
-- [x] WASD Detector
-- [x] Aimbot 😱
+![](images/Quasar_Feature_List_2.png)
+
+#
+
+### What we are currently working on:
+- [x] Preparing everything for public v1
 
 ### Later.....
 - [ ] Auto Updates
@@ -56,7 +48,6 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 - [ ] Custom Background/Wallpaper
 
 ### Known bugs 🚨🪲
-- [ ] Scrolling Issues
 - [ ] Typing Numbers activate Shortcuts
 
 ### Featues that will only be possible with the help of our friend tree 🙂:
@@ -64,7 +55,6 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 - [ ] Custom Damage Vignette (need to know if damage)
 - [ ] Reload Warning (need to know ammo amount)
 - [ ] Auto Reload (need to know ammo amount)
-
 
 # Building Guide
 Do you want to build Quasar from source to test out the latest changes or make your own? 
