@@ -26,6 +26,7 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 ### Key Features:
 
 ![](images/Quasar_Feature_List_2.png)
+Credits: Iniquity#2313 | Owner of [Arbiter Design](https://www.arbiterdesign.net/).
 
 #
 
@@ -35,13 +36,11 @@ I highly encourage everyone to try it out. Truly a game-changing experience.
 ### Later.....
 - [ ] Auto Updates
 - [ ] Controller Support
-- [ ] Automatic Debug Disable
 - [ ] Local Player Wireframe
-- [ ] FOV Slider 🤔
 - [ ] Sound Swapper
 - [ ] Gamma Editor
 - [ ] Instant-180
-- [ ] Leaderboard rewards 👀
+- [ ] Leaderboard rewards 👀 [Textures]
 - [ ] Custom Client Keybinds
 - [ ] Custom Resource Marketplace
 - [ ] Discord RPC
@@ -81,7 +80,7 @@ Good luck!
     - Total Memory
     - CPU Cores
     - Uptime
-- Custom Chat Shortcuts [Keys 2-5]
+- Custom Chat Shortcuts [Keys 1-5]
     - Shortcut Display
 - Resource Swapper / Loader
     - Gun Skin Menu
