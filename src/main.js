@@ -117,6 +117,7 @@ app.whenReady().then(() => {
         splash.close();
         win.show();
         win.maximize()
+        mainmenu.show();
       }, 5000);
     }
   });
@@ -181,10 +182,10 @@ app.whenReady().then(() => {
       mainmenu = new BrowserWindow ({ 
         height: 337,
         width: 750,
+        show: false,
         resizable: false,
         transparent: true,
         frame: false,
-        alwaysOnTop: true,
         skipTaskbar: true,
         parent: win,
         webPreferences: {
@@ -197,7 +198,6 @@ app.whenReady().then(() => {
       });
 
       mainmenu.loadFile('empty.html');
-      mainmenu.setAlwaysOnTop(true);
       //////////////////////////////////////////////////////////////////////
 
       // some shortcuts
@@ -435,10 +435,6 @@ app.whenReady().then(() => {
         });
       });
 
-      win.on('page-title-updated', function(e) {
-        e.preventDefault()
-      });
-
       // read stats from pc
       // all options https://github.com/oscmejia/os-utils
 
@@ -508,7 +504,8 @@ app.whenReady().then(() => {
             win.loadURL('https://deadshot.io');
             win.show();
             win.maximize() 
-            noInternetConnectionScreen.minimize();
+            noInternetConnectionScreen.hide();
+            mainmenu.show();
             online = true;
           }
         });
