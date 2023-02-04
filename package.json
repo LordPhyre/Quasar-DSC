@@ -20,6 +20,11 @@
       "target": "nsis"
     }
   },
+  "repository": "https://github.com/LordPhyre/Quasar-DSC",
+  "publish": {
+    "provider": "github",
+    "releaseType": "release"
+  },
   "author": "jcjms & LordPhyre",
   "license": "GPL-3.0",
   "devDependencies": {
