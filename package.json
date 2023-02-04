@@ -5,12 +5,20 @@
   "main": "src/main.js",
   "scripts": {
     "start": "electron-forge start",
+    "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "package": "electron-forge package",
     "make": "electron-forge make"
   },
   "build": {
-    "icon": "icon/256x256.ico"
+    "icon": "icon/256x256.ico",
+    "appId": "your.id",
+    "mac": {
+      "category": "public.app-category.games"
+    },
+    "win": {
+      "target": "nsis"
+    }
   },
   "author": "jcjms & LordPhyre",
   "license": "GPL-3.0",
