@@ -12,7 +12,6 @@
   },
   "build": {
     "icon": "icon/256x256.ico",
-    "appId": "com.quasar.dsc",
     "mac": {
       "category": "public.app-category.games"
     },
@@ -42,7 +41,6 @@
     "node-abi": "^3.31.0",
     "os-utils": "^0.0.14",
     "request": "^2.88.2",
-    "robotjs": "^0.6.0",
     "three": "^0.148.0"
   }
 }
