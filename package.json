@@ -12,7 +12,7 @@
   },
   "build": {
     "icon": "icon/256x256.ico",
-    "appId": "your.id",
+    "appId": "com.quasar.dsc",
     "mac": {
       "category": "public.app-category.games"
     },
