@@ -34,7 +34,6 @@ Credits: Iniquity#2313 | Owner of [Arbiter Design](https://www.arbiterdesign.net
 - [x] Preparing everything for public v1
 
 ### Later.....
-- [ ] Auto Updates
 - [ ] Controller Support
 - [ ] Local Player Wireframe
 - [ ] Sound Swapper
@@ -104,5 +103,6 @@ Good luck!
 - Offline Screen
 - Dev Settings
     - Debug Mode
+- Auto Updates
 
 #
