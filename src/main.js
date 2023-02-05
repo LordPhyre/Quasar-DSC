@@ -150,7 +150,7 @@ app.whenReady().then(() => {
         
                 autoUpdater.on("error", (info) => { console.log(info); });
             });
-      }, 5000);
+      }, 4500);
         
         
       setTimeout(function () {
