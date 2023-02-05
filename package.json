@@ -1,6 +1,6 @@
 {
   "name": "Quasar-DSC",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "The most advanced and simultaneously user-friendly client for Deadshot.io that exists and will ever exist. Hopefully.",
   "main": "src/main.js",
   "scripts": {
