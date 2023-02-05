@@ -119,12 +119,47 @@ app.whenReady().then(() => {
       console.log("Connection status: Online");
       online = true;
 
+      // AUTO UPDATE CHECKER //
       setTimeout(function () {
-        splash.close();
+          
+            console.log("Checking for Update. Current version: " + app.getVersion());
+            autoUpdater.checkForUpdates();
+            splash.destroy();
+          
+          
+            //If Update exists, show message box
+            autoUpdater.on("update-available", (info) => {
+                
+                console.log("Update available.");
+                
+                const updateresponse = dialog.showMessageBoxSync({
+                    type: 'info',
+                    buttons: ['Yes', 'Cancel'],
+                    title: 'Update Available',
+                    cancelId: 99,
+                    message: 'A Quasar Update is currently available.\nDo you want to install it?',
+                });
+                
+                //If the user clicks the Update button
+                if (updateresponse === 0) {
+                    console.log("Update Chosen.");
+                    
+                    autoUpdater.downloadUpdate();
+                    autoUpdater.on("update-downloaded", (info) => { autoUpdater.quitAndInstall(); });
+                } else { console.log("Update cancelled") };
+        
+                autoUpdater.on("error", (info) => { console.log(info); });
+            });
+      }, 5000);
+        
+        
+      setTimeout(function () {
         win.show();
         win.maximize()
-        mainmenu.show();
-      }, 5000);
+        setTimeout(function () {
+            mainmenu.show();
+        }, 500);
+      }, 6000);
     }
   });
 
