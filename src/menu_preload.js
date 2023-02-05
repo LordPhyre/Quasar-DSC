@@ -130,12 +130,10 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         { text: 'General', id: 'general' },
         { text: 'Stats', id: 'stats' },
         { text: 'Shortcuts', id: 'shortcuts' },
-        { text: 'Skins', id: 'skinmenu' },
         { text: 'Skyboxes', id: 'skyboxes' },
-        { text: 'Texture Packs', id: 'texturepacks' },
-        { text: 'Chromium Flags', id: 'chromiumflags' },
-        { text: 'Aimbot', id: 'aimbot' },
+        { text: 'Resource Swapper', id: 'resourceswapper' },
         { text: 'Color Settings', id: 'colorsettings' },
+        { text: 'Chromium Flags', id: 'chromiumflags' },
         /*{ text: 'Dev Settings', id: 'devsettings' },
         { text: 'Custom CSS', id: 'customcss' },
         { text: 'Default Settings', id: 'defaultsettings' }*/
@@ -249,6 +247,11 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         holderId: "FullscreenOptionHolder",
         descrText: "Fullscreen [F11]",
         checkId: "FullscreenCheck",
+    },
+    {
+        holderId: "AimbotOptionHolder",
+        descrText: "Aimbot",
+        checkId: "AimbotCheck",
     },
     /*{
         holderId: "chromiumFlagsOptionHolder",
@@ -569,6 +572,14 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         }
     });
+    
+    AimbotCheck.addEventListener('change', e => {
+        if(e.target.checked){
+            console.log("aimbot on")
+        } else {
+            console.log("aimbot off")
+        }
+    });
 
     /*document.getElementById("chromiumFlagsCheck").checked = jsonobj.Flags;
     chromiumFlagsCheck.addEventListener('change', e => {
@@ -753,79 +764,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         }
     });
 
-    // SKIN-DISPLAY
-
-    const skinCategoryoptionHolder = document.createElement('div');
-    skinCategoryoptionHolder.className = 'optionholder';
-    skinCategoryoptionHolder.id = 'skinCategoryoptionHolder';
-
-    const buttonWrapper = document.createElement('div');
-    buttonWrapper.style = 'display: flex; justify-content: center;';
-    buttonWrapper.innerHTML = `
-        <button class="skinCategory" id="allButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;">All</button>
-        <button class="skinCategory" id="awpButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;">AWP</button>
-        <button class="skinCategory" id="ar2Button" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;">AR2</button>
-        <button class="skinCategory" id="vectorButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;">Vector</button>
-        <button class="skinCategory" id="skinFolderButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;">| <span style="text-decoration: underline; cursor: pointer;">Folder</span></button>
-    `;
-
-    skinCategoryoptionHolder.appendChild(buttonWrapper);
-
-    rightDiv.appendChild(skinCategoryoptionHolder);
-
-    // hide and show skins on click
-
-    function toggleSkins(displayType) {
-        const awpSkins = document.getElementById("awp");
-        const ar2Skins = document.getElementById("ar2");
-        const vectorSkins = document.getElementById("vector");
-
-        awpSkins.style.display = displayType;
-        ar2Skins.style.display = displayType;
-        vectorSkins.style.display = displayType;
-    }
-
-    document.getElementById('allButton').addEventListener('click', function() {
-        const allSkins = document.querySelectorAll('#awp, #ar2, #vector');
-        allSkins.forEach((skin) => {
-            skin.style.display = "initial";
-        });
-    });
-    document.getElementById('awpButton').addEventListener('click', function() {
-        const awpSkins = document.getElementById("awp");
-        toggleSkins("none");
-        awpSkins.style.display = "initial";
-    });
-    document.getElementById('ar2Button').addEventListener('click', function() {
-        const ar2Skins = document.getElementById("ar2");
-        toggleSkins("none");
-        ar2Skins.style.display = "initial";
-    });
-    document.getElementById('vectorButton').addEventListener('click', function() {
-        const vectorSkins = document.getElementById("vector");
-        toggleSkins("none");
-        vectorSkins.style.display = "initial";
-    });
-    document.getElementById('skinFolderButton').addEventListener('click', function() {
-        require('electron').ipcRenderer.send('openSkinFolder')
-    });
-
-    // skin content + images
-
-    const skincontent = document.createElement("div");
-    skincontent.id = "skincontent";
-    skincontent.classList.add('skincontent');
-    skincontent.style.background = optionColor;
-
-    document.getElementById('rightDiv').appendChild(skincontent);
-
-    var skincontentselector = document.getElementById('skincontent');
-
-    const flexSquare = document.createElement('img');
-    flexSquare.style = 'width: 100px; height: 100px; border: 1px solid black; margin: 10px;';
-
     // create message boxes
-
     const msgBoxWrapper = document.createElement('div');
     msgBoxWrapper.style = "position: absolute; width: 100%; z-index: 1001; display: flex; justify-content: center; align-items: center; margin-top: 10px;"
     msgBoxWrapper.id = "msgBoxWrapper"
@@ -838,81 +777,6 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
 
     //msgBoxWrapper.style.display = none;
 
-    // handle skins
-    function skinPathHandlerAwp(src) {
-        require('electron').ipcRenderer.send('filepath-awp', src)
-    }
-
-    function skinPathHandlerAr2(src) {
-        require('electron').ipcRenderer.send('filepath-ar2', src)
-    }
-
-    function skinPathHandlerVector(src) {
-        require('electron').ipcRenderer.send('filepath-vector', src)
-    }
-
-    // get skins -> they all override awp atm fix later
-
-    var skipper = 1;
-
-    function processSkins(skins, handler, id) {
-        console.log(skins);
-        console.log(skins.length);
-        
-        for (let i = 0; i < skins.length; i++) {
-            let element;
-            if (skipper > 0) {
-                let flexSquareClone = flexSquare.cloneNode(true);
-                flexSquareClone.setAttribute('src', skins[i]);
-                flexSquareClone.setAttribute('id', id);
-                element = flexSquareClone;
-                skipper++;
-            } else {
-                flexSquare.src = skins[i];
-                flexSquare.id = id;
-                element = flexSquare;
-            }
-        
-            element.addEventListener('click', function() {
-                let src = this.getAttribute('src');
-                console.log("The source of the selected skin is: " + src);
-
-                // message
-                document.getElementById('msgBoxText').innerHTML = "Skin applied successfully...";
-                document.getElementById('msgBox').style.display = "initial";
-
-                setTimeout(function() {
-                    document.getElementById('msgBox').style.display = "none";
-                }, 2000);
-
-                if (handler == 1) {
-                    skinPathHandlerAwp(src);
-                } else if (handler == 2) {
-                    skinPathHandlerAr2(src);
-                } else if (handler == 3) {
-                    skinPathHandlerVector(src);
-                }
-            });
-        
-            skincontentselector.appendChild(element);
-        }
-    }
-    
-    require('electron').ipcRenderer.on('filepaths-awp', (event, message) => {
-        processSkins(message, 1, 'awp');
-        //skinPathHandlerAwp(src);
-    });
-    
-    require('electron').ipcRenderer.on('filepaths-ar2', (event, message) => {
-        processSkins(message, 2, 'ar2');
-        //skinPathHandlerAr2(src);
-    });
-    
-    require('electron').ipcRenderer.on('filepaths-vector', (event, message) => {
-        processSkins(message, 3, 'vector');
-        //skinPathHandlerVector(src);
-    });
-
     ////////////////////////////////////////////////////////
 
     // SKYBOX-DISPLAY
@@ -924,11 +788,10 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     const skyboxButtonWrapper = document.createElement('div');
     skyboxButtonWrapper.style = 'display: flex; justify-content: center;';
     skyboxButtonWrapper.innerHTML = `
-        <button class="skinCategory" id="skyboxFolderButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px; text-decoration: underline; cursor: pointer;">Open Folder</button>
+        <button class="skyboxCategory" id="skyboxFolderButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px; text-decoration: underline; cursor: pointer;">Open Folder</button>
     `;
 
     skyboxoptionHolder.appendChild(skyboxButtonWrapper);
-skincontent
     rightDiv.appendChild(skyboxoptionHolder);
 
     document.getElementById('skyboxFolderButton').addEventListener('click', function() {
@@ -939,7 +802,7 @@ skincontent
 
     const skyboxcontent = document.createElement("div");
     skyboxcontent.id = "skyboxcontent";
-    skyboxcontent.classList.add('skyboxcontent'); // if breaks try skincontent
+    skyboxcontent.classList.add('skyboxcontent');
     skyboxcontent.style.background = optionColor;
 
     document.getElementById('rightDiv').appendChild(skyboxcontent);
@@ -954,7 +817,7 @@ skincontent
         require('electron').ipcRenderer.send('filepath-skybox', src)
     }
 
-    // get skins -> they all override awp atm fix later
+    // get skybox
 
     var SkyboxSkipper = 1;
 
@@ -1023,12 +886,12 @@ skincontent
         const optionDescr = createElement('p', 'optiondescr', '', descrText);
         const optionInput = createElement('input', '', inputId, '');
         const optionHr = createElement('hr', '', '', '');
-        if (id == "texturePackOptionHolder") {
+        if (id == "resourceswapperOptionHolder") {
             optionInput.type = 'button'; // normally I wouldn't do this, just so I can make it more efficient
             optionInput.value = 'Open Folder';
             //optionInput.placeholder = '';
             optionInput.style.width = '110px';
-        } else if (id == "downloadTexturePackOptionHolder") {
+        } else if (id == "downloadresourceswapperOptionHolder") {
             optionInput.type = 'button';
             optionInput.value = 'Download Pack';
             //optionInput.placeholder = '';
@@ -1074,7 +937,7 @@ skincontent
             optionInput.style.width = '140px';
             optionInput.name = inputId;
             optionInput.id = keyNumber++;
-        } else if (id == 'texturePackOptionHolder' || id == "downloadTexturePackOptionHolder") {
+        } else if (id == 'resourceswapperOptionHolder' || id == "downloadresourceswapperOptionHolder") {
             optionInput.placeholder = '';
         } else {
             optionInput.placeholder = 'e.g. #2a394f';
@@ -1108,8 +971,8 @@ skincontent
     createOptionHolder('shortcutOptionHolder3', 'Shortcut Option [3]', 'shortcutOptionInput3');
     createOptionHolder('shortcutOptionHolder4', 'Shortcut Option [4]', 'shortcutOptionInput4');
     createOptionHolder('shortcutOptionHolder5', 'Shortcut Option [5]', 'shortcutOptionInput5');
-    createOptionHolder('texturePackOptionHolder', 'Texture Pack', 'texturePackOptionInput');
-    createOptionHolder('downloadTexturePackOptionHolder', 'Download QUASAR Pack', 'downloadTexturePackOptionInput');
+    createOptionHolder('resourceswapperOptionHolder', 'Resource Swapper', 'resourceswapperOptionInput');
+    createOptionHolder('downloadresourceswapperOptionHolder', 'Download QUASAR Pack', 'downloadresourceswapperOptionInput');
 
     optionholders.forEach(holder => {
         rightDiv.appendChild(holder);
@@ -1241,11 +1104,11 @@ skincontent
         skinWrapper.style.borderRadius = skinWrapperBorderRadius + "px";
     });
 
-    texturePackOptionInput.addEventListener("click", function() {
+    resourceswapperOptionInput.addEventListener("click", function() {
         require('electron').ipcRenderer.send('openTexturePackFolder');
     });
 
-    downloadTexturePackOptionInput.addEventListener("click", function() {
+    downloadresourceswapperOptionInput.addEventListener("click", function() {
         window.open("https://github.com/jcjms/Quasar-DSC-Texturepack/archive/refs/heads/main.zip", "Texturepack Download", "height=500,width=500");
     });
 
@@ -1284,7 +1147,6 @@ skincontent
         "pingDisplayOptionHolder", 
         /*"onlineDisplayOptionHolder",*/ 
         "shortcutDisplayOptionHolder", 
-        "skincontent", 
         "skyboxcontent", 
         "optionColorOptionHolder", 
         "behindOptionsColorOptionHolder", 
@@ -1292,7 +1154,6 @@ skincontent
         "skinButtonColorOptionHolder", 
         "opacityOptionHolder", 
         "windowBorderOptionHolder", 
-        "skinCategoryoptionHolder", 
         "skyboxoptionHolder", 
         "shortcutOptionHolder", 
         "shortcutOptionHolder2", 
@@ -1305,11 +1166,12 @@ skincontent
         "totalMemoryDisplayOptionHolder", 
         "cpuCoresDisplayOptionHolder", 
         "uptimeDisplayOptionHolder", 
-        "texturePackOptionHolder", 
-        "downloadTexturePackOptionHolder", 
+        "resourceswapperOptionHolder", 
+        "downloadresourceswapperOptionHolder", 
         "WASDDisplayOptionHolder",
         "AutoFullscreenOptionHolder", 
         "FullscreenOptionHolder",
+        "AimbotOptionHolder",
         //"chromiumFlagsOptionHolder", 
         "resetColorOptionHolder",
         "massCheckUncheckFlagsOptionHolder",
@@ -1358,7 +1220,7 @@ skincontent
         const y = [];
 
         for (let i = 0; i < options.length; i++) {
-            if (options[i].includes("WASDDisplayOptionHolder") || options[i].includes("AutoFullscreenOptionHolder") || options[i].includes("FullscreenOptionHolder")) {
+            if (options[i].includes("WASDDisplayOptionHolder") || options[i].includes("AutoFullscreenOptionHolder") || options[i].includes("FullscreenOptionHolder") || options[i].includes("AimbotOptionHolder")) {
                 y.push(options[i]);
             }
         }
@@ -1410,20 +1272,6 @@ skincontent
         version.style.display = "none";
     });
 
-    document.getElementById("skinmenu").addEventListener("click", function() {
-        //h2.innerHTML = 'Skins <button id="reload">Reload</button>';
-        h2.innerHTML = 'Skins <p style="color: red; font-size: 17px">ATTENTION: Need to restart client to apply skins</p>'
-        
-        options.forEach(option => {
-            document.getElementById(option).style.display = "none";
-        });
-        document.getElementById("skinCategoryoptionHolder").style.display = "block";
-        document.getElementById("skincontent").style.display = "flex";
-
-        logo.style.display = "none";
-        version.style.display = "none";
-    });
-
     document.getElementById("skyboxes").addEventListener("click", function() {
         h2.innerHTML = 'Skyboxes <p style="color: red; font-size: 17px">ATTENTION: Need to restart client to apply skyboxes</p>'
         
@@ -1437,14 +1285,14 @@ skincontent
         version.style.display = "none";
     });
 
-    document.getElementById("texturepacks").addEventListener("click", function() {
-        h2.innerHTML = 'Texture Packs'
+    document.getElementById("resourceswapper").addEventListener("click", function() {
+        h2.innerHTML = 'Resource Swapper'
         
         options.forEach(option => {
             document.getElementById(option).style.display = "none";
         });
-        document.getElementById("texturePackOptionHolder").style.display = "block";
-        document.getElementById("downloadTexturePackOptionHolder").style.display = "block";
+        document.getElementById("resourceswapperOptionHolder").style.display = "block";
+        document.getElementById("downloadresourceswapperOptionHolder").style.display = "block";
 
         logo.style.display = "none";
         version.style.display = "none";
@@ -1472,16 +1320,6 @@ skincontent
 
         y.forEach(option => {
             document.getElementById(option).style.display = "block";
-        });
-
-        logo.style.display = "none";
-        version.style.display = "none";
-    });
-
-    document.getElementById("aimbot").addEventListener("click", function() {
-        h2.innerHTML = "WTF?! <br> Didn't expect that from you tbh.";
-        options.forEach(option => {
-            document.getElementById(option).style.display = "none";
         });
 
         logo.style.display = "none";
@@ -1573,7 +1411,7 @@ skincontent
 
     // css
     let skincss = document.createElement('style');
-    skincss.innerText = "@import 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap';*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}body{overflow-y: hidden;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;}.titlebar{-webkit-user-select: none;-webkit-app-region: drag;}.skinwrapper{position:absolute;top:50%;left:50%;max-width:750px;width:100%;background:#232429;/* if I add menuHeaderColor it spawns at a different location lmao, but the color has to stay like that, else the menu is see trough under header*/transform:translate(-50%,-50%);border:solid 1px #000;color:#fff;height:335px;}.skinwrapper header{font-size:23px;font-weight:500;padding:17px 30px;border-bottom:1px solid #000;text-align:center;border-top-left-radius: 10px;border-top-right-radius: 10px;}.skinwrapper header.skinactive{cursor:move;user-select:none;}.skinwrapper .skincontent{display:flex;flex-direction:wrap;flex-wrap:wrap;justify-content:center;}.skincontent .title{margin:15px 0;font-size:29px;font-weight:500}.skincontent p{font-size:16px;text-align:center;display:flex}.skinbutton{width:100%;height:50px;background-color:" + skinButtonColor + ";border:none;color:#fff;font-size:20px}.skinbutton:hover{background-color:" + skinButtonHoverColor + "}.skinclose{color:grey;position:absolute;top:0;right:0;margin-right:15px;margin-top:-6px;background-color:" + skinCloseColor + ";border:none;font-size:35px}.skinclose:hover{color:#fff}p{font-size:20px}input[type=text]{float:right;margin:14px 25px 10px 0;font-weight:700;color:grey}input[type=range]{float:right;margin:16px 20px 10px 0}input[type=checkbox]{float:right;transform:scale(2);margin:14px 25px 5px 0;width:35px;font-weight:700;color:grey;}input[type=button]{float:right;margin:14px 25px 10px 0;}.optiondescr{float:left;margin:10px 0 10px 20px}.optionholder{background-color:" + optionColor + "; display: inline-block}hr{width:100%;border:.1px solid rgb(255, 27, 8, 0);}/*select{float:right;margin:14px 25px 10px 0;width:50px}*/.skinCategory:hover{background-color:#0798fc}/* doesn't work lol*/" + customCSS;
+    skincss.innerText = "@import 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap';*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}body{overflow-y: hidden;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;}.titlebar{-webkit-user-select: none;-webkit-app-region: drag;}.skinwrapper{position:absolute;top:50%;left:50%;max-width:750px;width:100%;background:#232429;/* if I add menuHeaderColor it spawns at a different location lmao, but the color has to stay like that, else the menu is see trough under header*/transform:translate(-50%,-50%);border:solid 1px #000;color:#fff;height:335px;}.skinwrapper header{font-size:23px;font-weight:500;padding:17px 30px;border-bottom:1px solid #000;text-align:center;border-top-left-radius: 10px;border-top-right-radius: 10px;}.skinwrapper .skinbutton{width:100%;height:49px;background-color:" + skinButtonColor + ";border:none;color:#fff;font-size:20px}.skinbutton:hover{background-color:" + skinButtonHoverColor + "}.skinclose{color:grey;position:absolute;top:0;right:0;margin-right:15px;margin-top:-6px;background-color:" + skinCloseColor + ";border:none;font-size:35px}.skinclose:hover{color:#fff}p{font-size:20px}input[type=text]{float:right;margin:14px 25px 10px 0;font-weight:700;color:grey}input[type=range]{float:right;margin:16px 20px 10px 0}input[type=checkbox]{float:right;transform:scale(2);margin:14px 25px 5px 0;width:35px;font-weight:700;color:grey;}input[type=button]{float:right;margin:14px 25px 10px 0;}.optiondescr{float:left;margin:10px 0 10px 20px}.optionholder{background-color:" + optionColor + "; display: inline-block}hr{width:100%;border:.1px solid rgb(255, 27, 8, 0);}/*select{float:right;margin:14px 25px 10px 0;width:50px}*/.skyboxCategory:hover{background-color:#0798fc}/* doesn't work lol*/" + customCSS;
     document.head.appendChild(skincss);
 
     // shortcuts
