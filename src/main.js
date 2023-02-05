@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, protocol, globalShortcut} = require('electron');
+const { app, BrowserWindow, ipcMain, protocol, globalShortcut, dialog} = require('electron');
 const { autoUpdater, AppUpdater } = require("electron-updater");
 const path = require('path');
 const fs = require('fs');
