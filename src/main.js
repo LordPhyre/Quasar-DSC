@@ -1,13 +1,15 @@
 const { app, BrowserWindow, ipcMain, protocol, globalShortcut} = require('electron');
+const { autoUpdater, AppUpdater } = require("electron-updater");
 const path = require('path');
 const fs = require('fs');
 const os = require('os-utils');
 const swapper = require('./swapper.js');
 const request = require("request");
 const { spawn } = require('child_process');
+app.setPath ('userData', (path.join(app.getPath('appData'), app.getName() + "-" + app.getVersion())));
 
 let win = null
-const userDataPath = path.join(app.getPath('appData'), app.getName())
+const userDataPath = path.join(app.getPath('appData'), app.getName() + "-" + app.getVersion());
 const jsonpath = path.join(userDataPath, '/Settings.json');
 console.log(jsonpath);
 
@@ -17,6 +19,10 @@ if (!fs.existsSync(userDataPath)) {
 } else {
     console.log("Quasar folder exists");
 };
+
+//Updater Flags
+autoUpdater.autoDownload = false;
+autoUpdater.autoInstallOnAppQuit = false;
 
 // check if settings file exists and if not -> create it
 if (!fs.existsSync(jsonpath)) {
