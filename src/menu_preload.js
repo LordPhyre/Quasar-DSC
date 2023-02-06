@@ -136,6 +136,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         { text: 'Aimbot', id: 'aimbot' },
         { text: 'Color Settings', id: 'colorsettings' },
         { text: 'Chromium Flags', id: 'chromiumflags' },
+        { text: 'RPC Settings', id: 'rpcsettings' },
         /*{ text: 'Dev Settings', id: 'devsettings' },
         { text: 'Custom CSS', id: 'customcss' },
         { text: 'Default Settings', id: 'defaultsettings' }*/
@@ -309,6 +310,11 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         holderId: "debugOptionHolder",
         descrText: "Debug Mode",
         checkId: "debugCheck",
+    },
+    {
+        holderId: "RPCDisplayOptionHolder",
+        descrText: "Show RPC",
+        checkId: "RPCCheck",
     },
     ];
       
@@ -753,6 +759,17 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         }
     });
 
+    document.getElementById("RPCCheck").checked = jsonobj.RPC.show;
+    RPCCheck.addEventListener('change', e => {
+        if(e.target.checked){
+            jsonobj.RPC.show = true;
+            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
+        } else {
+            jsonobj.RPC.show = false;
+            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
+        }
+    });
+
     // SKIN-DISPLAY
 
     const skinCategoryoptionHolder = document.createElement('div');
@@ -1049,33 +1066,31 @@ skincontent
         } else if (id.includes('shortcutOptionHolder')) {
             optionInput.style.float = "right";
             optionHolder.style.backgroundColor = optionColor;
-            //optionHolder.style.display = "inline-block";
             if (id == 'shortcutOptionHolder') {
                 optionInput.placeholder = 'off / on';
                 optionInput.setAttribute('value', jsonobj.Shortcuts.one);
-                //optionInput.style.marginLeft = '70px';
             } else if (id == 'shortcutOptionHolder2') {
                 optionInput.placeholder = 'GG';
                 optionInput.setAttribute('value', jsonobj.Shortcuts.two);
-                //optionInput.style.marginLeft = '65px';
             } else if (id == 'shortcutOptionHolder3') {
                 optionInput.placeholder = 'hello guys';
                 optionInput.setAttribute('value', jsonobj.Shortcuts.three);
-                //optionInput.style.marginLeft = '65px';
             } else if (id == 'shortcutOptionHolder4') {
                 optionInput.placeholder = 'noob';
                 optionInput.setAttribute('value', jsonobj.Shortcuts.four);
-                //optionInput.style.marginLeft = '63px';
             } else if (id == 'shortcutOptionHolder5') {
                 optionInput.placeholder = 'lmao';
                 optionInput.setAttribute('value', jsonobj.Shortcuts.five);
-                //optionInput.style.marginLeft = '63px';
             } 
             optionInput.style.width = '140px';
             optionInput.name = inputId;
             optionInput.id = keyNumber++;
         } else if (id == 'texturePackOptionHolder' || id == "downloadTexturePackOptionHolder") {
             optionInput.placeholder = '';
+        } else if (id == 'RPCTextOptionHolder') {
+            optionInput.placeholder = 'Slapping noobs';
+            optionInput.style.width = '200px';
+            optionInput.setAttribute('value', jsonobj.RPC.text);
         } else {
             optionInput.placeholder = 'e.g. #2a394f';
         }
@@ -1110,6 +1125,7 @@ skincontent
     createOptionHolder('shortcutOptionHolder5', 'Shortcut Option [5]', 'shortcutOptionInput5');
     createOptionHolder('texturePackOptionHolder', 'Texture Pack', 'texturePackOptionInput');
     createOptionHolder('downloadTexturePackOptionHolder', 'Download QUASAR Pack', 'downloadTexturePackOptionInput');
+    createOptionHolder('RPCTextOptionHolder', 'RPC Text', 'rpcOptionInput');
 
     optionholders.forEach(holder => {
         rightDiv.appendChild(holder);
@@ -1276,6 +1292,12 @@ skincontent
         fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
     });
 
+    rpcOptionInput.addEventListener('change', function() {
+        jsonobj.RPC.text = rpcOptionInput.value;
+        fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
+        console.log(skinWrapperBorderRadius);
+    });
+
     // options
     
     const options = [
@@ -1307,6 +1329,7 @@ skincontent
         "uptimeDisplayOptionHolder", 
         "texturePackOptionHolder", 
         "downloadTexturePackOptionHolder", 
+        "RPCTextOptionHolder",
         "WASDDisplayOptionHolder",
         "AutoFullscreenOptionHolder", 
         "FullscreenOptionHolder",
@@ -1323,6 +1346,7 @@ skincontent
         "in_process_gpuOptionHolder",
         "disable_accelerated_2d_canvasOptionHolder",
         "debugOptionHolder",
+        "RPCDisplayOptionHolder",
     ];
     
     menuHeaderColorOptionInput.value = jsonobj.Colors.menuHeaderColor;
@@ -1456,11 +1480,6 @@ skincontent
         options.forEach(option => {
             document.getElementById(option).style.display = "none";
         });
-        //document.getElementById("chromiumFlagsOptionHolder").style.display = "";
-
-        options.forEach(option => {
-            document.getElementById(option).style.display = "none";
-        });
 
         const y = [];
 
@@ -1473,6 +1492,19 @@ skincontent
         y.forEach(option => {
             document.getElementById(option).style.display = "block";
         });
+
+        logo.style.display = "none";
+        version.style.display = "none";
+    });
+
+    document.getElementById("rpcsettings").addEventListener("click", function() {
+        h2.innerHTML = 'RPC Settings <p style="color: red; font-size: 17px">ATTENTION: Need to restart client to apply RPC</p>'
+        
+        options.forEach(option => {
+            document.getElementById(option).style.display = "none";
+        });
+        document.getElementById("RPCDisplayOptionHolder").style.display = "block";
+        document.getElementById("RPCTextOptionHolder").style.display = "block";
 
         logo.style.display = "none";
         version.style.display = "none";

@@ -7,19 +7,8 @@ const swapper = require('./swapper.js');
 const request = require("request");
 const { spawn } = require('child_process');
 const client = require('discord-rich-presence')('1054074293975273594');
- 
-client.updatePresence({
-  state: 'Quasar Client v.' + app.getVersion(),
-  details: 'Using the Best Client',
-  largeImageText: "Playing Deadshot.io",
-  largeImageKey: "logo",
-  startTimestamp: Date.now(),
-  buttons: [
-    { label: 'Download', url: 'https://github.com/LordPhyre/Quasar-DSC/releases/latest' }
-]
-});
-app.setPath ('userData', (path.join(app.getPath('appData'), app.getName() + "-" + app.getVersion())));
 
+app.setPath ('userData', (path.join(app.getPath('appData'), app.getName() + "-" + app.getVersion())));
 
 let win = null
 const userDataPath = path.join(app.getPath('appData'), app.getName() + "-" + app.getVersion());
@@ -85,6 +74,10 @@ if (!fs.existsSync(jsonpath)) {
         "three": "noob",
         "four": "lmao",
         "five": "wsg",
+    },
+    "RPC": {
+      "show": true,
+      "text": "Slapping noobs",
     }
     };
 
@@ -97,6 +90,22 @@ if (!fs.existsSync(jsonpath)) {
 // Parse the contents of the file into a JavaScript object
 let jsonobj = JSON.parse(fs.readFileSync(jsonpath, 'utf8'));
 console.log(jsonobj);
+
+if (jsonobj.RPC.show) {
+  client.updatePresence({
+    state: 'Quasar Client v.' + app.getVersion(),
+    details: 'Using the Best Client',
+    largeImageText: jsonobj.RPC.text,
+    largeImageKey: "logo",
+    startTimestamp: Date.now(),
+    buttons: [
+      { label: 'Download', url: 'https://github.com/LordPhyre/Quasar-DSC/releases/latest' }
+  ]
+  });
+  console.log("RPC activated");
+} else {
+  console.log("RPC disabled");
+}
 
 // debugging mode - ignore errors, prevent os-utils error from showing (and others)
 if(jsonobj.Debug) { 
