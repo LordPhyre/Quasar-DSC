@@ -1,16 +1,28 @@
 {
   "name": "Quasar-DSC",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "The most advanced and simultaneously user-friendly client for Deadshot.io that exists and will ever exist. Hopefully.",
   "main": "src/main.js",
   "scripts": {
     "start": "electron-forge start",
+    "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "package": "electron-forge package",
     "make": "electron-forge make"
   },
   "build": {
-    "icon": "icon/256x256.ico"
+    "icon": "icon/256x256.ico",
+    "mac": {
+      "category": "public.app-category.games"
+    },
+    "win": {
+      "target": "nsis"
+    }
+  },
+  "repository": "https://github.com/LordPhyre/Quasar-DSC",
+  "publish": {
+    "provider": "github",
+    "releaseType": "release"
   },
   "author": "jcjms & LordPhyre",
   "license": "GPL-3.0",
@@ -20,6 +32,7 @@
     "electron-builder": "^22.10.3"
   },
   "dependencies": {
+    "dialog": "^0.3.1",
     "discord-rich-presence": "^0.0.8",
     "discord-rpc": "^4.0.1",
     "electron-updater": "^5.3.0",
@@ -29,7 +42,6 @@
     "node-abi": "^3.31.0",
     "os-utils": "^0.0.14",
     "request": "^2.88.2",
-    "robotjs": "^0.6.0",
     "three": "^0.148.0"
   }
 }

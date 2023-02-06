@@ -1,13 +1,28 @@
-const { app, BrowserWindow, ipcMain, protocol, globalShortcut} = require('electron');
+const { app, BrowserWindow, ipcMain, protocol, globalShortcut, dialog} = require('electron');
+const { autoUpdater, AppUpdater } = require("electron-updater");
 const path = require('path');
 const fs = require('fs');
 const os = require('os-utils');
 const swapper = require('./swapper.js');
 const request = require("request");
 const { spawn } = require('child_process');
+const client = require('discord-rich-presence')('1054074293975273594');
+ 
+client.updatePresence({
+  state: 'Quasar Client v.' + app.getVersion(),
+  details: 'Using the Best Client',
+  largeImageText: "Playing Deadshot.io",
+  largeImageKey: "logo",
+  startTimestamp: Date.now(),
+  buttons: [
+    { label: 'Download', url: 'https://github.com/LordPhyre/Quasar-DSC/releases/latest' }
+]
+});
+app.setPath ('userData', (path.join(app.getPath('appData'), app.getName() + "-" + app.getVersion())));
+
 
 let win = null
-const userDataPath = path.join(app.getPath('appData'), app.getName())
+const userDataPath = path.join(app.getPath('appData'), app.getName() + "-" + app.getVersion());
 const jsonpath = path.join(userDataPath, '/Settings.json');
 console.log(jsonpath);
 
@@ -17,6 +32,10 @@ if (!fs.existsSync(userDataPath)) {
 } else {
     console.log("Quasar folder exists");
 };
+
+//Updater Flags
+autoUpdater.autoDownload = false;
+autoUpdater.autoInstallOnAppQuit = false;
 
 // check if settings file exists and if not -> create it
 if (!fs.existsSync(jsonpath)) {
@@ -113,12 +132,47 @@ app.whenReady().then(() => {
       console.log("Connection status: Online");
       online = true;
 
+      // AUTO UPDATE CHECKER //
       setTimeout(function () {
-        splash.close();
+          
+            console.log("Checking for Update. Current version: " + app.getVersion());
+            autoUpdater.checkForUpdates();
+            splash.destroy();
+          
+          
+            //If Update exists, show message box
+            autoUpdater.on("update-available", (info) => {
+                
+                console.log("Update available.");
+                
+                const updateresponse = dialog.showMessageBoxSync({
+                    type: 'info',
+                    buttons: ['Yes', 'Cancel'],
+                    title: 'Update Available',
+                    cancelId: 99,
+                    message: 'A Quasar Update is currently available.\nDo you want to install it?',
+                });
+                
+                //If the user clicks the Update button
+                if (updateresponse === 0) {
+                    console.log("Update Chosen.");
+                    
+                    autoUpdater.downloadUpdate();
+                    autoUpdater.on("update-downloaded", (info) => { autoUpdater.quitAndInstall(); });
+                } else { console.log("Update cancelled") };
+        
+                autoUpdater.on("error", (info) => { console.log(info); });
+            });
+      }, 4500);
+        
+        
+      setTimeout(function () {
         win.show();
         win.maximize()
-        mainmenu.show();
-      }, 5000);
+        setTimeout(function () {
+            mainmenu.show();
+        }, 500);
+      }, 6000);
     }
   });
 
