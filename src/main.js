@@ -6,7 +6,20 @@ const os = require('os-utils');
 const swapper = require('./swapper.js');
 const request = require("request");
 const { spawn } = require('child_process');
+const client = require('discord-rich-presence')('1054074293975273594');
+ 
+client.updatePresence({
+  state: 'Quasar Client v.' + app.getVersion(),
+  details: 'Using the Best Client',
+  largeImageText: "Playing Deadshot.io",
+  largeImageKey: "logo",
+  startTimestamp: Date.now(),
+  buttons: [
+    { label: 'Download', url: 'https://github.com/LordPhyre/Quasar-DSC/releases/latest' }
+]
+});
 app.setPath ('userData', (path.join(app.getPath('appData'), app.getName() + "-" + app.getVersion())));
+
 
 let win = null
 const userDataPath = path.join(app.getPath('appData'), app.getName() + "-" + app.getVersion());
