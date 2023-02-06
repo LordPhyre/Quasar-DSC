@@ -2,6 +2,12 @@ html {
     background: linear-gradient(to left, #195DCA, #6cd8ff);
     font-family: 'Aquire', sans-serif;
 }
+body {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
 .container {
     display: flex;
     align-items: center;

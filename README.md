@@ -102,7 +102,7 @@ Good luck!
 - Auto Fullscreen
 - Fully functioning JSON-Based Settings Saver (secure your settings)
 - Offline Screen
-- Dev Settings
+- Dev Settings (3x click on version number)
     - Debug Mode
 
 #
