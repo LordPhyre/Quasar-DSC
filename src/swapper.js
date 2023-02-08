@@ -4,15 +4,6 @@ const path = require('path');
 
 module.exports = {
     replaceResources: (win, app) => {
-
-        function checkCreateFolder(folder) {
-            if (!fs.existsSync(folder)) {
-                fs.mkdirSync(folder, { recursive: true });
-            }
-            return folder;
-        }
-
-        checkCreateFolder(app.getPath('documents') + "\\Quasar-DSC\\Resource Swapper\\");
     
         let swapDirectory = path.normalize(`${app.getPath('documents')}/Quasar-DSC/Resource Swapper`)
         
