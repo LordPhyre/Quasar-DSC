@@ -1174,7 +1174,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     });
 
     downloadTexturePackOptionInput.addEventListener("click", function() {
-        window.open("https://github.com/jcjms/Quasar-DSC-Texturepack/archive/refs/heads/main.zip", "Texturepack Download", "height=500,width=500");
+        window.open("https://github.com/jcjms/Quasar-Template/archive/refs/heads/main.zip", "Texturepack Download", "height=500,width=500");
     });
 
     
