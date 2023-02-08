@@ -4,7 +4,7 @@ const fs = require('fs');
 document.addEventListener("DOMContentLoaded", function() {
 
 //Receive user datapath and save as variable
-require('electron').ipcRenderer.on('SendUserData', (event, message) => {
+require('electron').ipcRenderer.on('SendUserData', (event, message, client_version) => {
 
     const jsonpath = message;
     console.log(jsonpath);
@@ -35,8 +35,6 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     ::-webkit-resizer { background-color: #666;}`;
     document.head.appendChild(scrollcss);
 
-    // draggable window | make all of this easier with modules -> https://stackoverflow.com/questions/950087/how-do-i-include-a-javascript-file-in-another-javascript-file
-
     // wrapper
     const skinWrapper = document.createElement('div');
     skinWrapper.className = 'skinwrapper';
@@ -49,7 +47,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         <div id="rightDiv" style="float: right; width: 60%; height: 263px; overflow: scroll; overflow-x: hidden; overflow-y: auto;">
             <h2 id="h2" style="text-align: center; margin: 10px 0 10px 0;">Option Name</h2>
             <h2 id="logo" style="font-family: 'Aquire', sans-serif; text-align: center; color: white; font-size: 75px; margin-top: 30px;">Quasar<br></h2>
-            <h2 id="version" style="font-family: 'Aquire', sans-serif; text-align: center; color: white; font-size: 17.5px;">v1.0 - PUBLIC</h2> <!-- get that stuff auto later -->
+            <h2 id="version" style="font-family: 'Aquire', sans-serif; text-align: center; color: white; font-size: 17.5px;">v${client_version} - PUBLIC</h2> <!-- get that stuff auto later -->
             <div id="skinCategoryoptionHolder" class="optionholder">
                 <div style="display: flex; justify-content: center;"> <!-- use classes later -->
                     <button class="skinCategory" id="allButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;">All</button>
@@ -284,6 +282,11 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         holderId: "RPCDisplayOptionHolder",
         descrText: "Show RPC",
         checkId: "RPCCheck",
+    },
+    {
+        holderId: "SplashOptionHolder",
+        descrText: "Old Splash",
+        checkId: "OldSplashCheck",
     },
     ];
       
@@ -727,6 +730,17 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         } else {
             jsonobj.RPC.show = false;
+            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
+        }
+    });
+
+    document.getElementById("OldSplashCheck").checked = !jsonobj.Splash.new;
+    OldSplashCheck.addEventListener('change', e => {
+        if(e.target.checked){
+            jsonobj.Splash.new = false;
+            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
+        } else {
+            jsonobj.Splash.new = true;
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         }
     });
@@ -1259,6 +1273,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         "disable_accelerated_2d_canvasOptionHolder",
         "debugOptionHolder",
         "RPCDisplayOptionHolder",
+        "SplashOptionHolder",
     ];
     
     menuHeaderColorOptionInput.value = jsonobj.Colors.menuHeaderColor;
@@ -1450,6 +1465,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
                 document.getElementById(option).style.display = "none";
             });
             document.getElementById("debugOptionHolder").style.display = "block";
+            document.getElementById("SplashOptionHolder").style.display = "block";
 
             logo.style.display = "none";
             version.style.display = "none";
