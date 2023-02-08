@@ -355,46 +355,6 @@ app.whenReady().then(() => {
         }
       });
 
-      function readDirectory(dirPath, fileExtension, eventName) {
-        fs.readdir(dirPath, function(err, files) {
-          if (err) {
-            console.error(`There was an error reading the directory: ${err}`);
-            return;
-          }
-      
-          // Filter actual images (.png & .jpg)
-          const imageFiles = files.filter(file => file.endsWith(fileExtension));
-      
-          var skins = [];
-      
-          imageFiles.forEach(function(imageFile) {
-            var pathcontainer = `${dirPath}/${imageFile}`;
-      
-            console.log(`Processing ${imageFile}, path: ${pathcontainer}`);
-      
-            // push file names to skin-array
-            skins.push(pathcontainer);
-          });
-      
-          win.webContents.on('did-finish-load', () => {
-            win.webContents.send(eventName, skins);
-          });
-        });
-      }
-
-      // take images and execute process
-      const types = ["awp", "ar2", "vector"];
-
-      types.forEach(type => {
-        readDirectory(path.join(app.getPath("documents"), `Quasar-DSC/gunskins/${type}`), ".webp", `filepaths-${type}`);
-      });
-
-      readDirectory(
-        path.join(app.getPath("documents"), "Quasar-DSC/skyboxes"),
-        ".webp",
-        "filepaths-skybox"
-      )
-
       function handleFilepathEvent(event, message, folderName, destFileName) {
       
         const srcPath = message.toString();
@@ -461,7 +421,7 @@ app.whenReady().then(() => {
         ipcMain.on(eventName, (event, message) => {
           handleFilepathEvent(event, message, ...filepathHandlers[eventName]);
         });
-      });      
+      });
 
       ipcMain.on('openSkinFolder', (event) => {
         spawn('explorer.exe', [path.join(app.getPath("documents"), "Quasar-DSC/gunskins")]);
@@ -546,6 +506,47 @@ app.whenReady().then(() => {
         if (win) {
           win.webContents.send('SendUserData', jsonpath);
           mainmenu.webContents.send('SendUserData', jsonpath);
+
+          // send skin path function
+          function readDirectory(dirPath, fileExtension, eventName) {
+            fs.readdir(dirPath, function(err, files) {
+              if (err) {
+                console.error(`There was an error reading the directory: ${err}`);
+                return;
+              }
+          
+              // Filter actual images (.png & .jpg)
+              const imageFiles = files.filter(file => file.endsWith(fileExtension));
+          
+              var skins = [];
+          
+              imageFiles.forEach(function(imageFile) {
+                var pathcontainer = `${dirPath}/${imageFile}`;
+          
+                console.log(`Processing ${imageFile}, path: ${pathcontainer}`);
+          
+                // push file names to skin-array
+                skins.push(pathcontainer);
+              });
+          
+              //mainmenu.webContents.on('did-finish-load', () => {
+                mainmenu.webContents.send(eventName, skins);
+              //});
+            });
+          }
+
+          // do the skin path sending here
+          const types = ["awp", "ar2", "vector"];
+
+          types.forEach(type => {
+            readDirectory(path.join(app.getPath("documents"), `Quasar-DSC/gunskins/${type}`), ".webp", `filepaths-${type}`);
+          });
+
+          readDirectory(
+            path.join(app.getPath("documents"), "Quasar-DSC/skyboxes"),
+            ".webp",
+            "filepaths-skybox"
+          )
         }
       });
     }

@@ -42,43 +42,80 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     skinWrapper.className = 'skinwrapper';
     skinWrapper.id = "skinWrapper";
     skinWrapper.style = "::-webkit-scrollbar{border:1px solid #d5d5d5};opacity:" + opacity + ";border-radius: " + skinWrapperBorderRadius + "px; z-index: 9999;";
+    skinWrapper.innerHTML = `
+        <header id="skinheader" style="background: ${menuHeaderColor};" class="titlebar">Main Menu</header>
+        <div id="mainDiv" style="background: ${behindOptionsColor};"></div>
+        <div id="leftDiv" style="float: left; width: 40%; height: 263px; overflow: scroll; overflow-x: hidden; overflow-y: auto;"></div>
+        <div id="rightDiv" style="float: right; width: 60%; height: 263px; overflow: scroll; overflow-x: hidden; overflow-y: auto;">
+            <h2 id="h2" style="text-align: center; margin: 10px 0 10px 0;">Option Name</h2>
+            <h2 id="logo" style="font-family: 'Aquire', sans-serif; text-align: center; color: white; font-size: 75px; margin-top: 30px;">Quasar<br></h2>
+            <h2 id="version" style="font-family: 'Aquire', sans-serif; text-align: center; color: white; font-size: 17.5px;">v1.0 - PUBLIC</h2> <!-- get that stuff auto later -->
+            <div id="skinCategoryoptionHolder" class="optionholder">
+                <div style="display: flex; justify-content: center;"> <!-- use classes later -->
+                    <button class="skinCategory" id="allButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;">All</button>
+                    <button class="skinCategory" id="awpButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;">AWP</button>
+                    <button class="skinCategory" id="ar2Button" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;">AR2</button>
+                    <button class="skinCategory" id="vectorButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;">Vector</button>
+                    <button class="skinCategory" id="skinFolderButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;">| <span style="text-decoration: underline; cursor: pointer;">Folder</span></button>
+                </div>
+            </div> 
+            <div id="skincontent" class="skincontent" style="background: ${optionColor};"></div>
+            <div id="skyboxoptionHolder" class="optionholder">
+                <div style="display: flex; justify-content: center;">
+                    <button class="skinCategory" id="skyboxFolderButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px; text-decoration: underline; cursor: pointer;">Open Folder</button>
+                </div>
+            </div>
+        </div>
+        <button id="skinclose" class="skinclose">_</button>
+    `;
     document.body.appendChild(skinWrapper);
 
-    // title
-    const skinHeader = document.createElement('header');
-    skinHeader.id = 'skinheader';
-    skinHeader.innerText = 'Main Menu';
-    skinHeader.style.background = menuHeaderColor;
-    skinHeader.classList.add('titlebar');
-    document.getElementById('skinWrapper').appendChild(skinHeader);
+    const logoFont = document.createElement('link')
+    logoFont.href = "https://fonts.cdnfonts.com/css/aquire";
+    logoFont.rel = "stylesheet";
+    document.getElementsByTagName('head')[0].appendChild(logoFont);
 
-    // background & container
-    const mainDiv = document.createElement('div');
-    mainDiv.style.backgroundColor = behindOptionsColor; // that thing behid the options '#2a394f'
-    mainDiv.id = "mainDiv";
-    document.getElementById('skinWrapper').appendChild(mainDiv);
+    const mainDiv = document.getElementById('mainDiv');
+    const leftDiv = document.getElementById('leftDiv');
+    const rightDiv = document.getElementById('rightDiv');
+    const h2 = document.getElementById('h2');
+    const logo = document.getElementById('logo');
+    const version = document.getElementById('version');
 
-    // left part of the menu (the buttons)
-    const leftDiv = document.createElement('div');
-    leftDiv.style.float = 'left';
-    leftDiv.style.width = '40%';
-    leftDiv.style.height = '263px';
-    leftDiv.style.overflow = 'scroll';
-    leftDiv.style.overflowX = 'hidden';
-    leftDiv.style.overflowY = 'auto';
-    leftDiv.id = "leftDiv";
-    document.getElementById('mainDiv').appendChild(leftDiv);
+    // menu tab buttons
+    const buttonData = [
+        { text: 'Home', id: 'allOptions' },
+        { text: 'General', id: 'general' },
+        { text: 'Stats', id: 'stats' },
+        { text: 'Shortcuts', id: 'shortcuts' },
+        { text: 'Skins', id: 'skinmenu' },
+        { text: 'Texture Packs', id: 'texturepacks' },
+        { text: 'Skyboxes', id: 'skyboxes' },
+        { text: 'Aimbot', id: 'aimbot' },
+        { text: 'Color Settings', id: 'colorsettings' },
+        { text: 'Chromium Flags', id: 'chromiumflags' },
+        /*{ text: 'RPC Settings', id: 'rpcsettings' },
+        { text: 'Dev Settings', id: 'devsettings' },
+        { text: 'Custom CSS', id: 'customcss' },
+        { text: 'Default Settings', id: 'defaultsettings' }*/
+    ];
+    
+    buttonData.forEach(button => {
+        const optionButton = document.createElement('button');
+        optionButton.className = 'skinbutton';
+        optionButton.innerText = button.text;
+        optionButton.id = button.id;
+        leftDiv.appendChild(optionButton);
+    });
+    
+    // doesn't work, also the code is trash tbh
+    let skinclosebutton = document.getElementById("skinclose");
+    skinclosebutton.addEventListener("click", function() {
+        let skinWrapper = document.getElementById("skinWrapper");
+        skinWrapper.style.display = "none";
+    });
 
-    const rightDiv = document.createElement('div');
-    rightDiv.style.float = 'right';
-    rightDiv.style.width = '60%';
-    rightDiv.style.height = '263px';
-    rightDiv.style.overflow = 'scroll';
-    rightDiv.style.overflowX = 'hidden';
-    rightDiv.style.overflowY = 'auto';
-    rightDiv.id = "rightDiv";
-    document.getElementById('mainDiv').appendChild(rightDiv);
-
+    // drag code
     dragElement(document.getElementById("skinWrapper"));
     function dragElement(elmnt) {
         var pos1 = 0,
@@ -109,74 +146,6 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
             document.onmousemove = null;
         }
     }
-
-    // close button
-    const skinCloseButton = document.createElement('button');
-    skinCloseButton.className = 'skinclose';
-    skinCloseButton.innerText = '_';
-    skinCloseButton.id = 'skinclose';
-    document.getElementById('skinWrapper').appendChild(skinCloseButton);
-    
-    let skinclosebutton = document.getElementById("skinclose");
-    skinclosebutton.addEventListener("click", function() {
-        let skinWrapper = document.getElementById("skinWrapper");
-        skinWrapper.style.display = "none";
-    });
-
-    // menu buttons
-
-    const buttonData = [
-        { text: 'Home', id: 'allOptions' },
-        { text: 'General', id: 'general' },
-        { text: 'Stats', id: 'stats' },
-        { text: 'Shortcuts', id: 'shortcuts' },
-        { text: 'Skins', id: 'skinmenu' },
-        { text: 'Texture Packs', id: 'texturepacks' },
-        { text: 'Skyboxes', id: 'skyboxes' },
-        { text: 'Aimbot', id: 'aimbot' },
-        { text: 'Color Settings', id: 'colorsettings' },
-        { text: 'Chromium Flags', id: 'chromiumflags' },
-        { text: 'RPC Settings', id: 'rpcsettings' },
-        /*{ text: 'Dev Settings', id: 'devsettings' },
-        { text: 'Custom CSS', id: 'customcss' },
-        { text: 'Default Settings', id: 'defaultsettings' }*/
-    ];
-    
-    const leftDivReference = document.getElementById('leftDiv');
-    
-    buttonData.forEach(button => {
-        const optionButton = document.createElement('button');
-        optionButton.className = 'skinbutton';
-        optionButton.innerText = button.text;
-        optionButton.id = button.id;
-        leftDivReference.appendChild(optionButton);
-    });
-
-    // title of sub options
-    const h2 = document.createElement('h2');
-    h2.style.textAlign = 'center';
-    h2.style.margin = '10px 0 10px 0';
-    h2.innerText = 'Option Name';
-    document.getElementById('rightDiv').appendChild(h2);
-
-    const logoFont = document.createElement('link')
-    logoFont.href = "https://fonts.cdnfonts.com/css/aquire";
-    logoFont.rel = "stylesheet";
-    document.getElementsByTagName('head')[0].appendChild(logoFont);
-
-    const logo = document.createElement('h2');
-    logo.style = 'font-family: "Aquire", sans-serif; text-align: center; color: white; font-size: 75px; margin-top: 30px;';
-    logo.id = "logo";
-    logo.innerHTML = "Quasar<br>";
-    document.getElementById('rightDiv').appendChild(logo);
-
-    const version = document.createElement('h2');
-    version.style = 'font-family: "Aquire", sans-serif; text-align: center; color: white; font-size: 17.5px;';
-    version.id = "version";
-    version.innerText = "v1.0 - PUBLIC";
-    document.getElementById('rightDiv').appendChild(version);
-
-    document.body.append(skinWrapper);
 
     // Display options
 
@@ -328,8 +297,6 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         // holds the sub-options
         const optionHolder = document.createElement('div');
         optionHolder.classList.add('optionholder');
-        //optionHolder.style.backgroundColor = optionColor;
-        //optionHolder.style.display = 'block';
         optionHolder.id = option.holderId;
         
         // sub-option title
@@ -342,7 +309,6 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         optionCheck.type = 'checkbox';
         optionCheck.id = option.checkId;
         optionCheck.style.float = "right";
-        //optionCheck.addEventListener('change', option.onChange);
         
         optionHolder.innerHTML = `
             ${optionDescr.outerHTML}
@@ -350,15 +316,10 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
             <hr>
         `;
 
-        //const hrfix = document.createElement('hr');
-        //hrfix.id = option.holderId + "hr";
-        //hrfix.style.backgroundColor = optionColor;
-        
         rightDiv.appendChild(optionHolder);
-        //rightDiv.append(hrfix);
     }
 
-    // Checkbox State and function saving to JSON | tried to optimize this part, also tried to use GPT, no luck, please come up with something better
+    // Checkbox State and function saving to JSON
     
     massCheckUncheckStatsCheck.addEventListener('change', e => {
         if(e.target.checked){
@@ -771,32 +732,13 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     });
 
     // SKIN-DISPLAY
-
-    const skinCategoryoptionHolder = document.createElement('div');
-    skinCategoryoptionHolder.className = 'optionholder';
-    skinCategoryoptionHolder.id = 'skinCategoryoptionHolder';
-
-    const buttonWrapper = document.createElement('div');
-    buttonWrapper.style = 'display: flex; justify-content: center;';
-    buttonWrapper.innerHTML = `
-        <button class="skinCategory" id="allButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;">All</button>
-        <button class="skinCategory" id="awpButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;">AWP</button>
-        <button class="skinCategory" id="ar2Button" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;">AR2</button>
-        <button class="skinCategory" id="vectorButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;">Vector</button>
-        <button class="skinCategory" id="skinFolderButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;">| <span style="text-decoration: underline; cursor: pointer;">Folder</span></button>
-    `;
-
-    skinCategoryoptionHolder.appendChild(buttonWrapper);
-
-    rightDiv.appendChild(skinCategoryoptionHolder);
-
     // hide and show skins on click
 
     function toggleSkins(displayType) {
         const awpSkins = document.getElementById("awp");
         const ar2Skins = document.getElementById("ar2");
         const vectorSkins = document.getElementById("vector");
-
+        
         awpSkins.style.display = displayType;
         ar2Skins.style.display = displayType;
         vectorSkins.style.display = displayType;
@@ -827,20 +769,6 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         require('electron').ipcRenderer.send('openSkinFolder')
     });
 
-    // skin content + images
-
-    const skincontent = document.createElement("div");
-    skincontent.id = "skincontent";
-    skincontent.classList.add('skincontent');
-    skincontent.style.background = optionColor;
-
-    document.getElementById('rightDiv').appendChild(skincontent);
-
-    var skincontentselector = document.getElementById('skincontent');
-
-    const flexSquare = document.createElement('img');
-    flexSquare.style = 'width: 100px; height: 100px; border: 1px solid black; margin: 10px;';
-
     // create message boxes
 
     const msgBoxWrapper = document.createElement('div');
@@ -853,17 +781,20 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     `;
     document.body.appendChild(msgBoxWrapper);
 
-    //msgBoxWrapper.style.display = none;
+    // skin content + images
+
+    const skincontent = document.getElementById("skincontent");
+
+    const flexSquare = document.createElement('img');
+    flexSquare.style = 'width: 100px; height: 100px; border: 1px solid black; margin: 10px;';
 
     // handle skins
     function skinPathHandlerAwp(src) {
         require('electron').ipcRenderer.send('filepath-awp', src)
     }
-
     function skinPathHandlerAr2(src) {
         require('electron').ipcRenderer.send('filepath-ar2', src)
     }
-
     function skinPathHandlerVector(src) {
         require('electron').ipcRenderer.send('filepath-vector', src)
     }
@@ -910,8 +841,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
                     skinPathHandlerVector(src);
                 }
             });
-        
-            skincontentselector.appendChild(element);
+            skincontent.appendChild(element);
         }
     }
     
@@ -919,12 +849,10 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         processSkins(message, 1, 'awp');
         //skinPathHandlerAwp(src);
     });
-    
     require('electron').ipcRenderer.on('filepaths-ar2', (event, message) => {
         processSkins(message, 2, 'ar2');
         //skinPathHandlerAr2(src);
     });
-    
     require('electron').ipcRenderer.on('filepaths-vector', (event, message) => {
         processSkins(message, 3, 'vector');
         //skinPathHandlerVector(src);
@@ -934,19 +862,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
 
     // SKYBOX-DISPLAY
 
-    const skyboxoptionHolder = document.createElement('div');
-    skyboxoptionHolder.className = 'optionholder';
-    skyboxoptionHolder.id = 'skyboxoptionHolder';
-
-    const skyboxButtonWrapper = document.createElement('div');
-    skyboxButtonWrapper.style = 'display: flex; justify-content: center;';
-    skyboxButtonWrapper.innerHTML = `
-        <button class="skinCategory" id="skyboxFolderButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px; text-decoration: underline; cursor: pointer;">Open Folder</button>
-    `;
-
-    skyboxoptionHolder.appendChild(skyboxButtonWrapper);
-skincontent
-    rightDiv.appendChild(skyboxoptionHolder);
+    const skyboxoptionHolder = document.getElementById("skyboxoptionHolder");
 
     document.getElementById('skyboxFolderButton').addEventListener('click', function() {
         require('electron').ipcRenderer.send('openSkyboxFolder')
@@ -1007,7 +923,6 @@ skincontent
 
                 skyboxPathHandler(src);
             });
-        
             skyboxcontentselector.appendChild(element);
         }
     }
@@ -1104,14 +1019,12 @@ skincontent
         optionHolder.appendChild(optionInput);
         optionHolder.appendChild(optionSpaceThing);
         optionHolder.appendChild(optionHr);
-        //optionHolder.appendChild(hrfix);
     };
 
     createOptionHolder('resetColorOptionHolder', 'Reset Color', 'resetColorOptionInput');
 
     // color
     createOptionHolder('menuHeaderColorOptionHolder', 'Header Color', 'menuHeaderColorOptionInput');
-    //menuHeaderColorOptionInput.value = jsonobj.Colors.menuHeaderColor;
     createOptionHolder('optionColorOptionHolder', 'Option Color', 'optionColorOptionInput');
     createOptionHolder('behindOptionsColorOptionHolder', 'Behind-Options Color', 'behindOptionsColorOptionInput');
     createOptionHolder('skinButtonColorOptionHolder', 'Skin Button Color', 'skinButtonColorOptionInput');
@@ -1129,7 +1042,6 @@ skincontent
 
     optionholders.forEach(holder => {
         rightDiv.appendChild(holder);
-        //rightDiv.appendChild(hrfix);
     });
 
     // get the shortcut values to later reuse
@@ -1387,6 +1299,9 @@ skincontent
             }
         }
 
+        document.getElementById("RPCDisplayOptionHolder").style.display = "block";
+        document.getElementById("RPCTextOptionHolder").style.display = "block";
+
         y.forEach(option => {
             document.getElementById(option).style.display = "block";
         });
@@ -1496,22 +1411,8 @@ skincontent
         logo.style.display = "none";
         version.style.display = "none";
     });
-
-    document.getElementById("rpcsettings").addEventListener("click", function() {
-        h2.innerHTML = 'RPC Settings <p style="color: red; font-size: 17px">ATTENTION: Need to restart client to apply RPC</p>'
-        
-        options.forEach(option => {
-            document.getElementById(option).style.display = "none";
-        });
-        document.getElementById("RPCDisplayOptionHolder").style.display = "block";
-        document.getElementById("RPCTextOptionHolder").style.display = "block";
-
-        logo.style.display = "none";
-        version.style.display = "none";
-    });
     
-    
- document.getElementById("aimbot").addEventListener("click", function() {
+    document.getElementById("aimbot").addEventListener("click", function() {
         h2.innerHTML = `<iframe width="100%" height="90%" src="https://bean-frog.github.io/yt5s.io-Rick%20Astley%20-%20Never%20Gonna%20Give%20You%20Up%20(Official%20Music%20Video).mp4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
         options.forEach(option => {
             document.getElementById(option).style.display = "none";
