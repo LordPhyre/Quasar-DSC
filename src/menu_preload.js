@@ -65,6 +65,11 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
                     <button class="skinCategory" id="skyboxFolderButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px; text-decoration: underline; cursor: pointer;">Open Folder</button>
                 </div>
             </div>
+            <div id="wallpaperoptionHolder" class="optionholder">
+            <div style="display: flex; justify-content: center;">
+                <button class="skinCategory" id="wallpaperFolderButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px; text-decoration: underline; cursor: pointer;">Open Folder</button>
+            </div>
+        </div>
         </div>
         <button id="skinclose" class="skinclose">_</button>
     `;
@@ -91,6 +96,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         { text: 'Skins', id: 'skinmenu' },
         { text: 'Texture Packs', id: 'texturepacks' },
         { text: 'Skyboxes', id: 'skyboxes' },
+        { text: 'Wallpaper', id: 'wallpaper' },
         { text: 'Aimbot', id: 'aimbot' },
         { text: 'Color Settings', id: 'colorsettings' },
         { text: 'Chromium Flags', id: 'chromiumflags' },
@@ -887,7 +893,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         require('electron').ipcRenderer.send('filepath-skybox', src)
     }
 
-    // get skins -> they all override awp atm fix later
+    // get skyboxes
 
     var SkyboxSkipper = 1;
 
@@ -929,6 +935,79 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     
     require('electron').ipcRenderer.on('filepaths-skybox', (event, message) => {
         processSkyboxes(message, 'skybox');
+    });
+
+    ////////////////////////////////////////////////////////
+
+    // wallpaper-DISPLAY
+
+    const wallpaperoptionHolder = document.getElementById("wallpaperoptionHolder");
+
+    document.getElementById('wallpaperFolderButton').addEventListener('click', function() {
+        require('electron').ipcRenderer.send('openWallpaperFolder')
+    });
+
+    // wallpaper content + images
+
+    const wallpapercontent = document.createElement("div");
+    wallpapercontent.id = "wallpapercontent";
+    wallpapercontent.classList.add('wallpapercontent'); // if breaks try skincontent
+    wallpapercontent.style.background = optionColor;
+
+    document.getElementById('rightDiv').appendChild(wallpapercontent);
+
+    var wallpapercontentselector = document.getElementById('wallpapercontent');
+
+    const wallpaperflexSquare = document.createElement('img');
+    wallpaperflexSquare.style = 'width: 100px; height: 100px; border: 1px solid black; margin: 10px;';
+
+    // handle wallpaper
+    function wallpaperPathHandler(src) {
+        require('electron').ipcRenderer.send('filepath-wallpaper', src)
+    }
+
+    // get wallpaper
+
+    var wallpaperSkipper = 1;
+
+    function processWallpapers(wallpapers, id) {
+        console.log(wallpapers);
+        console.log(wallpapers.length);
+        
+        for (let i = 0; i < wallpapers.length; i++) {
+            let element;
+            if (skipper > 0) {
+                let wallpaperflexSquareClone = wallpaperflexSquare.cloneNode(true);
+                wallpaperflexSquareClone.setAttribute('src', wallpapers[i]);
+                wallpaperflexSquareClone.setAttribute('id', id);
+                element = wallpaperflexSquareClone;
+                wallpaperSkipper++;
+            } else {
+                wallpaperflexSquare.src = wallpapers[i];
+                wallpaperflexSquare.id = id;
+                element = wallpaperflexSquare;
+            }
+        
+            element.addEventListener('click', function() {
+                let src = this.getAttribute('src');
+                console.log("The source of the selected wallpaper is: " + src);
+
+                // message
+                document.getElementById('msgBoxText').innerHTML = "Wallpaper applied successfully...";
+                document.getElementById('msgBox').style.display = "initial";
+
+                setTimeout(function() {
+                    document.getElementById('msgBox').style.display = "none";
+                }, 2000);
+
+                wallpaperPathHandler(src);
+            });
+            wallpapercontentselector.appendChild(element);
+        }
+    }
+    
+    require('electron').ipcRenderer.on('filepaths-wallpaper', (event, message) => {
+        processWallpapers(message, 'wallpaper');
     });
 
     ////////////////////////////////////////////////////////
@@ -1216,18 +1295,19 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         "massCheckUncheckStatsOptionHolder",
         "fpsDisplayOptionHolder", 
         "pingDisplayOptionHolder", 
-        /*"onlineDisplayOptionHolder",*/ 
         "shortcutDisplayOptionHolder", 
         "skincontent", 
         "skyboxcontent", 
         "optionColorOptionHolder", 
         "behindOptionsColorOptionHolder", 
-        "menuHeaderColorOptionHolder", 
+        "menuHeaderColorOptionHolder",
         "skinButtonColorOptionHolder", 
         "opacityOptionHolder", 
         "windowBorderOptionHolder", 
         "skinCategoryoptionHolder", 
         "skyboxoptionHolder", 
+        "wallpaperoptionHolder",
+        "wallpapercontent",
         "shortcutOptionHolder", 
         "shortcutOptionHolder2", 
         "shortcutOptionHolder3", 
@@ -1245,7 +1325,6 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         "WASDDisplayOptionHolder",
         "AutoFullscreenOptionHolder", 
         "FullscreenOptionHolder",
-        //"chromiumFlagsOptionHolder", 
         "resetColorOptionHolder",
         "massCheckUncheckFlagsOptionHolder",
         "disable_print_previewOptionHolder",
@@ -1356,6 +1435,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         options.forEach(option => {
             document.getElementById(option).style.display = "none";
         });
+
         document.getElementById("skinCategoryoptionHolder").style.display = "block";
         document.getElementById("skincontent").style.display = "flex";
 
@@ -1369,8 +1449,23 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         options.forEach(option => {
             document.getElementById(option).style.display = "none";
         });
+
         document.getElementById("skyboxoptionHolder").style.display = "block";
         document.getElementById("skyboxcontent").style.display = "flex";
+
+        logo.style.display = "none";
+        version.style.display = "none";
+    });
+
+    document.getElementById("wallpaper").addEventListener("click", function() {
+        h2.innerHTML = 'Wallpaper <p style="color: red; font-size: 17px">ATTENTION: Need to restart client to apply wallpaper</p>'
+        
+        options.forEach(option => {
+            document.getElementById(option).style.display = "none";
+        });
+
+        document.getElementById("wallpaperoptionHolder").style.display = "block";
+        document.getElementById("wallpapercontent").style.display = "block";
 
         logo.style.display = "none";
         version.style.display = "none";

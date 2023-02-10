@@ -333,11 +333,13 @@ app.whenReady().then(() => {
         "/gunskins/awp",
         "/gunskins/vector",
         "/textures",
+        "/wallpapers",
         "/skyboxes",
         "/maps",
         "/maps/industry",
         "/maps/industry/out",
         "/maps/industry/out/compressedTextures",
+        "Resource Swapper/wallpapers", /* I know that it doesn't really make sense to put it here but yeah... please come up with a better structure lol */
         "Resource Swapper/textures",
         "Resource Swapper/maps",
         "Resource Swapper/maps/industry",
@@ -361,8 +363,13 @@ app.whenReady().then(() => {
       
         if (destFileName == "skybox.webp") {
           var folderPath = path.join(app.getPath("documents"), `Quasar-DSC/Resource Swapper/${folderName}/`);
+          var destPath = path.join(app.getPath("documents"), `Quasar-DSC/Resource Swapper/${folderName}/${destFileName}`);
+        } else if (destFileName == "wallpaper.png") {
+          var folderPath = path.join(app.getPath("documents"), `Quasar-DSC/Resource Swapper/${folderName}/`);
+          var destPath = path.join(app.getPath("documents"), `Quasar-DSC/Resource Swapper/${folderName}/${destFileName}`);
         } else {
           var folderPath = path.join(app.getPath("documents"), `Quasar-DSC/Resource Swapper/weapons/${folderName}/`);
+          var destPath = path.join(app.getPath("documents"), `Quasar-DSC/Resource Swapper/weapons/${folderName}/${destFileName}`);
         }
 
         console.log(`from: ${message} to ${folderPath}`);
@@ -393,12 +400,6 @@ app.whenReady().then(() => {
           });
         });
       
-        if (destFileName == "skybox.webp") {
-          var destPath = path.join(app.getPath("documents"), `Quasar-DSC/Resource Swapper/${folderName}/${destFileName}`);
-        } else {
-          var destPath = path.join(app.getPath("documents"), `Quasar-DSC/Resource Swapper/weapons/${folderName}/${destFileName}`);
-        }
-      
         fs.copyFile(srcPath, destPath, (err) => {
           if (err) {
             console.error(err);
@@ -414,7 +415,8 @@ app.whenReady().then(() => {
         'filepath-awp': ['awp', 'newawpcomp.webp'],
         'filepath-ar2': ['ar2', 'arcomp.webp'],
         'filepath-vector': ['vector', 'vectorcomp.webp'],
-        'filepath-skybox': ['textures', 'skybox.webp']
+        'filepath-skybox': ['textures', 'skybox.webp'],
+        'filepath-wallpaper': ['wallpapers', 'wallpaper.png']
       };
       
       Object.keys(filepathHandlers).forEach(eventName => {
@@ -428,6 +430,9 @@ app.whenReady().then(() => {
       });
       ipcMain.on('openSkyboxFolder', (event, file) => {
         spawn('explorer.exe', [path.join(app.getPath("documents"), "Quasar-DSC/skyboxes")]);
+      });
+      ipcMain.on('openWallpaperFolder', (event, file) => {
+        spawn('explorer.exe', [path.join(app.getPath("documents"), "Quasar-DSC/wallpapers")]);
       });
       ipcMain.on('openTexturePackFolder', (event, file) => {
         spawn('explorer.exe', [path.join(app.getPath("documents"), "Quasar-DSC/Resource Swapper")]);
@@ -546,6 +551,12 @@ app.whenReady().then(() => {
             path.join(app.getPath("documents"), "Quasar-DSC/skyboxes"),
             ".webp",
             "filepaths-skybox"
+          )
+
+          readDirectory(
+            path.join(app.getPath("documents"), "Quasar-DSC/wallpapers"),
+            ".png",
+            "filepaths-wallpaper"
           )
         }
       });
