@@ -4,7 +4,7 @@ const fs = require('fs');
 document.addEventListener("DOMContentLoaded", function() {
 
 //Receive user datapath and save as variable
-require('electron').ipcRenderer.on('SendUserData', (event, message) => {
+require('electron').ipcRenderer.on('SendUserData', (event, message, client_version) => {
 
     const jsonpath = message;
     console.log(jsonpath);
@@ -13,9 +13,8 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     let jsonobj = JSON.parse(fs.readFileSync(jsonpath, 'utf8'));
     console.log(jsonobj);
 
-    // Colors (Now with JSON)
+    // Defining the color variables for later use
     var menuHeaderColor = jsonobj.Colors.menuHeaderColor; //"#2a394f";
-    //var optionsColor = jsonobj.Colors.optionsColor; //"#364760";
     var behindOptionsColor = jsonobj.Colors.behindOptionsColor; //"#2a394f";
     var skinButtonColor = jsonobj.Colors.skinButtonColor; //"#364760";
     var skinButtonHoverColor = jsonobj.Colors.skinButtonHoverColor; //"#0798fc";
@@ -25,6 +24,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     var skinWrapperBorderRadius = jsonobj.Colors.skinWrapperBorderRadius; //"10";
     var msgBoxColor = jsonobj.Colors.msgBoxColor; //"#2a394f";
 
+    // fix ugly scrollbars
     let scrollcss = document.createElement('style');
     scrollcss.innerText = `
     ::-webkit-scrollbar { width: 8px; height: 3px;}
@@ -35,9 +35,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     ::-webkit-resizer { background-color: #666;}`;
     document.head.appendChild(scrollcss);
 
-    // draggable window | make all of this easier with modules -> https://stackoverflow.com/questions/950087/how-do-i-include-a-javascript-file-in-another-javascript-file
-
-    // wrapper
+    // constructing base of the menu
     const skinWrapper = document.createElement('div');
     skinWrapper.className = 'skinwrapper';
     skinWrapper.id = "skinWrapper";
@@ -49,7 +47,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         <div id="rightDiv" style="float: right; width: 60%; height: 263px; overflow: scroll; overflow-x: hidden; overflow-y: auto;">
             <h2 id="h2" style="text-align: center; margin: 10px 0 10px 0;">Option Name</h2>
             <h2 id="logo" style="font-family: 'Aquire', sans-serif; text-align: center; color: white; font-size: 75px; margin-top: 30px;">Quasar<br></h2>
-            <h2 id="version" style="font-family: 'Aquire', sans-serif; text-align: center; color: white; font-size: 17.5px;">v1.0 - PUBLIC</h2> <!-- get that stuff auto later -->
+            <h2 id="version" style="font-family: 'Aquire', sans-serif; text-align: center; color: white; font-size: 17.5px;">v${client_version} - PUBLIC</h2>
             <div id="skinCategoryoptionHolder" class="optionholder">
                 <div style="display: flex; justify-content: center;"> <!-- use classes later -->
                     <button class="skinCategory" id="allButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;">All</button>
@@ -87,7 +85,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     const logo = document.getElementById('logo');
     const version = document.getElementById('version');
 
-    // menu tab buttons
+    // menu tabs
     const buttonData = [
         { text: 'Home', id: 'allOptions' },
         { text: 'General', id: 'general' },
@@ -100,12 +98,9 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         { text: 'Aimbot', id: 'aimbot' },
         { text: 'Color Settings', id: 'colorsettings' },
         { text: 'Chromium Flags', id: 'chromiumflags' },
-        /*{ text: 'RPC Settings', id: 'rpcsettings' },
-        { text: 'Dev Settings', id: 'devsettings' },
-        { text: 'Custom CSS', id: 'customcss' },
-        { text: 'Default Settings', id: 'defaultsettings' }*/
     ];
     
+    // for each menu tab -> create
     buttonData.forEach(button => {
         const optionButton = document.createElement('button');
         optionButton.className = 'skinbutton';
@@ -117,8 +112,8 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
     // doesn't work, also the code is trash tbh
     let skinclosebutton = document.getElementById("skinclose");
     skinclosebutton.addEventListener("click", function() {
-        let skinWrapper = document.getElementById("skinWrapper");
-        skinWrapper.style.display = "none";
+        console.log("closed");
+        // call to main here to close / minimize (don't set display to none lol)
     });
 
     // drag code
@@ -153,8 +148,18 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         }
     }
 
-    // Display options
+    // create message box
+    const msgBoxWrapper = document.createElement('div');
+    msgBoxWrapper.style = "position: absolute; width: 100%; z-index: 1001; display: flex; justify-content: center; align-items: center; margin-top: 10px;"
+    msgBoxWrapper.id = "msgBoxWrapper"
+    msgBoxWrapper.innerHTML = `
+        <div id="msgBox" style="background: ${msgBoxColor}; text-align: center; z-index: 1001; border-radius: 10px; font-size: 20px; color: white; display: none;">
+            <p id="msgBoxText" style='line-height: 2.2; width: 325px; height: 45px; border: 1px solid black;'></p>
+        </div>
+    `;
+    document.body.appendChild(msgBoxWrapper);
 
+    // options with checkboxes
     const optionList = [
     {
         holderId: "massCheckUncheckStatsOptionHolder",
@@ -201,11 +206,6 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         descrText: "Uptime",
         checkId: "uptimeDisplayCheck",
     },
-    /*{
-        holderId: "onlineDisplayOptionHolder",
-        descrText: "Network Status",
-        checkId: "onlineDisplayCheck",
-    },*/
     {
         holderId: "shortcutDisplayOptionHolder",
         descrText: "Show Shortcuts",
@@ -226,11 +226,6 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         descrText: "Fullscreen [F11]",
         checkId: "FullscreenCheck",
     },
-    /*{
-        holderId: "chromiumFlagsOptionHolder",
-        descrText: "Chromium Flags",
-        checkId: "chromiumFlagsCheck",
-    },*/
     {
         holderId: "massCheckUncheckFlagsOptionHolder",
         descrText: "Check / Un-Check all",
@@ -291,14 +286,14 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         descrText: "Show RPC",
         checkId: "RPCCheck",
     },
+    {
+        holderId: "SplashOptionHolder",
+        descrText: "Old Splash",
+        checkId: "OldSplashCheck",
+    },
     ];
-      
-    const optionHr = document.createElement('hr');
-    const optionSpaceThing = document.createTextNode(' ');
 
-    const hrfix = document.createElement('hr');
-    hrfix.style.backgroundColor = optionColor;
-
+    // create those checkbox options
     for (const option of optionList) {
         // holds the sub-options
         const optionHolder = document.createElement('div');
@@ -316,6 +311,8 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         optionCheck.id = option.checkId;
         optionCheck.style.float = "right";
         
+        // putting the elements together
+        // I am using an <hr> bc it completely breaks without
         optionHolder.innerHTML = `
             ${optionDescr.outerHTML}
             ${optionCheck.outerHTML}
@@ -325,7 +322,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         rightDiv.appendChild(optionHolder);
     }
 
-    // Checkbox State and function saving to JSON
+    // Check if those checkboxes change and if -> execute action + save to JSON
     
     massCheckUncheckStatsCheck.addEventListener('change', e => {
         if(e.target.checked){
@@ -390,6 +387,9 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         }
     });
 
+    // [IMPORTANT] you see how we set the value with getElementById but then
+    // add an event listener via the var? The element isn't created yet (don't ask why), 
+    //we could probably put the code at a lower point but I don't care. Maybe later.
     document.getElementById("fpsDisplayCheck").checked = jsonobj.Stats.FPS;
     fpsDisplayCheck.addEventListener('change', e => {
         if(e.target.checked){
@@ -400,20 +400,6 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         }
     });
-    
-    /*document.getElementById("onlineDisplayCheck").checked = jsonobj.Stats.Online;
-    onlineDisplayCheck.addEventListener('change', e => {
-        if(e.target.checked){
-            status.style.display = "block";
-            jsonobj.Stats.Online = true;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-
-        } else {
-            status.style.display = "none";
-            jsonobj.Stats.Online = false;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        }
-    });*/
 
     document.getElementById("shortcutDisplayCheck").checked = jsonobj.Stats.Shortcuts;
     shortcutDisplayCheck.addEventListener('change', e => {
@@ -542,33 +528,6 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         }
     });
-
-    /*document.getElementById("chromiumFlagsCheck").checked = jsonobj.Flags;
-    chromiumFlagsCheck.addEventListener('change', e => {
-        if(e.target.checked){
-            jsonobj.Flags.Print = true;
-            jsonobj.Flags.Harmony = true;
-            jsonobj.Flags.Limit = true;
-            jsonobj.Flags.Contexts = true;
-            jsonobj.Flags.GPUblocklist = true;
-            jsonobj.Flags.CanvasClip = true;
-            jsonobj.Flags.Logging = true;
-            jsonobj.Flags.ProcessGPU = true;
-            jsonobj.Flags.AcceleratedCanvas = true;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        } else {
-            jsonobj.Flags.Print = false;
-            jsonobj.Flags.Harmony = false;
-            jsonobj.Flags.Limit = false;
-            jsonobj.Flags.Contexts = false;
-            jsonobj.Flags.GPUblocklist = false;
-            jsonobj.Flags.CanvasClip = false;
-            jsonobj.Flags.Logging = false;
-            jsonobj.Flags.ProcessGPU = false;
-            jsonobj.Flags.AcceleratedCanvas = false;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        }
-    });*/
 
     massCheckUncheckFlagsCheck.addEventListener('change', e => {
         if(e.target.checked){
@@ -737,19 +696,32 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         }
     });
 
-    // SKIN-DISPLAY
-    // hide and show skins on click
+    document.getElementById("OldSplashCheck").checked = !jsonobj.Splash.new;
+    OldSplashCheck.addEventListener('change', e => {
+        if(e.target.checked){
+            jsonobj.Splash.new = false;
+            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
+        } else {
+            jsonobj.Splash.new = true;
+            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
+        }
+    });
 
+    // Skin-Preview loading
+    
+    // hide and show skins on click (menu selection)
     function toggleSkins(displayType) {
+        // don't even consider taking them outside of here
         const awpSkins = document.getElementById("awp");
         const ar2Skins = document.getElementById("ar2");
         const vectorSkins = document.getElementById("vector");
-        
+
         awpSkins.style.display = displayType;
         ar2Skins.style.display = displayType;
         vectorSkins.style.display = displayType;
     }
 
+    // set which button shows which skins
     document.getElementById('allButton').addEventListener('click', function() {
         const allSkins = document.querySelectorAll('#awp, #ar2, #vector');
         allSkins.forEach((skin) => {
@@ -771,30 +743,16 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         toggleSkins("none");
         vectorSkins.style.display = "initial";
     });
+    // this one is pretty self explaining
     document.getElementById('skinFolderButton').addEventListener('click', function() {
         require('electron').ipcRenderer.send('openSkinFolder')
     });
 
-    // create message boxes
-
-    const msgBoxWrapper = document.createElement('div');
-    msgBoxWrapper.style = "position: absolute; width: 100%; z-index: 1001; display: flex; justify-content: center; align-items: center; margin-top: 10px;"
-    msgBoxWrapper.id = "msgBoxWrapper"
-    msgBoxWrapper.innerHTML = `
-        <div id="msgBox" style="background: ${msgBoxColor}; text-align: center; z-index: 1001; border-radius: 10px; font-size: 20px; color: white; display: none;">
-            <p id="msgBoxText" style='line-height: 2.2; width: 325px; height: 45px; border: 1px solid black;'></p>
-        </div>
-    `;
-    document.body.appendChild(msgBoxWrapper);
-
-    // skin content + images
-
+    // skin preview images are getting created here
     const skincontent = document.getElementById("skincontent");
 
-    const flexSquare = document.createElement('img');
-    flexSquare.style = 'width: 100px; height: 100px; border: 1px solid black; margin: 10px;';
-
-    // handle skins
+    // handle skins | if you click on a skin this is called
+    // it tells the main.js which skin needs to be placed into the swapper
     function skinPathHandlerAwp(src) {
         require('electron').ipcRenderer.send('filepath-awp', src)
     }
@@ -805,7 +763,11 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         require('electron').ipcRenderer.send('filepath-vector', src)
     }
 
-    // get skins -> they all override awp atm fix later
+    // create skin elements
+
+    // this is the base of each skin element (don't ask about the name)
+    const flexSquare = document.createElement('img');
+    flexSquare.style = 'width: 100px; height: 100px; border: 1px solid black; margin: 10px;';
 
     var skipper = 1;
 
@@ -831,7 +793,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
                 let src = this.getAttribute('src');
                 console.log("The source of the selected skin is: " + src);
 
-                // message
+                // display message box
                 document.getElementById('msgBoxText').innerHTML = "Skin applied successfully...";
                 document.getElementById('msgBox').style.display = "initial";
 
@@ -851,22 +813,24 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         }
     }
     
+    // each skin path is received here, then the function above is called
+    // to create the different skin elements. Message (skins) is an array that contains
+    // each skin path with that specific type. The number (handler) defines the type of 
+    // the skins and the id also (don't ask why, I probably had my reasons).
     require('electron').ipcRenderer.on('filepaths-awp', (event, message) => {
         processSkins(message, 1, 'awp');
-        //skinPathHandlerAwp(src);
     });
     require('electron').ipcRenderer.on('filepaths-ar2', (event, message) => {
         processSkins(message, 2, 'ar2');
-        //skinPathHandlerAr2(src);
     });
     require('electron').ipcRenderer.on('filepaths-vector', (event, message) => {
         processSkins(message, 3, 'vector');
-        //skinPathHandlerVector(src);
     });
 
     ////////////////////////////////////////////////////////
 
-    // SKYBOX-DISPLAY
+    // Skybox-Preview loading | it works the same as the skins above
+    // maybe I could merge them one day... or I just let it be... idk
 
     const skyboxoptionHolder = document.getElementById("skyboxoptionHolder");
 
@@ -878,7 +842,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
 
     const skyboxcontent = document.createElement("div");
     skyboxcontent.id = "skyboxcontent";
-    skyboxcontent.classList.add('skyboxcontent'); // if breaks try skincontent
+    skyboxcontent.classList.add('skyboxcontent');
     skyboxcontent.style.background = optionColor;
 
     document.getElementById('rightDiv').appendChild(skyboxcontent);
@@ -1012,13 +976,15 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
 
     ////////////////////////////////////////////////////////
 
-    // COLOR-DISPLAY Settings
+    // Options with input fields (maybe I could but them near the checkbox options...)
 
+    // arrays to store everything
     const optionholders = [];
     const optiondescrs = [];
     const optioninputs = [];
     const optionhrs = [];
 
+    // summed up the element creation to simplify it a bit
     const createElement = (type, className, id, innerText) => {
         const element = document.createElement(type);
         element.className = className;
@@ -1027,8 +993,10 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         return element;
     };
 
+    // idk what that was for but ita probably important
     let keyNumber = 1;
 
+    // function to create the options with input fields
     const createOptionHolder = (id, descrText, inputId) => {
         const optionHolder = createElement('div', 'optionholder', id, '');
         const optionDescr = createElement('p', 'optiondescr', '', descrText);
@@ -1037,17 +1005,14 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         if (id == "texturePackOptionHolder") {
             optionInput.type = 'button'; // normally I wouldn't do this, just so I can make it more efficient
             optionInput.value = 'Open Folder';
-            //optionInput.placeholder = '';
             optionInput.style.width = '110px';
         } else if (id == "downloadTexturePackOptionHolder") {
             optionInput.type = 'button';
             optionInput.value = 'Download Pack';
-            //optionInput.placeholder = '';
             optionInput.style.width = '110px';
         } else if (id == "resetColorOptionHolder") {
             optionInput.type = 'button';
             optionInput.value = 'Reset Color';
-            //optionInput.placeholder = '';
             optionInput.style.width = '110px';
         } else {
             optionInput.type = 'text';
@@ -1089,6 +1054,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
             optionInput.placeholder = 'e.g. #2a394f';
         }
 
+        // pushing to the arrays
         optionholders.push(optionHolder);
         optiondescrs.push(optionDescr);
         optioninputs.push(optionInput);
@@ -1096,25 +1062,28 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
 
         optionHolder.appendChild(optionDescr);
         optionHolder.appendChild(optionInput);
-        optionHolder.appendChild(optionSpaceThing);
         optionHolder.appendChild(optionHr);
     };
 
+    // defining the options with input fields (I could put them into an array and to for each later...)
     createOptionHolder('resetColorOptionHolder', 'Reset Color', 'resetColorOptionInput');
 
-    // color
+    // customisation
     createOptionHolder('menuHeaderColorOptionHolder', 'Header Color', 'menuHeaderColorOptionInput');
     createOptionHolder('optionColorOptionHolder', 'Option Color', 'optionColorOptionInput');
     createOptionHolder('behindOptionsColorOptionHolder', 'Behind-Options Color', 'behindOptionsColorOptionInput');
     createOptionHolder('skinButtonColorOptionHolder', 'Skin Button Color', 'skinButtonColorOptionInput');
     createOptionHolder('opacityOptionHolder', 'Opacity', 'opacityOptionInput');
-
     createOptionHolder('windowBorderOptionHolder', 'Window Border', 'windowBorderOptionInput');
+    
+    // shortcuts
     createOptionHolder('shortcutOptionHolder', 'Shortcut Option [1]', 'shortcutOptionInput');
     createOptionHolder('shortcutOptionHolder2', 'Shortcut Option [2]', 'shortcutOptionInput2');
     createOptionHolder('shortcutOptionHolder3', 'Shortcut Option [3]', 'shortcutOptionInput3');
     createOptionHolder('shortcutOptionHolder4', 'Shortcut Option [4]', 'shortcutOptionInput4');
     createOptionHolder('shortcutOptionHolder5', 'Shortcut Option [5]', 'shortcutOptionInput5');
+
+    // Misc
     createOptionHolder('texturePackOptionHolder', 'Texture Pack', 'texturePackOptionInput');
     createOptionHolder('downloadTexturePackOptionHolder', 'Download QUASAR Pack', 'downloadTexturePackOptionInput');
     createOptionHolder('RPCTextOptionHolder', 'RPC Text', 'rpcOptionInput');
@@ -1123,7 +1092,15 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         rightDiv.appendChild(holder);
     });
 
-    // get the shortcut values to later reuse
+    // customisation setting values
+    menuHeaderColorOptionInput.value = jsonobj.Colors.menuHeaderColor;
+    behindOptionsColorOptionInput.value = jsonobj.Colors.behindOptionsColor;
+    skinButtonColorOptionInput.value = jsonobj.Colors.skinButtonColor;
+    optionColorOptionInput.value = jsonobj.Colors.optionColor;
+    opacityOptionInput.value = jsonobj.Colors.opacity;
+    windowBorderOptionInput.value = jsonobj.Colors.skinWrapperBorderRadius;
+
+    // get the shortcut values
     const one = document.getElementsByName('shortcutOptionInput')[0].id;
     const two = document.getElementsByName('shortcutOptionInput2')[0].id;
     const three = document.getElementsByName('shortcutOptionInput3')[0].id;
@@ -1150,6 +1127,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
 
     const inputs = ['shortcutOptionInput', 'shortcutOptionInput2', 'shortcutOptionInput3', 'shortcutOptionInput4', 'shortcutOptionInput5'];
 
+    // shortcut creation
     inputs.forEach((input, index) => {
     const element = document.getElementsByName(input)[0];
         element.addEventListener('change', function() {
@@ -1188,7 +1166,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         });
     });
 
-    //Color Customizations
+    // If input changes -> apply action + save to JSON
     menuHeaderColorOptionInput.addEventListener('change', function() {
         menuHeaderColor = menuHeaderColorOptionInput.value;
         jsonobj.Colors.menuHeaderColor = menuHeaderColorOptionInput.value;
@@ -1222,13 +1200,11 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         jsonobj.Colors.skinButtonColor = skinButtonColorOptionInput.value;
         fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         console.log(skinButtonColor);
-        //skinbutton.style.background = skinButtonColor; - its a class, won't work
 
         var skinbuttons = document.getElementsByClassName("skinbutton");
 
         for (var i = 0; i < skinbuttons.length; i++) {
             skinbuttons[i].style.backgroundColor = skinButtonColor; // kind of breaks hover effect
-            //skinbuttons[i].style = "button:hover {background-color: #ff0000;}"; // nope
         }
     });
 
@@ -1256,8 +1232,6 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         window.open("https://github.com/jcjms/Quasar-Template/archive/refs/heads/main.zip", "Texturepack Download", "height=500,width=500");
     });
 
-    
-    //Color Reset Button
     resetColorOptionInput.addEventListener("click", function() {
     
         var menuHeaderColor = "#232429";
@@ -1289,7 +1263,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         console.log(skinWrapperBorderRadius);
     });
 
-    // options
+    // List of *all* options to show them in the different menu tabs (enable / disable)
     
     const options = [
         "massCheckUncheckStatsOptionHolder",
@@ -1338,98 +1312,109 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         "disable_accelerated_2d_canvasOptionHolder",
         "debugOptionHolder",
         "RPCDisplayOptionHolder",
+        "SplashOptionHolder",
     ];
-    
-    menuHeaderColorOptionInput.value = jsonobj.Colors.menuHeaderColor;
-    behindOptionsColorOptionInput.value = jsonobj.Colors.behindOptionsColor;
-    skinButtonColorOptionInput.value = jsonobj.Colors.skinButtonColor;
-    optionColorOptionInput.value = jsonobj.Colors.optionColor;
-    opacityOptionInput.value = jsonobj.Colors.opacity;
-    windowBorderOptionInput.value = jsonobj.Colors.skinWrapperBorderRadius;
 
     // default title
     h2.innerHTML = "Home";
 
+    // hide all options on default (home menu)
     options.forEach(option => {
         document.getElementById(option).style.display = "none";
     });
 
+    // makes it less repetetive
+    function hideLogoAndVersion() {
+        logo.style.display = "none";
+        version.style.display = "none";
+    }
+
     document.getElementById("allOptions").addEventListener("click", function() {
+        // title
         h2.innerHTML = "Home";
+
+        // hide everything
         options.forEach(option => {
             document.getElementById(option).style.display = "none";
         });
+
+        // show everything thats needed
         logo.style.display = "block";
         version.style.display = "block";
     });
 
     document.getElementById("general").addEventListener("click", function() {
         h2.innerHTML = "General";
+
         options.forEach(option => {
             document.getElementById(option).style.display = "none";
         });
 
-        // just don't ask 💀, everything will be fine
-        const y = [];
+        const elements = [
+            "WASDDisplayOptionHolder",
+            "AutoFullscreenOptionHolder",
+            "FullscreenOptionHolder",
+            "RPCDisplayOptionHolder",
+            "RPCTextOptionHolder"
+        ];
 
-        for (let i = 0; i < options.length; i++) {
-            if (options[i].includes("WASDDisplayOptionHolder") || options[i].includes("AutoFullscreenOptionHolder") || options[i].includes("FullscreenOptionHolder")) {
-                y.push(options[i]);
-            }
-        }
-
-        document.getElementById("RPCDisplayOptionHolder").style.display = "block";
-        document.getElementById("RPCTextOptionHolder").style.display = "block";
-
-        y.forEach(option => {
-            document.getElementById(option).style.display = "block";
+        elements.forEach(function(element) {
+            document.getElementById(element).style.display = "block";
         });
 
-        logo.style.display = "none";
-        version.style.display = "none";
+        hideLogoAndVersion()
     });
 
     document.getElementById("stats").addEventListener("click", function() {
         h2.innerHTML = "Stats";
+
         options.forEach(option => {
             document.getElementById(option).style.display = "none";
         });
 
-        const y = [];
+        const elements = [
+            "massCheckUncheckStatsOptionHolder",
+            "fpsDisplayOptionHolder",
+            "pingDisplayOptionHolder",
+            "platformDisplayOptionHolder",
+            "cpuUsageDisplayOptionHolder",
+            "memoryUsageDisplayOptionHolder",
+            "totalMemoryDisplayOptionHolder",
+            "cpuCoresDisplayOptionHolder",
+            "uptimeDisplayOptionHolder",
+        ];
 
-        for (let i = 0; i < options.length; i++) {
-            if (options[i].includes("massCheckUncheckStatsOptionHolder") || options[i].includes("fpsDisplayOptionHolder") || options[i].includes("pingDisplayOptionHolder") || options[i].includes("platformDisplayOptionHolder") || options[i].includes("cpuUsageDisplayOptionHolder") || options[i].includes("memoryUsageDisplayOptionHolder") || options[i].includes("totalMemoryDisplayOptionHolder") || options[i].includes("cpuCoresDisplayOptionHolder") || options[i].includes("uptimeDisplayOptionHolder")) {
-                y.push(options[i]);
-            }
-        }
-
-        y.forEach(option => {
-            document.getElementById(option).style.display = "block";
+        elements.forEach(function(element) {
+            document.getElementById(element).style.display = "block";
         });
 
-        logo.style.display = "none";
-        version.style.display = "none";
+        hideLogoAndVersion()
     });
 
     document.getElementById("shortcuts").addEventListener("click", function() {
         h2.innerHTML = "Shortcuts";
+
         options.forEach(option => {
             document.getElementById(option).style.display = "none";
         });
-        
-        document.getElementById("shortcutDisplayOptionHolder").style.display = "block";
-        document.getElementById("shortcutOptionHolder").style.display = "block";
-        document.getElementById("shortcutOptionHolder2").style.display = "block";
-        document.getElementById("shortcutOptionHolder3").style.display = "block";
-        document.getElementById("shortcutOptionHolder4").style.display = "block";
-        document.getElementById("shortcutOptionHolder5").style.display = "block";
 
-        logo.style.display = "none";
-        version.style.display = "none";
+        const elements = [
+            "shortcutDisplayOptionHolder",
+            "shortcutOptionHolder",
+            "shortcutOptionHolder2",
+            "shortcutOptionHolder3",
+            "shortcutOptionHolder4",
+            "shortcutOptionHolder5",
+        ];
+
+        elements.forEach(function(element) {
+            document.getElementById(element).style.display = "block";
+        });
+
+        hideLogoAndVersion()
     });
 
     document.getElementById("skinmenu").addEventListener("click", function() {
-        //h2.innerHTML = 'Skins <button id="reload">Reload</button>';
         h2.innerHTML = 'Skins <p style="color: red; font-size: 17px">ATTENTION: Need to restart client to apply skins</p>'
         
         options.forEach(option => {
@@ -1439,8 +1424,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         document.getElementById("skinCategoryoptionHolder").style.display = "block";
         document.getElementById("skincontent").style.display = "flex";
 
-        logo.style.display = "none";
-        version.style.display = "none";
+        hideLogoAndVersion()
     });
 
     document.getElementById("skyboxes").addEventListener("click", function() {
@@ -1453,8 +1437,18 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         document.getElementById("skyboxoptionHolder").style.display = "block";
         document.getElementById("skyboxcontent").style.display = "flex";
 
-        logo.style.display = "none";
-        version.style.display = "none";
+        hideLogoAndVersion()
+    });
+
+    document.getElementById("wallpaper").addEventListener("click", function() {
+        h2.innerHTML = 'Wallpaper <p style="color: red; font-size: 17px">ATTENTION: Need to restart client to apply wallpaper</p>'
+        
+        options.forEach(option => {
+            document.getElementById(option).style.display = "none";
+        });
+
+        hideLogoAndVersion()
+
     });
 
     document.getElementById("wallpaper").addEventListener("click", function() {
@@ -1477,11 +1471,11 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         options.forEach(option => {
             document.getElementById(option).style.display = "none";
         });
+
         document.getElementById("texturePackOptionHolder").style.display = "block";
         document.getElementById("downloadTexturePackOptionHolder").style.display = "block";
 
-        logo.style.display = "none";
-        version.style.display = "none";
+        hideLogoAndVersion()
     });
 
     document.getElementById("chromiumflags").addEventListener("click", function() {
@@ -1491,34 +1485,39 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
             document.getElementById(option).style.display = "none";
         });
 
-        const y = [];
+        const elements = [
+            "massCheckUncheckFlagsOptionHolder",
+            "disable_print_previewOptionHolder",
+            "javascript_harmonyOptionHolder",
+            "renderer_process_limitOptionHolder",
+            "max_active_webgl_contextsOptionHolder",
+            "ignore_gpu_blocklistOptionHolder",
+            "disable_2d_canvas_clip_aaOptionHolder",
+            "disable_loggingOptionHolder",
+            "in_process_gpuOptionHolder",
+            "disable_accelerated_2d_canvasOptionHolder"
+        ];
 
-        for (let i = 0; i < options.length; i++) {
-            if (options[i].includes("massCheckUncheckFlagsOptionHolder") || options[i].includes("disable_print_previewOptionHolder") || options[i].includes("javascript_harmonyOptionHolder") || options[i].includes("renderer_process_limitOptionHolder") || options[i].includes("max_active_webgl_contextsOptionHolder") || options[i].includes("ignore_gpu_blocklistOptionHolder") || options[i].includes("disable_2d_canvas_clip_aaOptionHolder") || options[i].includes("disable_loggingOptionHolder") || options[i].includes("in_process_gpuOptionHolder") || options[i].includes("disable_accelerated_2d_canvasOptionHolder")) {
-                y.push(options[i]);
-            }
-        }
-
-        y.forEach(option => {
-            document.getElementById(option).style.display = "block";
+        elements.forEach(function(element) {
+            document.getElementById(element).style.display = "block";
         });
 
-        logo.style.display = "none";
-        version.style.display = "none";
+        hideLogoAndVersion()
     });
     
     document.getElementById("aimbot").addEventListener("click", function() {
         h2.innerHTML = `<iframe width="100%" height="90%" src="https://bean-frog.github.io/yt5s.io-Rick%20Astley%20-%20Never%20Gonna%20Give%20You%20Up%20(Official%20Music%20Video).mp4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+        
         options.forEach(option => {
             document.getElementById(option).style.display = "none";
         });
 
-        logo.style.display = "none";
-        version.style.display = "none";
+        hideLogoAndVersion()
     });
 
     document.getElementById("colorsettings").addEventListener("click", function() {
         h2.innerHTML = "Color Settings";
+        
         options.forEach(option => {
             document.getElementById(option).style.display = "none";
         });
@@ -1531,8 +1530,21 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         document.getElementById("windowBorderOptionHolder").style.display = "block";
         document.getElementById("resetColorOptionHolder").style.display = "block";
 
-        logo.style.display = "none";
-        version.style.display = "none";
+        const elements = [
+            "optionColorOptionHolder",
+            "menuHeaderColorOptionHolder",
+            "behindOptionsColorOptionHolder",
+            "skinButtonColorOptionHolder",
+            "opacityOptionHolder",
+            "windowBorderOptionHolder",
+            "resetColorOptionHolder",
+        ];
+
+        elements.forEach(function(element) {
+            document.getElementById(element).style.display = "block";
+        });
+
+        hideLogoAndVersion()
     });
 
     let clickCount = 0;
@@ -1541,112 +1553,22 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         clickCount++;
         if (clickCount === 3) {
             h2.innerHTML = 'Dev Settings <p style="color: red; font-size: 17px">ATTENTION: Need to restart client to apply settings</p>'
+            
             options.forEach(option => {
                 document.getElementById(option).style.display = "none";
             });
-            document.getElementById("debugOptionHolder").style.display = "block";
 
-            logo.style.display = "none";
-            version.style.display = "none";
+            document.getElementById("debugOptionHolder").style.display = "block";
+            document.getElementById("SplashOptionHolder").style.display = "block";
+
+            hideLogoAndVersion()
             clickCount = 0;
         }
     });
 
-    /*document.getElementById("customcss").addEventListener("click", function() {
-        h2.innerHTML = "Custom CSS | doesn't work?";
-        options.forEach(option => {
-            document.getElementById(option).style.display = "none";
-        });
-        document.getElementById("customCSSOptionHolder").style.display = "";
-    });
-
-    document.getElementById("defaultsettings").addEventListener("click", function() {
-        alert("you have to create them first lol");
-    });*/
-
-    //customCSSOptionHolder
-
-    /*const optionHolder = document.createElement('div');
-    optionHolder.classList.add('optionholder');
-    optionHolder.id = 'customCSSOptionHolder';
-
-    const cssSubmitButtonWrapper = document.createElement('div');
-    cssSubmitButtonWrapper.style.display = 'flex';
-    cssSubmitButtonWrapper.style.justifyContent = 'center';
-
-    const cssTextarea = document.createElement('textarea');
-    cssTextarea.rows = 4;
-    cssTextarea.cols = 30;
-    cssTextarea.style.maxWidth = '100%';
-    cssTextarea.style.minWidth = '100%';
-    cssTextarea.placeholder = 'Paste your custom CSS here...';
-
-    const cssSubmit = document.createElement('button');
-    cssSubmit.innerHTML = "Apply CSS"
-    cssSubmit.style = "padding: 10px 12.5px 10px 12.5px;background-color: #364760;border: none;color: white;font-size: 20px;border: 1px solid black;";
-    cssSubmitButtonWrapper.appendChild(cssSubmit);
-
-    optionHolder.appendChild(cssTextarea);
-    optionHolder.appendChild(cssSubmitButtonWrapper);
-
-    document.getElementById('rightDiv').appendChild(optionHolder);*/
-
-    // onclick cssSubmit
-
-    const customCSS = "";
-
-    /*cssSubmit.addEventListener('click', function() {
-        customCSS = cssTextarea.value;
-        console.log(customCSS)
-    });*/
-
     // css
     let skincss = document.createElement('style');
-    skincss.innerText = "@import 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap';*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}body{overflow-y: hidden;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;}.titlebar{-webkit-user-select: none;-webkit-app-region: drag;}.skinwrapper{position:absolute;top:50%;left:50%;max-width:750px;width:100%;background:#232429;/* if I add menuHeaderColor it spawns at a different location lmao, but the color has to stay like that, else the menu is see trough under header*/transform:translate(-50%,-50%);border:solid 1px #000;color:#fff;height:335px;}.skinwrapper header{font-size:23px;font-weight:500;padding:17px 30px;border-bottom:1px solid #000;text-align:center;border-top-left-radius: 10px;border-top-right-radius: 10px;}.skinwrapper header.skinactive{cursor:move;user-select:none;}.skinwrapper .skincontent{display:flex;flex-direction:wrap;flex-wrap:wrap;justify-content:center;}.skincontent .title{margin:15px 0;font-size:29px;font-weight:500}.skincontent p{font-size:16px;text-align:center;display:flex}.skinbutton{width:100%;height:48px;background-color:" + skinButtonColor + ";border:none;color:#fff;font-size:20px}.skinbutton:hover{background-color:" + skinButtonHoverColor + "}.skinclose{color:grey;position:absolute;top:0;right:0;margin-right:15px;margin-top:-6px;background-color:" + skinCloseColor + ";border:none;font-size:35px}.skinclose:hover{color:#fff}p{font-size:20px}input[type=text]{float:right;margin:14px 25px 10px 0;font-weight:700;color:grey}input[type=range]{float:right;margin:16px 20px 10px 0}input[type=checkbox]{float:right;transform:scale(2);margin:14px 25px 5px 0;width:35px;font-weight:700;color:grey;}input[type=button]{float:right;margin:14px 25px 10px 0;}.optiondescr{float:left;margin:10px 0 10px 20px}.optionholder{background-color:" + optionColor + "; display: inline-block}hr{width:100%;border:.1px solid rgb(255, 27, 8, 0);}/*select{float:right;margin:14px 25px 10px 0;width:50px}*/.skinCategory:hover{background-color:#0798fc}/* doesn't work lol*/" + customCSS;
+    skincss.innerText = "@import 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap';*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}body{overflow-y: hidden;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;}.titlebar{-webkit-user-select: none;-webkit-app-region: drag;}.skinwrapper{position:absolute;top:50%;left:50%;max-width:750px;width:100%;background:#232429;/* if I add menuHeaderColor it spawns at a different location lmao, but the color has to stay like that, else the menu is see trough under header*/transform:translate(-50%,-50%);border:solid 1px #000;color:#fff;height:335px;}.skinwrapper header{font-size:23px;font-weight:500;padding:17px 30px;border-bottom:1px solid #000;text-align:center;border-top-left-radius: 10px;border-top-right-radius: 10px;}.skinwrapper header.skinactive{cursor:move;user-select:none;}.skinwrapper .skincontent{display:flex;flex-direction:wrap;flex-wrap:wrap;justify-content:center;}.skincontent .title{margin:15px 0;font-size:29px;font-weight:500}.skincontent p{font-size:16px;text-align:center;display:flex}.skinbutton{width:100%;height:48px;background-color:" + skinButtonColor + ";border:none;color:#fff;font-size:20px}.skinbutton:hover{background-color:" + skinButtonHoverColor + "}.skinclose{color:grey;position:absolute;top:0;right:0;margin-right:15px;margin-top:-6px;background-color:" + skinCloseColor + ";border:none;font-size:35px}.skinclose:hover{color:#fff}p{font-size:20px}input[type=text]{float:right;margin:14px 25px 10px 0;font-weight:700;color:grey}input[type=range]{float:right;margin:16px 20px 10px 0}input[type=checkbox]{float:right;transform:scale(2);margin:14px 25px 5px 0;width:35px;font-weight:700;color:grey;}input[type=button]{float:right;margin:14px 25px 10px 0;}.optiondescr{float:left;margin:10px 0 10px 20px}.optionholder{background-color:" + optionColor + "; display: inline-block}hr{width:100%;border:.1px solid rgb(255, 27, 8, 0);}/*select{float:right;margin:14px 25px 10px 0;width:50px}*/.skinCategory:hover{background-color:#0798fc}/* doesn't work lol*/";
     document.head.appendChild(skincss);
-
-    // shortcuts
-
-    /*var hidden = true;
-
-    document.body.addEventListener('keypress', (e) => {
-        if (e.key == '1') {
-            //const wrapperElement = document.getElementById("skinWrapper");
-            //wrapperElement.style.display = wrapperElement.style.display === "none" ? "" : "none";
-
-            // hide window bc if we set it to display = none the space is still used somehow
-            if (hidden) {
-                require('electron').ipcRenderer.send('showMenu')
-                hidden = false;
-            } else {
-                require('electron').ipcRenderer.send('hideMenu')
-                hidden = true;
-            }
-        }
-    });*/
-
-    // going through options via arrow keys
-    /*let currentOption = 0;
-    const hoverOptions = document.querySelectorAll(".skinbutton");
-
-    document.addEventListener("keydown", function(event) {
-    switch (event.key) {
-        case "ArrowUp":
-            event.preventDefault();
-            currentOption = currentOption > 0 ? currentOption - 1 : hoverOptions.length - 1;
-            hoverOptions[currentOption].focus();
-            break;
-        case "ArrowDown":
-            event.preventDefault();
-            currentOption = currentOption < hoverOptions.length - 1 ? currentOption + 1 : 0;
-            hoverOptions[currentOption].focus();
-            break;
-        case "ArrowRight":
-            document.getElementById(options[currentOption]).dispatchEvent(new Event("click"));
-            console.log(options[currentOption])
-            break;
-    }
-    });*/
-
 });
 });

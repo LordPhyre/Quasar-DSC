@@ -6,7 +6,6 @@ const os = require('os-utils');
 const swapper = require('./swapper.js');
 const request = require("request");
 const { spawn } = require('child_process');
-const client = require('discord-rich-presence')('1054074293975273594');
 
 app.setPath ('userData', (path.join(app.getPath('appData'), app.getName() + "-" + app.getVersion())));
 
@@ -78,6 +77,9 @@ if (!fs.existsSync(jsonpath)) {
     "RPC": {
       "show": true,
       "text": "Slapping noobs",
+    },
+    "Splash": {
+      "new": true,
     }
     };
 
@@ -92,6 +94,8 @@ let jsonobj = JSON.parse(fs.readFileSync(jsonpath, 'utf8'));
 console.log(jsonobj);
 
 if (jsonobj.RPC.show) {
+  const client = require('discord-rich-presence')('1054074293975273594');
+
   client.updatePresence({
     state: 'Quasar Client v.' + app.getVersion(),
     details: 'Using the Best Client',
@@ -143,37 +147,35 @@ app.whenReady().then(() => {
 
       // AUTO UPDATE CHECKER //
       setTimeout(function () {
-          
-            console.log("Checking for Update. Current version: " + app.getVersion());
-            autoUpdater.checkForUpdates();
-            splash.destroy();
-          
-          
-            //If Update exists, show message box
-            autoUpdater.on("update-available", (info) => {
-                
-                console.log("Update available.");
-                
-                const updateresponse = dialog.showMessageBoxSync({
-                    type: 'info',
-                    buttons: ['Yes', 'Cancel'],
-                    title: 'Update Available',
-                    cancelId: 99,
-                    message: 'A Quasar Update is currently available.\nDo you want to install it?',
-                });
-                
-                //If the user clicks the Update button
-                if (updateresponse === 0) {
-                    console.log("Update Chosen.");
-                    
-                    autoUpdater.downloadUpdate();
-                    autoUpdater.on("update-downloaded", (info) => { autoUpdater.quitAndInstall(); });
-                } else { console.log("Update cancelled") };
-        
-                autoUpdater.on("error", (info) => { console.log(info); });
+        console.log("Checking for Update. Current version: " + app.getVersion());
+        autoUpdater.checkForUpdates();
+        splash.destroy();
+      
+      
+        //If Update exists, show message box
+        autoUpdater.on("update-available", (info) => {
+            
+            console.log("Update available.");
+            
+            const updateresponse = dialog.showMessageBoxSync({
+                type: 'info',
+                buttons: ['Yes', 'Cancel'],
+                title: 'Update Available',
+                cancelId: 99,
+                message: 'A Quasar Update is currently available.\nDo you want to install it?',
             });
+            
+            //If the user clicks the Update button
+            if (updateresponse === 0) {
+                console.log("Update Chosen.");
+                
+                autoUpdater.downloadUpdate();
+                autoUpdater.on("update-downloaded", (info) => { autoUpdater.quitAndInstall(); });
+            } else { console.log("Update cancelled") };
+    
+            autoUpdater.on("error", (info) => { console.log(info); });
+        });
       }, 4500);
-        
         
       setTimeout(function () {
         win.show();
@@ -196,7 +198,12 @@ app.whenReady().then(() => {
     icon: "icon/logoicon.ico",	
   });
 
-  splash.loadFile('splash-screen/splash.html');
+  if (jsonobj.Splash.new) {
+    splash.loadFile('splash-screen/splash.html');
+  } else {
+    splash.loadFile('splash-screen/old_splash.html');
+  }
+  
   splash.center();
 
   // create offline screen
@@ -510,7 +517,7 @@ app.whenReady().then(() => {
       win.webContents.on('did-finish-load', () => {
         if (win) {
           win.webContents.send('SendUserData', jsonpath);
-          mainmenu.webContents.send('SendUserData', jsonpath);
+          mainmenu.webContents.send('SendUserData', jsonpath, app.getVersion());
 
           // send skin path function
           function readDirectory(dirPath, fileExtension, eventName) {

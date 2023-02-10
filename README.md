@@ -51,9 +51,8 @@ Good luck!
 - [ ] Gamma Editor
 - [ ] Instant-180
 - [ ] Leaderboard rewards 👀 [Textures]
-- [ ] Custom Client Keybinds
+- [ ] Custom Client Keybind Presets
 - [ ] Custom Resource Marketplace
-- [ ] Discord RPC
 - [ ] Custom Background/Wallpaper
 
 ### Known bugs 🚨🪲
@@ -112,7 +111,10 @@ Good luck!
 - Auto Fullscreen
 - Fully functioning JSON-Based Settings Saver (secure your settings)
 - Offline Screen
+- Discord RPC
+    - Custom Text
 - Dev Settings (3x click on version number)
     - Debug Mode
+    - Splash Screen Switcher
 
 #
