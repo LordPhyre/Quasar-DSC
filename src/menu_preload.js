@@ -1414,14 +1414,8 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
         hideLogoAndVersion()
     });
 
-    function reloadApplication() {
-        require('electron').ipcRenderer.send('reload');
-    }
-
     document.getElementById("skinmenu").addEventListener("click", function() {
-        h2.innerHTML = `Skins <button onClick="reloadApplication()">Apply Changes</button> // doesn't work`;
-        
-        // <p style="color: red; font-size: 17px">ATTENTION: Need to restart client to apply skins</p>
+        h2.innerHTML = `<p style="color: red; font-size: 17px">ATTENTION: Need to restart client to apply skins</p>`;
 
         options.forEach(option => {
             document.getElementById(option).style.display = "none";

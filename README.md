@@ -1,6 +1,6 @@
 # Quasar Deadshot Client `PUBLIC 1.0`
 
-Introducing the best client for [Deadshot.io](https://deadshot.io/) that exists and will ever exist ever!
+Introducing the best client for [Deadshot.io](https://deadshot.io/) that exists and will ever exist!
 
 #
 
