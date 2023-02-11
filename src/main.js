@@ -335,23 +335,15 @@ app.whenReady().then(() => {
 
       // create needed resource folders
       const foldersToCreate = [
-        "/gunskins",
-        "/gunskins/ar2",
-        "/gunskins/awp",
-        "/gunskins/vector",
-        "/textures",
-        "/wallpapers",
-        "/skyboxes",
-        "/maps",
-        "/maps/industry",
-        "/maps/industry/out",
-        "/maps/industry/out/compressedTextures",
-        "Resource Swapper/wallpapers", /* I know that it doesn't really make sense to put it here but yeah... please come up with a better structure lol */
+        "storage/gunskins",
+        "storage/gunskins/ar2",
+        "storage/gunskins/awp",
+        "storage/gunskins/vector",
+        "storage/textures",
+        "storage/wallpapers",
+        "storage/skyboxes",
+        "wallpapers",
         "Resource Swapper/textures",
-        "Resource Swapper/maps",
-        "Resource Swapper/maps/industry",
-        "Resource Swapper/maps/industry/out",
-        "Resource Swapper/maps/industry/out/compressedTextures",
         "Resource Swapper/weapons/ar2",
         "Resource Swapper/weapons/awp",
         "Resource Swapper/weapons/vector"
@@ -372,8 +364,8 @@ app.whenReady().then(() => {
           var folderPath = path.join(app.getPath("documents"), `Quasar-DSC/Resource Swapper/${folderName}/`);
           var destPath = path.join(app.getPath("documents"), `Quasar-DSC/Resource Swapper/${folderName}/${destFileName}`);
         } else if (destFileName == "wallpaper.png") {
-          var folderPath = path.join(app.getPath("documents"), `Quasar-DSC/Resource Swapper/${folderName}/`);
-          var destPath = path.join(app.getPath("documents"), `Quasar-DSC/Resource Swapper/${folderName}/${destFileName}`);
+          var folderPath = path.join(app.getPath("documents"), `Quasar-DSC/${folderName}/`);
+          var destPath = path.join(app.getPath("documents"), `Quasar-DSC/${folderName}/${destFileName}`);
         } else {
           var folderPath = path.join(app.getPath("documents"), `Quasar-DSC/Resource Swapper/weapons/${folderName}/`);
           var destPath = path.join(app.getPath("documents"), `Quasar-DSC/Resource Swapper/weapons/${folderName}/${destFileName}`);
@@ -433,13 +425,13 @@ app.whenReady().then(() => {
       });
 
       ipcMain.on('openSkinFolder', (event) => {
-        spawn('explorer.exe', [path.join(app.getPath("documents"), "Quasar-DSC/gunskins")]);
+        spawn('explorer.exe', [path.join(app.getPath("documents"), "Quasar-DSC/storage/gunskins")]);
       });
       ipcMain.on('openSkyboxFolder', (event, file) => {
-        spawn('explorer.exe', [path.join(app.getPath("documents"), "Quasar-DSC/skyboxes")]);
+        spawn('explorer.exe', [path.join(app.getPath("documents"), "Quasar-DSC/storage/skyboxes")]);
       });
       ipcMain.on('openWallpaperFolder', (event, file) => {
-        spawn('explorer.exe', [path.join(app.getPath("documents"), "Quasar-DSC/wallpapers")]);
+        spawn('explorer.exe', [path.join(app.getPath("documents"), "Quasar-DSC/storage/wallpapers")]);
       });
       ipcMain.on('openTexturePackFolder', (event, file) => {
         spawn('explorer.exe', [path.join(app.getPath("documents"), "Quasar-DSC/Resource Swapper")]);
@@ -450,15 +442,19 @@ app.whenReady().then(() => {
       ipcMain.on('disableFullscreen', (event, file) => {
         win.setFullScreen(false)
       });
+      ipcMain.on('reload', (event, file) => {
+        app.relaunch();
+        app.exit(0);
+      });
 
-      const openFolder = (folderName) => {
+      /*const openFolder = (folderName) => {
         ipcMain.on(folderName, (event) => {
           spawn('explorer.exe', [path.join(app.getPath("documents"), `Quasar-DSC/${folderName}`)]);
         });
       }
       openFolder('gunskins');
       openFolder('skyboxes');
-      openFolder('Resource Swapper');
+      openFolder('Resource Swapper');*/
 
       // Swapper -> Credits to Captain Cool 💪
 
@@ -551,20 +547,24 @@ app.whenReady().then(() => {
           const types = ["awp", "ar2", "vector"];
 
           types.forEach(type => {
-            readDirectory(path.join(app.getPath("documents"), `Quasar-DSC/gunskins/${type}`), ".webp", `filepaths-${type}`);
+            readDirectory(path.join(app.getPath("documents"), `Quasar-DSC/storage/gunskins/${type}`), ".webp", `filepaths-${type}`);
           });
 
           readDirectory(
-            path.join(app.getPath("documents"), "Quasar-DSC/skyboxes"),
+            path.join(app.getPath("documents"), "Quasar-DSC/storage/skyboxes"),
             ".webp",
             "filepaths-skybox"
           )
 
           readDirectory(
-            path.join(app.getPath("documents"), "Quasar-DSC/wallpapers"),
+            path.join(app.getPath("documents"), "Quasar-DSC/storage/wallpapers"),
             ".png",
             "filepaths-wallpaper"
           )
+
+          var wallpaperpath = path.join(app.getPath("documents"), "Quasar-DSC/wallpapers/wallpaper.png");
+          console.log(wallpaperpath);
+          win.webContents.send('wallpaper-path', wallpaperpath);
         }
       });
     }

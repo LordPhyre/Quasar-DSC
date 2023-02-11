@@ -6,6 +6,13 @@ document.addEventListener("DOMContentLoaded", function() {
 //Receive user datapath and save as variable
 require('electron').ipcRenderer.on('SendUserData', (event, message) => {
 
+    require('electron').ipcRenderer.on('wallpaper-path',(event,path) => {
+        // replace \ with / (doesn't work the other way)
+        var newPath = path.replace(/\\/g, "/");
+
+        // add the *working* bg code here pls use the newPath var with ${newPath}
+    });
+
     // read JSON values
     const jsonpath = message;
     console.log(jsonpath);
