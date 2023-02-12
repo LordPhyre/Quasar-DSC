@@ -13,10 +13,6 @@ ipcRenderer.on('SendUserData', (event, message) => {
         var newPath = path.replace(/\\/g, "/");
         console.log(newPath);
 
-        ipcRenderer.on('toggleFullscreen',(event,bool) => {
-            // glitches out on fullscreen shift, do something here
-        });
-
         const bgcss = document.createElement('style');
         bgcss.innerText = `            
                     html, body {
@@ -28,6 +24,22 @@ ipcRenderer.on('SendUserData', (event, message) => {
         const chat = document.querySelector("input[placeholder='[Enter] to use chat']");
 
         const bg_canvas = document.querySelector("body > canvas:nth-child(14)")
+
+        ipcRenderer.on('toggleFullscreen',() => {
+            bgcss.innerText = ``;
+            bg_canvas.style.display = "none";
+            ipcRenderer.send('doIt');
+        });
+
+        ipcRenderer.on('done',() => {
+            setTimeout(() => {console.log('1 second finished!')}, 1000);
+            bgcss.innerText = `            
+            html, body {
+                background: url("${newPath}") !important;
+                background-size: cover !important;
+            }`;
+            bg_canvas.style.display = "block";
+        });
 
         function readchatvisibility() {
             if (chat.style.visibility == "hidden") {
