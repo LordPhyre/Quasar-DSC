@@ -7,6 +7,8 @@ const swapper = require('./swapper.js');
 const request = require("request");
 const { spawn } = require('child_process');
 
+const fs_extra = require('fs-extra');
+
 app.setPath ('userData', (path.join(app.getPath('appData'), app.getName() + "-" + app.getVersion())));
 
 let win = null
@@ -80,7 +82,8 @@ if (!fs.existsSync(jsonpath)) {
     },
     "Splash": {
       "new": true,
-    }
+    },
+    "Startup" : 0,
     };
 
     fs.writeFileSync(jsonpath, JSON.stringify(jsonsettings));
@@ -343,10 +346,6 @@ app.whenReady().then(() => {
         "storage/wallpapers",
         "storage/skyboxes",
         "wallpapers",
-        "Resource Swapper/textures",
-        "Resource Swapper/weapons/ar2",
-        "Resource Swapper/weapons/awp",
-        "Resource Swapper/weapons/vector"
       ];
 
       foldersToCreate.forEach(folder => {
@@ -356,6 +355,47 @@ app.whenReady().then(() => {
         }
       });
 
+      // default texture pack | added startup counts for this bc it couldn't paste the files on folder creation
+
+      jsonobj.Startup++;
+      fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
+
+      if (jsonobj.Startup == 2) {
+        const source = path.join(__dirname, '/default_texture_pack');
+        const destination = path.join(app.getPath('documents'), 'Quasar-DSC/Resource Swapper');
+        
+        fs_extra.copy(source, destination, (err) => {
+          if (err) {
+            console.error(`Error copying file ${source} to ${destination}:`, err);
+            return;
+          }
+          console.log(`Successfully installed QUASAR texture pack`);
+        });
+      }
+
+      // paste default skins
+
+      function copyFile(sourceFilePath, destinationFilePath) {
+        fs.access(destinationFilePath, fs.constants.F_OK, (err) => {      
+          fs.copyFile(sourceFilePath, destinationFilePath, (err) => {
+            if (err) throw err;
+          });
+        });
+      }
+      
+      // could optimise this later by using a literal or sum
+      const sourceFilePath1 = path.join(__dirname, 'default_skins', 'ar_bake.webp');
+      const destinationFilePath1 = path.join(app.getPath("documents"), `Quasar-DSC/storage/gunskins/ar2/ar_bake.webp`);
+      copyFile(sourceFilePath1, destinationFilePath1);
+      
+      const sourceFilePath2 = path.join(__dirname, 'default_skins', 'smg_bake.webp');
+      const destinationFilePath2 = path.join(app.getPath("documents"), `Quasar-DSC/storage/gunskins/vector/smg_bake.webp`);
+      copyFile(sourceFilePath2, destinationFilePath2);
+
+      const sourceFilePath3 = path.join(__dirname, 'default_skins', 'awp_baseColor.webp');
+      const destinationFilePath3 = path.join(app.getPath("documents"), `Quasar-DSC/storage/gunskins/awp/awp_baseColor.webp`);
+      copyFile(sourceFilePath3, destinationFilePath3);
+      
       function handleFilepathEvent(event, message, folderName, destFileName) {
       
         const srcPath = message.toString();

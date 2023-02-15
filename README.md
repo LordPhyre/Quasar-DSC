@@ -19,6 +19,7 @@ Some of the CRAZY FEATURES in this client include:
 * **LordPhyre/skill:** Project Manager/Developer
 * **jcjms:** Lead Developer
 * **Classy08/Captain Cool:** Resource Swapper
+* **Armaccord#9846:** Official Quasar skins
 
 #
 
@@ -97,6 +98,7 @@ Good luck!
     - General Swapper Folder
     - Texture Pack Support
         - Small Quasar Texture Pack
+        - Custom Skins
 - Chromium Flags Support
     - disable-print-preview
     - javascript-harmony

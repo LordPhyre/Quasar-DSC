@@ -29,7 +29,8 @@
   "devDependencies": {
     "@electron-forge/cli": "^6.0.4",
     "electron": "^22.0.0",
-    "electron-builder": "^22.10.3"
+    "electron-builder": "^22.10.3",
+    "fs-extra": "^11.1.0"
   },
   "dependencies": {
     "dialog": "^0.3.1",

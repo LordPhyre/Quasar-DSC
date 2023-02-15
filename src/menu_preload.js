@@ -712,13 +712,20 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
     // hide and show skins on click (menu selection)
     function toggleSkins(displayType) {
         // don't even consider taking them outside of here
-        const awpSkins = document.getElementById("awp");
-        const ar2Skins = document.getElementById("ar2");
-        const vectorSkins = document.getElementById("vector");
+        const awpSkins = document.querySelectorAll("#awp");
+        const ar2Skins = document.querySelectorAll("#ar2");
+        const vectorSkins = document.querySelectorAll("#vector");
 
-        awpSkins.style.display = displayType;
-        ar2Skins.style.display = displayType;
-        vectorSkins.style.display = displayType;
+        // optimise this later by passing in the skin type that needs to be shown etc, no time rn
+        awpSkins.forEach(function(skin) {
+            skin.style.display = displayType;
+        });
+        ar2Skins.forEach(function(skin) {
+            skin.style.display = displayType;
+        });
+        vectorSkins.forEach(function(skin) {
+            skin.style.display = displayType;
+        });
     }
 
     // set which button shows which skins
@@ -729,19 +736,25 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
         });
     });
     document.getElementById('awpButton').addEventListener('click', function() {
-        const awpSkins = document.getElementById("awp");
+        const awpSkins = document.querySelectorAll("#awp");
         toggleSkins("none");
-        awpSkins.style.display = "initial";
+        awpSkins.forEach(function(skin) {
+            skin.style.display = "initial";
+        });
     });
     document.getElementById('ar2Button').addEventListener('click', function() {
-        const ar2Skins = document.getElementById("ar2");
+        const ar2Skins = document.querySelectorAll("#ar2");
         toggleSkins("none");
-        ar2Skins.style.display = "initial";
+        ar2Skins.forEach(function(skin) {
+            skin.style.display = "initial";
+        });
     });
     document.getElementById('vectorButton').addEventListener('click', function() {
-        const vectorSkins = document.getElementById("vector");
+        const vectorSkins = document.querySelectorAll("#vector");
         toggleSkins("none");
-        vectorSkins.style.display = "initial";
+        vectorSkins.forEach(function(skin) {
+            skin.style.display = "initial";
+        });
     });
     // this one is pretty self explaining
     document.getElementById('skinFolderButton').addEventListener('click', function() {
@@ -1414,14 +1427,8 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
         hideLogoAndVersion()
     });
 
-    function reloadApplication() {
-        require('electron').ipcRenderer.send('reload');
-    }
-
     document.getElementById("skinmenu").addEventListener("click", function() {
-        h2.innerHTML = `Skins <button onClick="reloadApplication()">Apply Changes</button> // doesn't work`;
-        
-        // <p style="color: red; font-size: 17px">ATTENTION: Need to restart client to apply skins</p>
+        h2.innerHTML = `Skins <p style="color: red; font-size: 17px">ATTENTION: Need to restart client to apply skins</p>`;
 
         options.forEach(option => {
             document.getElementById(option).style.display = "none";
