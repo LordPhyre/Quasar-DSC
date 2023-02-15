@@ -283,13 +283,19 @@ app.whenReady().then(() => {
       });
       globalShortcut.register('F11', () => {
         if (win.isFullScreen()) {
-          win.setFullScreen(false);
-          jsonobj.Fullscreen = false;
           win.webContents.send('toggleFullscreen',false);
+          ipcMain.on('doIt', (event) => {
+            win.setFullScreen(false);
+            jsonobj.Fullscreen = false;
+            win.webContents.send('done');
+          });
         } else {
-          win.setFullScreen(true);
-          jsonobj.Fullscreen = true;
           win.webContents.send('toggleFullscreen',true);
+          ipcMain.on('doIt', (event) => {
+            win.setFullScreen(true);
+            jsonobj.Fullscreen = true;
+            win.webContents.send('done');
+          });
         }
         fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
       });

@@ -1,16 +1,57 @@
 const fs = require('fs');
 //const {ipcRenderer} = require('electron'); doesn't work, idk why tbh
+const electron = require('electron');
+const ipcRenderer = electron.ipcRenderer; // apply that later to everything
 
 document.addEventListener("DOMContentLoaded", function() {
 
 //Receive user datapath and save as variable
-require('electron').ipcRenderer.on('SendUserData', (event, message) => {
+ipcRenderer.on('SendUserData', (event, message) => {
 
-    require('electron').ipcRenderer.on('wallpaper-path',(event,path) => {
+    ipcRenderer.on('wallpaper-path',(event,path) => {
         // replace \ with / (doesn't work the other way)
         var newPath = path.replace(/\\/g, "/");
+        console.log(newPath);
 
-        // add the *working* bg code here pls use the newPath var with ${newPath}
+        const bgcss = document.createElement('style');
+        bgcss.innerText = `            
+                    html, body {
+                        background: url("${newPath}") !important;
+                        background-size: cover !important;
+                    }`;
+        document.head.appendChild(bgcss);
+
+        const chat = document.querySelector("input[placeholder='[Enter] to use chat']");
+
+        const bg_canvas = document.querySelector("body > canvas:nth-child(14)")
+
+        ipcRenderer.on('toggleFullscreen',() => {
+            bgcss.innerText = ``;
+            bg_canvas.style.display = "none";
+            ipcRenderer.send('doIt');
+        });
+
+        ipcRenderer.on('done',() => {
+            setTimeout(() => {console.log('1 second finished!')}, 1000);
+            bgcss.innerText = `            
+            html, body {
+                background: url("${newPath}") !important;
+                background-size: cover !important;
+            }`;
+            bg_canvas.style.display = "block";
+        });
+
+        function readchatvisibility() {
+            if (chat.style.visibility == "hidden") {
+                console.log("lobby")
+                bg_canvas.style.display = "none"
+            } else {
+                console.log("ingame")
+                bg_canvas.style.display = "block"
+            }
+        }
+
+        setInterval(readchatvisibility, 1000);
     });
 
     // read JSON values
@@ -197,9 +238,6 @@ require('electron').ipcRenderer.on('SendUserData', (event, message) => {
         <div id="statsHolder" style="z-index: 1000; /*top: 50%;*/ color: white; padding-right: 5px; font-size: 100%; background: #191919; opacity: 0.9;">
     `;
     document.body.appendChild(statsHolderWrapper);
-    
-    const electron = require('electron');
-    const ipcRenderer = electron.ipcRenderer; // apply that later to everything
     
     const elementIds = ['fpscounter', 'ping', 'platform', 'cpu', 'mem', 'totalMem', 'cpuCount', 'uptime'];
     const styles = "z-index: 1000; color: white; font-size: 100%; display: none; white-space: nowrap;";
