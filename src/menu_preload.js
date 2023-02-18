@@ -39,7 +39,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
     const skinWrapper = document.createElement('div');
     skinWrapper.className = 'skinwrapper';
     skinWrapper.id = "skinWrapper";
-    skinWrapper.style = "::-webkit-scrollbar{border:1px solid #d5d5d5};opacity:" + opacity + ";border-radius: " + skinWrapperBorderRadius + "px; z-index: 9999;";
+    skinWrapper.style = "::-webkit-scrollbar{border:1px solid #d5d5d5};opacity:" + opacity + ";border-radius: " + skinWrapperBorderRadius + "px; z-index: 9999; box-shadow: 4px 4px 6px #0798fc;";
     skinWrapper.innerHTML = `
         <header id="skinheader" style="background: ${menuHeaderColor};" class="titlebar">Main Menu</header>
         <div id="mainDiv" style="background: ${behindOptionsColor};"></div>

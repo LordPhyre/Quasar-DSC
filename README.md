@@ -47,16 +47,9 @@ Good luck!
 
 ### Later.....
 - [ ] Controller Support
-- [ ] Local Player Wireframe
-- [ ] Sound Swapper
-- [ ] Gamma Editor
-- [ ] Instant-180
-- [ ] Leaderboard rewards 👀 [Textures]
-- [ ] Custom Client Keybind Presets
 - [ ] Custom Resource Marketplace
-- [ ] Custom Background/Wallpaper
 
-### Known bugs 🚨🪲
+### Known 'bugs' 🚨🪲
 - [ ] Typing Numbers activate Shortcuts
 
 ### Features that will only be possible with the help of our friend tree 🙂:

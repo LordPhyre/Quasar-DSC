@@ -8,10 +8,13 @@ document.addEventListener("DOMContentLoaded", function() {
 //Receive user datapath and save as variable
 ipcRenderer.on('SendUserData', (event, message) => {
 
+    var has_wallpaper;
+
     ipcRenderer.on('wallpaper-path',(event,path) => {
+        has_wallpaper = true;
+
         // replace \ with / (doesn't work the other way)
         var newPath = path.replace(/\\/g, "/");
-        console.log(newPath);
 
         const bgcss = document.createElement('style');
         bgcss.innerText = `            
@@ -43,10 +46,8 @@ ipcRenderer.on('SendUserData', (event, message) => {
 
         function readchatvisibility() {
             if (chat.style.visibility == "hidden") {
-                console.log("lobby")
                 bg_canvas.style.display = "none"
             } else {
-                console.log("ingame")
                 bg_canvas.style.display = "block"
             }
         }
@@ -54,18 +55,21 @@ ipcRenderer.on('SendUserData', (event, message) => {
         setInterval(readchatvisibility, 1000);
     });
 
+    if (!has_wallpaper) {
+        ipcRenderer.on('toggleFullscreen',() => {
+            ipcRenderer.send('doIt');
+        });
+    }
+
     // read JSON values
     const jsonpath = message;
-    console.log(jsonpath);
 
     // Parse the contents of the file into a JavaScript object
     let jsonobj = JSON.parse(fs.readFileSync(jsonpath, 'utf8'));
-    console.log(jsonobj);
 
     // do this later by sending reload from menu to main and from main to here, then call funtion -> less cost of operation
     setInterval(function(){ 
         let jsonobj = JSON.parse(fs.readFileSync(jsonpath, 'utf8'));
-        console.log(jsonobj);
       
         msgBoxColor = jsonobj.Colors.msgBoxColor;
         document.getElementById("msgBox").style.background = msgBoxColor;
@@ -76,7 +80,6 @@ ipcRenderer.on('SendUserData', (event, message) => {
         fiveValue = jsonobj.Shortcuts.five;
 
         shortcuts.innerHTML = "[" + one + "] " + oneValue + "  [" + two + "] " + twoValue + "  [" + three + "] " + threeValue + "  [" + four + "] " + fourValue + "  [" + five + "] " + fiveValue;
-        console.log("reloaded json");
 
         if(jsonobj.Stats.Shortcuts) {
             shortcuts.style.display = "block";

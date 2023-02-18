@@ -253,8 +253,8 @@ app.whenReady().then(() => {
 
       //////////////////////////////////////////////////////////////////////
       mainmenu = new BrowserWindow ({ 
-        height: 337,
-        width: 750,
+        height: 345, //337,
+        width: 760, //750,
         show: false,
         resizable: false,
         transparent: true,
@@ -609,8 +609,12 @@ app.whenReady().then(() => {
           )
 
           var wallpaperpath = path.join(app.getPath("documents"), "Quasar-DSC/wallpapers/wallpaper.png");
-          console.log(wallpaperpath);
-          win.webContents.send('wallpaper-path', wallpaperpath);
+
+          fs.access(wallpaperpath, fs.constants.F_OK, (err) => {
+            if (!err){
+              win.webContents.send('wallpaper-path', wallpaperpath);
+            }
+          });
         }
       });
     }
