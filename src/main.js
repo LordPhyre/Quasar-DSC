@@ -253,8 +253,8 @@ app.whenReady().then(() => {
 
       //////////////////////////////////////////////////////////////////////
       mainmenu = new BrowserWindow ({ 
-        height: 345, //337,
-        width: 760, //750,
+        height: 337,
+        width: 750,
         show: false,
         resizable: false,
         transparent: true,
