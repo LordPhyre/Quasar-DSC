@@ -272,7 +272,11 @@ app.whenReady().then(() => {
 
       mainmenu.loadFile('empty.html');
       //////////////////////////////////////////////////////////////////////
-
+        
+        ipcMain.handle('skincloser', () => {
+            mainmenu.hide();
+        });
+        
       // some shortcuts
       globalShortcut.register('F6', () => win.loadURL('https://deadshot.io/'));
       globalShortcut.register('F5', () => win.reload());
