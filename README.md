@@ -8,6 +8,7 @@ Some of the CRAZY FEATURES in this client include:
  
 - Runs on your computer when you open it
 - Allows you to play Deadshot
+- Automatically spams racist death threats if you lose
 
 #
 
