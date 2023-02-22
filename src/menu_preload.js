@@ -1,5 +1,5 @@
 const fs = require('fs');
-//const {ipcRenderer} = require('electron'); doesn't work, idk why tbh
+const {ipcRenderer} = require('electron');
 
 document.addEventListener("DOMContentLoaded", function() {
 
@@ -69,7 +69,6 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
             </div>
         </div>
         </div>
-        <button id="skinclose" class="skinclose">_</button>
     `;
     document.body.appendChild(skinWrapper);
 
@@ -109,13 +108,6 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
         leftDiv.appendChild(optionButton);
     });
     
-    // doesn't work, also the code is trash tbh
-    let skinclosebutton = document.getElementById("skinclose");
-    skinclosebutton.addEventListener("click", function() {
-        console.log("closed");
-        // call to main here to close / minimize (don't set display to none lol)
-    });
-
     // drag code
     dragElement(document.getElementById("skinWrapper"));
     function dragElement(elmnt) {
@@ -147,7 +139,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
             document.onmousemove = null;
         }
     }
-
+   
     // create message box
     const msgBoxWrapper = document.createElement('div');
     msgBoxWrapper.style = "position: absolute; width: 100%; z-index: 1001; display: flex; justify-content: center; align-items: center; margin-top: 10px;"
