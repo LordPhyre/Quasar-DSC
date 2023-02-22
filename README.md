@@ -8,7 +8,6 @@ Some of the CRAZY FEATURES in this client include:
  
 - Runs on your computer when you open it
 - Allows you to play Deadshot
-- Disability Aid (shoots for you)
 
 #
 ![](images/home.png)
@@ -18,7 +17,7 @@ Some of the CRAZY FEATURES in this client include:
 
 * **LordPhyre/skill:** Project Manager/Developer
 * **jcjms:** Lead Developer
-* **Classy08/Captain Cool:** Resource Swapper
+* **Classy08/Captain Cool:** Assistant Developer
 * **Armaccord#9846:** Official Quasar skins
 
 #
@@ -57,19 +56,6 @@ Good luck!
 - [ ] Custom Damage Vignette (need to know if damage)
 - [ ] Reload Warning (need to know ammo amount)
 - [ ] Auto Reload (need to know ammo amount)
-
-# Building Guide
-Do you want to build Quasar from source to test out the latest changes or make your own? 
-If so, you can follow the steps below.
-
-- Extract the folder or use git clone then open command prompt inside the directory.
-- Type `npm i --save-dev electron` to install required dependencies.
-- To run the application, type `npm run start`
-- If you have applied code changes, you will need to restart the application by closing it and running it again.
-- If you have a feature request or bug fix, please test it out locally before starting a pull request.
-
-Good luck!
-
 #
 ### Detailed list of features:
 
@@ -84,32 +70,17 @@ Good luck!
     - CPU Cores
     - Uptime
 - Custom Chat Shortcuts [Keys 1-5]
-    - Shortcut Display
 - Resource Swapper / Loader
     - Gun Skin Menu
     - Skybox Menu
-    - General Swapper Folder
     - Texture Pack Support
         - Small Quasar Texture Pack
         - Custom Skins
 - Chromium Flags Support
-    - disable-print-preview
-    - javascript-harmony
-    - renderer-process-limit
-    - max-active-webgl-contexts
-    - ignore-gpu-blocklist
-    - disable-2d-canvas-clip-aa
-    - disable-logging
-    - in-process-gpu
-    - disable-accelerated-2d-canvas
 - Customizable UI
 - Auto Fullscreen
-- Fully functioning JSON-Based Settings Saver (secure your settings)
-- Offline Screen
 - Discord RPC
     - Custom Text
 - Dev Settings (3x click on version number)
     - Debug Mode
     - Splash Screen Switcher
-
-#
