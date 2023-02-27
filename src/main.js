@@ -608,12 +608,7 @@ app.whenReady().then(() => {
           )
 
           var wallpaperpath = path.join(app.getPath("documents"), "Quasar-DSC/wallpapers/wallpaper.png");
-
-          fs.access(wallpaperpath, fs.constants.F_OK, (err) => {
-            if (!err){
-              win.webContents.send('wallpaper-path', wallpaperpath);
-            }
-          });
+          win.webContents.send('wallpaper-path', wallpaperpath);
         }
       });
     }
