@@ -8,42 +8,6 @@ document.addEventListener("DOMContentLoaded", function() {
 //Receive user datapath and save as variable
 ipcRenderer.on('SendUserData', (event, message) => {
 
-    var has_wallpaper;
-
-    ipcRenderer.on('wallpaper-path',(event,path) => {
-        // replace \ with / (doesn't work the other way)
-        var newPath = path.replace(/\\/g, "/");
-        console.log(newPath);
-
-        const bgcss = document.createElement('style');
-        bgcss.innerText = ``;
-        document.head.appendChild(bgcss);
-        const chat = document.querySelector("input[placeholder='[Enter] to use chat']");
-
-        function wallpaperSetter() {
-            if (chat.style.visibility == "hidden") {
-                bgcss.innerText = `            
-                    html, body {background: url("${newPath}") !important;
-                        background-size: cover !important;
-                    }`;
-                document.getElementById("custombg").style.display = "none"
-                
-            } else {
-                bgcss.innerText = ``;
-                document.getElementById("custombg").style.display = "block"
-            }
-            
-            ipcRenderer.on('toggleFullscreen',() => {
-                document.getElementById("custombg").style.display = "block"
-                setTimeout(() => {
-                    bg_canvas.style.display = "none";
-                }, 1000);
-            });
-        };
-
-        setInterval(wallpaperSetter, 1000);
-    });
-
     // read JSON values
     const jsonpath = message;
 
@@ -449,15 +413,47 @@ ipcRenderer.on('SendUserData', (event, message) => {
     `;
     
     document.getElementsByTagName('head')[0].appendChild(WASDJS);
-    
-    //Add Wallpaper Thing
-    if (document.readyState !== 'loading') {
-        document.querySelector("body > canvas:nth-last-of-type(1)").setAttribute("id", "custombg");
-    } else {
-        document.addEventListener('DOMContentLoaded', function () {
-            document.querySelector("body > canvas:nth-last-of-type(1)").setAttribute("id", "custombg");
-        });
-    }
 
+
+    //Add Wallpaper Thing
+    
+    ipcRenderer.on('wallpaper-path',(event,path) => {
+        // replace \ with / (doesn't work the other way)
+        var newPath = path.replace(/\\/g, "/");
+        console.log(newPath);
+
+        const bgcss = document.createElement('style');
+        bgcss.innerText = ``;
+        document.head.appendChild(bgcss);
+        const chat = document.querySelector("input[placeholder='[Enter] to use chat']");
+
+        function wallpaperSetter() {
+            if (chat.style.visibility == "hidden") {
+                bgcss.innerText = `            
+                    html, body {background: url("${newPath}") !important;
+                        background-size: cover !important;
+                    }`;
+                document.getElementById("custombg").style.display = "none"
+                
+            } else {
+                bgcss.innerText = ``;
+                document.getElementById("custombg").style.display = "block"
+            }
+            
+            ipcRenderer.on('toggleFullscreen',() => {
+                document.getElementById("custombg").style.display = "block"
+                setTimeout(() => {
+                    bg_canvas.style.display = "none";
+                }, 1000);
+            });
+        };
+
+        setInterval(wallpaperSetter, 1000);
+
+    });
+
+    document.querySelector("body > canvas:nth-last-of-type(1)").setAttribute("id", "custombg");
+    
+    
 });
 });
