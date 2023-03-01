@@ -420,7 +420,6 @@ ipcRenderer.on('SendUserData', (event, message) => {
     ipcRenderer.on('wallpaper-path',(event,path) => {
         // replace \ with / (doesn't work the other way)
         var newPath = path.replace(/\\/g, "/");
-        console.log(newPath);
 
         const bgcss = document.createElement('style');
         bgcss.innerText = ``;
@@ -447,12 +446,16 @@ ipcRenderer.on('SendUserData', (event, message) => {
                 }, 1000);
             });
         };
+        
 
-        setInterval(wallpaperSetter, 1000);
+            setInterval(wallpaperSetter, 1000);
+
 
     });
-
-    document.querySelector("body > canvas:nth-last-of-type(1)").setAttribute("id", "custombg");
+    
+    setTimeout(() => {
+        document.querySelector("body > canvas:nth-last-of-type(1)").setAttribute("id", "custombg");
+    }, 2000);
     
     
 });
