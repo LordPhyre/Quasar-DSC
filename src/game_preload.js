@@ -446,16 +446,12 @@ ipcRenderer.on('SendUserData', (event, message) => {
                 }, 1000);
             });
         };
-        
-
-            setInterval(wallpaperSetter, 1000);
-
-
+        setInterval(wallpaperSetter, 1000);
     });
     
     setTimeout(() => {
         document.querySelector("body > canvas:nth-last-of-type(1)").setAttribute("id", "custombg");
-    }, 2000);
+    }, 3000);
     
     
 });
