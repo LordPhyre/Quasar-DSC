@@ -607,12 +607,13 @@ app.whenReady().then(() => {
             "filepaths-wallpaper"
           )
 
-          var wallpaperpath = path.join(app.getPath("documents"), "Quasar-DSC/wallpapers/wallpaper.png");
-          try {
-              if (fs.existsSync(wallpaperpath)) {
-                  win.webContents.send('wallpaper-path', wallpaperpath);
-              }
-          } catch(err) {console.error(err)}
+            var wallpaperpath = path.join(app.getPath("documents"), "Quasar-DSC/wallpapers/wallpaper.png");
+            fs.access(wallpaperpath, fs.constants.F_OK, (err) => {
+                if (!err){
+                    win.webContents.send('wallpaper-path', wallpaperpath);
+                }
+            });
+          //win.webContents.send('wallpaper-path', wallpaperpath);
         }
       });
     }
