@@ -451,7 +451,7 @@ ipcRenderer.on('SendUserData', (event, message) => {
     
     setTimeout(() => {
         document.querySelector("body > canvas:nth-last-of-type(1)").setAttribute("id", "custombg");
-    }, 3000);
+    }, 2000);
     
     
 });
