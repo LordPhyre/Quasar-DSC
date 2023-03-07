@@ -413,9 +413,9 @@ ipcRenderer.on('SendUserData', (event, message) => {
     `;
     
     document.getElementsByTagName('head')[0].appendChild(WASDJS);
-
-
+    
     //Add Wallpaper Thing
+    document.querySelector("body > canvas:nth-child(12)").setAttribute("id", "custombg");
     
     ipcRenderer.on('wallpaper-path',(event,path) => {
         // replace \ with / (doesn't work the other way)
@@ -446,13 +446,15 @@ ipcRenderer.on('SendUserData', (event, message) => {
                 }, 1000);
             });
         };
+        // Little hack, but it fixes it.
+        document.getElementById("custombg").style.display = "block"
+        setTimeout(() => {
+            bg_canvas.style.display = "none";
+        }, 2500);
+        
         setInterval(wallpaperSetter, 1000);
     });
     
-    setTimeout(() => {
-        document.querySelector("body > canvas:nth-last-of-type(1)").setAttribute("id", "custombg");
-    }, 2000);
-    
-    
+
 });
 });
