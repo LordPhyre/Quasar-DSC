@@ -6,7 +6,6 @@ const os = require('os-utils');
 const swapper = require('./swapper.js');
 const request = require("request");
 const { spawn } = require('child_process');
-
 const fs_extra = require('fs-extra');
 
 app.setPath ('userData', (path.join(app.getPath('appData'), app.getName() + "-" + app.getVersion())));
@@ -137,29 +136,15 @@ if(jsonobj.Flags.AcceleratedCanvas) { app.commandLine.appendSwitch("disable-acce
 
 
 app.whenReady().then(() => {
-  let online = 0;
-
-  // check for internet connection
-  request("http://www.deadshot.io", function(error, response, body) {
-    if (error || response.statusCode !== 200) {
-      console.log("Connection status: Offline");
-      online = false;
-    } else {
-      console.log("Connection status: Online");
-      online = true;
-
-      // AUTO UPDATE CHECKER //
-      setTimeout(function () {
+    // AUTO UPDATE CHECKER //
+    setTimeout(function () {
         console.log("Checking for Update. Current version: " + app.getVersion());
         autoUpdater.checkForUpdates();
         splash.destroy();
       
-      
         //If Update exists, show message box
         autoUpdater.on("update-available", (info) => {
-            
             console.log("Update available.");
-            
             const updateresponse = dialog.showMessageBoxSync({
                 type: 'info',
                 buttons: ['Yes', 'Cancel'],
@@ -171,57 +156,35 @@ app.whenReady().then(() => {
             //If the user clicks the Update button
             if (updateresponse === 0) {
                 console.log("Update Chosen.");
-                
                 autoUpdater.downloadUpdate();
                 autoUpdater.on("update-downloaded", (info) => { autoUpdater.quitAndInstall(); });
             } else { console.log("Update cancelled") };
     
             autoUpdater.on("error", (info) => { console.log(info); });
         });
-      }, 4500);
+    }, 4500);
         
-      setTimeout(function () {
+    setTimeout(function () {
         win.show();
         win.maximize()
-        setTimeout(function () {
-            mainmenu.show();
-        }, 500);
-      }, 6000);
-    }
-  });
+        setTimeout(function () { mainmenu.show(); }, 500);
+    }, 6000);
 
-  // create splash screen
-  const splash = new BrowserWindow({
-    width: 500, 
-    height: 300, 
-    transparent: true, 
-    frame: false,
-    alwaysOnTop: true,
-    skipTaskbar: true,
-    icon: "icon/logoicon.ico",	
-  });
+    // create splash screen
+    const splash = new BrowserWindow({
+        width: 500, 
+        height: 300, 
+        transparent: true, 
+        frame: false,
+        alwaysOnTop: true,
+        skipTaskbar: true,
+        icon: "icon/logoicon.ico",	
+    });
 
-  if (jsonobj.Splash.new) {
-    splash.loadFile('splash-screen/splash.html');
-  } else {
-    splash.loadFile('splash-screen/old_splash.html');
-  }
-  
-  splash.center();
+    if (jsonobj.Splash.new) {splash.loadFile('splash-screen/splash.html');}
+    else {splash.loadFile('splash-screen/old_splash.html');}
+    splash.center();
 
-  // create offline screen
-  const noInternetConnectionScreen = new BrowserWindow({
-    show: false,
-    icon: "icon/logoicon.ico",	
-  });
-
-  noInternetConnectionScreen.setMenuBarVisibility(false);
-  noInternetConnectionScreen.loadFile('offline-screen/offline.html');
-
-  const intervalId = setInterval(() => {
-    if (online !== 0) {
-      clearInterval(intervalId);
-      reload();
 
       // create main screen (game window)
       win = new BrowserWindow({ 
@@ -239,19 +202,8 @@ app.whenReady().then(() => {
 
       win.setMenuBarVisibility(false);
       win.$ = win.jQuery = require('jquery/dist/jquery.min.js');
+      win.loadURL('https://deadshot.io');
 
-      // show offline screen depending on connection status
-      if (online)
-      {
-        win.hide();
-        win.loadURL('https://deadshot.io');
-      } else {
-        splash.hide();
-        noInternetConnectionScreen.show();
-        noInternetConnectionScreen.maximize();
-      }
-
-      //////////////////////////////////////////////////////////////////////
       mainmenu = new BrowserWindow ({ 
         height: 337,
         width: 750,
@@ -271,14 +223,13 @@ app.whenReady().then(() => {
       });
 
       mainmenu.loadFile('empty.html');
-      //////////////////////////////////////////////////////////////////////
         
-        ipcMain.handle('skincloser', () => {
+        /*ipcMain.handle('skincloser', () => {
             mainmenu.hide();
-        });
+        });*/
         
       // some shortcuts
-      globalShortcut.register('F6', () => win.loadURL('https://deadshot.io/'));
+      globalShortcut.register('F6', () => win.loadURL('http://deadshot.io/'));
       globalShortcut.register('F5', () => win.reload());
       globalShortcut.register('Escape', () => win.webContents.executeJavaScript('document.exitPointerLock()', true));
       globalShortcut.register('F7', () => {
@@ -299,9 +250,7 @@ app.whenReady().then(() => {
       });
         
       var visible = true;
-      win.on('minimize', () => {
-        visible = false;
-      });
+      win.on('minimize', () => { visible = false; });
       globalShortcut.register('F1', () => {
         if (visible) {
           mainmenu.hide();
@@ -330,7 +279,9 @@ app.whenReady().then(() => {
         console.log("Window is not in fullscreen")
       }
 
-      // set path of resource folder
+
+
+      // Resource Swapper Path
       var swapperFolder = path.join(app.getPath("documents"), "Quasar-DSC");
 
       // create resource folder if it doesn't exist
@@ -504,50 +455,28 @@ app.whenReady().then(() => {
       // Swapper -> Credits to Captain Cool 💪
 
       swapper.replaceResources(win, app);
-
       protocol.registerFileProtocol('swap', (request, callback) => {
-        callback({
-            path: path.normalize(request.url.replace(/^swap:/, ''))
-        });
+        callback({ path: path.normalize(request.url.replace(/^swap:/, '')) });
       });
 
-      // read stats from pc
+
+
+      // PC Stats
       // all options https://github.com/oscmejia/os-utils
-
       let stats;
-
       win.on('close', () => {
         clearInterval(stats);
         app.exit();
       });
 
-      noInternetConnectionScreen.on('close', () => {
-        clearInterval(stats);
-        app.exit();
-      });
-
-      // please excuse this ugly code, I just don't want it to give an error
-      // I am using this many if statements, so it checks before *every* execute
-      // if you are complaining and have a better idea... fix it. Kind regards, jcjms : )
-
       stats = setInterval(() => {
         os.cpuUsage(function(v){
           if (win) {
             win.webContents.send('cpu',v*100);
-          }
-          if (win) {
             win.webContents.send('mem',os.freememPercentage()*100);
-          }
-          if (win) {
             win.webContents.send('platform',os.platform());
-          }
-          if (win) {
             win.webContents.send('cpu-count',os.cpuCount());
-          }
-          if (win) {
             win.webContents.send('total-mem',os.totalmem()/1024);
-          }
-          if (win) {
             win.webContents.send('uptime',os.processUptime());
           }
         });
@@ -555,7 +484,9 @@ app.whenReady().then(() => {
 
       stats.unref();
 
-      win.webContents.on('did-finish-load', () => {
+
+
+    win.webContents.on('did-finish-load', () => {
         if (win) {
           win.webContents.send('SendUserData', jsonpath);
           mainmenu.webContents.send('SendUserData', jsonpath, app.getVersion());
@@ -570,14 +501,11 @@ app.whenReady().then(() => {
           
               // Filter actual images (.png & .jpg)
               const imageFiles = files.filter(file => file.endsWith(fileExtension));
-          
+
               var skins = [];
-          
               imageFiles.forEach(function(imageFile) {
                 var pathcontainer = `${dirPath}/${imageFile}`;
-          
                 console.log(`Processing ${imageFile}, path: ${pathcontainer}`);
-          
                 // push file names to skin-array
                 skins.push(pathcontainer);
               });
@@ -594,58 +522,23 @@ app.whenReady().then(() => {
           types.forEach(type => {
             readDirectory(path.join(app.getPath("documents"), `Quasar-DSC/storage/gunskins/${type}`), ".webp", `filepaths-${type}`);
           });
-
           readDirectory(
             path.join(app.getPath("documents"), "Quasar-DSC/storage/skyboxes"),
             ".webp",
             "filepaths-skybox"
           )
-
           readDirectory(
             path.join(app.getPath("documents"), "Quasar-DSC/storage/wallpapers"),
             ".png",
             "filepaths-wallpaper"
           )
-
-            var wallpaperpath = path.join(app.getPath("documents"), "Quasar-DSC/wallpapers/wallpaper.png");
-            fs.access(wallpaperpath, fs.constants.F_OK, (err) => {
-                if (!err){
-                    win.webContents.send('wallpaper-path', wallpaperpath);
-                }
-            });
-          //win.webContents.send('wallpaper-path', wallpaperpath);
+          var wallpaperpath = path.join(app.getPath("documents"), "Quasar-DSC/wallpapers/wallpaper.png");
+          fs.access(wallpaperpath, fs.constants.F_OK, (err) => {
+                if (!err){ win.webContents.send('wallpaper-path', wallpaperpath); }
+          });
         }
-      });
-    }
-  }, 1000);
-
-  // checking if we are still offline
-  function reload() {
-    const reload = setInterval(function() {
-      if (!online) {
-        request("http://www.deadshot.io", function(error, response, body) {
-          if (error || response.statusCode !== 200) {
-            console.log("Connection status: Offline");
-            noInternetConnectionScreen.show();
-            noInternetConnectionScreen.maximize() 
-            win.hide();
-            online = false;
-          } else {
-            console.log("Connection status: Online");
-            win.loadURL('https://deadshot.io');
-            win.show();
-            win.maximize() 
-            noInternetConnectionScreen.hide();
-            mainmenu.show();
-            online = true;
-          }
-        });
-      } else {
-        clearInterval(reload);
-      }
-    }, 5000);
-  }
-})
+    });
+});
 
 app.on('window-all-closed', function() {
   if (process.platform !== 'darwin') app.quit();
