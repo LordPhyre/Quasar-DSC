@@ -446,13 +446,10 @@ ipcRenderer.on('SendUserData', (event, message) => {
                 }, 1000);
             });
         };
-        // Little hack, but it fixes it.
-        document.getElementById("custombg").style.display = "block"
+
         setTimeout(() => {
-            bg_canvas.style.display = "none";
-        }, 2500);
-        
-        setInterval(wallpaperSetter, 1000);
+            setInterval(wallpaperSetter, 1000);
+        }, 1500);
     });
     
 
