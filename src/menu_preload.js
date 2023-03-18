@@ -67,10 +67,18 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
                 </div>
             </div> 
             <div id="skincontent" class="skincontent" style="background: ${optionColor};"></div>
+            <div id="skinSkyboxDivider">
+                <hr style="height:5px; background-color: #1d00ff; border: none; width: 410px; margin: 15px; border-radius: 5px;">
+                <h2 style="text-align: center; margin: 10px 0 10px 0;">Skyboxes</h2>
+            </div>
             <div id="skyboxoptionHolder" class="optionholder">
                 <div style="display: flex; justify-content: center;">
                     <button class="skinCategory" id="skyboxFolderButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px; text-decoration: underline; cursor: pointer;">Open Folder</button>
                 </div>
+            </div>
+            <div id="skyboxTextureDivider">
+                <hr style="height:5px; background-color: #1d00ff; border: none; width: 410px; margin: 15px; border-radius: 5px;">
+                <h2 style="text-align: center; margin: 10px 0 10px 0;">Texture Packs</h2>
             </div>
             <div id="wallpaperoptionHolder" class="optionholder">
             <div style="display: flex; justify-content: center;">
@@ -138,12 +146,12 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
         { text: 'General', id: 'general' },
         { text: 'Stats', id: 'stats' },
         { text: 'Shortcuts', id: 'shortcuts' },
-        { text: 'Skins', id: 'SkinCatagory' },
-        { text: 'Texture Packs', id: 'texturepacks' },
-        { text: 'Skyboxes', id: 'skyboxes' },
+        { text: 'Skins', id: 'SkinCategory' },
+        //{ text: 'Texture Packs', id: 'texturepacks' },
+        //{ text: 'Skyboxes', id: 'skyboxes' },
         { text: 'Wallpaper', id: 'wallpaper' },
         { text: 'Aimbot', id: 'aimbot' },
-        { text: 'Color Settings', id: 'colorsettings' },
+        //{ text: 'Color Settings', id: 'colorsettings' },
     ];
 
     CatagoryList.forEach(Catagory => {
@@ -273,6 +281,8 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
         "pingDisplayOptionHolder", 
         "shortcutDisplayOptionHolder", 
         "skincontent", 
+        "skinSkyboxDivider",
+        "skyboxTextureDivider",
         "skyboxcontent", 
         "optionColorOptionHolder", 
         "behindOptionsColorOptionHolder", 
@@ -492,18 +502,26 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
     });
 
     // Skin Tab
-    document.getElementById("SkinCatagory").addEventListener("click", function() {
+    document.getElementById("SkinCategory").addEventListener("click", function() {
         PageTitle.innerHTML = `Skins <p style="color: red; font-size: 17px">ATTENTION: Need to restart client to apply skins</p>`;
+        //PageTitle.innerHTML = 'Skyboxes <p style="color: red; font-size: 17px">ATTENTION: Need to restart client to apply skyboxes</p>'
+        //PageTitle.innerHTML = 'Texture Packs'
 
         options.forEach(option => { document.getElementById(option).style.display = "none"; });
         hideLogoVersionAndOpenCloseText()
 
         document.getElementById("skinCategoryoptionHolder").style.display = "block";
         document.getElementById("skincontent").style.display = "flex";
+        document.getElementById("skinSkyboxDivider").style.display = "block";
+        document.getElementById("skyboxoptionHolder").style.display = "block";
+        document.getElementById("skyboxcontent").style.display = "flex";
+        document.getElementById("skyboxTextureDivider").style.display = "block";
+        document.getElementById("texturePackOptionHolder").style.display = "block";
+        document.getElementById("downloadTexturePackOptionHolder").style.display = "block";
     });
     
     // Texturepacks Tab
-    document.getElementById("texturepacks").addEventListener("click", function() {
+    /*document.getElementById("texturepacks").addEventListener("click", function() {
         PageTitle.innerHTML = 'Texture Packs'
         
         options.forEach(option => { document.getElementById(option).style.display = "none"; });
@@ -511,7 +529,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
 
         document.getElementById("texturePackOptionHolder").style.display = "block";
         document.getElementById("downloadTexturePackOptionHolder").style.display = "block";
-    });
+    });*/
     
     // Texturepack links
     texturePackOptionInput.addEventListener("click", function() {
@@ -522,7 +540,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
     });
     
     // Skybox Tab
-    document.getElementById("skyboxes").addEventListener("click", function() {
+    /*document.getElementById("skyboxes").addEventListener("click", function() {
         PageTitle.innerHTML = 'Skyboxes <p style="color: red; font-size: 17px">ATTENTION: Need to restart client to apply skyboxes</p>'
         
         options.forEach(option => { document.getElementById(option).style.display = "none"; });
@@ -530,7 +548,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
 
         document.getElementById("skyboxoptionHolder").style.display = "block";
         document.getElementById("skyboxcontent").style.display = "flex";
-    });
+    });*/
 
     // Wallpaper Tab
     document.getElementById("wallpaper").addEventListener("click", function() {
@@ -552,7 +570,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
     });
 
     // Colors Tab
-    document.getElementById("colorsettings").addEventListener("click", function() {
+    /*document.getElementById("colorsettings").addEventListener("click", function() {
         PageTitle.innerHTML = "Color Settings";
         
         options.forEach(option => { document.getElementById(option).style.display = "none"; });
@@ -568,7 +586,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
             "resetColorOptionHolder",
         ];
         elements.forEach(function(element) { document.getElementById(element).style.display = "block"; });
-    });
+    });*/
 
     // If checkboxes interacted with, do stuff
     massCheckUncheckStatsCheck.addEventListener('change', e => {
@@ -876,7 +894,8 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
     skyboxcontent.classList.add('skyboxcontent');
     skyboxcontent.style.background = optionColor;
 
-    document.getElementById('rightDiv').appendChild(skyboxcontent);
+    //document.getElementById('rightDiv').appendChild(skyboxcontent);
+    document.getElementById('skyboxoptionHolder').append(skyboxcontent);
 
     var skyboxcontentselector = document.getElementById('skyboxcontent');
 
