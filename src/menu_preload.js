@@ -1,11 +1,15 @@
 const fs = require('fs');
 const {ipcRenderer} = require('electron');
 
-document.addEventListener("DOMContentLoaded", function() {
+function updateJsonObj(key, value) {
+    jsonobj[key] = value;
+    fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
+}
+
+document.addEventListener("DOMContentLoaded", function() { 
 
 //Receive user datapath and save as variable
 require('electron').ipcRenderer.on('SendUserData', (event, message, client_version) => {
-
     const jsonpath = message;
     console.log(jsonpath);
 
@@ -13,7 +17,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
     let jsonobj = JSON.parse(fs.readFileSync(jsonpath, 'utf8'));
     console.log(jsonobj);
 
-    // Defining the color variables for later use
+    // Menu Colors
     var menuHeaderColor = jsonobj.Colors.menuHeaderColor; //"#2a394f";
     var behindOptionsColor = jsonobj.Colors.behindOptionsColor; //"#2a394f";
     var skinButtonColor = jsonobj.Colors.skinButtonColor; //"#364760";
@@ -23,8 +27,12 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
     var opacity = jsonobj.Colors.opacity; //0.95;
     var skinWrapperBorderRadius = jsonobj.Colors.skinWrapperBorderRadius; //"10";
     var msgBoxColor = jsonobj.Colors.msgBoxColor; //"#2a394f";
-
-    // fix ugly scrollbars
+    
+    //// Styling and CSS
+    let skincss = document.createElement('style');
+    skincss.innerText = "@import 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap';*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}body{overflow-y: hidden;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;}.titlebar{-webkit-user-select: none;-webkit-app-region: drag;}.skinwrapper{position:absolute;top:50%;left:50%;max-width:750px;width:100%;background:#232429;/* if I add menuHeaderColor it spawns at a different location lmao, but the color has to stay like that, else the menu is see trough under header*/transform:translate(-50%,-50%);border:solid 1px #000;color:#fff;height:335px;}.skinwrapper header{font-size:23px;font-weight:500;padding:17px 30px;border-bottom:1px solid #000;text-align:center;border-top-left-radius: 10px;border-top-right-radius: 10px;}.skinwrapper header.skinactive{cursor:move;user-select:none;}.skinwrapper .skincontent{display:flex;flex-direction:wrap;flex-wrap:wrap;justify-content:center;}.skincontent .title{margin:15px 0;font-size:29px;font-weight:500}.skincontent p{font-size:16px;text-align:center;display:flex}.skinbutton{width:100%;height:48px;background-color:" + skinButtonColor + ";border:none;color:#fff;font-size:20px}.skinbutton:hover{background-color:" + skinButtonHoverColor + "}.skinclose{color:grey;position:absolute;top:0;right:0;margin-right:15px;margin-top:-6px;background-color:" + skinCloseColor + ";border:none;font-size:35px}.skinclose:hover{color:#fff}p{font-size:20px}input[type=text]{float:right;margin:14px 25px 10px 0;font-weight:700;color:grey}input[type=range]{float:right;margin:16px 20px 10px 0}input[type=checkbox]{float:right;transform:scale(2);margin:14px 25px 5px 0;width:35px;font-weight:700;color:grey;}input[type=button]{float:right;margin:14px 25px 10px 0;}.optiondescr{float:left;margin:10px 0 10px 20px}.optionholder{background-color:" + optionColor + "; display: inline-block}hr{width:100%;border:.1px solid rgb(255, 27, 8, 0);}/*select{float:right;margin:14px 25px 10px 0;width:50px}*/.skinCategory:hover{background-color:#0798fc}/* doesn't work lol*/";
+    document.head.appendChild(skincss);
+    
     let scrollcss = document.createElement('style');
     scrollcss.innerText = `
     ::-webkit-scrollbar { width: 8px; height: 3px;}
@@ -34,8 +42,8 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
     ::-webkit-scrollbar-corner { background-color: #646464;}}
     ::-webkit-resizer { background-color: #666;}`;
     document.head.appendChild(scrollcss);
-
-    // constructing base of the menu
+    
+    //// Constructing Menu Base
     const skinWrapper = document.createElement('div');
     skinWrapper.className = 'skinwrapper';
     skinWrapper.id = "skinWrapper";
@@ -45,9 +53,10 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
         <div id="mainDiv" style="background: ${behindOptionsColor};"></div>
         <div id="leftDiv" style="float: left; width: 40%; height: 263px; overflow: scroll; overflow-x: hidden; overflow-y: auto;"></div>
         <div id="rightDiv" style="float: right; width: 60%; height: 263px; overflow: scroll; overflow-x: hidden; overflow-y: auto;">
-            <h2 id="h2" style="text-align: center; margin: 10px 0 10px 0;">Option Name</h2>
+            <h2 id="PageTitle" style="text-align: center; margin: 10px 0 10px 0;">Home</h2>
             <h2 id="logo" style="font-family: 'Aquire', sans-serif; text-align: center; color: white; font-size: 75px; margin-top: 30px;">Quasar<br></h2>
             <h2 id="version" style="font-family: 'Aquire', sans-serif; text-align: center; color: white; font-size: 17.5px;">v${client_version} - PUBLIC</h2>
+            <h3 id="openCloseText" style="sans-serif; text-align: center; color: white; font-size: 14px; display: block; margin-top: 50px">Use the F1/fn + F1 key on your keyboard to toggle this menu</h3>
             <div id="skinCategoryoptionHolder" class="optionholder">
                 <div style="display: flex; justify-content: center;"> <!-- use classes later -->
                     <button class="skinCategory" id="allButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;">All</button>
@@ -71,44 +80,9 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
         </div>
     `;
     document.body.appendChild(skinWrapper);
-
-    const logoFont = document.createElement('link')
-    logoFont.href = "https://fonts.cdnfonts.com/css/aquire";
-    logoFont.rel = "stylesheet";
-    document.getElementsByTagName('head')[0].appendChild(logoFont);
-
-    const mainDiv = document.getElementById('mainDiv');
-    const leftDiv = document.getElementById('leftDiv');
-    const rightDiv = document.getElementById('rightDiv');
-    const h2 = document.getElementById('h2');
-    const logo = document.getElementById('logo');
-    const version = document.getElementById('version');
-
-    // menu tabs
-    const buttonData = [
-        { text: 'Home', id: 'allOptions' },
-        { text: 'General', id: 'general' },
-        { text: 'Stats', id: 'stats' },
-        { text: 'Shortcuts', id: 'shortcuts' },
-        { text: 'Skins', id: 'skinmenu' },
-        { text: 'Texture Packs', id: 'texturepacks' },
-        { text: 'Skyboxes', id: 'skyboxes' },
-        { text: 'Wallpaper', id: 'wallpaper' },
-        { text: 'Aimbot', id: 'aimbot' },
-        { text: 'Color Settings', id: 'colorsettings' },
-        { text: 'Chromium Flags', id: 'chromiumflags' },
-    ];
     
-    // for each menu tab -> create
-    buttonData.forEach(button => {
-        const optionButton = document.createElement('button');
-        optionButton.className = 'skinbutton';
-        optionButton.innerText = button.text;
-        optionButton.id = button.id;
-        leftDiv.appendChild(optionButton);
-    });
     
-    // drag code
+    // Make Menu Draggable
     dragElement(document.getElementById("skinWrapper"));
     function dragElement(elmnt) {
         var pos1 = 0,
@@ -139,19 +113,50 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
             document.onmousemove = null;
         }
     }
-   
-    // create message box
-    const msgBoxWrapper = document.createElement('div');
-    msgBoxWrapper.style = "position: absolute; width: 100%; z-index: 1001; display: flex; justify-content: center; align-items: center; margin-top: 10px;"
-    msgBoxWrapper.id = "msgBoxWrapper"
-    msgBoxWrapper.innerHTML = `
-        <div id="msgBox" style="background: ${msgBoxColor}; text-align: center; z-index: 1001; border-radius: 10px; font-size: 20px; color: white; display: none;">
-            <p id="msgBoxText" style='line-height: 2.2; width: 325px; height: 45px; border: 1px solid black;'></p>
-        </div>
-    `;
-    document.body.appendChild(msgBoxWrapper);
 
-    // options with checkboxes
+    
+    // Logo
+    const logoFont = document.createElement('link')
+    logoFont.href = "https://fonts.cdnfonts.com/css/aquire";
+    logoFont.rel = "stylesheet";
+    document.getElementsByTagName('head')[0].appendChild(logoFont);
+    
+    
+    // 1234567
+    const mainDiv = document.getElementById('mainDiv');
+    const leftDiv = document.getElementById('leftDiv');
+    const rightDiv = document.getElementById('rightDiv');
+    const PageTitle = document.getElementById('PageTitle');
+    const logo = document.getElementById('logo');
+    const version = document.getElementById('version');
+    const openCloseText = document.getElementById('openCloseText');
+
+    
+    // Menu Catagories
+    const CatagoryList = [
+        { text: 'Home', id: 'HomePage' },
+        { text: 'General', id: 'general' },
+        { text: 'Stats', id: 'stats' },
+        { text: 'Shortcuts', id: 'shortcuts' },
+        { text: 'Skins', id: 'SkinCatagory' },
+        { text: 'Texture Packs', id: 'texturepacks' },
+        { text: 'Skyboxes', id: 'skyboxes' },
+        { text: 'Wallpaper', id: 'wallpaper' },
+        { text: 'Aimbot', id: 'aimbot' },
+        { text: 'Color Settings', id: 'colorsettings' },
+    ];
+
+    CatagoryList.forEach(Catagory => {
+        const catagoryButton = document.createElement('button');
+        catagoryButton.className = 'skinbutton';
+        catagoryButton.innerText = Catagory.text;
+        catagoryButton.id = Catagory.id;
+        leftDiv.appendChild(catagoryButton);
+    });
+    
+    
+    //// Create all the option holders and checkboxes
+    
     const optionList = [
     {
         holderId: "massCheckUncheckStatsOptionHolder",
@@ -219,56 +224,6 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
         checkId: "FullscreenCheck",
     },
     {
-        holderId: "massCheckUncheckFlagsOptionHolder",
-        descrText: "Check / Un-Check all",
-        checkId: "massCheckUncheckFlagsCheck",
-    },
-    {
-        holderId: "disable_print_previewOptionHolder",
-        descrText: "disable-print-preview",
-        checkId: "disable_print_previewCheck",
-    },
-    {
-        holderId: "javascript_harmonyOptionHolder",
-        descrText: "javascript-harmony",
-        checkId: "javascript_harmonyCheck",
-    },
-    {
-        holderId: "renderer_process_limitOptionHolder",
-        descrText: "renderer-process-limit",
-        checkId: "renderer_process_limitCheck",
-    },
-    {
-        holderId: "max_active_webgl_contextsOptionHolder",
-        descrText: "max-active-webgl-contexts",
-        checkId: "max_active_webgl_contextsCheck",
-    },
-    {
-        holderId: "ignore_gpu_blocklistOptionHolder",
-        descrText: "ignore-gpu-blocklist",
-        checkId: "ignore_gpu_blocklistCheck",
-    },
-    {
-        holderId: "disable_2d_canvas_clip_aaOptionHolder",
-        descrText: "disable-2d-canvas-clip-aa",
-        checkId: "disable_2d_canvas_clip_aaCheck",
-    },
-    {
-        holderId: "disable_loggingOptionHolder",
-        descrText: "disable-logging",
-        checkId: "disable_loggingCheck",
-    },
-    {
-        holderId: "in_process_gpuOptionHolder",
-        descrText: "in-process-gpu",
-        checkId: "in_process_gpuCheck",
-    },
-    {
-        holderId: "disable_accelerated_2d_canvasOptionHolder",
-        descrText: "disable-accelerated-2d-canvas",
-        checkId: "disable_accelerated_2d_canvasCheck",
-    },
-    {
         holderId: "debugOptionHolder",
         descrText: "Debug Mode",
         checkId: "debugCheck",
@@ -284,8 +239,6 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
         checkId: "OldSplashCheck",
     },
     ];
-
-    // create those checkbox options
     for (const option of optionList) {
         // holds the sub-options
         const optionHolder = document.createElement('div');
@@ -313,9 +266,311 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
 
         rightDiv.appendChild(optionHolder);
     }
-
-    // Check if those checkboxes change and if -> execute action + save to JSON
     
+    const options = [
+        "massCheckUncheckStatsOptionHolder",
+        "fpsDisplayOptionHolder", 
+        "pingDisplayOptionHolder", 
+        "shortcutDisplayOptionHolder", 
+        "skincontent", 
+        "skyboxcontent", 
+        "optionColorOptionHolder", 
+        "behindOptionsColorOptionHolder", 
+        "menuHeaderColorOptionHolder",
+        "skinButtonColorOptionHolder", 
+        "opacityOptionHolder", 
+        "windowBorderOptionHolder", 
+        "skinCategoryoptionHolder", 
+        "skyboxoptionHolder", 
+        "wallpaperoptionHolder",
+        "wallpapercontent",
+        "shortcutOptionHolder", 
+        "shortcutOptionHolder2", 
+        "shortcutOptionHolder3", 
+        "shortcutOptionHolder4", 
+        "shortcutOptionHolder5", 
+        "platformDisplayOptionHolder", 
+        "cpuUsageDisplayOptionHolder", 
+        "memoryUsageDisplayOptionHolder", 
+        "totalMemoryDisplayOptionHolder", 
+        "cpuCoresDisplayOptionHolder", 
+        "uptimeDisplayOptionHolder", 
+        "texturePackOptionHolder", 
+        "downloadTexturePackOptionHolder", 
+        "RPCTextOptionHolder",
+        "WASDDisplayOptionHolder",
+        "AutoFullscreenOptionHolder", 
+        "FullscreenOptionHolder",
+        "resetColorOptionHolder",
+        "debugOptionHolder",
+        "RPCDisplayOptionHolder",
+        "SplashOptionHolder",
+    ];
+    
+    function hideLogoVersionAndOpenCloseText() {
+        logo.style.display = "none";
+        version.style.display = "none";
+        openCloseText.style.display = "none";
+    }
+
+    const optionholders = [];
+    const optiondescrs = [];
+    const optioninputs = [];
+    const optionhrs = [];
+
+    const createElement = (type, className, id, innerText) => {
+        const element = document.createElement(type);
+        element.className = className;
+        element.id = id;
+        element.innerText = innerText;
+        return element;
+    };
+
+    let keyNumber = 1;
+    const createOptionHolder = (id, descrText, inputId) => {
+        const optionHolder = createElement('div', 'optionholder', id, '');
+        const optionDescr = createElement('p', 'optiondescr', '', descrText);
+        const optionInput = createElement('input', '', inputId, '');
+        const optionHr = createElement('hr', '', '', '');
+        if (id == "texturePackOptionHolder") {
+            optionInput.type = 'button'; // normally I wouldn't do this, just so I can make it more efficient
+            optionInput.value = 'Open Folder';
+            optionInput.style.width = '110px';
+        } else if (id == "downloadTexturePackOptionHolder") {
+            optionInput.type = 'button';
+            optionInput.value = 'Download Pack';
+            optionInput.style.width = '110px';
+        } else if (id == "resetColorOptionHolder") {
+            optionInput.type = 'button';
+            optionInput.value = 'Reset Color';
+            optionInput.style.width = '110px';
+        } else {
+            optionInput.type = 'text';
+            optionInput.style.width = '100px';
+        }
+        if (id == 'opacityOptionHolder') {
+            optionInput.placeholder = 'e.g. 0.95';
+        } else if (id == 'windowBorderOptionHolder') {
+            optionInput.placeholder = 'e.g. 10';
+        } else if (id.includes('shortcutOptionHolder')) {
+            optionInput.style.float = "right";
+            optionHolder.style.backgroundColor = optionColor;
+            if (id == 'shortcutOptionHolder') {
+                optionInput.placeholder = 'off / on';
+                optionInput.setAttribute('value', jsonobj.Shortcuts.one);
+            } else if (id == 'shortcutOptionHolder2') {
+                optionInput.placeholder = 'GG';
+                optionInput.setAttribute('value', jsonobj.Shortcuts.two);
+            } else if (id == 'shortcutOptionHolder3') {
+                optionInput.placeholder = 'hello guys';
+                optionInput.setAttribute('value', jsonobj.Shortcuts.three);
+            } else if (id == 'shortcutOptionHolder4') {
+                optionInput.placeholder = 'noob';
+                optionInput.setAttribute('value', jsonobj.Shortcuts.four);
+            } else if (id == 'shortcutOptionHolder5') {
+                optionInput.placeholder = 'lmao';
+                optionInput.setAttribute('value', jsonobj.Shortcuts.five);
+            } 
+            optionInput.style.width = '140px';
+            optionInput.name = inputId;
+            optionInput.id = keyNumber++;
+        } else if (id == 'texturePackOptionHolder' || id == "downloadTexturePackOptionHolder") {
+            optionInput.placeholder = '';
+        } else if (id == 'RPCTextOptionHolder') {
+            optionInput.placeholder = 'Slapping noobs';
+            optionInput.style.width = '200px';
+            optionInput.setAttribute('value', jsonobj.RPC.text);
+        } else {
+            optionInput.placeholder = 'e.g. #2a394f';
+        }
+
+        optionholders.push(optionHolder);
+        optiondescrs.push(optionDescr);
+        optioninputs.push(optionInput);
+        optionhrs.push(optionHr);
+
+        optionHolder.appendChild(optionDescr);
+        optionHolder.appendChild(optionInput);
+        optionHolder.appendChild(optionHr);
+    };
+
+    // defining the options with input fields (I could put them into an array and to for each later...)
+    createOptionHolder('resetColorOptionHolder', 'Reset Color', 'resetColorOptionInput');
+
+    createOptionHolder('menuHeaderColorOptionHolder', 'Header Color', 'menuHeaderColorOptionInput');
+    createOptionHolder('optionColorOptionHolder', 'Option Color', 'optionColorOptionInput');
+    createOptionHolder('behindOptionsColorOptionHolder', 'Behind-Options Color', 'behindOptionsColorOptionInput');
+    createOptionHolder('skinButtonColorOptionHolder', 'Skin Button Color', 'skinButtonColorOptionInput');
+    createOptionHolder('opacityOptionHolder', 'Opacity', 'opacityOptionInput');
+    createOptionHolder('windowBorderOptionHolder', 'Window Border', 'windowBorderOptionInput');
+    
+    createOptionHolder('shortcutOptionHolder', 'Shortcut Option [1]', 'shortcutOptionInput');
+    createOptionHolder('shortcutOptionHolder2', 'Shortcut Option [2]', 'shortcutOptionInput2');
+    createOptionHolder('shortcutOptionHolder3', 'Shortcut Option [3]', 'shortcutOptionInput3');
+    createOptionHolder('shortcutOptionHolder4', 'Shortcut Option [4]', 'shortcutOptionInput4');
+    createOptionHolder('shortcutOptionHolder5', 'Shortcut Option [5]', 'shortcutOptionInput5');
+
+    createOptionHolder('texturePackOptionHolder', 'Texture Pack', 'texturePackOptionInput');
+    createOptionHolder('downloadTexturePackOptionHolder', 'Download QUASAR Pack', 'downloadTexturePackOptionInput');
+    createOptionHolder('RPCTextOptionHolder', 'RPC Text', 'rpcOptionInput');
+
+    optionholders.forEach(holder => {
+        rightDiv.appendChild(holder);
+    });
+    
+    //// Now use the optionholders created
+    
+    // Home page, show no options
+    document.getElementById("HomePage").addEventListener("click", function() {
+        PageTitle.innerHTML = "Home";
+        options.forEach(option => { document.getElementById(option).style.display = "none"; });
+        
+        logo.style.display = "block";
+        version.style.display = "block";
+        openCloseText.style.display = "block";
+    });
+
+    // General Tab
+    document.getElementById("general").addEventListener("click", function() {
+        PageTitle.innerHTML = "General";
+
+        options.forEach(option => { document.getElementById(option).style.display = "none"; });
+        hideLogoVersionAndOpenCloseText()
+
+        const elements = [
+            "WASDDisplayOptionHolder",
+            "AutoFullscreenOptionHolder",
+            "FullscreenOptionHolder",
+            "RPCDisplayOptionHolder",
+            "RPCTextOptionHolder",
+            "SplashOptionHolder",
+            "debugOptionHolder"
+        ];
+
+        elements.forEach(function(element) { document.getElementById(element).style.display = "block"; });
+    });
+
+    // Stats Tab
+    document.getElementById("stats").addEventListener("click", function() {
+        PageTitle.innerHTML = "Stats";
+
+        options.forEach(option => { document.getElementById(option).style.display = "none"; });
+        hideLogoVersionAndOpenCloseText()
+
+        const elements = [
+            "massCheckUncheckStatsOptionHolder",
+            "fpsDisplayOptionHolder",
+            "pingDisplayOptionHolder",
+            "platformDisplayOptionHolder",
+            "cpuUsageDisplayOptionHolder",
+            "memoryUsageDisplayOptionHolder",
+            "totalMemoryDisplayOptionHolder",
+            "cpuCoresDisplayOptionHolder",
+            "uptimeDisplayOptionHolder",
+        ];
+
+        elements.forEach(function(element) { document.getElementById(element).style.display = "block"; });
+    });
+
+    // Shortcuts Tab
+    document.getElementById("shortcuts").addEventListener("click", function() {
+        PageTitle.innerHTML = "Shortcuts";
+
+        options.forEach(option => { document.getElementById(option).style.display = "none"; });
+        hideLogoVersionAndOpenCloseText()
+
+        const elements = [
+            "shortcutDisplayOptionHolder",
+            "shortcutOptionHolder",
+            "shortcutOptionHolder2",
+            "shortcutOptionHolder3",
+            "shortcutOptionHolder4",
+            "shortcutOptionHolder5",
+        ];
+
+        elements.forEach(function(element) { document.getElementById(element).style.display = "block"; });
+    });
+
+    // Skin Tab
+    document.getElementById("SkinCatagory").addEventListener("click", function() {
+        PageTitle.innerHTML = `Skins <p style="color: red; font-size: 17px">ATTENTION: Need to restart client to apply skins</p>`;
+
+        options.forEach(option => { document.getElementById(option).style.display = "none"; });
+        hideLogoVersionAndOpenCloseText()
+
+        document.getElementById("skinCategoryoptionHolder").style.display = "block";
+        document.getElementById("skincontent").style.display = "flex";
+    });
+    
+    // Texturepacks Tab
+    document.getElementById("texturepacks").addEventListener("click", function() {
+        PageTitle.innerHTML = 'Texture Packs'
+        
+        options.forEach(option => { document.getElementById(option).style.display = "none"; });
+        hideLogoVersionAndOpenCloseText()
+
+        document.getElementById("texturePackOptionHolder").style.display = "block";
+        document.getElementById("downloadTexturePackOptionHolder").style.display = "block";
+    });
+    
+    // Texturepack links
+    texturePackOptionInput.addEventListener("click", function() {
+        require('electron').ipcRenderer.send('openTexturePackFolder');
+    });
+    downloadTexturePackOptionInput.addEventListener("click", function() {
+        window.open("https://github.com/jcjms/Quasar-Template/archive/refs/heads/main.zip", "Texturepack Download", "height=500,width=500");
+    });
+    
+    // Skybox Tab
+    document.getElementById("skyboxes").addEventListener("click", function() {
+        PageTitle.innerHTML = 'Skyboxes <p style="color: red; font-size: 17px">ATTENTION: Need to restart client to apply skyboxes</p>'
+        
+        options.forEach(option => { document.getElementById(option).style.display = "none"; });
+        hideLogoVersionAndOpenCloseText()
+
+        document.getElementById("skyboxoptionHolder").style.display = "block";
+        document.getElementById("skyboxcontent").style.display = "flex";
+    });
+
+    // Wallpaper Tab
+    document.getElementById("wallpaper").addEventListener("click", function() {
+        PageTitle.innerHTML = 'Wallpaper <p style="color: red; font-size: 17px">ATTENTION: Need to restart client to apply wallpaper</p>'
+        
+        options.forEach(option => { document.getElementById(option).style.display = "none"; });
+        hideLogoVersionAndOpenCloseText()
+
+        document.getElementById("wallpaperoptionHolder").style.display = "block";
+        document.getElementById("wallpapercontent").style.display = "block";
+    });
+
+    // Aimbot Tab 😱
+    document.getElementById("aimbot").addEventListener("click", function() {
+        PageTitle.innerHTML = `<iframe width="100%" height="90%" src="https://bean-frog.github.io/yt5s.io-Rick%20Astley%20-%20Never%20Gonna%20Give%20You%20Up%20(Official%20Music%20Video).mp4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+        
+        options.forEach(option => { document.getElementById(option).style.display = "none"; });
+        hideLogoVersionAndOpenCloseText()
+    });
+
+    // Colors Tab
+    document.getElementById("colorsettings").addEventListener("click", function() {
+        PageTitle.innerHTML = "Color Settings";
+        
+        options.forEach(option => { document.getElementById(option).style.display = "none"; });
+        hideLogoVersionAndOpenCloseText()
+
+        const elements = [
+            "optionColorOptionHolder",
+            "menuHeaderColorOptionHolder",
+            "behindOptionsColorOptionHolder",
+            "skinButtonColorOptionHolder",
+            "opacityOptionHolder",
+            "windowBorderOptionHolder",
+            "resetColorOptionHolder",
+        ];
+        elements.forEach(function(element) { document.getElementById(element).style.display = "block"; });
+    });
+
+    // If checkboxes interacted with, do stuff
     massCheckUncheckStatsCheck.addEventListener('change', e => {
         if(e.target.checked){
             jsonobj.Stats.FPS = true;
@@ -379,120 +634,30 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
         }
     });
 
-    // [IMPORTANT] you see how we set the value with getElementById but then
-    // add an event listener via the var? The element isn't created yet (don't ask why), 
-    //we could probably put the code at a lower point but I don't care. Maybe later.
-    document.getElementById("fpsDisplayCheck").checked = jsonobj.Stats.FPS;
-    fpsDisplayCheck.addEventListener('change', e => {
-        if(e.target.checked){
-            jsonobj.Stats.FPS = true;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        } else {
-            jsonobj.Stats.FPS = false;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        }
-    });
+    // Now fr, When stats checkboxes change, do stuff
+    const statsCheckboxes = [
+      { element: document.getElementById("fpsDisplayCheck"), key: "Stats.FPS" },
+      { element: document.getElementById("shortcutDisplayCheck"), key: "Stats.Shortcuts" },
+      { element: document.getElementById("platformDisplayCheck"), key: "Stats.Platform" },
+      { element: document.getElementById("pingDisplayCheck"), key: "Stats.Ping" },
+      { element: document.getElementById("cpuUsageDisplayCheck"), key: "Stats.CPU" },
+      { element: document.getElementById("memoryUsageDisplayCheck"), key: "Stats.memory" },
+      { element: document.getElementById("totalMemoryDisplayCheck"), key: "Stats.Tmemory" },
+      { element: document.getElementById("cpuCoresDisplayCheck"), key: "Stats.Cores" },
+      { element: document.getElementById("uptimeDisplayCheck"), key: "Stats.Uptime" },
+      { element: document.getElementById("WASDDisplayCheck"), key: "WASD" }
+    ];
+    
+    function addCheckboxEventListener({ element, key }) {
+      element.checked = jsonobj[key];
+      element.addEventListener("change", (e) => {
+        updateJsonObj(key, e.target.checked);
+      });
+    }
+    statsCheckboxes.forEach(addCheckboxEventListener);
+    
 
-    document.getElementById("shortcutDisplayCheck").checked = jsonobj.Stats.Shortcuts;
-    shortcutDisplayCheck.addEventListener('change', e => {
-        if(e.target.checked){
-            jsonobj.Stats.Shortcuts = true;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        } else {
-            jsonobj.Stats.Shortcuts = false;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        }
-    });
-
-    document.getElementById("platformDisplayCheck").checked = jsonobj.Stats.Platform;
-    platformDisplayCheck.addEventListener('change', e => {
-        if(e.target.checked){
-            jsonobj.Stats.Platform = true;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-
-        } else {
-            jsonobj.Stats.Platform = false;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        }
-    });
-
-    document.getElementById("pingDisplayCheck").checked = jsonobj.Stats.Ping;
-    pingDisplayCheck.addEventListener('change', e => {
-        if(e.target.checked){
-            jsonobj.Stats.Ping = true;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        } else {
-            jsonobj.Stats.Ping = false;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        }
-    });
-
-    document.getElementById("cpuUsageDisplayCheck").checked = jsonobj.Stats.CPU;
-    cpuUsageDisplayCheck.addEventListener('change', e => {
-        if(e.target.checked){
-            jsonobj.Stats.CPU = true;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        } else {
-            jsonobj.Stats.CPU = false;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        }
-    });
-
-    document.getElementById("memoryUsageDisplayCheck").checked = jsonobj.Stats.memory;
-    memoryUsageDisplayCheck.addEventListener('change', e => {
-        if(e.target.checked){
-            jsonobj.Stats.memory = true;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        } else {
-            jsonobj.Stats.memory = false;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        }
-    });
-
-    document.getElementById("totalMemoryDisplayCheck").checked = jsonobj.Stats.Tmemory;
-    totalMemoryDisplayCheck.addEventListener('change', e => {
-        if(e.target.checked){
-            jsonobj.Stats.Tmemory = true;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        } else {
-            jsonobj.Stats.Tmemory = false;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        }
-    });
-
-    document.getElementById("cpuCoresDisplayCheck").checked = jsonobj.Stats.Cores;
-    cpuCoresDisplayCheck.addEventListener('change', e => {
-        if(e.target.checked){
-            jsonobj.Stats.Cores = true;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        } else {
-            jsonobj.Stats.Cores = false;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        }
-    });
-
-    document.getElementById("uptimeDisplayCheck").checked = jsonobj.Stats.Uptime;
-    uptimeDisplayCheck.addEventListener('change', e => {
-        if(e.target.checked){
-            jsonobj.Stats.Uptime = true;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        } else {
-            jsonobj.Stats.Uptime = false;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        }
-    });
-
-    document.getElementById("WASDDisplayCheck").checked = jsonobj.WASD;
-    WASDDisplayCheck.addEventListener('change', e => {
-        if(e.target.checked){
-            jsonobj.WASD = true;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        } else {
-            jsonobj.WASD = false;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        }
-    });
-
+    // More Checkboxes with extra bits
     document.getElementById("AutoFullscreenCheck").checked = jsonobj.AutoFullscreen;
     AutoFullscreenCheck.addEventListener('change', e => {
         if(e.target.checked){
@@ -504,164 +669,13 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
         }
     });
 
-    require('electron').ipcRenderer.on('toggleFullscreen',(event,data) => {
-        document.getElementById("FullscreenCheck").checked = data;
-    });
-
     document.getElementById("FullscreenCheck").checked = jsonobj.Fullscreen;
     FullscreenCheck.addEventListener('change', e => {
         if(e.target.checked){
             jsonobj.Fullscreen = true;
-            require('electron').ipcRenderer.send('makeFullscreen')
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         } else {
             jsonobj.Fullscreen = false;
-            require('electron').ipcRenderer.send('disableFullscreen')
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        }
-    });
-
-    massCheckUncheckFlagsCheck.addEventListener('change', e => {
-        if(e.target.checked){
-            jsonobj.Flags.Print = true;
-            jsonobj.Flags.Harmony = true;
-            jsonobj.Flags.Limit = true;
-            jsonobj.Flags.Contexts = true;
-            jsonobj.Flags.GPUblocklist = true;
-            jsonobj.Flags.CanvasClip = true;
-            jsonobj.Flags.Logging = true;
-            jsonobj.Flags.ProcessGPU = true;
-            jsonobj.Flags.AcceleratedCanvas = true;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-
-            document.getElementById("disable_print_previewCheck").checked = true;
-            document.getElementById("javascript_harmonyCheck").checked = true;
-            document.getElementById("renderer_process_limitCheck").checked = true;
-            document.getElementById("max_active_webgl_contextsCheck").checked = true;
-            document.getElementById("ignore_gpu_blocklistCheck").checked = true;
-            document.getElementById("disable_2d_canvas_clip_aaCheck").checked = true;
-            document.getElementById("disable_loggingCheck").checked = true;
-            document.getElementById("in_process_gpuCheck").checked = true;
-            document.getElementById("disable_accelerated_2d_canvasCheck").checked = true;
-        } else {
-            jsonobj.Flags.Print = false;
-            jsonobj.Flags.Harmony = false;
-            jsonobj.Flags.Limit = false;
-            jsonobj.Flags.Contexts = false;
-            jsonobj.Flags.GPUblocklist = false;
-            jsonobj.Flags.CanvasClip = false;
-            jsonobj.Flags.Logging = false;
-            jsonobj.Flags.ProcessGPU = false;
-            jsonobj.Flags.AcceleratedCanvas = false;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-
-            document.getElementById("disable_print_previewCheck").checked = false;
-            document.getElementById("javascript_harmonyCheck").checked = false;
-            document.getElementById("renderer_process_limitCheck").checked = false;
-            document.getElementById("max_active_webgl_contextsCheck").checked = false;
-            document.getElementById("ignore_gpu_blocklistCheck").checked = false;
-            document.getElementById("disable_2d_canvas_clip_aaCheck").checked = false;
-            document.getElementById("disable_loggingCheck").checked = false;
-            document.getElementById("in_process_gpuCheck").checked = false;
-            document.getElementById("disable_accelerated_2d_canvasCheck").checked = false;
-        }
-    });
-
-    document.getElementById("disable_print_previewCheck").checked = jsonobj.Flags.Print;
-    disable_print_previewCheck.addEventListener('change', e => {
-        if(e.target.checked){
-            jsonobj.Flags.Print = true;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        } else {
-            jsonobj.Flags.Print = false;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        }
-    });
-
-    document.getElementById("javascript_harmonyCheck").checked = jsonobj.Flags.Harmony;
-    javascript_harmonyCheck.addEventListener('change', e => {
-        if(e.target.checked){
-            jsonobj.Flags.Harmony = true;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        } else {
-            jsonobj.Flags.Harmony = false;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        }
-    });
-
-    document.getElementById("renderer_process_limitCheck").checked = jsonobj.Flags.Limit;
-    renderer_process_limitCheck.addEventListener('change', e => {
-        if(e.target.checked){
-            jsonobj.Flags.Limit = true;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        } else {
-            jsonobj.Flags.Limit = false;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        }
-    });
-
-    document.getElementById("max_active_webgl_contextsCheck").checked = jsonobj.Flags.Contexts;
-    max_active_webgl_contextsCheck.addEventListener('change', e => {
-        if(e.target.checked){
-            jsonobj.Flags.Contexts = true;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        } else {
-            jsonobj.Flags.Contexts = false;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        }
-    });
-
-    document.getElementById("ignore_gpu_blocklistCheck").checked = jsonobj.Flags.GPUblocklist;
-    ignore_gpu_blocklistCheck.addEventListener('change', e => {
-        if(e.target.checked){
-            jsonobj.Flags.GPUblocklist = true;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        } else {
-            jsonobj.Flags.GPUblocklist = false;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        }
-    });
-
-    document.getElementById("disable_2d_canvas_clip_aaCheck").checked = jsonobj.Flags.CanvasClip;
-    disable_2d_canvas_clip_aaCheck.addEventListener('change', e => {
-        if(e.target.checked){
-            jsonobj.Flags.CanvasClip = true;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        } else {
-            jsonobj.Flags.CanvasClip = false;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        }
-    });
-
-    document.getElementById("disable_loggingCheck").checked = jsonobj.Flags.Logging;
-    disable_loggingCheck.addEventListener('change', e => {
-        if(e.target.checked){
-            jsonobj.Flags.Logging = true;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        } else {
-            jsonobj.Flags.Logging = false;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        }
-    });
-
-    document.getElementById("in_process_gpuCheck").checked = jsonobj.Flags.ProcessGPU;
-    in_process_gpuCheck.addEventListener('change', e => {
-        if(e.target.checked){
-            jsonobj.Flags.ProcessGPU = true;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        } else {
-            jsonobj.Flags.ProcessGPU = false;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        }
-    });
-
-    document.getElementById("disable_accelerated_2d_canvasCheck").checked = jsonobj.Flags.AcceleratedCanvas;
-    disable_accelerated_2d_canvasCheck.addEventListener('change', e => {
-        if(e.target.checked){
-            jsonobj.Flags.AcceleratedCanvas = true;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        } else {
-            jsonobj.Flags.AcceleratedCanvas = false;
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         }
     });
@@ -698,6 +712,19 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         }
     });
+    
+    // create message box for later use
+    const msgBoxWrapper = document.createElement('div');
+    msgBoxWrapper.style = "position: absolute; width: 100%; z-index: 1001; display: flex; justify-content: center; align-items: center; margin-top: 10px;"
+    msgBoxWrapper.id = "msgBoxWrapper"
+    msgBoxWrapper.innerHTML = `
+        <div id="msgBox" style="background: ${msgBoxColor}; text-align: center; z-index: 1001; border-radius: 10px; font-size: 20px; color: white; display: none;">
+            <p id="msgBoxText" style='line-height: 2.2; width: 325px; height: 45px; border: 1px solid black;'></p>
+        </div>
+    `;
+    
+    document.body.appendChild(msgBoxWrapper);
+    
 
     // Skin-Preview loading
     
@@ -832,8 +859,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
         processSkins(message, 3, 'vector');
     });
 
-    ////////////////////////////////////////////////////////
-
+    
     // Skybox-Preview loading | it works the same as the skins above
     // maybe I could merge them one day... or I just let it be... idk
 
@@ -906,7 +932,6 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
         processSkyboxes(message, 'skybox');
     });
 
-    ////////////////////////////////////////////////////////
 
     // wallpaper-DISPLAY
 
@@ -977,124 +1002,6 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
     
     require('electron').ipcRenderer.on('filepaths-wallpaper', (event, message) => {
         processWallpapers(message, 'wallpaper');
-    });
-
-    ////////////////////////////////////////////////////////
-
-    // Options with input fields (maybe I could but them near the checkbox options...)
-
-    // arrays to store everything
-    const optionholders = [];
-    const optiondescrs = [];
-    const optioninputs = [];
-    const optionhrs = [];
-
-    // summed up the element creation to simplify it a bit
-    const createElement = (type, className, id, innerText) => {
-        const element = document.createElement(type);
-        element.className = className;
-        element.id = id;
-        element.innerText = innerText;
-        return element;
-    };
-
-    // idk what that was for but ita probably important
-    let keyNumber = 1;
-
-    // function to create the options with input fields
-    const createOptionHolder = (id, descrText, inputId) => {
-        const optionHolder = createElement('div', 'optionholder', id, '');
-        const optionDescr = createElement('p', 'optiondescr', '', descrText);
-        const optionInput = createElement('input', '', inputId, '');
-        const optionHr = createElement('hr', '', '', '');
-        if (id == "texturePackOptionHolder") {
-            optionInput.type = 'button'; // normally I wouldn't do this, just so I can make it more efficient
-            optionInput.value = 'Open Folder';
-            optionInput.style.width = '110px';
-        } else if (id == "downloadTexturePackOptionHolder") {
-            optionInput.type = 'button';
-            optionInput.value = 'Download Pack';
-            optionInput.style.width = '110px';
-        } else if (id == "resetColorOptionHolder") {
-            optionInput.type = 'button';
-            optionInput.value = 'Reset Color';
-            optionInput.style.width = '110px';
-        } else {
-            optionInput.type = 'text';
-            optionInput.style.width = '100px';
-        }
-        if (id == 'opacityOptionHolder') {
-            optionInput.placeholder = 'e.g. 0.95';
-        } else if (id == 'windowBorderOptionHolder') {
-            optionInput.placeholder = 'e.g. 10';
-        } else if (id.includes('shortcutOptionHolder')) {
-            optionInput.style.float = "right";
-            optionHolder.style.backgroundColor = optionColor;
-            if (id == 'shortcutOptionHolder') {
-                optionInput.placeholder = 'off / on';
-                optionInput.setAttribute('value', jsonobj.Shortcuts.one);
-            } else if (id == 'shortcutOptionHolder2') {
-                optionInput.placeholder = 'GG';
-                optionInput.setAttribute('value', jsonobj.Shortcuts.two);
-            } else if (id == 'shortcutOptionHolder3') {
-                optionInput.placeholder = 'hello guys';
-                optionInput.setAttribute('value', jsonobj.Shortcuts.three);
-            } else if (id == 'shortcutOptionHolder4') {
-                optionInput.placeholder = 'noob';
-                optionInput.setAttribute('value', jsonobj.Shortcuts.four);
-            } else if (id == 'shortcutOptionHolder5') {
-                optionInput.placeholder = 'lmao';
-                optionInput.setAttribute('value', jsonobj.Shortcuts.five);
-            } 
-            optionInput.style.width = '140px';
-            optionInput.name = inputId;
-            optionInput.id = keyNumber++;
-        } else if (id == 'texturePackOptionHolder' || id == "downloadTexturePackOptionHolder") {
-            optionInput.placeholder = '';
-        } else if (id == 'RPCTextOptionHolder') {
-            optionInput.placeholder = 'Slapping noobs';
-            optionInput.style.width = '200px';
-            optionInput.setAttribute('value', jsonobj.RPC.text);
-        } else {
-            optionInput.placeholder = 'e.g. #2a394f';
-        }
-
-        // pushing to the arrays
-        optionholders.push(optionHolder);
-        optiondescrs.push(optionDescr);
-        optioninputs.push(optionInput);
-        optionhrs.push(optionHr);
-
-        optionHolder.appendChild(optionDescr);
-        optionHolder.appendChild(optionInput);
-        optionHolder.appendChild(optionHr);
-    };
-
-    // defining the options with input fields (I could put them into an array and to for each later...)
-    createOptionHolder('resetColorOptionHolder', 'Reset Color', 'resetColorOptionInput');
-
-    // customisation
-    createOptionHolder('menuHeaderColorOptionHolder', 'Header Color', 'menuHeaderColorOptionInput');
-    createOptionHolder('optionColorOptionHolder', 'Option Color', 'optionColorOptionInput');
-    createOptionHolder('behindOptionsColorOptionHolder', 'Behind-Options Color', 'behindOptionsColorOptionInput');
-    createOptionHolder('skinButtonColorOptionHolder', 'Skin Button Color', 'skinButtonColorOptionInput');
-    createOptionHolder('opacityOptionHolder', 'Opacity', 'opacityOptionInput');
-    createOptionHolder('windowBorderOptionHolder', 'Window Border', 'windowBorderOptionInput');
-    
-    // shortcuts
-    createOptionHolder('shortcutOptionHolder', 'Shortcut Option [1]', 'shortcutOptionInput');
-    createOptionHolder('shortcutOptionHolder2', 'Shortcut Option [2]', 'shortcutOptionInput2');
-    createOptionHolder('shortcutOptionHolder3', 'Shortcut Option [3]', 'shortcutOptionInput3');
-    createOptionHolder('shortcutOptionHolder4', 'Shortcut Option [4]', 'shortcutOptionInput4');
-    createOptionHolder('shortcutOptionHolder5', 'Shortcut Option [5]', 'shortcutOptionInput5');
-
-    // Misc
-    createOptionHolder('texturePackOptionHolder', 'Texture Pack', 'texturePackOptionInput');
-    createOptionHolder('downloadTexturePackOptionHolder', 'Download QUASAR Pack', 'downloadTexturePackOptionInput');
-    createOptionHolder('RPCTextOptionHolder', 'RPC Text', 'rpcOptionInput');
-
-    optionholders.forEach(holder => {
-        rightDiv.appendChild(holder);
     });
 
     // customisation setting values
@@ -1171,70 +1078,45 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
         });
     });
 
-    // If input changes -> apply action + save to JSON
+    // Color Settings and updating/saving color value
+    function updateColorValue(element, value, jsonKey, cssProperty) {
+      const jsonValue = element.value;
+      jsonobj.Colors[jsonKey] = jsonValue;
+      fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
+      console.log(jsonValue);
+      document.querySelector(cssProperty).style.background = jsonValue;
+    }
+
     menuHeaderColorOptionInput.addEventListener('change', function() {
-        menuHeaderColor = menuHeaderColorOptionInput.value;
-        jsonobj.Colors.menuHeaderColor = menuHeaderColorOptionInput.value;
-        fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        console.log(menuHeaderColor);
-        skinHeader.style.background = menuHeaderColor;
+      updateColorValue(menuHeaderColorOptionInput, menuHeaderColor, 'menuHeaderColor', '#skinHeader');
     });
 
     optionColorOptionInput.addEventListener('change', function() {
-        optionColor = optionColorOptionInput.value;
-        jsonobj.Colors.optionColor = optionColorOptionInput.value;
-        fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        console.log(optionColor);
-
-        const elements = document.querySelectorAll('.optionholder');
-        elements.forEach(element => {
-          element.style.background = optionColor;
-        });
+      updateColorValue(optionColorOptionInput, optionColor, 'optionColor', '.optionholder');
     });
 
     behindOptionsColorOptionInput.addEventListener('change', function() {
-        behindOptionsColor = behindOptionsColorOptionInput.value;
-        jsonobj.Colors.behindOptionsColor = behindOptionsColorOptionInput.value;
-        fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        console.log(behindOptionsColor);
-        mainDiv.style.background = behindOptionsColor;
+      updateColorValue(behindOptionsColorOptionInput, behindOptionsColor, 'behindOptionsColor', '#mainDiv');
     });
 
     skinButtonColorOptionInput.addEventListener('change', function() {
-        skinButtonColor = skinButtonColorOptionInput.value;
-        jsonobj.Colors.skinButtonColor = skinButtonColorOptionInput.value;
-        fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        console.log(skinButtonColor);
-
-        var skinbuttons = document.getElementsByClassName("skinbutton");
-
-        for (var i = 0; i < skinbuttons.length; i++) {
-            skinbuttons[i].style.backgroundColor = skinButtonColor; // kind of breaks hover effect
-        }
+      updateColorValue(skinButtonColorOptionInput, skinButtonColor, 'skinButtonColor', '.skinbutton');
     });
 
     opacityOptionInput.addEventListener('change', function() {
-        opacity = opacityOptionInput.value;
-        jsonobj.Colors.opacity = opacityOptionInput.value;
-        fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        console.log(opacity);
-        skinWrapper.style.opacity = opacity;
+      const opacityValue = opacityOptionInput.value;
+      jsonobj.Colors.opacity = opacityValue;
+      fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
+      console.log(opacityValue);
+      skinWrapper.style.opacity = opacityValue;
     });
 
     windowBorderOptionInput.addEventListener('change', function() {
-        skinWrapperBorderRadius = windowBorderOptionInput.value;
-        jsonobj.Colors.skinWrapperBorderRadius = windowBorderOptionInput.value;
-        fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        console.log(skinWrapperBorderRadius);
-        skinWrapper.style.borderRadius = skinWrapperBorderRadius + "px";
-    });
-
-    texturePackOptionInput.addEventListener("click", function() {
-        require('electron').ipcRenderer.send('openTexturePackFolder');
-    });
-
-    downloadTexturePackOptionInput.addEventListener("click", function() {
-        window.open("https://github.com/jcjms/Quasar-Template/archive/refs/heads/main.zip", "Texturepack Download", "height=500,width=500");
+      const borderRadiusValue = windowBorderOptionInput.value;
+      jsonobj.Colors.skinWrapperBorderRadius = borderRadiusValue;
+      fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
+      console.log(borderRadiusValue);
+      skinWrapper.style.borderRadius = borderRadiusValue + 'px';
     });
 
     resetColorOptionInput.addEventListener("click", function() {
@@ -1268,312 +1150,9 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
         console.log(skinWrapperBorderRadius);
     });
 
-    // List of *all* options to show them in the different menu tabs (enable / disable)
-    
-    const options = [
-        "massCheckUncheckStatsOptionHolder",
-        "fpsDisplayOptionHolder", 
-        "pingDisplayOptionHolder", 
-        "shortcutDisplayOptionHolder", 
-        "skincontent", 
-        "skyboxcontent", 
-        "optionColorOptionHolder", 
-        "behindOptionsColorOptionHolder", 
-        "menuHeaderColorOptionHolder",
-        "skinButtonColorOptionHolder", 
-        "opacityOptionHolder", 
-        "windowBorderOptionHolder", 
-        "skinCategoryoptionHolder", 
-        "skyboxoptionHolder", 
-        "wallpaperoptionHolder",
-        "wallpapercontent",
-        "shortcutOptionHolder", 
-        "shortcutOptionHolder2", 
-        "shortcutOptionHolder3", 
-        "shortcutOptionHolder4", 
-        "shortcutOptionHolder5", 
-        "platformDisplayOptionHolder", 
-        "cpuUsageDisplayOptionHolder", 
-        "memoryUsageDisplayOptionHolder", 
-        "totalMemoryDisplayOptionHolder", 
-        "cpuCoresDisplayOptionHolder", 
-        "uptimeDisplayOptionHolder", 
-        "texturePackOptionHolder", 
-        "downloadTexturePackOptionHolder", 
-        "RPCTextOptionHolder",
-        "WASDDisplayOptionHolder",
-        "AutoFullscreenOptionHolder", 
-        "FullscreenOptionHolder",
-        "resetColorOptionHolder",
-        "massCheckUncheckFlagsOptionHolder",
-        "disable_print_previewOptionHolder",
-        "javascript_harmonyOptionHolder",
-        "renderer_process_limitOptionHolder",
-        "max_active_webgl_contextsOptionHolder",
-        "ignore_gpu_blocklistOptionHolder",
-        "disable_2d_canvas_clip_aaOptionHolder",
-        "disable_loggingOptionHolder",
-        "in_process_gpuOptionHolder",
-        "disable_accelerated_2d_canvasOptionHolder",
-        "debugOptionHolder",
-        "RPCDisplayOptionHolder",
-        "SplashOptionHolder",
-    ];
-
-    // default title
-    h2.innerHTML = "Home";
-
-    // hide all options on default (home menu)
+    // On start show no options | only works down here idk why tbh
     options.forEach(option => {
         document.getElementById(option).style.display = "none";
     });
-
-    // makes it less repetetive
-    function hideLogoAndVersion() {
-        logo.style.display = "none";
-        version.style.display = "none";
-    }
-
-    document.getElementById("allOptions").addEventListener("click", function() {
-        // title
-        h2.innerHTML = "Home";
-
-        // hide everything
-        options.forEach(option => {
-            document.getElementById(option).style.display = "none";
-        });
-
-        // show everything thats needed
-        logo.style.display = "block";
-        version.style.display = "block";
-    });
-
-    document.getElementById("general").addEventListener("click", function() {
-        h2.innerHTML = "General";
-
-        options.forEach(option => {
-            document.getElementById(option).style.display = "none";
-        });
-
-        const elements = [
-            "WASDDisplayOptionHolder",
-            "AutoFullscreenOptionHolder",
-            "FullscreenOptionHolder",
-            "RPCDisplayOptionHolder",
-            "RPCTextOptionHolder"
-        ];
-
-        elements.forEach(function(element) {
-            document.getElementById(element).style.display = "block";
-        });
-
-        hideLogoAndVersion()
-    });
-
-    document.getElementById("stats").addEventListener("click", function() {
-        h2.innerHTML = "Stats";
-
-        options.forEach(option => {
-            document.getElementById(option).style.display = "none";
-        });
-
-        const elements = [
-            "massCheckUncheckStatsOptionHolder",
-            "fpsDisplayOptionHolder",
-            "pingDisplayOptionHolder",
-            "platformDisplayOptionHolder",
-            "cpuUsageDisplayOptionHolder",
-            "memoryUsageDisplayOptionHolder",
-            "totalMemoryDisplayOptionHolder",
-            "cpuCoresDisplayOptionHolder",
-            "uptimeDisplayOptionHolder",
-        ];
-
-        elements.forEach(function(element) {
-            document.getElementById(element).style.display = "block";
-        });
-
-        hideLogoAndVersion()
-    });
-
-    document.getElementById("shortcuts").addEventListener("click", function() {
-        h2.innerHTML = "Shortcuts";
-
-        options.forEach(option => {
-            document.getElementById(option).style.display = "none";
-        });
-
-        const elements = [
-            "shortcutDisplayOptionHolder",
-            "shortcutOptionHolder",
-            "shortcutOptionHolder2",
-            "shortcutOptionHolder3",
-            "shortcutOptionHolder4",
-            "shortcutOptionHolder5",
-        ];
-
-        elements.forEach(function(element) {
-            document.getElementById(element).style.display = "block";
-        });
-
-        hideLogoAndVersion()
-    });
-
-    document.getElementById("skinmenu").addEventListener("click", function() {
-        h2.innerHTML = `Skins <p style="color: red; font-size: 17px">ATTENTION: Need to restart client to apply skins</p>`;
-
-        options.forEach(option => {
-            document.getElementById(option).style.display = "none";
-        });
-
-        document.getElementById("skinCategoryoptionHolder").style.display = "block";
-        document.getElementById("skincontent").style.display = "flex";
-
-        hideLogoAndVersion()
-    });
-
-    document.getElementById("skyboxes").addEventListener("click", function() {
-        h2.innerHTML = 'Skyboxes <p style="color: red; font-size: 17px">ATTENTION: Need to restart client to apply skyboxes</p>'
-        
-        options.forEach(option => {
-            document.getElementById(option).style.display = "none";
-        });
-
-        document.getElementById("skyboxoptionHolder").style.display = "block";
-        document.getElementById("skyboxcontent").style.display = "flex";
-
-        hideLogoAndVersion()
-    });
-
-    document.getElementById("wallpaper").addEventListener("click", function() {
-        h2.innerHTML = 'Wallpaper <p style="color: red; font-size: 17px">ATTENTION: Need to restart client to apply wallpaper</p>'
-        
-        options.forEach(option => {
-            document.getElementById(option).style.display = "none";
-        });
-
-        hideLogoAndVersion()
-
-    });
-
-    document.getElementById("wallpaper").addEventListener("click", function() {
-        h2.innerHTML = 'Wallpaper <p style="color: red; font-size: 17px">ATTENTION: Need to restart client to apply wallpaper</p>'
-        
-        options.forEach(option => {
-            document.getElementById(option).style.display = "none";
-        });
-
-        document.getElementById("wallpaperoptionHolder").style.display = "block";
-        document.getElementById("wallpapercontent").style.display = "block";
-
-        logo.style.display = "none";
-        version.style.display = "none";
-    });
-
-    document.getElementById("texturepacks").addEventListener("click", function() {
-        h2.innerHTML = 'Texture Packs'
-        
-        options.forEach(option => {
-            document.getElementById(option).style.display = "none";
-        });
-
-        document.getElementById("texturePackOptionHolder").style.display = "block";
-        document.getElementById("downloadTexturePackOptionHolder").style.display = "block";
-
-        hideLogoAndVersion()
-    });
-
-    document.getElementById("chromiumflags").addEventListener("click", function() {
-        h2.innerHTML = 'Chromium Flags <p style="color: red; font-size: 17px">ATTENTION: Need to restart client to apply flags</p>'
-        
-        options.forEach(option => {
-            document.getElementById(option).style.display = "none";
-        });
-
-        const elements = [
-            "massCheckUncheckFlagsOptionHolder",
-            "disable_print_previewOptionHolder",
-            "javascript_harmonyOptionHolder",
-            "renderer_process_limitOptionHolder",
-            "max_active_webgl_contextsOptionHolder",
-            "ignore_gpu_blocklistOptionHolder",
-            "disable_2d_canvas_clip_aaOptionHolder",
-            "disable_loggingOptionHolder",
-            "in_process_gpuOptionHolder",
-            "disable_accelerated_2d_canvasOptionHolder"
-        ];
-
-        elements.forEach(function(element) {
-            document.getElementById(element).style.display = "block";
-        });
-
-        hideLogoAndVersion()
-    });
-    
-    document.getElementById("aimbot").addEventListener("click", function() {
-        h2.innerHTML = `<iframe width="100%" height="90%" src="https://bean-frog.github.io/yt5s.io-Rick%20Astley%20-%20Never%20Gonna%20Give%20You%20Up%20(Official%20Music%20Video).mp4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-        
-        options.forEach(option => {
-            document.getElementById(option).style.display = "none";
-        });
-
-        hideLogoAndVersion()
-    });
-
-    document.getElementById("colorsettings").addEventListener("click", function() {
-        h2.innerHTML = "Color Settings";
-        
-        options.forEach(option => {
-            document.getElementById(option).style.display = "none";
-        });
-
-        document.getElementById("optionColorOptionHolder").style.display = "block";
-        document.getElementById("menuHeaderColorOptionHolder").style.display = "block";
-        document.getElementById("behindOptionsColorOptionHolder").style.display = "block";
-        document.getElementById("skinButtonColorOptionHolder").style.display = "block";
-        document.getElementById("opacityOptionHolder").style.display = "block";
-        document.getElementById("windowBorderOptionHolder").style.display = "block";
-        document.getElementById("resetColorOptionHolder").style.display = "block";
-
-        const elements = [
-            "optionColorOptionHolder",
-            "menuHeaderColorOptionHolder",
-            "behindOptionsColorOptionHolder",
-            "skinButtonColorOptionHolder",
-            "opacityOptionHolder",
-            "windowBorderOptionHolder",
-            "resetColorOptionHolder",
-        ];
-
-        elements.forEach(function(element) {
-            document.getElementById(element).style.display = "block";
-        });
-
-        hideLogoAndVersion()
-    });
-
-    let clickCount = 0;
-
-    version.addEventListener("click", function() {
-        clickCount++;
-        if (clickCount === 3) {
-            h2.innerHTML = 'Dev Settings <p style="color: red; font-size: 17px">ATTENTION: Need to restart client to apply settings</p>'
-            
-            options.forEach(option => {
-                document.getElementById(option).style.display = "none";
-            });
-
-            document.getElementById("debugOptionHolder").style.display = "block";
-            document.getElementById("SplashOptionHolder").style.display = "block";
-
-            hideLogoAndVersion()
-            clickCount = 0;
-        }
-    });
-
-    // css
-    let skincss = document.createElement('style');
-    skincss.innerText = "@import 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap';*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}body{overflow-y: hidden;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;}.titlebar{-webkit-user-select: none;-webkit-app-region: drag;}.skinwrapper{position:absolute;top:50%;left:50%;max-width:750px;width:100%;background:#232429;/* if I add menuHeaderColor it spawns at a different location lmao, but the color has to stay like that, else the menu is see trough under header*/transform:translate(-50%,-50%);border:solid 1px #000;color:#fff;height:335px;}.skinwrapper header{font-size:23px;font-weight:500;padding:17px 30px;border-bottom:1px solid #000;text-align:center;border-top-left-radius: 10px;border-top-right-radius: 10px;}.skinwrapper header.skinactive{cursor:move;user-select:none;}.skinwrapper .skincontent{display:flex;flex-direction:wrap;flex-wrap:wrap;justify-content:center;}.skincontent .title{margin:15px 0;font-size:29px;font-weight:500}.skincontent p{font-size:16px;text-align:center;display:flex}.skinbutton{width:100%;height:48px;background-color:" + skinButtonColor + ";border:none;color:#fff;font-size:20px}.skinbutton:hover{background-color:" + skinButtonHoverColor + "}.skinclose{color:grey;position:absolute;top:0;right:0;margin-right:15px;margin-top:-6px;background-color:" + skinCloseColor + ";border:none;font-size:35px}.skinclose:hover{color:#fff}p{font-size:20px}input[type=text]{float:right;margin:14px 25px 10px 0;font-weight:700;color:grey}input[type=range]{float:right;margin:16px 20px 10px 0}input[type=checkbox]{float:right;transform:scale(2);margin:14px 25px 5px 0;width:35px;font-weight:700;color:grey;}input[type=button]{float:right;margin:14px 25px 10px 0;}.optiondescr{float:left;margin:10px 0 10px 20px}.optionholder{background-color:" + optionColor + "; display: inline-block}hr{width:100%;border:.1px solid rgb(255, 27, 8, 0);}/*select{float:right;margin:14px 25px 10px 0;width:50px}*/.skinCategory:hover{background-color:#0798fc}/* doesn't work lol*/";
-    document.head.appendChild(skincss);
 });
 });
