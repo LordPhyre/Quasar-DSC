@@ -1,6 +1,7 @@
 const fs = require('fs');
 const electron = require('electron');
 const ipcRenderer = electron.ipcRenderer;
+const ping_get = require('ping');
 //const {ipcRenderer} = require('electron'); doesn't work, idk why tbh
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -91,13 +92,13 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
         .skinbutton{
             width:100%;
             height:48px;
-            background-color:" + skinButtonColor + ";
+            background-color: ${skinButtonColor};
             border:none;
             color:#fff;
             font-size:20px
         }
         .skinbutton:hover{
-            background-color:" + skinButtonHoverColor + "
+            background-color: ${skinButtonHoverColor};
         }
         .skinclose{
             color:grey;
@@ -106,7 +107,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
             right:0;
             margin-right:15px;
             margin-top:-6px;
-            background-color:" + skinCloseColor + ";
+            background-color: ${skinCloseColor};
             border:none;
             font-size:35px
         }
@@ -169,6 +170,13 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
 
 
 // Constructing Menu Base
+
+    // Logo font
+    const logoFont = document.createElement('link')
+    logoFont.href = "https://fonts.cdnfonts.com/css/aquire";
+    logoFont.rel = "stylesheet";
+    document.getElementsByTagName('head')[0].appendChild(logoFont);
+
     const skinWrapper = document.createElement('div');
     skinWrapper.className = 'skinwrapper';
     skinWrapper.id = "skinWrapper";
@@ -192,7 +200,10 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
 // Computer Stats Display
     const statsHolderWrapper = document.createElement("div");
     statsHolderWrapper.id = "statsHolderWrapper";
-    statsHolderWrapper.innerHTML = `<div id="statsHolder" style="position: absolute; right: 0;top: 25%; z-index: 1000; margin-right: 6px; font-size: 100%; height: 100%; color: white; padding-right: 5px; background: #191919; opacity: 0.9;">`;
+    statsHolderWrapper.style = "position: absolute; right: 0;top: 25%; z-index: 1000; margin-right: 6px; font-size: 100%; height: 100%;";
+    statsHolderWrapper.innerHTML = `
+        <div id="statsHolder" style="z-index: 1000; /*top: 50%;*/ color: white; padding-right: 5px; font-size: 100%; background: #191919; opacity: 0.9;">
+    `;
     document.body.appendChild(statsHolderWrapper);
     
     const elementIds = ['fpscounter', 'ping', 'platform', 'cpu', 'mem', 'totalMem', 'cpuCount', 'uptime'];
@@ -325,6 +336,8 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
     const skinCategoryoptionHolder = document.createElement('div');
     skinCategoryoptionHolder.className = 'optionholder';
     skinCategoryoptionHolder.id = 'skinCategoryoptionHolder';
+
+    rightDiv.appendChild(skinCategoryoptionHolder);
 
     const buttonWrapper = document.createElement('div');
     buttonWrapper.style = 'display: flex; justify-content: center;';
@@ -722,8 +735,6 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
     */
 
 
-
-
 // Show and Hide checkboxes when changing pages
     
     function hideLogoVersionAndOpenCloseText() {
@@ -738,9 +749,11 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
 
     // Home Page
     for (const option of optionList) { document.getElementById(option.holderId).style.display = 'none'; }
+    for (const option of otherOptionsList) { document.getElementById(option.holderId).style.display = 'none'; }
     hideSkinStuff()
     document.getElementById("HomePage").addEventListener("click", function() {
         for (const option of optionList) { document.getElementById(option.holderId).style.display = 'none'; }
+        for (const option of otherOptionsList) { document.getElementById(option.holderId).style.display = 'none'; }
         hideSkinStuff()
         
         PageTitle.innerHTML = "Home";
@@ -753,6 +766,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
     document.getElementById("general").addEventListener("click", function() {
         PageTitle.innerHTML = "General";
         for (const option of optionList) { document.getElementById(option.holderId).style.display = 'none'; }
+        for (const option of otherOptionsList) { document.getElementById(option.holderId).style.display = 'none'; }
         hideLogoVersionAndOpenCloseText()
         hideSkinStuff()
 
@@ -772,6 +786,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
     document.getElementById("stats").addEventListener("click", function() {
         PageTitle.innerHTML = "Stats";
         for (const option of optionList) { document.getElementById(option.holderId).style.display = 'none'; }
+        for (const option of otherOptionsList) { document.getElementById(option.holderId).style.display = 'none'; }
         hideLogoVersionAndOpenCloseText()
         hideSkinStuff()
 
@@ -793,6 +808,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
     document.getElementById("shortcuts").addEventListener("click", function() {
         PageTitle.innerHTML = "Shortcuts";
 
+        for (const option of otherOptionsList) { document.getElementById(option.holderId).style.display = 'none'; }
         for (const option of optionList) { document.getElementById(option.holderId).style.display = 'none'; }
         hideLogoVersionAndOpenCloseText()
         hideSkinStuff()
@@ -812,8 +828,11 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
     document.getElementById("SkinCategory").addEventListener("click", function() {
         PageTitle.innerHTML = `Skins <p style="color: red; font-size: 17px">ATTENTION: Need to restart client to apply skins</p>`;
 
+        for (const option of otherOptionsList) { document.getElementById(option.holderId).style.display = 'none'; }
         for (const option of optionList) { document.getElementById(option.holderId).style.display = 'none'; }
         hideLogoVersionAndOpenCloseText()
+
+        document.getElementById("skincontent").style.display = "flex";
 
         const elements = [
             "skinCategoryoptionHolder",
@@ -824,8 +843,6 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
             "downloadTexturePackOptionHolder",
         ];
         elements.forEach(function(element) { document.getElementById(element).style.display = "block"; });
-        document.getElementById("skincontent").style.display = "flex";
-        document.getElementById("skyboxcontent").style.display = "flex";
 
         // Texturepack links
         texturePackOptionInput.addEventListener("click", function() { require('electron').ipcRenderer.send('openTexturePackFolder'); });
@@ -837,6 +854,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
     // Wallpaper Tab
     document.getElementById("wallpaper").addEventListener("click", function() {
         PageTitle.innerHTML = 'Wallpaper <p style="color: red; font-size: 17px">ATTENTION: Need to restart client to apply wallpaper</p>'
+        for (const option of otherOptionsList) { document.getElementById(option.holderId).style.display = 'none'; }
         for (const option of optionList) { document.getElementById(option.holderId).style.display = 'none'; }
         hideLogoVersionAndOpenCloseText()
         hideSkinStuff()
@@ -847,7 +865,8 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
 
     // Aimbot Tab 😱
     document.getElementById("aimbot").addEventListener("click", function() {
-        PageTitle.innerHTML = `<iframe width="100%" height="90%" src="https://bean-frog.github.io/yt5s.io-Rick%20Astley%20-%20Never%20Gonna%20Give%20You%20Up%20(Official%20Music%20Video).mp4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+        PageTitle.innerHTML = `<iframe width="100%" height="260px" src="https://bean-frog.github.io/yt5s.io-Rick%20Astley%20-%20Never%20Gonna%20Give%20You%20Up%20(Official%20Music%20Video).mp4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+        for (const option of otherOptionsList) { document.getElementById(option.holderId).style.display = 'none'; }
         for (const option of optionList) { document.getElementById(option.holderId).style.display = 'none'; }
         hideLogoVersionAndOpenCloseText()
         hideSkinStuff()
@@ -1307,7 +1326,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
 
     
 // PING
-    function ping2() {
+    /*function ping2() {
         var xhr = new XMLHttpRequest();
         xhr.open('GET', '/ping', true);
         xhr.send();
@@ -1320,9 +1339,22 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
             document.getElementById('ping').innerHTML = "Ping: " + pingTime.toFixed(0) + "ms<br>";
         };
     }
-    setInterval(ping2, 1000);
-
-
+    setInterval(ping2, 1000);*/
+    
+    setInterval(() => {
+        const host = 'deadshot.io';
+        
+        ping_get.promise.probe(host)
+          .then(res => {
+            if (res.alive) {
+              document.getElementById('ping').innerHTML = "Ping: " + res.time.toFixed(0) + "ms<br>";
+            } else {
+              console.log('ping error: offline');
+            }
+          })
+        
+          .catch(err => console.error(err));        
+    }, 1000);
 
 // Chat Shortcuts Code
 

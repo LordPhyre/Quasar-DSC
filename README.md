@@ -28,7 +28,7 @@ Credits: Iniquity#2313 | Owner of [Arbiter Design](https://www.arbiterdesign.net
 #
 
 ### What we are currently working on:
-- [x] Preparing everything for public v1
+- [x] Preparing everything for public v2 - be ready :eyes:
 
 ### Later.....
 - [ ] Controller Support

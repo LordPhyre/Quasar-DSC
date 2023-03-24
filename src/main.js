@@ -15,11 +15,33 @@ const userDataPath = path.join(app.getPath('appData'), app.getName() + "-" + app
 const jsonpath = path.join(userDataPath, '/Settings.json');
 console.log(jsonpath);
 
+var precommand = `\x1b[36m[Quasar]\x1b[0m ${new Date().toLocaleTimeString()} - `;
+
+`⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣤⠤⠤⣤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣠⣤⣤⡤⠤⠤⣤⣤⣄⡀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠹⣦⠀⠘⣷⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣤⡶⠾⠛⠋⠉⠁⠀⢀⣀⣀⣀⣀⡀⠈⠻⣦⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠹⣧⠀⠈⢷⡀⠀⠀⠀⠀⣀⣤⡶⠞⠋⠉⠀⣀⣠⣤⠶⠶⠛⠛⠉⠉⠉⠉⠉⢻⡆⠀⢹⡆
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⣷⡀⠈⢿⡄⣤⡶⠟⠉⠁⣀⣠⡴⠶⠛⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⠇⠀⣼⠁
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⢷⡀⠈⢻⡽⣆⣠⡴⠞⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡾⠋⠀⣼⠏⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⢷⣀⣀⣻⡍⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⣟⣁⣀⡾⠃⠀⠀
+⠀⠀⠀⣠⡶⠶⠶⢶⣄⢠⡶⠶⡆⠀⢰⠶⢶⡄⠀⢨⡿⣯⠉⠁⢀⣴⠶⠶⠶⠶⣦⡀⠀⢀⣶⣶⡀⠀⠀⣶⠶⠾⠿⠿⠿⢶⡀⠀⠀
+⠀⢀⣾⠃⣠⡶⢶⣄⠙⣿⡇⠀⡇⠀⢸⠀⢸⡇⣠⣿⡄⠘⣧⠀⣾⠁⢰⣶⣶⣦⣬⣿⢀⣾⣇⠈⢷⡀⠀⣿⣶⣶⣶⠖⢀⣿⠁⠀⠀
+⠀⢸⣇⠀⣯⡀⢀⣿⠀⣽⡇⠀⣧⠀⣸⠆⢸⣷⡟⠘⣿⡄⠘⣷⢹⣧⣄⣀⣀⡈⠹⣧⡿⠉⣿⣆⠈⢷⡄⣿⠀⣤⣤⠀⢻⡅⠀⠀⠀
+⠀⠀⢻⣆⡈⠛⠛⠁⢰⣟⢷⣄⠙⠛⠉⣠⣾⠟⢀⣼⠃⢻⣄⠘⣿⣍⠙⠛⠛⠃⣠⡿⠁⣴⠏⠹⣦⠈⢿⣿⠀⣿⠘⣷⡀⢻⣆⠀⠀
+⠀⠀⠀⣩⣿⣿⣿⡟⠛⠛⠀⠉⠛⠛⠛⠉⠛⠛⠛⠃⠀⠀⠛⠛⠛⠛⠛⣛⣿⣿⣿⣿⣿⠋⠀⠀⠙⠛⠛⠛⠛⠛⠀⠈⠛⠛⠛⠀⠀
+⠀⢀⣾⠋⠀⣠⡟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⡶⠟⠉⠀⣀⣤⠾⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⢀⡾⠁⢀⣼⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⡶⠞⠋⠁⢀⣠⣴⣾⡿⢶⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⣼⠃⠀⣾⠃⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣤⡴⠾⠛⠉⠁⢀⣠⣴⠾⠛⠉⠘⣧⡀⠈⢿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⢻⡄⠀⠻⢦⣤⣤⣤⣤⠴⠶⠶⠛⠛⠉⠀⢀⣀⣤⡶⠞⠛⠉⠀⠀⠀⠀⠀⠘⢷⡀⠈⢻⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠈⠻⣤⣀⠀⠀⠀⠀⠀⣀⣀⣠⣤⣤⠶⠟⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢷⡀⠀⢻⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠈⠉⠛⠛⠛⠛⠛⠉⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⠛⠛⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+
+- looks cool`;
+
 if (!fs.existsSync(userDataPath)) {
     fs.mkdirSync(userDataPath);
-    console.log("Quasar folder created");
+    console.log(precommand + `Quasar directory successfully instantiated.`);
 } else {
-    console.log("Quasar folder exists");
+    console.log(precommand + `Quasar directory already existing.`);
 };
 
 //Updater Flags
@@ -86,13 +108,14 @@ if (!fs.existsSync(jsonpath)) {
     };
 
     fs.writeFileSync(jsonpath, JSON.stringify(jsonsettings));
-    console.log("Settings file created");
+    console.log(precommand + `Settings file successfully instantiated.`);
 } else {
-    console.log("Settings file exists");
+    console.log(precommand + `Settings file already existing.`);
 };
 
 // Parse the contents of the file into a JavaScript object
 let jsonobj = JSON.parse(fs.readFileSync(jsonpath, 'utf8'));
+console.log(precommand + `User settings:`);
 console.log(jsonobj);
 
 if (jsonobj.RPC.show) {
@@ -108,43 +131,33 @@ if (jsonobj.RPC.show) {
       { label: 'Download', url: 'https://github.com/LordPhyre/Quasar-DSC/releases/latest' }
   ]
   });
-  console.log("RPC activated");
+  console.log("Discord-RPC successfully activated.");
+  console.log(precommand + `User settings:`);
 } else {
-  console.log("RPC disabled");
+  console.log(precommand + `Discord-RPC successfully disabled.`);
 }
 
 // debugging mode - ignore errors, prevent os-utils error from showing (and others)
 if(jsonobj.Debug) { 
-  console.log("Enabled errors for debugging.")
+  console.log(precommand + `Errors enabled for debugging.`);
 } else {
   process.on('uncaughtException', (error) => {
     console.log(error);
   });
-  console.log("Disabled errors.")
+  console.log(precommand + `Errors disabled.`);
 }
-
-// Chromium Flags based on JSON
-if(jsonobj.Flags.Print) { app.commandLine.appendSwitch("disable-print-preview"); };
-if(jsonobj.Flags.Harmony) { app.commandLine.appendSwitch("javascript-harmony"); };
-if(jsonobj.Flags.Limit) { app.commandLine.appendSwitch("renderer-process-limit", 100); };
-if(jsonobj.Flags.Contexts) { app.commandLine.appendSwitch("max-active-webgl-contexts", 100); };
-if(jsonobj.Flags.GPUblocklist) { app.commandLine.appendSwitch("ignore-gpu-blocklist"); };
-if(jsonobj.Flags.CanvasClip) { app.commandLine.appendSwitch("disable-2d-canvas-clip-aa"); };
-if(jsonobj.Flags.Logging) { app.commandLine.appendSwitch("disable-logging"); };
-if(jsonobj.Flags.ProcessGPU) { app.commandLine.appendSwitch("in-process-gpu"); };
-if(jsonobj.Flags.AcceleratedCanvas) { app.commandLine.appendSwitch("disable-accelerated-2d-canvas", "true"); };
 
 
 app.whenReady().then(() => {
     // AUTO UPDATE CHECKER //
     setTimeout(function () {
-        console.log("Checking for Update. Current version: " + app.getVersion());
+        console.log(precommand + `Checking for Update. Current version: ${app.getVersion()}`);
         autoUpdater.checkForUpdates();
         splash.destroy();
       
         //If Update exists, show message box
         autoUpdater.on("update-available", (info) => {
-            console.log("Update available.");
+            console.log(precommand + `Update available.`);
             const updateresponse = dialog.showMessageBoxSync({
                 type: 'info',
                 buttons: ['Yes', 'Cancel'],
@@ -155,10 +168,10 @@ app.whenReady().then(() => {
             
             //If the user clicks the Update button
             if (updateresponse === 0) {
-                console.log("Update Chosen.");
+                console.log(precommand + `Installing update...`);
                 autoUpdater.downloadUpdate();
                 autoUpdater.on("update-downloaded", (info) => { autoUpdater.quitAndInstall(); });
-            } else { console.log("Update cancelled") };
+            } else { console.log(precommand + `Update cancelled.`); };
     
             autoUpdater.on("error", (info) => { console.log(info); });
         });
@@ -167,7 +180,6 @@ app.whenReady().then(() => {
     setTimeout(function () {
         win.show();
         win.maximize()
-        setTimeout(function () { mainmenu.show(); }, 500);
     }, 6000);
 
     // create splash screen
@@ -196,7 +208,7 @@ app.whenReady().then(() => {
           enableRemoteModule: true,
           sandbox: false,
           webSecurity: false, // needed to load local images
-          preload: path.join(__dirname, 'game_preload.js'),
+          preload: path.join(__dirname, 'old_preload.js'),
         }
       });
 
@@ -204,29 +216,6 @@ app.whenReady().then(() => {
       win.$ = win.jQuery = require('jquery/dist/jquery.min.js');
       win.loadURL('https://deadshot.io');
 
-      mainmenu = new BrowserWindow ({ 
-        height: 337,
-        width: 750,
-        show: false,
-        resizable: false,
-        transparent: true,
-        frame: false,
-        skipTaskbar: true,
-        parent: win,
-        webPreferences: {
-          nodeIntegration: true,
-          enableRemoteModule: true,
-          sandbox: false,
-          webSecurity: false, // needed to load local images
-          preload: path.join(__dirname, 'menu_preload.js'),
-        }
-      });
-
-      mainmenu.loadFile('empty.html');
-        
-        /*ipcMain.handle('skincloser', () => {
-            mainmenu.hide();
-        });*/
         
       // some shortcuts
       globalShortcut.register('F6', () => win.loadURL('http://deadshot.io/'));
@@ -234,7 +223,6 @@ app.whenReady().then(() => {
       globalShortcut.register('Escape', () => win.webContents.executeJavaScript('document.exitPointerLock()', true));
       globalShortcut.register('F7', () => {
         win.webContents.toggleDevTools()
-        mainmenu.webContents.toggleDevTools()
       });
         
       globalShortcut.register('F11', () => {
@@ -249,34 +237,22 @@ app.whenReady().then(() => {
         fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
       });
         
-      var visible = true;
-      win.on('minimize', () => { visible = false; });
-      globalShortcut.register('F1', () => {
-        if (visible) {
-          mainmenu.hide();
-          visible = false;
-        } else {
-          mainmenu.show()
-          visible = true;
-        }
-      });
-
       // auto fullscreen handling
       if(jsonobj.AutoFullscreen) {
-        console.log("Enabled AutoFullscreen")
+        console.log(precommand + `Enabled AutoFullscreen.`);
         win.setFullScreen(true)
       } else {
-        console.log("Disabled AutoFullscreen")
+        console.log(precommand + `Disabled AutoFullscreen.`);
       }
 
       // check if window is already in fullscreen to set json
       if(win.isFullScreen()) {
-        console.log("Window is in fullscreen")
+        console.log(precommand + `Window is fullscreened.`);
         jsonobj.Fullscreen = true;
         win.webContents.send('toggleFullscreen',true);
         fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
       } else {
-        console.log("Window is not in fullscreen")
+        console.log(precommand + `Window is not fullscreen.`);
       }
 
 
@@ -287,9 +263,9 @@ app.whenReady().then(() => {
       // create resource folder if it doesn't exist
       if (!fs.existsSync(swapperFolder)) {
           fs.mkdirSync(swapperFolder, { recursive: true });
-          console.log("Resource folder created");
+          console.log(precommand + `Resource folder successfully instantiated.`);
       } else {
-          console.log("Resource folder exists");
+          console.log(precommand + `Resource folder already existing.`);
       };
 
       // create needed resource folders
@@ -307,7 +283,7 @@ app.whenReady().then(() => {
       foldersToCreate.forEach(folder => {
         if (!fs.existsSync(path.join(swapperFolder, folder))) {
           fs.mkdirSync(path.join(swapperFolder, folder), { recursive: true });
-          console.log("Missing resource folders created");
+          console.log(precommand + `Missing resource folders created.`);
         }
       });
 
@@ -322,10 +298,10 @@ app.whenReady().then(() => {
         
         fs_extra.copy(source, destination, (err) => {
           if (err) {
-            console.error(`Error copying file ${source} to ${destination}:`, err);
+            console.log(precommand + `Error copying file ${source} to ${destination}:`, err);
             return;
           }
-          console.log(`Successfully installed QUASAR texture pack`);
+          console.log(precommand + `QUASAR texture pack installation was successful.`);
         });
       }
 
@@ -399,7 +375,7 @@ app.whenReady().then(() => {
           if (err) {
             console.error(err);
           } else {
-            console.log('Image copied successfully!');
+            console.log(precommand + `Image copied.`);
             //win.reload() ?
           }
         });
@@ -488,14 +464,13 @@ app.whenReady().then(() => {
 
     win.webContents.on('did-finish-load', () => {
         if (win) {
-          win.webContents.send('SendUserData', jsonpath);
-          mainmenu.webContents.send('SendUserData', jsonpath, app.getVersion());
+          win.webContents.send('SendUserData', jsonpath, app.getVersion());
 
           // send skin path function
           function readDirectory(dirPath, fileExtension, eventName) {
             fs.readdir(dirPath, function(err, files) {
               if (err) {
-                console.error(`There was an error reading the directory: ${err}`);
+                console.log(precommand + `An error occurred while attempting to read the directory: ${err}`);
                 return;
               }
           
@@ -505,14 +480,11 @@ app.whenReady().then(() => {
               var skins = [];
               imageFiles.forEach(function(imageFile) {
                 var pathcontainer = `${dirPath}/${imageFile}`;
-                console.log(`Processing ${imageFile}, path: ${pathcontainer}`);
+                console.log(precommand + `Processing ${imageFile}, path: ${pathcontainer}`);
                 // push file names to skin-array
                 skins.push(pathcontainer);
               });
           
-              //mainmenu.webContents.on('did-finish-load', () => {
-                mainmenu.webContents.send(eventName, skins);
-              //});
             });
           }
 
