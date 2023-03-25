@@ -190,6 +190,33 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
             <h2 id="logo" style="font-family: 'Aquire', sans-serif; text-align: center; color: white; font-size: 75px; margin-top: 30px;">Quasar<br></h2>
             <h2 id="version" style="font-family: 'Aquire', sans-serif; text-align: center; color: white; font-size: 17.5px;">v${client_version} - PUBLIC</h2>
             <h3 id="openCloseText" style="sans-serif; text-align: center; color: white; font-size: 14px; display: block; margin-top: 50px">Use the F1/fn + F1 key on your keyboard to toggle this menu</h3>
+            <div id="skinCategoryoptionHolder" class="optionholder">
+                <div style="display: flex; justify-content: center;"> <!-- use classes later -->
+                    <button class="skinCategory" id="allButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;">All</button>
+                    <button class="skinCategory" id="awpButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;">AWP</button>
+                    <button class="skinCategory" id="ar2Button" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;">AR2</button>
+                    <button class="skinCategory" id="vectorButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;">Vector</button>
+                    <button class="skinCategory" id="skinFolderButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;">| <span style="text-decoration: underline; cursor: pointer;">Folder</span></button>
+                </div>
+            </div> 
+            <div id="skincontent" class="skincontent" style="background: ${optionColor};"></div>
+            <div id="skinSkyboxDivider">
+                <hr style="height:5px; background-color: #1d00ff; border: none; width: 410px; margin: 15px; border-radius: 5px;">
+                <h2 style="text-align: center; margin: 10px 0 10px 0;">Skyboxes</h2>
+            </div>
+            <div id="skyboxoptionHolder" class="optionholder">
+                <div style="display: flex; justify-content: center;">
+                    <button class="skinCategory" id="skyboxFolderButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px; text-decoration: underline; cursor: pointer;">Open Folder</button>
+                </div>
+            </div>
+            <div id="skyboxTextureDivider">
+                <hr style="height:5px; background-color: #1d00ff; border: none; width: 410px; margin: 15px; border-radius: 5px;">
+                <h2 style="text-align: center; margin: 10px 0 10px 0;">Texture Packs</h2>
+            </div>
+            <div id="wallpaperoptionHolder" class="optionholder">
+            <div style="display: flex; justify-content: center;">
+                <button class="skinCategory" id="wallpaperFolderButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px; text-decoration: underline; cursor: pointer;">Open Folder</button>
+            </div>
         </div>
         </div>
     `;
@@ -553,7 +580,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
 
 
 
-// 
+/*
     const otherOptionsList = [
     {
         holderId: "texturePackOptionHolder",
@@ -645,8 +672,9 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
         }
         rightDiv.appendChild(optionHolder);
     }
+*/
 
-/*/ Making the Textboxes
+// Making the Textboxes
     const optionholders = [];
     const optiondescrs = [];
     const optioninputs = [];
@@ -732,7 +760,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
     optionholders.forEach(holder => {
         rightDiv.appendChild(holder);
     });
-    */
+    
 
 
 // Show and Hide checkboxes when changing pages
@@ -742,19 +770,27 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
         version.style.display = "none";
         openCloseText.style.display = "none";
     }
-    function hideSkinStuff() {
+    function hideTextboxStuff() {
+        shortcutOptionHolder.style.display = "none";
+        shortcutOptionHolder2.style.display = "none";
+        shortcutOptionHolder3.style.display = "none";
+        shortcutOptionHolder4.style.display = "none";
+        shortcutOptionHolder5.style.display = "none";
+        texturePackOptionHolder.style.display = "none";
+        downloadTexturePackOptionHolder.style.display = "none";
+        RPCTextOptionHolder.style.display = "none";
         skinCategoryoptionHolder.style.display = "none";
         skyboxoptionHolder.style.display = "none";
     }
 
     // Home Page
     for (const option of optionList) { document.getElementById(option.holderId).style.display = 'none'; }
-    for (const option of otherOptionsList) { document.getElementById(option.holderId).style.display = 'none'; }
-    hideSkinStuff()
+    //for (const option of otherOptionsList) { document.getElementById(option.holderId).style.display = 'none'; }
+    hideTextboxStuff()
     document.getElementById("HomePage").addEventListener("click", function() {
         for (const option of optionList) { document.getElementById(option.holderId).style.display = 'none'; }
-        for (const option of otherOptionsList) { document.getElementById(option.holderId).style.display = 'none'; }
-        hideSkinStuff()
+        //for (const option of otherOptionsList) { document.getElementById(option.holderId).style.display = 'none'; }
+        hideTextboxStuff()
         
         PageTitle.innerHTML = "Home";
         logo.style.display = "block";
@@ -766,9 +802,9 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
     document.getElementById("general").addEventListener("click", function() {
         PageTitle.innerHTML = "General";
         for (const option of optionList) { document.getElementById(option.holderId).style.display = 'none'; }
-        for (const option of otherOptionsList) { document.getElementById(option.holderId).style.display = 'none'; }
+        //for (const option of otherOptionsList) { document.getElementById(option.holderId).style.display = 'none'; }
         hideLogoVersionAndOpenCloseText()
-        hideSkinStuff()
+        hideTextboxStuff()
 
         const elements = [
             "WASDDisplayOptionHolder",
@@ -786,9 +822,9 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
     document.getElementById("stats").addEventListener("click", function() {
         PageTitle.innerHTML = "Stats";
         for (const option of optionList) { document.getElementById(option.holderId).style.display = 'none'; }
-        for (const option of otherOptionsList) { document.getElementById(option.holderId).style.display = 'none'; }
+        //for (const option of otherOptionsList) { document.getElementById(option.holderId).style.display = 'none'; }
         hideLogoVersionAndOpenCloseText()
-        hideSkinStuff()
+        hideTextboxStuff()
 
         const elements = [
             "massCheckUncheckStatsOptionHolder",
@@ -808,10 +844,10 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
     document.getElementById("shortcuts").addEventListener("click", function() {
         PageTitle.innerHTML = "Shortcuts";
 
-        for (const option of otherOptionsList) { document.getElementById(option.holderId).style.display = 'none'; }
+        //for (const option of otherOptionsList) { document.getElementById(option.holderId).style.display = 'none'; }
         for (const option of optionList) { document.getElementById(option.holderId).style.display = 'none'; }
         hideLogoVersionAndOpenCloseText()
-        hideSkinStuff()
+        hideTextboxStuff()
 
         const elements = [
             "shortcutDisplayOptionHolder",
@@ -824,14 +860,14 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
         elements.forEach(function(element) { document.getElementById(element).style.display = "block"; });
     });
 
-    // Skin Tab
+    // Resource Swapper Tab
     document.getElementById("SkinCategory").addEventListener("click", function() {
-        PageTitle.innerHTML = `Skins <p style="color: red; font-size: 17px">ATTENTION: Need to restart client to apply skins</p>`;
-
-        for (const option of otherOptionsList) { document.getElementById(option.holderId).style.display = 'none'; }
+        PageTitle.innerHTML = `Resource Swapper <p style="color: red; font-size: 17px">ATTENTION: Need to restart client to apply changes</p>`;
+        //for (const option of otherOptionsList) { document.getElementById(option.holderId).style.display = 'none'; }
         for (const option of optionList) { document.getElementById(option.holderId).style.display = 'none'; }
         hideLogoVersionAndOpenCloseText()
-
+        hideTextboxStuff()
+        
         document.getElementById("skincontent").style.display = "flex";
 
         const elements = [
@@ -854,10 +890,10 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
     // Wallpaper Tab
     document.getElementById("wallpaper").addEventListener("click", function() {
         PageTitle.innerHTML = 'Wallpaper <p style="color: red; font-size: 17px">ATTENTION: Need to restart client to apply wallpaper</p>'
-        for (const option of otherOptionsList) { document.getElementById(option.holderId).style.display = 'none'; }
+        //for (const option of otherOptionsList) { document.getElementById(option.holderId).style.display = 'none'; }
         for (const option of optionList) { document.getElementById(option.holderId).style.display = 'none'; }
         hideLogoVersionAndOpenCloseText()
-        hideSkinStuff()
+        hideTextboxStuff()
 
         document.getElementById("wallpaperoptionHolder").style.display = "block";
         document.getElementById("wallpapercontent").style.display = "block";
@@ -866,10 +902,10 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
     // Aimbot Tab 😱
     document.getElementById("aimbot").addEventListener("click", function() {
         PageTitle.innerHTML = `<iframe width="100%" height="260px" src="https://bean-frog.github.io/yt5s.io-Rick%20Astley%20-%20Never%20Gonna%20Give%20You%20Up%20(Official%20Music%20Video).mp4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-        for (const option of otherOptionsList) { document.getElementById(option.holderId).style.display = 'none'; }
+        //for (const option of otherOptionsList) { document.getElementById(option.holderId).style.display = 'none'; }
         for (const option of optionList) { document.getElementById(option.holderId).style.display = 'none'; }
         hideLogoVersionAndOpenCloseText()
-        hideSkinStuff()
+        hideTextboxStuff()
     });
 
 
