@@ -24,6 +24,7 @@ Credits: Iniquity#2313 | Owner of [Arbiter Design](https://www.arbiterdesign.net
 * **jcjms:** Lead Developer
 * **Classy08/Captain Cool:** Assistant Developer
 * **Armaccord#9846:** Official Quasar skins
+* **n!ck#0159:** Animated Quasar Splash Screen
 
 #
 
