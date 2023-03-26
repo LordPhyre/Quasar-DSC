@@ -333,7 +333,8 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
 
 
 
-// Shortcut Display
+    // Shortcut Display
+    // the vars are like that in case we add shortcuts that also work with other keys
     var one = "1"
     var two = "2";
     var three = "3";
@@ -352,6 +353,16 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
     shortcuts.id = "shortcutsdisplay";
     shortcuts.style = "position: absolute; left: 0; bottom: 0; z-index: 1000; color: grey; background-color: transparent; outline: none; margin-bottom: 2px; margin-left: 5px; outline: none; border: none; font-size: 100%; display: none;";
     document.body.appendChild(shortcuts);
+
+    function updateShortcutBar() {
+        oneValue = jsonobj.Shortcuts.one;
+        twoValue = jsonobj.Shortcuts.two;
+        threeValue = jsonobj.Shortcuts.three;
+        fourValue = jsonobj.Shortcuts.four;
+        fiveValue = jsonobj.Shortcuts.five;
+        
+        shortcuts.innerHTML = "[" + one + "] " + oneValue + " [" + two + "] " + twoValue + "  [" + three + "] " + threeValue + "  [" + four + "] " + fourValue + "  [" + five + "] " + fiveValue;
+    }
 
     //Show or Hide Shortcuts based on JSON
     if(jsonobj.Stats.Shortcuts) { shortcuts.style.display = "block"; }
@@ -577,7 +588,31 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
         rightDiv.appendChild(optionHolder);
     }
 
+    // make this nicer later
 
+    const additionalHide = [
+    {
+        holderId: "skincontent",
+    },
+    {
+        holderId: "skinSkyboxDivider",
+    },
+    {
+        holderId: "skyboxTextureDivider",
+    },
+    {
+        holderId: "skyboxcontent",
+    },
+    {
+        holderId: "skinCategoryoptionHolder",
+    },
+    {
+        holderId: "skyboxoptionHolder",
+    },
+    {
+        holderId: "wallpaperoptionHolder",
+    }
+    ]
 
 
 /*
@@ -710,19 +745,19 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
             optionInput.style.float = "right";
             optionHolder.style.backgroundColor = optionColor;
             if (id == 'shortcutOptionHolder') {
-                optionInput.placeholder = 'off / on';
+                optionInput.placeholder = 'GG';
                 optionInput.setAttribute('value', jsonobj.Shortcuts.one);
             } else if (id == 'shortcutOptionHolder2') {
-                optionInput.placeholder = 'GG';
+                optionInput.placeholder = 'hello guys';
                 optionInput.setAttribute('value', jsonobj.Shortcuts.two);
             } else if (id == 'shortcutOptionHolder3') {
-                optionInput.placeholder = 'hello guys';
+                optionInput.placeholder = 'noob';
                 optionInput.setAttribute('value', jsonobj.Shortcuts.three);
             } else if (id == 'shortcutOptionHolder4') {
-                optionInput.placeholder = 'noob';
+                optionInput.placeholder = 'lmao';
                 optionInput.setAttribute('value', jsonobj.Shortcuts.four);
             } else if (id == 'shortcutOptionHolder5') {
-                optionInput.placeholder = 'lmao';
+                optionInput.placeholder = 'wsg';
                 optionInput.setAttribute('value', jsonobj.Shortcuts.five);
             } 
             optionInput.style.width = '140px';
@@ -760,8 +795,78 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
     optionholders.forEach(holder => {
         rightDiv.appendChild(holder);
     });
-    
 
+    // get the shortcut values
+    const one_id = document.getElementsByName('shortcutOptionInput')[0].id;
+    const two_id = document.getElementsByName('shortcutOptionInput2')[0].id;
+    const three_id = document.getElementsByName('shortcutOptionInput3')[0].id;
+    const four_id = document.getElementsByName('shortcutOptionInput4')[0].id;
+    const five_id = document.getElementsByName('shortcutOptionInput5')[0].id;
+
+    var oneValue = document.getElementsByName('shortcutOptionInput')[0].value;
+    var twoValue = document.getElementsByName('shortcutOptionInput2')[0].value;
+    var threeValue = document.getElementsByName('shortcutOptionInput3')[0].value;
+    var fourValue = document.getElementsByName('shortcutOptionInput4')[0].value;
+    var fiveValue = document.getElementsByName('shortcutOptionInput5')[0].value;
+
+    // shortcut initialisation
+
+    var keyContentMap = {
+        [one_id]: [oneValue],
+        [two_id]: [twoValue],
+        [three_id]: [threeValue],
+        [four_id]: [fourValue],
+        [five_id]: [fiveValue],
+    };
+
+    console.log(keyContentMap);
+
+    const inputs = ['shortcutOptionInput', 'shortcutOptionInput2', 'shortcutOptionInput3', 'shortcutOptionInput4', 'shortcutOptionInput5'];
+
+    // shortcut creation
+    inputs.forEach((input, index) => {
+        const element = document.getElementsByName(input)[0];
+            element.addEventListener('change', function() {
+                const variableName = `${input.substring(0, 1).toLowerCase()}${input.substring(1)}`; //shortcutOptionInput
+                window[variableName] = element.id;
+                window[`${variableName}Value`] = element.value;
+                console.log(element.value);
+    
+                if (element.id == 1) {
+                    oneValue = element.value;
+                    jsonobj.Shortcuts.one = element.value;
+                    updateShortcutBar();
+                } else if (element.id == 2) {
+                    twoValue = element.value;
+                    jsonobj.Shortcuts.two = element.value;
+                    updateShortcutBar();
+                } else if (element.id == 3) {
+                    threeValue = element.value;
+                    jsonobj.Shortcuts.three = element.value;
+                    updateShortcutBar();
+                } else if (element.id == 4) {
+                    fourValue = element.value;
+                    jsonobj.Shortcuts.four = element.value;
+                    updateShortcutBar();
+                } else if (element.id == 5) {
+                    fiveValue = element.value;
+                    jsonobj.Shortcuts.five = element.value;
+                    updateShortcutBar();
+                }
+    
+                fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
+    
+                keyContentMap = {
+                    [one]: [oneValue],
+                    [two]: [twoValue],
+                    [three]: [threeValue],
+                    [four]: [fourValue],
+                    [five]: [fiveValue],
+                };
+    
+                console.log(keyContentMap);
+            });
+        });
 
 // Show and Hide checkboxes when changing pages
     
@@ -785,10 +890,12 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
 
     // Home Page
     for (const option of optionList) { document.getElementById(option.holderId).style.display = 'none'; }
+    for (const option of additionalHide) { document.getElementById(option.holderId).style.display = 'none'; }
     //for (const option of otherOptionsList) { document.getElementById(option.holderId).style.display = 'none'; }
     hideTextboxStuff()
     document.getElementById("HomePage").addEventListener("click", function() {
         for (const option of optionList) { document.getElementById(option.holderId).style.display = 'none'; }
+        for (const option of additionalHide) { document.getElementById(option.holderId).style.display = 'none'; }
         //for (const option of otherOptionsList) { document.getElementById(option.holderId).style.display = 'none'; }
         hideTextboxStuff()
         
@@ -802,6 +909,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
     document.getElementById("general").addEventListener("click", function() {
         PageTitle.innerHTML = "General";
         for (const option of optionList) { document.getElementById(option.holderId).style.display = 'none'; }
+        for (const option of additionalHide) { document.getElementById(option.holderId).style.display = 'none'; }
         //for (const option of otherOptionsList) { document.getElementById(option.holderId).style.display = 'none'; }
         hideLogoVersionAndOpenCloseText()
         hideTextboxStuff()
@@ -822,6 +930,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
     document.getElementById("stats").addEventListener("click", function() {
         PageTitle.innerHTML = "Stats";
         for (const option of optionList) { document.getElementById(option.holderId).style.display = 'none'; }
+        for (const option of additionalHide) { document.getElementById(option.holderId).style.display = 'none'; }
         //for (const option of otherOptionsList) { document.getElementById(option.holderId).style.display = 'none'; }
         hideLogoVersionAndOpenCloseText()
         hideTextboxStuff()
@@ -846,6 +955,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
 
         //for (const option of otherOptionsList) { document.getElementById(option.holderId).style.display = 'none'; }
         for (const option of optionList) { document.getElementById(option.holderId).style.display = 'none'; }
+        for (const option of additionalHide) { document.getElementById(option.holderId).style.display = 'none'; }
         hideLogoVersionAndOpenCloseText()
         hideTextboxStuff()
 
@@ -865,6 +975,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
         PageTitle.innerHTML = `Resource Swapper <p style="color: red; font-size: 17px">ATTENTION: Need to restart client to apply changes</p>`;
         //for (const option of otherOptionsList) { document.getElementById(option.holderId).style.display = 'none'; }
         for (const option of optionList) { document.getElementById(option.holderId).style.display = 'none'; }
+        for (const option of additionalHide) { document.getElementById(option.holderId).style.display = 'none'; }
         hideLogoVersionAndOpenCloseText()
         hideTextboxStuff()
         
@@ -892,6 +1003,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
         PageTitle.innerHTML = 'Wallpaper <p style="color: red; font-size: 17px">ATTENTION: Need to restart client to apply wallpaper</p>'
         //for (const option of otherOptionsList) { document.getElementById(option.holderId).style.display = 'none'; }
         for (const option of optionList) { document.getElementById(option.holderId).style.display = 'none'; }
+        for (const option of additionalHide) { document.getElementById(option.holderId).style.display = 'none'; }
         hideLogoVersionAndOpenCloseText()
         hideTextboxStuff()
 
@@ -904,6 +1016,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
         PageTitle.innerHTML = `<iframe width="100%" height="260px" src="https://bean-frog.github.io/yt5s.io-Rick%20Astley%20-%20Never%20Gonna%20Give%20You%20Up%20(Official%20Music%20Video).mp4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
         //for (const option of otherOptionsList) { document.getElementById(option.holderId).style.display = 'none'; }
         for (const option of optionList) { document.getElementById(option.holderId).style.display = 'none'; }
+        for (const option of additionalHide) { document.getElementById(option.holderId).style.display = 'none'; }
         hideLogoVersionAndOpenCloseText()
         hideTextboxStuff()
     });
@@ -1403,6 +1516,8 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
     };
     console.log(keyContentMap);
 
+    var isVisible = true;
+
     document.addEventListener('keydown', function(event) {
         const chatInput = document.querySelector('input[placeholder="[Enter] to use chat"]');
         const event222 = new KeyboardEvent('keydown', {
@@ -1417,11 +1532,16 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
             chatInput.dispatchEvent(event222);
             chatInput.dispatchEvent(event222);
         }
+
+        if (event.key === 'F1') {
+            isVisible = !isVisible;
+            skinWrapper.style.display = isVisible ? 'block' : 'none';
+        }
     });
 
 
     
-// WASD CODE
+    // WASD CODE
     const WASDJS = document.createElement("script");
     WASDJS.innerHTML = `
     const wElement = document.getElementById('w');

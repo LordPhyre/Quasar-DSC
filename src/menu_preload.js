@@ -1068,7 +1068,8 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
             console.log(element.value);
 
             if (element.id == 1) {
-                //oneValue = element.value;
+                oneValue = element.value;
+                jsonobj.Shortcuts.one = element.value;
             } else if (element.id == 2) {
                 twoValue = element.value;
                 jsonobj.Shortcuts.two = element.value;
