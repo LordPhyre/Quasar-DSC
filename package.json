@@ -1,6 +1,6 @@
 {
   "name": "Quasar-DSC",
-  "version": "1.2.1",
+  "version": "1.2.5",
   "description": "The most advanced and simultaneously user-friendly client for Deadshot.io that exists and will ever exist. Hopefully.",
   "main": "src/main.js",
   "scripts": {
@@ -28,9 +28,8 @@
   "license": "GPL-3.0",
   "devDependencies": {
     "@electron-forge/cli": "^6.0.4",
-    "electron": "^22.3.1",
+    "electron": "^22.3.4",
     "electron-builder": "^22.10.3",
-    "electron-forge": "^5.2.4",
     "fs-extra": "^11.1.0"
   },
   "dependencies": {
