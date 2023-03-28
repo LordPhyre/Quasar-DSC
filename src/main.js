@@ -214,7 +214,7 @@ app.whenReady().then(() => {
 
       win.setMenuBarVisibility(false);
       win.$ = win.jQuery = require('jquery/dist/jquery.min.js');
-      win.loadURL('https://google.com');
+      win.loadURL('https://deadshot.io');
 
         
       // some shortcuts
