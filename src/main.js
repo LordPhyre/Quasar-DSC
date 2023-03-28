@@ -3,7 +3,7 @@ const { autoUpdater, AppUpdater } = require("electron-updater");
 const path = require('path');
 const fs = require('fs');
 const os = require('os-utils');
-const swapper = require('./swapper.js');
+const swapper = require('./modules/swapper.js');
 const request = require("request");
 const { spawn } = require('child_process');
 const fs_extra = require('fs-extra');
@@ -214,7 +214,7 @@ app.whenReady().then(() => {
 
       win.setMenuBarVisibility(false);
       win.$ = win.jQuery = require('jquery/dist/jquery.min.js');
-      win.loadURL('https://deadshot.io');
+      win.loadURL('https://google.com');
 
         
       // some shortcuts
@@ -470,7 +470,7 @@ app.whenReady().then(() => {
           function readDirectory(dirPath, fileExtension, eventName) {
             fs.readdir(dirPath, function(err, files) {
               if (err) {
-                console.log(precommand + `An error occurred while attempting to read the directory: ${err}`);
+                console.error(`There was an error reading the directory: ${err}`);
                 return;
               }
           
@@ -480,11 +480,12 @@ app.whenReady().then(() => {
               var skins = [];
               imageFiles.forEach(function(imageFile) {
                 var pathcontainer = `${dirPath}/${imageFile}`;
-                console.log(precommand + `Processing ${imageFile}, path: ${pathcontainer}`);
+                console.log(`Processing ${imageFile}, path: ${pathcontainer}`);
                 // push file names to skin-array
                 skins.push(pathcontainer);
               });
           
+              win.webContents.send(eventName, skins);
             });
           }
 

@@ -4,7 +4,6 @@ const ipcRenderer = electron.ipcRenderer;
 const ping_get = require('ping');
 //const {ipcRenderer} = require('electron'); doesn't work, idk why tbh
 const styling = require('./modules/styling.js');
-const menuconstruct = require('./modules/menuconstruct.js');
 
 document.addEventListener("DOMContentLoaded", function() {
 
@@ -29,7 +28,212 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
     var msgBoxColor = jsonobj.Colors.msgBoxColor; //"#2a394f";
 
     styling.styling(skinButtonColor, skinButtonHoverColor, skinCloseColor);
-    menuconstruct.menuconstruct(opacity, skinWrapperBorderRadius, menuHeaderColor, behindOptionsColor, client_version, optionColor)
+
+    // Styling and CSS
+    /*var menuHeaderColor = jsonobj.Colors.menuHeaderColor; //"#2a394f";
+    var behindOptionsColor = jsonobj.Colors.behindOptionsColor; //"#2a394f";
+    var skinButtonColor = jsonobj.Colors.skinButtonColor; //"#364760";
+    var skinButtonHoverColor = jsonobj.Colors.skinButtonHoverColor; //"#0798fc";
+    var skinCloseColor = jsonobj.Colors.skinCloseColor; //"#ffffff00";
+    var optionColor = jsonobj.Colors.optionColor; //"#364760";
+    var opacity = jsonobj.Colors.opacity; //0.95;
+    var skinWrapperBorderRadius = jsonobj.Colors.skinWrapperBorderRadius; //"10";
+    var msgBoxColor = jsonobj.Colors.msgBoxColor; //"#2a394f";
+    
+    let skincss = document.createElement('style');
+    skincss.innerText = `@import 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap';
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Poppins',sans-serif
+        }
+        body{
+            overflow-y: hidden;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        .titlebar{
+            -webkit-user-select: none;
+            -webkit-app-region: drag;
+        }
+        .skinwrapper{
+            position:absolute;
+            top:50%;
+            left:50%;
+            max-width:750px;
+            width:100%;
+            background:#232429;
+            /* if I add menuHeaderColor it spawns at a different location lmao, but the color has to stay like that, else the menu is see trough under header*/
+            /*transform:translate(-50%,-50%);
+            border:solid 1px #000;
+            color:#fff;
+            height:335px;
+        }
+        .skinwrapper header{
+            font-size:23px;
+            font-weight:500;
+            padding:17px 30px;
+            border-bottom:1px solid #000;
+            text-align:center;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+        .skinwrapper header.skinactive{
+            cursor:move;
+            user-select:none;
+        }
+        .skinwrapper .skincontent{
+            display:flex;
+            flex-direction:wrap;
+            flex-wrap:wrap;
+            justify-content:center;
+        }
+        .skincontent .title{
+            margin:15px 0;
+            font-size:29px;
+            font-weight:500
+        }
+        .skincontent p{
+            font-size:16px;
+            text-align:center;
+            display:flex
+        }
+        .skinbutton{
+            width:100%;
+            height:48px;
+            background-color: ${skinButtonColor};
+            border:none;
+            color:#fff;
+            font-size:20px
+        }
+        .skinbutton:hover{
+            background-color: ${skinButtonHoverColor};
+        }
+        .skinclose{
+            color:grey;
+            position:absolute;
+            top:0;
+            right:0;
+            margin-right:15px;
+            margin-top:-6px;
+            background-color: ${skinCloseColor};
+            border:none;
+            font-size:35px
+        }
+        .skinclose:hover{
+            color:#fff
+        }
+        p{
+            font-size:20px
+        }
+        input[type=text]{
+            float:right;
+            margin:14px 25px 10px 0;
+            font-weight:700;
+            color:grey
+        }
+        input[type=range]{
+            float:right;
+            margin:16px 20px 10px 0
+        }
+        input[type=checkbox]{
+            float:right;
+            transform:scale(2);
+            margin:14px 25px 5px 0;
+            width:35px;
+            font-weight:700;
+            color:grey;
+        }
+        input[type=button]{
+            float:right;
+            margin:14px 25px 10px 0;
+        }
+        .optiondescr{
+            float:left;
+            margin:10px 0 10px 20px
+        }
+        .optionholder{
+            background-color:" + optionColor + ";
+             display: inline-block
+        }
+        hr{
+            width:100%;
+            border:.1px solid rgb(255, 27, 8, 0);
+        }
+        .skinCategory:hover{
+            background-color:#0798fc
+        }
+    `;
+    document.head.appendChild(skincss);
+    
+    let scrollcss = document.createElement('style');
+    scrollcss.innerText = `
+    ::-webkit-scrollbar { width: 8px; height: 3px;}
+    ::-webkit-scrollbar-track {  background-color: #646464;}
+    ::-webkit-scrollbar-track-piece { background-color: #000;}
+    ::-webkit-scrollbar-thumb { height: 50px; background-color: #666; border-radius: 3px;}
+    ::-webkit-scrollbar-corner { background-color: #646464;}}
+    ::-webkit-resizer { background-color: #666;}`;
+    document.head.appendChild(scrollcss);*/
+    
+
+
+// Constructing Menu Base
+
+    // Logo font
+    const logoFont = document.createElement('link')
+    logoFont.href = "https://fonts.cdnfonts.com/css/aquire";
+    logoFont.rel = "stylesheet";
+    document.getElementsByTagName('head')[0].appendChild(logoFont);
+
+    const skinWrapper = document.createElement('div');
+    skinWrapper.className = 'skinwrapper';
+    skinWrapper.id = "skinWrapper";
+    skinWrapper.style = "::-webkit-scrollbar{border:1px solid #d5d5d5};opacity:" + opacity + ";border-radius: " + skinWrapperBorderRadius + "px; z-index: 9999;";
+    skinWrapper.innerHTML = `
+        <header id="skinheader" style="background: ${menuHeaderColor};" class="titlebar">Main Menu</header>
+        <div id="mainDiv" style="background: ${behindOptionsColor};"></div>
+        <div id="leftDiv" style="float: left; width: 40%; height: 263px; overflow: scroll; overflow-x: hidden; overflow-y: auto;"></div>
+        <div id="rightDiv" style="float: right; width: 60%; height: 263px; overflow: scroll; overflow-x: hidden; overflow-y: auto;">
+            <h2 id="PageTitle" style="text-align: center; margin: 10px 0 10px 0;">Home</h2>
+            <h2 id="logo" style="font-family: 'Aquire', sans-serif; text-align: center; color: white; font-size: 75px; margin-top: 30px;">Quasar<br></h2>
+            <h2 id="version" style="font-family: 'Aquire', sans-serif; text-align: center; color: white; font-size: 17.5px;">v${client_version} - PUBLIC</h2>
+            <h3 id="openCloseText" style="sans-serif; text-align: center; color: white; font-size: 14px; display: block; margin-top: 50px">Use the F1/fn + F1 key on your keyboard to toggle this menu</h3>
+            <div id="skinCategoryoptionHolder" class="optionholder">
+                <div style="display: flex; justify-content: center;"> <!-- use classes later -->
+                    <button class="skinCategory" id="allButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;">All</button>
+                    <button class="skinCategory" id="awpButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;">AWP</button>
+                    <button class="skinCategory" id="ar2Button" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;">AR2</button>
+                    <button class="skinCategory" id="vectorButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;">Vector</button>
+                    <button class="skinCategory" id="skinFolderButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px;">| <span style="text-decoration: underline; cursor: pointer;">Folder</span></button>
+                </div>
+            </div> 
+            <div id="skincontent" class="skincontent" style="background: ${optionColor};"></div>
+            <div id="skinSkyboxDivider">
+                <hr style="height:5px; background-color: #1d00ff; border: none; width: 410px; margin: 15px; border-radius: 5px;">
+                <h2 style="text-align: center; margin: 10px 0 10px 0;">Skyboxes</h2>
+            </div>
+            <div id="skyboxoptionHolder" class="optionholder">
+                <div style="display: flex; justify-content: center;">
+                    <button class="skinCategory" id="skyboxFolderButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px; text-decoration: underline; cursor: pointer;">Open Folder</button>
+                </div>
+            </div>
+            <div id="skyboxTextureDivider">
+                <hr style="height:5px; background-color: #1d00ff; border: none; width: 410px; margin: 15px; border-radius: 5px;">
+                <h2 style="text-align: center; margin: 10px 0 10px 0;">Texture Packs</h2>
+            </div>
+            <div id="wallpaperoptionHolder" class="optionholder">
+            <div style="display: flex; justify-content: center;">
+                <button class="skinCategory" id="wallpaperFolderButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px; text-decoration: underline; cursor: pointer;">Open Folder</button>
+            </div>
+        </div>
+        </div>
+    `;
+    document.body.appendChild(skinWrapper);
+
 
 
 // Computer Stats Display
