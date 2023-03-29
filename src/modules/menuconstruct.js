@@ -1,4 +1,4 @@
-function menuconstruct(opacity, skinWrapperBorderRadius, menuHeaderColor, behindOptionsColor, client_version, optionColor) {
+function menuconstruct(opacity, skinWrapperBorderRadius, menuHeaderColor, behindOptionsColor, client_version, optionColor, msgBoxColor) {
 
     const logoFont = document.createElement('link')
     logoFont.href = "https://fonts.cdnfonts.com/css/aquire";
@@ -37,6 +37,7 @@ function menuconstruct(opacity, skinWrapperBorderRadius, menuHeaderColor, behind
                     <button class="skinCategory" id="skyboxFolderButton" style="padding: 10px 12.5px 10px 12.5px;background-color: #25272e;border: none;color: white;font-size: 20px; text-decoration: underline; cursor: pointer;">Open Folder</button>
                 </div>
             </div>
+            <div id="skyboxcontent" class="skyboxcontent" style="background: ${optionColor};"></div>
             <div id="skyboxTextureDivider">
                 <hr style="height:5px; background-color: #1d00ff; border: none; width: 410px; margin: 15px; border-radius: 5px;">
                 <h2 style="text-align: center; margin: 10px 0 10px 0;">Texture Packs</h2>
@@ -49,6 +50,65 @@ function menuconstruct(opacity, skinWrapperBorderRadius, menuHeaderColor, behind
         </div>
     `;
     document.body.appendChild(skinWrapper);
+
+    // close button
+    const skinCloseButton = document.createElement('button');
+    skinCloseButton.className = 'skinclose';
+    skinCloseButton.innerText = '_';
+    skinCloseButton.id = 'skinclose';
+    document.getElementById('skinWrapper').appendChild(skinCloseButton);
+
+    // hide and show skins on click
+    function toggleSkins(displayType) {
+        const awpSkins = document.getElementById("awp");
+        const ar2Skins = document.getElementById("ar2");
+        const vectorSkins = document.getElementById("vector");
+
+        awpSkins.style.display = displayType;
+        ar2Skins.style.display = displayType;
+        vectorSkins.style.display = displayType;
+    }
+
+    document.getElementById('allButton').addEventListener('click', function() {
+        const allSkins = document.querySelectorAll('#awp, #ar2, #vector');
+        allSkins.forEach((skin) => {
+            skin.style.display = "initial";
+        });
+    });
+    document.getElementById('awpButton').addEventListener('click', function() {
+        const awpSkins = document.getElementById("awp");
+        toggleSkins("none");
+        awpSkins.style.display = "initial";
+    });
+    document.getElementById('ar2Button').addEventListener('click', function() {
+        const ar2Skins = document.getElementById("ar2");
+        toggleSkins("none");
+        ar2Skins.style.display = "initial";
+    });
+    document.getElementById('vectorButton').addEventListener('click', function() {
+        const vectorSkins = document.getElementById("vector");
+        toggleSkins("none");
+        vectorSkins.style.display = "initial";
+    });
+    document.getElementById('skinFolderButton').addEventListener('click', function() {
+        require('electron').ipcRenderer.send('openSkinFolder')
+    });
+
+    // some juicy js
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.innerHTML = `dragElement(document.getElementById("skinWrapper"));function dragElement(elmnt) {var pos1 = 0,pos2 = 0,pos3 = 0,pos4 = 0;document.getElementById("skinheader").onmousedown = dragMouseDown;function dragMouseDown(e) {e = e || window.event;e.preventDefault();pos3 = e.clientX;pos4 = e.clientY;document.onmouseup = closeDragElement;document.onmousemove = elementDrag;}function elementDrag(e) {e = e || window.event;e.preventDefault();pos1 = pos3 - e.clientX;pos2 = pos4 - e.clientY;pos3 = e.clientX;pos4 = e.clientY;elmnt.style.top = (elmnt.offsetTop - pos2) + "px";elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";}function closeDragElement() {document.onmouseup = null;document.onmousemove = null;}};document.getElementById('skinclose').addEventListener('click',function(){document.getElementById('skinWrapper').style.display='none'});`;
+    document.getElementsByTagName('head')[0].appendChild(script);
+
+    const msgBoxWrapper = document.createElement('div');
+    msgBoxWrapper.style = "position: absolute; width: 100%; z-index: 1001; display: flex; justify-content: center; align-items: center; margin-top: 10px;"
+    msgBoxWrapper.id = "msgBoxWrapper"
+    msgBoxWrapper.innerHTML = `
+        <div id="msgBox" style="background: ${msgBoxColor}; text-align: center; z-index: 1001; border-radius: 10px; font-size: 20px; color: white; display: none;">
+            <p id="msgBoxText" style='line-height: 2.2; width: 325px; height: 45px; border: 1px solid black;'></p>
+        </div>
+    `;
+    document.body.appendChild(msgBoxWrapper);
 }
 
 module.exports = {
