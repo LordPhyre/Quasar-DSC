@@ -1,8 +1,7 @@
-function statscreate() {
-
+function template() {
 
 }
 
 module.exports = {
-    statscreate: statscreate
+    template: template
 };

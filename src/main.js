@@ -208,7 +208,7 @@ app.whenReady().then(() => {
           enableRemoteModule: true,
           sandbox: false,
           webSecurity: false, // needed to load local images
-          preload: path.join(__dirname, 'old_preload.js'),
+          preload: path.join(__dirname, 'preload.js'),
         }
       });
 

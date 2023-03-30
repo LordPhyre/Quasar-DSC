@@ -49,74 +49,12 @@ function shortcuts(jsonobj, jsonpath) {
         return element;
     };
 
-    /*let keyNumber = 1;
-    const createOptionHolder = (id, descrText, inputId) => {
-        const optionHolder = createElement('div', 'optionholder', id, '');
-        const optionDescr = createElement('p', 'optiondescr', '', descrText);
-        const optionInput = createElement('input', '', inputId, '');
-        const optionHr = createElement('hr', '', '', '');
-        if (id == "texturePackOptionHolder") {
-            optionInput.type = 'button'; // normally I wouldn't do this, just so I can make it more efficient
-            optionInput.value = 'Open Folder';
-            optionInput.style.width = '110px';
-        } else if (id == "downloadTexturePackOptionHolder") {
-            optionInput.type = 'button';
-            optionInput.value = 'Download Pack';
-            optionInput.style.width = '110px';
-        } else {
-            optionInput.type = 'text';
-            optionInput.style.width = '100px';
-        }
-        if (id.includes('shortcutOptionHolder')) {
-            optionInput.style.float = "right";
-            optionHolder.style.backgroundColor = optionColor;
-            if (id == 'shortcutOptionHolder') {
-                optionInput.placeholder = 'GG';
-                optionInput.setAttribute('value', jsonobj.Shortcuts.one);
-            } else if (id == 'shortcutOptionHolder2') {
-                optionInput.placeholder = 'hello guys';
-                optionInput.setAttribute('value', jsonobj.Shortcuts.two);
-            } else if (id == 'shortcutOptionHolder3') {
-                optionInput.placeholder = 'noob';
-                optionInput.setAttribute('value', jsonobj.Shortcuts.three);
-            } else if (id == 'shortcutOptionHolder4') {
-                optionInput.placeholder = 'lmao';
-                optionInput.setAttribute('value', jsonobj.Shortcuts.four);
-            } else if (id == 'shortcutOptionHolder5') {
-                optionInput.placeholder = 'wsg';
-                optionInput.setAttribute('value', jsonobj.Shortcuts.five);
-            } 
-            optionInput.style.width = '140px';
-            optionInput.name = inputId;
-            optionInput.id = keyNumber++;
-        } else if (id == 'texturePackOptionHolder' || id == "downloadTexturePackOptionHolder") {
-            optionInput.placeholder = '';
-        } else if (id == 'RPCTextOptionHolder') {
-            optionInput.placeholder = 'Slapping noobs';
-            optionInput.style.width = '200px';
-            optionInput.setAttribute('value', jsonobj.RPC.text);
-        }
-
-        optionholders.push(optionHolder);
-        optiondescrs.push(optionDescr);
-        optioninputs.push(optionInput);
-        optionhrs.push(optionHr);
-
-        optionHolder.appendChild(optionDescr);
-        optionHolder.appendChild(optionInput);
-        optionHolder.appendChild(optionHr);
-    };*/
-
     // defining the options with input fields (I could put them into an array and to for each later...)
     createOptionHolder.createOptionHolder('shortcutOptionHolder', 'Shortcut Option [1]', 'shortcutOptionInput', jsonobj);
     createOptionHolder.createOptionHolder('shortcutOptionHolder2', 'Shortcut Option [2]', 'shortcutOptionInput2', jsonobj);
     createOptionHolder.createOptionHolder('shortcutOptionHolder3', 'Shortcut Option [3]', 'shortcutOptionInput3', jsonobj);
     createOptionHolder.createOptionHolder('shortcutOptionHolder4', 'Shortcut Option [4]', 'shortcutOptionInput4', jsonobj);
     createOptionHolder.createOptionHolder('shortcutOptionHolder5', 'Shortcut Option [5]', 'shortcutOptionInput5', jsonobj);
-
-    /*optionholders.forEach(holder => {
-        rightDiv.appendChild(holder);
-    });*/
 
     // get the shortcut values
     const one_id = document.getElementsByName('shortcutOptionInput')[0].id;

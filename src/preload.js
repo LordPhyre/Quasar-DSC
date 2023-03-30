@@ -1,16 +1,14 @@
 const fs = require('fs');
-const electron = require('electron');
-const ipcRenderer = electron.ipcRenderer;
-//const {ipcRenderer} = require('electron'); doesn't work, idk why tbh
 const styling = require('./modules/styling.js');
 const menuconstruct = require('./modules/menuconstruct.js');
 const statscreate = require('./modules/stats.js');
 const wasd = require('./modules/wasd.js');
 const shortcuts = require('./modules/shortcuts.js');
-const createOptionHolder = require('./modules/createOptionHolder.js');
+const optionHolderManager = require('./modules/createOptionHolder.js');
 const get_ping = require('./modules/ping.js');
 const get_fps = require('./modules/fps.js');
 const skinSkybox = require('./modules/skinSkybox.js');
+const utils = require('./modules/utils.js');
 
 document.addEventListener("DOMContentLoaded", function() {
 
@@ -48,8 +46,8 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
     });
 
 
-    // Menu Buttons
-    const buttonData = [
+    // Menu Tabs
+    const tabData = [
         { text: 'Home', id: 'HomePage' },
         { text: 'General', id: 'general' },
         { text: 'Stats', id: 'stats' },
@@ -59,12 +57,8 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
         { text: 'Aimbot', id: 'aimbot' }
     ];
     
-    buttonData.forEach(button => {
-        const optionButton = document.createElement('button');
-        optionButton.className = 'skinbutton';
-        optionButton.innerText = button.text;
-        optionButton.id = button.id;
-        document.getElementById('leftDiv').appendChild(optionButton);
+    tabData.forEach(tab => {
+        utils.addTab(tab);
     });
 
     // Checkboxes and Checkbox Holders
@@ -151,108 +145,33 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
     },
     ];
     
-    for (const option of optionList) {
-        // holds the sub-options
-        const optionHolder = document.createElement('div');
-        optionHolder.className = 'optionholder';
-        optionHolder.id = option.holderId;
-        
-        // sub-option title
-        const optionDescr = document.createElement('p');
-        optionDescr.className = 'optiondescr';
-        optionDescr.innerText = option.descrText;
-        
-        // checkbox
-        const optionCheck = document.createElement('input');
-        optionCheck.type = 'checkbox';
-        optionCheck.id = option.checkId;
-        //optionCheck.addEventListener('change', option.onChange);
-        
-        //Putting the elements together. <hr> is for formatting.
-        optionHolder.innerHTML = `
-            ${optionDescr.outerHTML}
-            ${optionCheck.outerHTML}
-            <hr>
-        `;
-        rightDiv.appendChild(optionHolder);
-    }
-
-    // make this nicer later
+    optionList.forEach(option => {
+        utils.addCheckbox(option.holderId, option.descrText, option.checkId);
+    });
 
     const additionalHide = [
-    {
-        holderId: "skincontent",
-    },
-    {
-        holderId: "skinSkyboxDivider",
-    },
-    {
-        holderId: "skyboxTextureDivider",
-    },
-    {
-        holderId: "skyboxcontent",
-    },
-    {
-        holderId: "skinCategoryoptionHolder",
-    },
-    {
-        holderId: "skyboxoptionHolder",
-    },
-    {
-        holderId: "wallpaperoptionHolder",
-    }
-    ]
+        "skincontent", 
+        "skinSkyboxDivider", 
+        "skyboxTextureDivider", 
+        "skyboxcontent", 
+        "skinCategoryoptionHolder", 
+        "skyboxoptionHolder", 
+        "wallpaperoptionHolder"
+    ];
 
-    createOptionHolder.createOptionHolder('texturePackOptionHolder', 'Texture Pack', 'texturePackOptionInput', jsonobj);
-    createOptionHolder.createOptionHolder('downloadTexturePackOptionHolder', 'Download QUASAR Pack', 'downloadTexturePackOptionInput', jsonobj);
-    createOptionHolder.createOptionHolder('RPCTextOptionHolder', 'RPC Text', 'rpcOptionInput', jsonobj);
-
-    // Show and Hide checkboxes when changing pages
-    
-    function hideLogoVersionAndOpenCloseText() {
-        logo.style.display = "none";
-        version.style.display = "none";
-        openCloseText.style.display = "none";
-    }
-    function hideTextboxStuff() {
-        shortcutOptionHolder.style.display = "none";
-        shortcutOptionHolder2.style.display = "none";
-        shortcutOptionHolder3.style.display = "none";
-        shortcutOptionHolder4.style.display = "none";
-        shortcutOptionHolder5.style.display = "none";
-        texturePackOptionHolder.style.display = "none";
-        downloadTexturePackOptionHolder.style.display = "none";
-        RPCTextOptionHolder.style.display = "none";
-        skinCategoryoptionHolder.style.display = "none";
-        skyboxoptionHolder.style.display = "none";
-    }
+    optionHolderManager.createOptionHolder('texturePackOptionHolder', 'Texture Pack', 'texturePackOptionInput', jsonobj);
+    optionHolderManager.createOptionHolder('downloadTexturePackOptionHolder', 'Download QUASAR Pack', 'downloadTexturePackOptionInput', jsonobj);
+    optionHolderManager.createOptionHolder('RPCTextOptionHolder', 'RPC Text', 'rpcOptionInput', jsonobj);    
 
     // Home Page
-    for (const option of optionList) { document.getElementById(option.holderId).style.display = 'none'; }
-    for (const option of additionalHide) { document.getElementById(option.holderId).style.display = 'none'; }
-    //for (const option of otherOptionsList) { document.getElementById(option.holderId).style.display = 'none'; }
-    hideTextboxStuff()
+    utils.hideOptions(optionList, additionalHide)
+    utils.hideStuff()
+    
     document.getElementById("HomePage").addEventListener("click", function() {
-        for (const option of optionList) { document.getElementById(option.holderId).style.display = 'none'; }
-        for (const option of additionalHide) { document.getElementById(option.holderId).style.display = 'none'; }
-        //for (const option of otherOptionsList) { document.getElementById(option.holderId).style.display = 'none'; }
-        hideTextboxStuff()
-        
-        PageTitle.innerHTML = "Home";
-        logo.style.display = "block";
-        version.style.display = "block";
-        openCloseText.style.display = "block";
+        utils.showTab("HomePage", "Home", ["logo", "version", "openCloseText"], optionList, additionalHide);
     });
-        
-    // General Tab
+    
     document.getElementById("general").addEventListener("click", function() {
-        PageTitle.innerHTML = "General";
-        for (const option of optionList) { document.getElementById(option.holderId).style.display = 'none'; }
-        for (const option of additionalHide) { document.getElementById(option.holderId).style.display = 'none'; }
-        //for (const option of otherOptionsList) { document.getElementById(option.holderId).style.display = 'none'; }
-        hideLogoVersionAndOpenCloseText()
-        hideTextboxStuff()
-
         const elements = [
             "WASDDisplayOptionHolder",
             "AutoFullscreenOptionHolder",
@@ -262,18 +181,10 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
             "SplashOptionHolder",
             "debugOptionHolder"
         ];
-        for (const option of elements) { document.getElementById(option).style.display = 'block'; }
+        utils.showTab("general", "General", elements, optionList, additionalHide);
     });
-
-    // Stats Tab
+    
     document.getElementById("stats").addEventListener("click", function() {
-        PageTitle.innerHTML = "Stats";
-        for (const option of optionList) { document.getElementById(option.holderId).style.display = 'none'; }
-        for (const option of additionalHide) { document.getElementById(option.holderId).style.display = 'none'; }
-        //for (const option of otherOptionsList) { document.getElementById(option.holderId).style.display = 'none'; }
-        hideLogoVersionAndOpenCloseText()
-        hideTextboxStuff()
-
         const elements = [
             "massCheckUncheckStatsOptionHolder",
             "fpsDisplayOptionHolder",
@@ -285,19 +196,10 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
             "cpuCoresDisplayOptionHolder",
             "uptimeDisplayOptionHolder",
         ];
-        elements.forEach(function(element) { document.getElementById(element).style.display = "block"; });
+        utils.showTab("stats", "Stats", elements, optionList, additionalHide);
     });
-
-    // Shortcuts Tab
+    
     document.getElementById("shortcuts").addEventListener("click", function() {
-        PageTitle.innerHTML = "Shortcuts";
-
-        //for (const option of otherOptionsList) { document.getElementById(option.holderId).style.display = 'none'; }
-        for (const option of optionList) { document.getElementById(option.holderId).style.display = 'none'; }
-        for (const option of additionalHide) { document.getElementById(option.holderId).style.display = 'none'; }
-        hideLogoVersionAndOpenCloseText()
-        hideTextboxStuff()
-
         const elements = [
             "shortcutDisplayOptionHolder",
             "shortcutOptionHolder",
@@ -306,20 +208,10 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
             "shortcutOptionHolder4",
             "shortcutOptionHolder5",
         ];
-        elements.forEach(function(element) { document.getElementById(element).style.display = "block"; });
+        utils.showTab("shortcuts", "Shortcuts", elements, optionList, additionalHide);
     });
-
-    // Resource Swapper Tab
+    
     document.getElementById("SkinCategory").addEventListener("click", function() {
-        PageTitle.innerHTML = `Resource Swapper <p style="color: red; font-size: 17px">ATTENTION: Need to restart client to apply changes</p>`;
-        //for (const option of otherOptionsList) { document.getElementById(option.holderId).style.display = 'none'; }
-        for (const option of optionList) { document.getElementById(option.holderId).style.display = 'none'; }
-        for (const option of additionalHide) { document.getElementById(option.holderId).style.display = 'none'; }
-        hideLogoVersionAndOpenCloseText()
-        hideTextboxStuff()
-        
-        document.getElementById("skincontent").style.display = "flex";
-
         const elements = [
             "skinCategoryoptionHolder",
             "skinSkyboxDivider",
@@ -329,36 +221,24 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
             "texturePackOptionHolder",
             "downloadTexturePackOptionHolder",
         ];
-        elements.forEach(function(element) { document.getElementById(element).style.display = "block"; });
-
-        // Texturepack links
+        utils.showTab("SkinCategory", "Resource Swapper <p style=\"color: red; font-size: 17px\">ATTENTION: Need to restart client to apply changes</p>", elements, optionList, additionalHide);
+        document.getElementById("skincontent").style.display = "flex";
         texturePackOptionInput.addEventListener("click", function() { require('electron').ipcRenderer.send('openTexturePackFolder'); });
         downloadTexturePackOptionInput.addEventListener("click", function() {
             window.open("https://github.com/jcjms/Quasar-Template/archive/refs/heads/main.zip", "Texturepack Download", "height=500,width=500");
         });
     });
     
-    // Wallpaper Tab
     document.getElementById("wallpaper").addEventListener("click", function() {
-        PageTitle.innerHTML = 'Wallpaper <p style="color: red; font-size: 17px">ATTENTION: Need to restart client to apply wallpaper</p>'
-        //for (const option of otherOptionsList) { document.getElementById(option.holderId).style.display = 'none'; }
-        for (const option of optionList) { document.getElementById(option.holderId).style.display = 'none'; }
-        for (const option of additionalHide) { document.getElementById(option.holderId).style.display = 'none'; }
-        hideLogoVersionAndOpenCloseText()
-        hideTextboxStuff()
-
-        document.getElementById("wallpaperoptionHolder").style.display = "block";
-        document.getElementById("wallpapercontent").style.display = "block";
+        utils.showTab("wallpaper", "Wallpaper <p style=\"color: red; font-size: 17px\">ATTENTION: Need to restart client to apply wallpaper</p>", ["wallpaperoptionHolder", "wallpapercontent"], optionList, additionalHide);
     });
-
-    // Aimbot Tab 😱
+    
     document.getElementById("aimbot").addEventListener("click", function() {
-        PageTitle.innerHTML = `<iframe width="100%" height="260px" src="https://bean-frog.github.io/yt5s.io-Rick%20Astley%20-%20Never%20Gonna%20Give%20You%20Up%20(Official%20Music%20Video).mp4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-        //for (const option of otherOptionsList) { document.getElementById(option.holderId).style.display = 'none'; }
-        for (const option of optionList) { document.getElementById(option.holderId).style.display = 'none'; }
-        for (const option of additionalHide) { document.getElementById(option.holderId).style.display = 'none'; }
-        hideLogoVersionAndOpenCloseText()
-        hideTextboxStuff()
+        PageTitle.innerHTML = "<iframe width=\"100%\" height=\"260px\" src=\"https://bean-frog.github.io/yt5s.io-Rick%20Astley%20-%20Never%20Gonna%20Give%20You%20Up%20(Official%20Music%20Video).mp4\" frameborder=\"0\" allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>";
+        
+        utils.hideOptions(optionList, additionalHide)
+        utils.hideLogoVersionAndOpenCloseText()
+        utils.hideStuff()
     });
 
     
