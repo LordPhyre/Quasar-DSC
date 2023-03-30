@@ -23,8 +23,10 @@ Credits: Iniquity#2313 | Owner of [Arbiter Design](https://www.arbiterdesign.net
 * **LordPhyre/skill:** Project Manager/Developer
 * **jcjms:** Lead Developer
 * **Classy08/Captain Cool:** Assistant Developer
+* **Gato:** Helped with Clan Tags and Color Swapping
 * **Armaccord#9846:** Official Quasar skins
 * **n!ck#0159:** Animated Quasar Splash Screen
+
 
 #
 
