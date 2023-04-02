@@ -14,12 +14,12 @@ function shortcuts(jsonobj, jsonpath) {
     var fourValue = jsonobj.Shortcuts.four;
     var fiveValue = jsonobj.Shortcuts.five;
 
-    const shortcuts = document.createElement("h2");
-    shortcuts.innerHTML = "[" + one + "] " + oneValue + " [" + two + "] " + twoValue + "  [" + three + "] " + threeValue + "  [" + four + "] " + fourValue + "  [" + five + "] " + fiveValue;
-    shortcuts.type = "submit";
-    shortcuts.id = "shortcutsdisplay";
-    shortcuts.style = "position: absolute; left: 0; bottom: 0; z-index: 1000; color: grey; background-color: transparent; outline: none; margin-bottom: 2px; margin-left: 5px; outline: none; border: none; font-size: 100%; display: none;";
-    document.body.appendChild(shortcuts);
+    const shortcut_display = document.createElement("h2");
+    shortcut_display.innerHTML = "[" + one + "] " + oneValue + " [" + two + "] " + twoValue + "  [" + three + "] " + threeValue + "  [" + four + "] " + fourValue + "  [" + five + "] " + fiveValue;
+    shortcut_display.type = "submit";
+    shortcut_display.id = "shortcutsdisplay";
+    shortcut_display.style = "position: absolute; left: 0; bottom: 0; z-index: 1000; color: grey; background-color: transparent; outline: none; margin-bottom: 2px; margin-left: 5px; outline: none; border: none; font-size: 100%; display: none;";
+    document.body.appendChild(shortcut_display);
 
     function updateShortcutBar() {
         oneValue = jsonobj.Shortcuts.one;
@@ -28,12 +28,12 @@ function shortcuts(jsonobj, jsonpath) {
         fourValue = jsonobj.Shortcuts.four;
         fiveValue = jsonobj.Shortcuts.five;
         
-        shortcuts.innerHTML = "[" + one + "] " + oneValue + " [" + two + "] " + twoValue + "  [" + three + "] " + threeValue + "  [" + four + "] " + fourValue + "  [" + five + "] " + fiveValue;
+        shortcut_display.innerHTML = "[" + one + "] " + oneValue + " [" + two + "] " + twoValue + "  [" + three + "] " + threeValue + "  [" + four + "] " + fourValue + "  [" + five + "] " + fiveValue;
     }
 
     //Show or Hide Shortcuts based on JSON
-    if(jsonobj.Stats.Shortcuts) { shortcuts.style.display = "block"; }
-    else if (!jsonobj.Stats.Shortcuts) { shortcuts.style.display = "none"; };
+    if(jsonobj.Stats.Shortcuts) { shortcut_display.style.display = "block"; }
+    else if (!jsonobj.Stats.Shortcuts) { shortcut_display.style.display = "none"; };
 
     // Making the Textboxes
     const optionholders = [];
@@ -95,25 +95,21 @@ function shortcuts(jsonobj, jsonpath) {
                 if (element.id == 1) {
                     oneValue = element.value;
                     jsonobj.Shortcuts.one = element.value;
-                    updateShortcutBar();
                 } else if (element.id == 2) {
                     twoValue = element.value;
                     jsonobj.Shortcuts.two = element.value;
-                    updateShortcutBar();
                 } else if (element.id == 3) {
                     threeValue = element.value;
                     jsonobj.Shortcuts.three = element.value;
-                    updateShortcutBar();
                 } else if (element.id == 4) {
                     fourValue = element.value;
                     jsonobj.Shortcuts.four = element.value;
-                    updateShortcutBar();
                 } else if (element.id == 5) {
                     fiveValue = element.value;
                     jsonobj.Shortcuts.five = element.value;
-                    updateShortcutBar();
                 }
-    
+
+                updateShortcutBar();
                 fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
     
                 keyContentMap = {

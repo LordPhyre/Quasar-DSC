@@ -12,8 +12,8 @@ Some of the CRAZY FEATURES in this client include:
 
 #
 
-<img src="https://user-images.githubusercontent.com/60118488/220645618-129c31be-c847-4a68-9185-db0b4e976628.png" width=50% height=50%>
-<img src="https://user-images.githubusercontent.com/60118488/220646185-976bef5e-6d2e-4de2-ace7-62d9e2767081.png" width=70% height=70%>
+![](images/home.png)
+![](images/Quasar_Feature_List_2.png)
 Credits: Iniquity#2313 | Owner of [Arbiter Design](https://www.arbiterdesign.net/)
 
 #

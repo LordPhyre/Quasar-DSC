@@ -9,6 +9,7 @@ const get_ping = require('./modules/ping.js');
 const get_fps = require('./modules/fps.js');
 const skinSkybox = require('./modules/skinSkybox.js');
 const utils = require('./modules/utils.js');
+const themes = require('./modules/themes.js');
 
 document.addEventListener("DOMContentLoaded", function() {
 
@@ -32,6 +33,87 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
     var skinWrapperBorderRadius = jsonobj.Colors.skinWrapperBorderRadius; //"10";
     var msgBoxColor = jsonobj.Colors.msgBoxColor; //"#2a394f";
 
+    var css = document.createElement('style');
+    css.innerHTML = `
+    #themeOptionHolder {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        padding-left: 10px;
+        padding-top: 10px;
+    }
+    
+    .theme-button {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-right: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 2px solid #ccc;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .theme-button:before {
+        content: "";
+        position: absolute;
+        top: -25px;
+        left: -25px;
+        width: 50px;
+        height: 50px;
+        background-color: #fff;
+        transform: rotate(45deg);
+        z-index: 1;
+    }
+    
+    .theme-button:after {
+        content: "";
+        position: absolute;
+        top: -28px;
+        left: -28px;
+        width: 50px;
+        height: 50px;
+        transform: rotate(45deg);
+        z-index: 2;
+    }
+    
+    .theme-button:hover {
+        transform: scale(1.1);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    }
+    `;
+    document.getElementsByTagName('head')[0].appendChild(css);
+
+    const themeData = [
+        {
+            id: "redtheme",
+            color: "red",
+            backgroundColor: "#ff4d4d",
+            afterColor: "green",
+        },
+        {
+            id: "bluetheme",
+            color: "blue",
+            backgroundColor: "#4d4dff",
+            afterColor: "purple",
+        },
+        {
+            id: "greentheme",
+            color: "green",
+            backgroundColor: "#4dff4d",
+            afterColor: "wheat",
+        },
+        {
+            id: "surprisemotherfucker",
+            color: "pink",
+            backgroundColor: "lime",
+            afterColor: "purple",
+        },
+    ];
+
     styling.styling(skinButtonColor, skinButtonHoverColor, skinCloseColor);
     menuconstruct.menuconstruct(opacity, skinWrapperBorderRadius, menuHeaderColor, behindOptionsColor, client_version, optionColor, msgBoxColor)
     statscreate.statscreate(jsonobj);
@@ -40,6 +122,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
     get_ping.ping();
     get_fps.fps();
     skinSkybox.skinSkybox(optionColor);
+    themes.themes(jsonobj, themeData);
 
     document.getElementById('skyboxFolderButton').addEventListener('click', function() {
         require('electron').ipcRenderer.send('openSkyboxFolder')
@@ -49,6 +132,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
     // Menu Tabs
     const tabData = [
         { text: 'Home', id: 'HomePage' },
+        { text: 'Themes', id: 'themes' },
         { text: 'General', id: 'general' },
         { text: 'Stats', id: 'stats' },
         { text: 'Shortcuts', id: 'shortcuts' },
@@ -156,7 +240,8 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
         "skyboxcontent", 
         "skinCategoryoptionHolder", 
         "skyboxoptionHolder", 
-        "wallpaperoptionHolder"
+        "wallpaperoptionHolder",
+        "themeOptionHolder"
     ];
 
     optionHolderManager.createOptionHolder('texturePackOptionHolder', 'Texture Pack', 'texturePackOptionInput', jsonobj);
@@ -241,70 +326,47 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
         utils.hideStuff()
     });
 
-    
-    // Checkbox State and function saving to JSON
-    massCheckUncheckStatsCheck.addEventListener('change', e => {
-        if(e.target.checked){
-            jsonobj.Stats.FPS = true;
-            jsonobj.Stats.Platform = true;
-            jsonobj.Stats.CPU = true;
-            jsonobj.Stats.memory = true;
-            jsonobj.Stats.Tmemory = true;
-            jsonobj.Stats.Cores = true;
-            jsonobj.Stats.Uptime = true;
-            jsonobj.Stats.Ping = true;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-
-            document.getElementById("fpsDisplayCheck").checked = true;
-            document.getElementById("pingDisplayCheck").checked = true;
-            document.getElementById("platformDisplayCheck").checked = true;
-            document.getElementById("cpuUsageDisplayCheck").checked = true;
-            document.getElementById("memoryUsageDisplayCheck").checked = true;
-            document.getElementById("totalMemoryDisplayCheck").checked = true;
-            document.getElementById("cpuCoresDisplayCheck").checked = true;
-            document.getElementById("uptimeDisplayCheck").checked = true;
-
-            // only doing this, bc it doesn't update on its own for some reason
-            fpscounter.style.display = "block";
-            platform.style.display = "block";
-            ping.style.display = "block";
-            cpu.style.display = "block";
-            mem.style.display = "block";
-            totalMem.style.display = "block";
-            cpuCount.style.display = "block";
-            uptime.style.display = "block";
-        } else {
-            jsonobj.Stats.FPS = false;
-            jsonobj.Stats.Online = false;
-            jsonobj.Stats.Platform = false;
-            jsonobj.Stats.CPU = false;
-            jsonobj.Stats.memory = false;
-            jsonobj.Stats.Tmemory = false;
-            jsonobj.Stats.Cores = false;
-            jsonobj.Stats.Uptime = false;
-            jsonobj.Stats.Ping = false;
-            fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-
-            document.getElementById("fpsDisplayCheck").checked = false;
-            document.getElementById("pingDisplayCheck").checked = false;
-            document.getElementById("platformDisplayCheck").checked = false;
-            document.getElementById("cpuUsageDisplayCheck").checked = false;
-            document.getElementById("memoryUsageDisplayCheck").checked = false;
-            document.getElementById("totalMemoryDisplayCheck").checked = false;
-            document.getElementById("cpuCoresDisplayCheck").checked = false;
-            document.getElementById("uptimeDisplayCheck").checked = false;
-
-            // only doing this, bc it doesn't update on its own for some reason
-            fpscounter.style.display = "none";
-            platform.style.display = "none";
-            ping.style.display = "none";
-            cpu.style.display = "none";
-            mem.style.display = "none";
-            totalMem.style.display = "none";
-            cpuCount.style.display = "none";
-            uptime.style.display = "none";
-        }
+    document.getElementById("themes").addEventListener("click", function() {
+        const elements = [
+            "themeOptionHolder"
+        ];
+        utils.showTab("themes", "Themes", elements, optionList, additionalHide);
     });
+
+    // stat checkboxes
+    const statCheckboxes = [
+        { id: "fpsDisplayCheck", prop: "FPS" },
+        { id: "pingDisplayCheck", prop: "Ping" },
+        { id: "platformDisplayCheck", prop: "Platform" },
+        { id: "cpuUsageDisplayCheck", prop: "CPU" },
+        { id: "memoryUsageDisplayCheck", prop: "memory" },
+        { id: "totalMemoryDisplayCheck", prop: "Tmemory" },
+        { id: "cpuCoresDisplayCheck", prop: "Cores" },
+        { id: "uptimeDisplayCheck", prop: "Uptime" }
+    ];
+      
+    const statElements = [
+        { id: "fpscounter", prop: "FPS" },
+        { id: "ping", prop: "Ping" },
+        { id: "platform", prop: "Platform" },
+        { id: "cpu", prop: "CPU" },
+        { id: "mem", prop: "memory" },
+        { id: "totalMem", prop: "Tmemory" },
+        { id: "cpuCount", prop: "Cores" },
+        { id: "uptime", prop: "Uptime" }
+    ];
+      
+    massCheckUncheckStatsCheck.addEventListener('change', e => {
+        const isChecked = e.target.checked;
+        for (const checkbox of statCheckboxes) {
+          jsonobj.Stats[checkbox.prop] = isChecked;
+          document.getElementById(checkbox.id).checked = isChecked;
+        }
+        for (const element of statElements) {
+          document.getElementById(element.id).style.display = isChecked ? "block" : "none";
+        }
+        fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
+    });      
 
     function createEventListener(id, styleProperty, jsonProperty) {
         const element = document.getElementById(id);
@@ -322,7 +384,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
     }
     
     createEventListener('fpsDisplayCheck', 'fpscounter', 'FPS');
-    createEventListener('shortcutDisplayCheck', 'shortcuts', 'Shortcuts');
+    createEventListener('shortcutDisplayCheck', 'shortcutsdisplay', 'Shortcuts');
     createEventListener('platformDisplayCheck', 'platform', 'Platform');
     createEventListener('pingDisplayCheck', 'ping', 'Ping');
     createEventListener('cpuUsageDisplayCheck', 'cpu', 'CPU');

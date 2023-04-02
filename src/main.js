@@ -44,7 +44,7 @@ if (!fs.existsSync(userDataPath)) {
     console.log(precommand + `Quasar directory already existing.`);
 };
 
-//Updater Flags
+// Updater Flags
 autoUpdater.autoDownload = false;
 autoUpdater.autoInstallOnAppQuit = false;
 
@@ -64,7 +64,6 @@ if (!fs.existsSync(jsonpath)) {
         "Ping": true
     },
     "WASD": false,
-    //"Flags": false,
     "Debug": false,
     "AutoFullscreen": false,
     "Fullscreen": false,
@@ -78,17 +77,6 @@ if (!fs.existsSync(jsonpath)) {
         "opacity": "1",
         "skinWrapperBorderRadius": "10",
         "msgBoxColor": "#232429",   
-    },
-    "Flags": {
-        "Print": false,
-        "Harmony": false,
-        "Limit": false,
-        "Contexts": false,
-        "GPUblocklist": false,
-        "CanvasClip": false,
-        "Logging": false,
-        "ProcessGPU": false,
-        "AcceleratedCanvas": false,
     },
     "Shortcuts": {
         "one": "GG",
@@ -205,6 +193,7 @@ app.whenReady().then(() => {
         title: "Quasar DSC",
         webPreferences: {
           nodeIntegration: true,
+          contextIsolation: true,
           enableRemoteModule: true,
           sandbox: false,
           webSecurity: false, // needed to load local images
@@ -215,7 +204,6 @@ app.whenReady().then(() => {
       win.setMenuBarVisibility(false);
       win.$ = win.jQuery = require('jquery/dist/jquery.min.js');
       win.loadURL('https://deadshot.io');
-
         
       // some shortcuts
       globalShortcut.register('F6', () => win.loadURL('http://deadshot.io/'));
@@ -419,23 +407,10 @@ app.whenReady().then(() => {
         app.exit(0);
       });
 
-      /*const openFolder = (folderName) => {
-        ipcMain.on(folderName, (event) => {
-          spawn('explorer.exe', [path.join(app.getPath("documents"), `Quasar-DSC/${folderName}`)]);
-        });
-      }
-      openFolder('gunskins');
-      openFolder('skyboxes');
-      openFolder('Resource Swapper');*/
-
-      // Swapper -> Credits to Captain Cool 💪
-
       swapper.replaceResources(win, app);
       protocol.registerFileProtocol('swap', (request, callback) => {
         callback({ path: path.normalize(request.url.replace(/^swap:/, '')) });
       });
-
-
 
       // PC Stats
       // all options https://github.com/oscmejia/os-utils
@@ -459,8 +434,6 @@ app.whenReady().then(() => {
       },1000);
 
       stats.unref();
-
-
 
     win.webContents.on('did-finish-load', () => {
         if (win) {
