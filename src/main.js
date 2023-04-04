@@ -69,10 +69,13 @@ if (!fs.existsSync(jsonpath)) {
     "Fullscreen": false,
     "Colors": {
         "menuHeaderColor": "#232429",
+        "menuColor": "#232429",
         "behindOptionsColor": "#232429",
         "skinButtonColor": "#222327",
         "skinButtonHoverColor": "#0798fc",
         "skinCloseColor": "#ffffff00",
+        "skinCloseTextColor": "grey",
+        "skinCloseTextHoverColor": "white",
         "optionColor": "#25272e",
         "opacity": "1",
         "skinWrapperBorderRadius": "10",

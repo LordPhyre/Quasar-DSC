@@ -24,10 +24,13 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
 
     // Styling and CSS
     var menuHeaderColor = jsonobj.Colors.menuHeaderColor; //"#2a394f";
+    var menuColor = jsonobj.Colors.menuColor; //"#2a394f";
     var behindOptionsColor = jsonobj.Colors.behindOptionsColor; //"#2a394f";
     var skinButtonColor = jsonobj.Colors.skinButtonColor; //"#364760";
     var skinButtonHoverColor = jsonobj.Colors.skinButtonHoverColor; //"#0798fc";
     var skinCloseColor = jsonobj.Colors.skinCloseColor; //"#ffffff00";
+    var skinCloseTextColor = jsonobj.Colors.skinCloseTextColor; //"#ffffff00";
+    var skinCloseTextHoverColor  = jsonobj.Colors.skinCloseTextHoverColor;
     var optionColor = jsonobj.Colors.optionColor; //"#364760";
     var opacity = jsonobj.Colors.opacity; //0.95;
     var skinWrapperBorderRadius = jsonobj.Colors.skinWrapperBorderRadius; //"10";
@@ -89,32 +92,25 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
 
     const themeData = [
         {
-            id: "redtheme",
-            color: "red",
-            backgroundColor: "#ff4d4d",
-            afterColor: "green",
-        },
-        {
             id: "bluetheme",
             color: "blue",
+            afterColor: "purple",
             backgroundColor: "#4d4dff",
-            afterColor: "purple",
-        },
-        {
-            id: "greentheme",
-            color: "green",
-            backgroundColor: "#4dff4d",
-            afterColor: "wheat",
-        },
-        {
-            id: "surprisemotherfucker",
-            color: "pink",
-            backgroundColor: "lime",
-            afterColor: "purple",
+            skinWrapperBorderRadius: "10",
+            menuHeaderColor: "purple",
+            behindOptionsColor: "blue",
+            optionColor: "blue",
+            msgBoxColor: "blue",
+            skinButtonColor: "blue",
+            skinCloseColor: "#ffffff00",
+            skinCloseTextColor: "grey",
+            skinCloseTextHoverColor: "white",
+            skinButtonHoverColor: "purple",
+            menuColor: "purple"
         },
     ];
 
-    styling.styling(skinButtonColor, skinButtonHoverColor, skinCloseColor);
+    styling.styling(skinButtonColor, skinButtonHoverColor, skinCloseColor, skinCloseTextColor, skinCloseTextHoverColor, menuColor);
     menuconstruct.menuconstruct(opacity, skinWrapperBorderRadius, menuHeaderColor, behindOptionsColor, client_version, optionColor, msgBoxColor)
     statscreate.statscreate(jsonobj);
     wasd.wasd(jsonobj);

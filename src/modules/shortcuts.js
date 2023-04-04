@@ -133,7 +133,7 @@ function shortcuts(jsonobj, jsonpath) {
     };
     console.log(keyContentMap);
 
-    var isVisible = true;
+    var isVisible = false;
 
     document.addEventListener('keydown', function(event) {
         const chatInput = document.querySelector('input[placeholder="[Enter] to use chat"]');

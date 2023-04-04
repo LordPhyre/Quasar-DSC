@@ -8,6 +8,7 @@ const createElement = (type, className, id, innerText) => {
     element.className = className;
     element.id = id;
     element.innerText = innerText;
+    element.backgroundColor = "var(--optionColor)";
     return element;
 };
 
@@ -18,7 +19,7 @@ const createOptionHolder = (id, descrText, inputId, jsonobj) => {
     const optionInput = createElement('input', '', inputId, '');
     const optionHr = createElement('hr', '', '', '');
     if (id == "texturePackOptionHolder") {
-        optionInput.type = 'button'; // normally I wouldn't do this, just so I can make it more efficient
+        optionInput.type = 'button';
         optionInput.value = 'Open Folder';
         optionInput.style.width = '110px';
     } else if (id == "downloadTexturePackOptionHolder") {
@@ -31,7 +32,7 @@ const createOptionHolder = (id, descrText, inputId, jsonobj) => {
     }
     if (id.includes('shortcutOptionHolder')) {
         optionInput.style.float = "right";
-        optionHolder.style.backgroundColor = jsonobj.Colors.optionColor;
+        optionHolder.style.backgroundColor = "var(--optionColor)";
         if (id == 'shortcutOptionHolder') {
             optionInput.placeholder = 'GG';
             optionInput.setAttribute('value', jsonobj.Shortcuts.one);

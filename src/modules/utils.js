@@ -11,6 +11,7 @@ function addCheckbox(holderId, descrText, checkId) {
     const optionHolder = document.createElement('div');
     optionHolder.className = 'optionholder';
     optionHolder.id = holderId;
+    optionHolder.style.backgroundColor = 'var(--optionColor)';
     
     // sub-option title
     const optionDescr = document.createElement('p');

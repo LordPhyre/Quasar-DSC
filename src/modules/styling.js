@@ -1,4 +1,11 @@
-function styling(skinButtonColor, skinButtonHoverColor, skinCloseColor) {
+function styling(skinButtonColor, skinButtonHoverColor, skinCloseColor, skinCloseTextColor, skinCloseTextHoverColor, menuColor) {
+
+document.documentElement.style.setProperty('--skinButtonColor', skinButtonColor);
+document.documentElement.style.setProperty('--skinButtonHoverColor', skinButtonHoverColor);
+document.documentElement.style.setProperty('--skinCloseColor', skinCloseColor);
+document.documentElement.style.setProperty('--skinCloseTextColor', skinCloseTextColor);
+document.documentElement.style.setProperty('--skinCloseTextHoverColor', skinCloseTextHoverColor);
+document.documentElement.style.setProperty('--menuColor', menuColor);
 
 let skincss = document.createElement('style');
 skincss.innerText = `@import 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap';
@@ -25,8 +32,7 @@ skincss.innerText = `@import 'https://fonts.googleapis.com/css2?family=Poppins:w
         left:50%;
         max-width:750px;
         width:100%;
-        background:#232429;
-        /* if I add menuHeaderColor it spawns at a different location lmao, but the color has to stay like that, else the menu is see trough under header*/
+        background: var(--menuColor);
         transform:translate(-50%,-50%);
         border:solid 1px #000;
         color:#fff;
@@ -64,27 +70,27 @@ skincss.innerText = `@import 'https://fonts.googleapis.com/css2?family=Poppins:w
     .skinbutton{
         width:100%;
         height:48px;
-        background-color: ${skinButtonColor};
+        background-color: var(--skinButtonColor);
         border:none;
         color:#fff;
         font-size:20px
     }
     .skinbutton:hover{
-        background-color: ${skinButtonHoverColor};
+        background-color: var(--skinButtonHoverColor);
     }
     .skinclose{
-        color:grey;
+        color: var(--skinCloseTextColor);
         position:absolute;
         top:0;
         right:0;
-        margin-right:15px;
-        margin-top:-6px;
-        background-color: ${skinCloseColor};
+        margin-right:16px;
+        margin-top:6px;
+        background-color: var(--skinCloseColor);
         border:none;
         font-size:35px
     }
     .skinclose:hover{
-        color:#fff
+        color:var(--skinCloseTextHoverColor)
     }
     p{
         font-size:20px
