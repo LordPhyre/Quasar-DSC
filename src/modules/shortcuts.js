@@ -22,14 +22,21 @@ function shortcuts(jsonobj, jsonpath) {
     document.body.appendChild(shortcut_display);
 
     function updateShortcutBar() {
-        oneValue = jsonobj.Shortcuts.one;
-        twoValue = jsonobj.Shortcuts.two;
-        threeValue = jsonobj.Shortcuts.three;
-        fourValue = jsonobj.Shortcuts.four;
-        fiveValue = jsonobj.Shortcuts.five;
+        const shortcuts = [
+            { key: one, value: jsonobj.Shortcuts.one },
+            { key: two, value: jsonobj.Shortcuts.two },
+            { key: three, value: jsonobj.Shortcuts.three },
+            { key: four, value: jsonobj.Shortcuts.four },
+            { key: five, value: jsonobj.Shortcuts.five }
+        ];
+    
+        let html = shortcuts
+            .filter(shortcut => shortcut.value !== "")
+            .map(shortcut => `[${shortcut.key}] ${shortcut.value}`)
+            .join(" ");
         
-        shortcut_display.innerHTML = "[" + one + "] " + oneValue + " [" + two + "] " + twoValue + "  [" + three + "] " + threeValue + "  [" + four + "] " + fourValue + "  [" + five + "] " + fiveValue;
-    }
+        shortcut_display.innerHTML = html;
+    }    
 
     //Show or Hide Shortcuts based on JSON
     if(jsonobj.Stats.Shortcuts) { shortcut_display.style.display = "block"; }
