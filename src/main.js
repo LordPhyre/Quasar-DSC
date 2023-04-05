@@ -196,8 +196,8 @@ app.whenReady().then(() => {
         icon: "icon/logoicon.ico",	
         title: "Quasar DSC",
         webPreferences: {
-          nodeIntegration: true,
-          contextIsolation: true,
+          //nodeIntegration: false,
+          contextIsolation: false,
           enableRemoteModule: true,
           sandbox: false,
           webSecurity: false, // needed to load local images
