@@ -35,20 +35,6 @@ function shortcuts(jsonobj, jsonpath) {
     if(jsonobj.Stats.Shortcuts) { shortcut_display.style.display = "block"; }
     else if (!jsonobj.Stats.Shortcuts) { shortcut_display.style.display = "none"; };
 
-    // Making the Textboxes
-    const optionholders = [];
-    const optiondescrs = [];
-    const optioninputs = [];
-    const optionhrs = [];
-
-    const createElement = (type, className, id, innerText) => {
-        const element = document.createElement(type);
-        element.className = className;
-        element.id = id;
-        element.innerText = innerText;
-        return element;
-    };
-
     // defining the options with input fields (I could put them into an array and to for each later...)
     createOptionHolder.createOptionHolder('shortcutOptionHolder', 'Shortcut Option [1]', 'shortcutOptionInput', jsonobj);
     createOptionHolder.createOptionHolder('shortcutOptionHolder2', 'Shortcut Option [2]', 'shortcutOptionInput2', jsonobj);
@@ -78,8 +64,6 @@ function shortcuts(jsonobj, jsonpath) {
         [four_id]: [fourValue],
         [five_id]: [fiveValue],
     };
-
-    console.log(keyContentMap);
 
     const inputs = ['shortcutOptionInput', 'shortcutOptionInput2', 'shortcutOptionInput3', 'shortcutOptionInput4', 'shortcutOptionInput5'];
 
@@ -119,8 +103,6 @@ function shortcuts(jsonobj, jsonpath) {
                     [four]: [fourValue],
                     [five]: [fiveValue],
                 };
-    
-                console.log(keyContentMap);
             });
         });
 
@@ -131,9 +113,6 @@ function shortcuts(jsonobj, jsonpath) {
         [four]: [fourValue],
         [five]: [fiveValue],
     };
-    console.log(keyContentMap);
-
-    var isVisible = false;
 
     document.addEventListener('keydown', function(event) {
         const chatInput = document.querySelector('input[placeholder="[Enter] to use chat"]');
@@ -144,16 +123,15 @@ function shortcuts(jsonobj, jsonpath) {
         });
 
         const focusedElement = document.activeElement;
-        if (focusedElement.tagName !== 'INPUT' && event.key in keyContentMap) {
+        if (focusedElement.tagName !== 'INPUT' && event.key in keyContentMap && jsonobj.Stats.EnableShortcuts) {
             chatInput.value = keyContentMap[event.key];
             chatInput.dispatchEvent(event222);
             chatInput.dispatchEvent(event222);
         }
 
         if (event.key === 'F1') {
-            isVisible = !isVisible;
-            skinWrapper.style.display = isVisible ? 'block' : 'none';
-        }
+            skinWrapper.style.display = skinWrapper.style.display === 'none' ? 'block' : 'none';
+        }          
     });
 }
 

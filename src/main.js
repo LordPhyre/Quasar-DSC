@@ -54,7 +54,8 @@ if (!fs.existsSync(jsonpath)) {
     "Stats": {
         "FPS": true,
         "Online": false,
-        "Shortcuts": true,
+        "Shortcuts": false,
+        "EnableShortcuts": false,
         "Platform": false,
         "CPU": true,
         "memory": true,
@@ -207,7 +208,7 @@ app.whenReady().then(() => {
       win.setMenuBarVisibility(false);
       win.$ = win.jQuery = require('jquery/dist/jquery.min.js');
       win.loadURL('https://deadshot.io');
-        
+    
       // some shortcuts
       globalShortcut.register('F6', () => win.loadURL('http://deadshot.io/'));
       globalShortcut.register('F5', () => win.reload());
@@ -408,6 +409,12 @@ app.whenReady().then(() => {
       ipcMain.on('reload', (event, file) => {
         app.relaunch();
         app.exit(0);
+      });
+      ipcMain.on('diffurl', (url, event, file) => {
+        console.log(url)
+        new URL(url);
+        win.loadURL(url);
+        win.webContents.reloadIgnoringCache();
       });
 
       swapper.replaceResources(win, app);

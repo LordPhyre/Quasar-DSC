@@ -10,6 +10,7 @@ const get_fps = require('./modules/fps.js');
 const skinSkybox = require('./modules/skinSkybox.js');
 const utils = require('./modules/utils.js');
 const themes = require('./modules/themes.js');
+const invmenu = require('./modules/invitemenu.js');
 
 document.addEventListener("DOMContentLoaded", function() {
 
@@ -114,11 +115,11 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
     menuconstruct.menuconstruct(opacity, skinWrapperBorderRadius, menuHeaderColor, behindOptionsColor, client_version, optionColor, msgBoxColor)
     statscreate.statscreate(jsonobj);
     wasd.wasd(jsonobj);
-    shortcuts.shortcuts(jsonobj, jsonpath, optionColor);
     get_ping.ping();
     get_fps.fps();
     skinSkybox.skinSkybox(optionColor);
     themes.themes(jsonobj, themeData);
+    invmenu.create();
 
     document.getElementById('skyboxFolderButton').addEventListener('click', function() {
         require('electron').ipcRenderer.send('openSkyboxFolder')
@@ -143,6 +144,11 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
 
     // Checkboxes and Checkbox Holders
     const optionList = [
+    {
+        holderId: "EnableShortcutsOptionHolder",
+        descrText: "Enable Shortcuts",
+        checkId: "EnableShortcutsCheck",
+    },
     {
         holderId: "massCheckUncheckStatsOptionHolder",
         descrText: "Check / Un-Check all",
@@ -244,6 +250,39 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
     optionHolderManager.createOptionHolder('downloadTexturePackOptionHolder', 'Download QUASAR Pack', 'downloadTexturePackOptionInput', jsonobj);
     optionHolderManager.createOptionHolder('RPCTextOptionHolder', 'RPC Text', 'rpcOptionInput', jsonobj);    
 
+    function createEventListener(id, styleProperty, jsonProperty) {
+        const element = document.getElementById(id);
+        element.checked = jsonobj.Stats[jsonProperty];
+      
+        return element.addEventListener('change', e => {
+          const target = e.target;
+          const value = target.checked;
+
+          if (styleProperty) {
+            const style = document.getElementById(styleProperty);
+            style.style.display = value ? 'block' : 'none';
+          }
+      
+          jsonobj.Stats[jsonProperty] = value;
+          fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
+        });
+    }
+    
+    createEventListener('fpsDisplayCheck', 'fpscounter', 'FPS');
+    createEventListener('shortcutDisplayCheck', 'shortcutsdisplay', 'Shortcuts');
+    createEventListener('EnableShortcutsCheck', null, 'EnableShortcuts');
+    createEventListener('platformDisplayCheck', 'platform', 'Platform');
+    createEventListener('pingDisplayCheck', 'ping', 'Ping');
+    createEventListener('cpuUsageDisplayCheck', 'cpu', 'CPU');
+    createEventListener('memoryUsageDisplayCheck', 'mem', 'memory');
+    createEventListener('totalMemoryDisplayCheck', 'totalMem', 'Tmemory');
+    createEventListener('cpuCoresDisplayCheck', 'cpuCount', 'Cores');
+    createEventListener('uptimeDisplayCheck', 'uptime', 'Uptime');
+    createEventListener('WASDDisplayCheck', 'WASD', 'WASD');
+    createEventListener('AutoFullscreenCheck', null, 'AutoFullscreen');
+
+    shortcuts.shortcuts(jsonobj, jsonpath, optionColor);
+
     // Home Page
     utils.hideOptions(optionList, additionalHide)
     utils.hideStuff()
@@ -283,6 +322,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
     document.getElementById("shortcuts").addEventListener("click", function() {
         const elements = [
             "shortcutDisplayOptionHolder",
+            "EnableShortcutsOptionHolder",
             "shortcutOptionHolder",
             "shortcutOptionHolder2",
             "shortcutOptionHolder3",
@@ -363,33 +403,6 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
         }
         fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
     });      
-
-    function createEventListener(id, styleProperty, jsonProperty) {
-        const element = document.getElementById(id);
-        element.checked = jsonobj.Stats[jsonProperty];
-      
-        return element.addEventListener('change', e => {
-          const target = e.target;
-          const style = document.getElementById(styleProperty);
-          const value = target.checked;
-      
-          style.style.display = value ? 'block' : 'none';
-          jsonobj.Stats[jsonProperty] = value;
-          fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-        });
-    }
-    
-    createEventListener('fpsDisplayCheck', 'fpscounter', 'FPS');
-    createEventListener('shortcutDisplayCheck', 'shortcutsdisplay', 'Shortcuts');
-    createEventListener('platformDisplayCheck', 'platform', 'Platform');
-    createEventListener('pingDisplayCheck', 'ping', 'Ping');
-    createEventListener('cpuUsageDisplayCheck', 'cpu', 'CPU');
-    createEventListener('memoryUsageDisplayCheck', 'mem', 'memory');
-    createEventListener('totalMemoryDisplayCheck', 'totalMem', 'Tmemory');
-    createEventListener('cpuCoresDisplayCheck', 'cpuCount', 'Cores');
-    createEventListener('uptimeDisplayCheck', 'uptime', 'Uptime');
-    createEventListener('WASDDisplayCheck', 'WASD', 'WASD');
-    createEventListener('AutoFullscreenCheck', null, 'AutoFullscreen');
     
     require('electron').ipcRenderer.on('toggleFullscreen', (event, data) => {
     document.getElementById('FullscreenCheck').checked = data;
@@ -412,6 +425,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
         if(e.target.checked){
             jsonobj.Debug = true;
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
+            require('electron').ipcRenderer.send('diffurl', 'https://google.com')
         } else {
             jsonobj.Debug = false;
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
