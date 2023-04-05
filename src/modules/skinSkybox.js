@@ -10,6 +10,10 @@ function skinPathHandlerVector(src) {
     require('electron').ipcRenderer.send('filepath-vector', src);
 }
 
+function skinPathHandlerShotgun(src) {
+    require('electron').ipcRenderer.send('filepath-shotgun', src);
+}
+
 function skyboxPathHandler(src) {
     require('electron').ipcRenderer.send('filepath-skybox', src)
 }
@@ -21,23 +25,16 @@ const skyboxcontentselector = document.getElementById('skyboxcontent');
 const textureSquare = document.createElement('img');
 textureSquare.style = 'width: 100px; height: 100px; border: 1px solid black; margin: 10px;';
 
-var skipper = 1;
 function processItems(items, handler, type, id) {
     for (let i = 0; i < items.length; i++) {
-        let element;
-        if (skipper > 0) {
-            const flexSquareClone = textureSquare.cloneNode(true);
-            flexSquareClone.setAttribute('src', items[i]);
-            flexSquareClone.setAttribute('id', id);
-            element = flexSquareClone;
-            skipper++;
-        } else {
-            textureSquare.src = items[i];
-            textureSquare.id = id;
-            element = textureSquare;
-        }
+        const wrapperDiv = document.createElement('div');
+        wrapperDiv.style.position = 'relative';
 
-        element.addEventListener('click', function() {
+        const flexSquareClone = textureSquare.cloneNode(true);
+        flexSquareClone.setAttribute('src', items[i]);
+        flexSquareClone.setAttribute('id', id);
+
+        flexSquareClone.addEventListener('click', function() {
             const src = this.getAttribute('src');
             console.log(`The source of the selected ${type} is: ${src}`);
 
@@ -55,14 +52,26 @@ function processItems(items, handler, type, id) {
             } else if (handler === 3) {
                 skinPathHandlerVector(src);
             } else if (handler === 4) {
+                skinPathHandlerShotgun(src);
+            } else if (handler === 5) {
                 skyboxPathHandler(src);
             }
         });
 
+        flexSquareClone.addEventListener('mouseover', function() {
+            this.style.border = '2px solid white';
+        });
+        
+        flexSquareClone.addEventListener('mouseout', function() {
+            this.style.border = '1px solid black';
+        });        
+
+        wrapperDiv.appendChild(flexSquareClone);
+
         if (type === 'skin') {
-            skincontentselector.appendChild(element);
+            skincontentselector.appendChild(wrapperDiv);
         } else if (type === 'skybox') {
-            skyboxcontentselector.appendChild(element);
+            skyboxcontentselector.appendChild(wrapperDiv);
         }
     }
 }
@@ -77,6 +86,10 @@ function processItems(items, handler, type, id) {
 
     require('electron').ipcRenderer.on('filepaths-vector', (event, message) => {
         processItems(message, 3, 'skin', 'vector');
+    });
+
+    require('electron').ipcRenderer.on('filepaths-shotgun', (event, message) => {
+        processItems(message, 3, 'skin', 'shotgun');
     });
 
     require('electron').ipcRenderer.on('filepaths-skybox', (event, message) => {

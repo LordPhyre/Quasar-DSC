@@ -266,6 +266,7 @@ app.whenReady().then(() => {
         "storage/gunskins/ar2",
         "storage/gunskins/awp",
         "storage/gunskins/vector",
+        "storage/gunskins/shotgun",
         "storage/textures",
         "storage/wallpapers",
         "storage/skyboxes",
@@ -319,6 +320,10 @@ app.whenReady().then(() => {
       const sourceFilePath3 = path.join(__dirname, 'default_skins', 'awp_baseColor.webp');
       const destinationFilePath3 = path.join(app.getPath("documents"), `Quasar-DSC/storage/gunskins/awp/awp_baseColor.webp`);
       copyFile(sourceFilePath3, destinationFilePath3);
+
+      const sourceFilePath4 = path.join(__dirname, 'default_skins', 'shotgun_baseColor.webp');
+      const destinationFilePath4 = path.join(app.getPath("documents"), `Quasar-DSC/storage/gunskins/shotgun/shotgun_baseColor.webp`);
+      copyFile(sourceFilePath4, destinationFilePath4);
       
       function handleFilepathEvent(event, message, folderName, destFileName) {
       
@@ -344,15 +349,6 @@ app.whenReady().then(() => {
           }
       
           const webpFiles = files.filter(file => file.endsWith('.webp'));
-      
-          // sometimes we get this error, even if the file is already copied
-
-          /*[Error: EBUSY: resource busy or locked, unlink 'C:\Users\jesse\OneDrive\Dokumente\Quasar-DSC\Resource Swapper\weapons\vector\vectorcomp.webp'] {
-            errno: -4082,
-            code: 'EBUSY',
-            syscall: 'unlink',
-            path: 'C:\\Users\\[your_username]\\OneDrive\\Dokumente\\Quasar-DSC\\Resource Swapper\\weapons\\vector\\vectorcomp.webp'
-          }*/
 
           webpFiles.forEach(file => {
             fs.unlink(`${folderPath}/${file}`, err => {
@@ -378,6 +374,7 @@ app.whenReady().then(() => {
         'filepath-awp': ['awp', 'newawpcomp.webp'],
         'filepath-ar2': ['ar2', 'arcomp.webp'],
         'filepath-vector': ['vector', 'vectorcomp.webp'],
+        'filepath-shotgun': ['shotgun', 'shotguncomp.webp'],
         'filepath-skybox': ['textures', 'skybox.webp'],
         'filepath-wallpaper': ['wallpapers', 'wallpaper.png']
       };
@@ -471,7 +468,7 @@ app.whenReady().then(() => {
           }
 
           // do the skin path sending here
-          const types = ["awp", "ar2", "vector"];
+          const types = ["awp", "ar2", "vector", "shotgun"];
 
           types.forEach(type => {
             readDirectory(path.join(app.getPath("documents"), `Quasar-DSC/storage/gunskins/${type}`), ".webp", `filepaths-${type}`);

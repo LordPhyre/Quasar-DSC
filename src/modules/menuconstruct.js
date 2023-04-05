@@ -31,7 +31,8 @@ function menuconstruct(opacity, skinWrapperBorderRadius, menuHeaderColor, behind
                     <button class="skinCategory" id="awpButton" style="padding: 10px 12.5px 10px 12.5px;background-color: var(--optionColor);border: none;color: white;font-size: 20px;">AWP</button>
                     <button class="skinCategory" id="ar2Button" style="padding: 10px 12.5px 10px 12.5px;background-color: var(--optionColor);border: none;color: white;font-size: 20px;">AR2</button>
                     <button class="skinCategory" id="vectorButton" style="padding: 10px 12.5px 10px 12.5px;background-color: var(--optionColor);border: none;color: white;font-size: 20px;">Vector</button>
-                    <button class="skinCategory" id="skinFolderButton" style="padding: 10px 12.5px 10px 12.5px;background-color: var(--optionColor);border: none;color: white;font-size: 20px;">| <span style="text-decoration: underline; cursor: pointer;">Folder</span></button>
+                    <button class="skinCategory" id="shotgunButton" style="padding: 10px 12.5px 10px 12.5px;background-color: var(--optionColor);border: none;color: white;font-size: 20px;">Shotgun</button>
+                    <button class="skinCategory" id="skinFolderButton" style="padding: 10px 12.5px 10px 12.5px;background-color: var(--optionColor);border: none;color: white;font-size: 20px;"><span style="text-decoration: underline; cursor: pointer;">Folder</span></button>
                 </div>
             </div> 
             <div id="skincontent" class="skincontent" style="background: var(--optionColor);"></div>
@@ -67,36 +68,29 @@ function menuconstruct(opacity, skinWrapperBorderRadius, menuHeaderColor, behind
 
     // hide and show skins on click
     function toggleSkins(displayType) {
-        const awpSkins = document.getElementById("awp");
-        const ar2Skins = document.getElementById("ar2");
-        const vectorSkins = document.getElementById("vector");
-
-        awpSkins.style.display = displayType;
-        ar2Skins.style.display = displayType;
-        vectorSkins.style.display = displayType;
-    }
+        const skinContainers = document.querySelectorAll('#awp, #ar2, #vector, #shotgun');
+        skinContainers.forEach((container) => {
+            container.style.display = displayType;
+        });
+    }    
 
     document.getElementById('allButton').addEventListener('click', function() {
-        const allSkins = document.querySelectorAll('#awp, #ar2, #vector');
+        const allSkins = document.querySelectorAll('#awp, #ar2, #vector, #shotgun');
         allSkins.forEach((skin) => {
             skin.style.display = "initial";
         });
     });
-    document.getElementById('awpButton').addEventListener('click', function() {
-        const awpSkins = document.getElementById("awp");
-        toggleSkins("none");
-        awpSkins.style.display = "initial";
+
+    ['awp', 'ar2', 'vector', 'shotgun'].forEach(function(type) {
+        document.getElementById(type + 'Button').addEventListener('click', function() {
+            const skins = document.querySelectorAll('#' + type);
+            toggleSkins("none");
+            skins.forEach(skin => {
+            skin.style.display = "initial";
+            });
+        });
     });
-    document.getElementById('ar2Button').addEventListener('click', function() {
-        const ar2Skins = document.getElementById("ar2");
-        toggleSkins("none");
-        ar2Skins.style.display = "initial";
-    });
-    document.getElementById('vectorButton').addEventListener('click', function() {
-        const vectorSkins = document.getElementById("vector");
-        toggleSkins("none");
-        vectorSkins.style.display = "initial";
-    });
+    
     document.getElementById('skinFolderButton').addEventListener('click', function() {
         require('electron').ipcRenderer.send('openSkinFolder')
     });
