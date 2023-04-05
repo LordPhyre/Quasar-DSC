@@ -410,9 +410,7 @@ app.whenReady().then(() => {
         app.relaunch();
         app.exit(0);
       });
-      ipcMain.on('diffurl', (url, event, file) => {
-        console.log(url)
-        new URL(url);
+      ipcMain.on('diffurl', (event, url) => {
         win.loadURL(url);
         win.webContents.reloadIgnoringCache();
       });

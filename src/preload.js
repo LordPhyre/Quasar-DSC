@@ -425,7 +425,6 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
         if(e.target.checked){
             jsonobj.Debug = true;
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
-            require('electron').ipcRenderer.send('diffurl', 'https://google.com')
         } else {
             jsonobj.Debug = false;
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));

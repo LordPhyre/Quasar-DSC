@@ -138,7 +138,11 @@ function shortcuts(jsonobj, jsonpath) {
 
         if (event.key === 'F1') {
             skinWrapper.style.display = skinWrapper.style.display === 'none' ? 'block' : 'none';
-        }          
+        }
+
+        if (event.key === 'i') {
+            invmenu.style.display = invmenu.style.display === 'none' ? 'block' : 'none';
+        }
     });
 }
 
