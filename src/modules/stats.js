@@ -9,6 +9,43 @@ function statscreate(jsonobj) {
     `;
     document.body.appendChild(statsHolderWrapper);
     
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.innerHTML = `
+        dragElement(document.getElementById("statsHolderWrapper"));
+    
+        function dragElement(elmnt) {
+            var pos1 = 0,pos2 = 0,pos3 = 0,pos4 = 0;
+            document.getElementById("statsHolderWrapper").onmousedown = dragMouseDown;
+    
+            function dragMouseDown(e) {
+                e = e || window.event;
+                e.preventDefault();
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                document.onmouseup = closeDragElement;
+                document.onmousemove = elementDrag;
+            }
+    
+            function elementDrag(e) {
+                e = e || window.event;
+                e.preventDefault();
+                pos1 = pos3 - e.clientX;
+                pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+                elmnt.style.right = (document.documentElement.clientWidth - pos3 - elmnt.offsetWidth) + "px";
+            }
+    
+            function closeDragElement() {
+                document.onmouseup = null;
+                document.onmousemove = null;
+            }
+        };
+    `;
+    document.getElementsByTagName('head')[0].appendChild(script);    
+    
     const elementIds = ['fpscounter', 'ping', 'platform', 'cpu', 'mem', 'totalMem', 'cpuCount', 'uptime'];
     const styles = "z-index: 1000; color: white; font-size: 100%; display: none; white-space: nowrap;";
     
