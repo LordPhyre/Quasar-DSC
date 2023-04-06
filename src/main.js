@@ -68,6 +68,8 @@ if (!fs.existsSync(jsonpath)) {
     "Debug": false,
     "AutoFullscreen": false,
     "Fullscreen": false,
+    "Colorblindmode": false,
+    "ColorblindmodeColor": "#FF0",
     "Colors": {
         "menuHeaderColor": "#232429",
         "menuColor": "#232429",
@@ -208,6 +210,10 @@ app.whenReady().then(() => {
       win.setMenuBarVisibility(false);
       win.$ = win.jQuery = require('jquery/dist/jquery.min.js');
       win.loadURL('https://deadshot.io');
+
+      if (jsonobj.Colorblindmode) {
+        win.webContents.send('colorblinddata', jsonobj.ColorblindmodeColor);
+      }
     
       // some shortcuts
       globalShortcut.register('F6', () => win.loadURL('http://deadshot.io/'));

@@ -1,3 +1,5 @@
+const { create } = require("./invitemenu");
+
 const optionholders = [];
 const optiondescrs = [];
 const optioninputs = [];
@@ -18,6 +20,12 @@ const createOptionHolder = (id, descrText, inputId, jsonobj) => {
     const optionDescr = createElement('p', 'optiondescr', '', descrText);
     const optionInput = createElement('input', '', inputId, '');
     const optionHr = createElement('hr', '', '', '');
+    const optionCheck = document.createElement('input');
+    optionCheck.type = 'checkbox';
+    optionCheck.id = 'colorblindCheck';
+    optionCheck.style = 'margin-top: 18px; margin-right: 5px;';
+    optionHolder.style.backgroundColor = 'var(--optionColor)';
+
     if (id == "texturePackOptionHolder") {
         optionInput.type = 'button';
         optionInput.value = 'Open Folder';
@@ -31,8 +39,7 @@ const createOptionHolder = (id, descrText, inputId, jsonobj) => {
         optionInput.style.width = '100px';
     }
     if (id.includes('shortcutOptionHolder')) {
-        optionInput.style.float = "right";
-        optionHolder.style.backgroundColor = "var(--optionColor)";
+        optionInput.style.float = 'right';
         if (id == 'shortcutOptionHolder') {
             optionInput.placeholder = 'GG';
             optionInput.setAttribute('value', jsonobj.Shortcuts.one);
@@ -58,6 +65,11 @@ const createOptionHolder = (id, descrText, inputId, jsonobj) => {
         optionInput.placeholder = 'Slapping noobs';
         optionInput.style.width = '200px';
         optionInput.setAttribute('value', jsonobj.RPC.text);
+    } else if (id == 'colorblindOptionHolder') {
+        optionInput.style.float = 'right';
+        optionInput.style.width = '100px';
+        optionInput.placeholder = '#FF0';
+        optionInput.setAttribute('value', jsonobj.ColorblindmodeColor);
     }
 
     optionholders.push(optionHolder);
@@ -67,11 +79,12 @@ const createOptionHolder = (id, descrText, inputId, jsonobj) => {
 
     optionHolder.appendChild(optionDescr);
     optionHolder.appendChild(optionInput);
+    if (id == 'colorblindOptionHolder') {
+        optionHolder.appendChild(optionCheck);
+    }
     optionHolder.appendChild(optionHr);
 
-    //optionholders.forEach(holder => {
-        rightDiv.appendChild(optionHolder);
-    //});
+    rightDiv.appendChild(optionHolder);
 };
 
 module.exports = {

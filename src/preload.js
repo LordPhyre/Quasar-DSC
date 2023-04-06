@@ -1,3 +1,109 @@
+require('electron').ipcRenderer.on('colorblinddata', (event, theColor) => {
+// ZZZZ's colorblind mode - Credit to Gato
+const TheColor = `'` + theColor + `'`;
+console.log(theColor);
+
+class GameLoader {
+    sourceLink = ''
+    observe() {return new Promise(resolve => {
+            var observer = new MutationObserver((mutations, observer) => {
+                for (let mutation of mutations) {for (let node of mutation.addedNodes) {
+                        if (node.tagName === 'SCRIPT' && node.src.includes('final.js')) {
+                            this.sourceLink = node.src
+                            node.removeAttribute('src')
+                            resolve()
+                            observer.disconnect()
+                        }
+                    }}
+            })
+            observer.observe(document, {childList: true, subtree: true,})
+        })}
+    async source() {
+        await this.observe()
+        return await fetch(this.sourceLink).then(res => res.text())
+    }
+}
+function makeRegex(lookingFor){
+    var normArray = lookingFor.split('');
+    var xEscArray = lookingFor.split('').map(function(e) {return '\\\\x' + e.charCodeAt(0).toString(16);});
+    var uEscArray = lookingFor.split('').map(function(e) {return `\\\\u\\{${e.charCodeAt(0).toString(16).toUpperCase()}\\}`;;});
+    var specialChars = ['(',',',')','.',':','{','}'];
+
+    var outp = "(";
+    var i = 0;
+    normArray.forEach((e)=>{
+        let norm = normArray[i];
+        if(norm == " "){norm = "\\s*"};
+        if(specialChars.includes(norm)){norm = "\\" + norm};
+        outp += `(?:${norm}|${xEscArray[i]}|${uEscArray[i]})`;
+        i++;
+    })
+    outp += ")";
+
+    return new RegExp(outp);
+}
+
+let loader = new GameLoader()
+loader.source().then(async source => {
+
+var Eliminated = makeRegex("'#F33'");
+var EliminatedBorder = makeRegex("'#C33'");
+var MatchEndName = makeRegex("'#F55'");
+var VignetteAndGradientAndRugged = makeRegex("'#F00'");
+var EnemyBarsAndNames = makeRegex("'#FF4545'");
+var EnemyOnDeathAndARDot = makeRegex("'#F44'");
+var HitCircle = makeRegex("'#FF2828'");
+var Unknown2 = makeRegex("'#F77'");
+var Unknown3 = makeRegex("'#F66'");
+var NametagsOLDBROKEN = makeRegex("'#F84f4f'");
+var KillFeedNames = makeRegex("'#E33'");
+var HPbar = makeRegex("'#E22'");
+var GameOver = makeRegex("'#E44'"); // duble chex this
+var Unknown4 = makeRegex("'#E66'");
+var new8 = makeRegex("'#D33'");
+var new9 = makeRegex("'#d90218'");
+var PlayerGlow = makeRegex("vec4( 0.97, 0.1, 0.1");
+var PlayerOutlines = makeRegex("vec4( 1.0, 0.14, 0.14");
+const regexArray = [Eliminated, EliminatedBorder, MatchEndName, VignetteAndGradientAndRugged, EnemyBarsAndNames, EnemyOnDeathAndARDot, HitCircle, Unknown2, Unknown3, KillFeedNames, HPbar, GameOver, Unknown4, new8, new9];
+
+regexArray.forEach((regex) => {
+  var tmatch = source.match(regex);
+  if (tmatch) {
+      source = source.replace(tmatch[1], TheColor);
+      console.log("regexArray[" + regexArray.indexOf(regex) + "] updated.");
+  }
+    else { console.log("regexArray[" + regexArray.indexOf(regex) + "] was not found."); }
+});
+
+if (source.match(PlayerGlow)) {
+    let hex = TheColor.replace(/'/g, '');
+    let r = parseInt(hex[1] + hex[1], 16)/255;
+    let g = parseInt(hex[2] + hex[2], 16)/255;
+    let b = parseInt(hex[3] + hex[3], 16)/255;
+    source = source.replace(source.match(PlayerGlow)[1], `vec4( ${r}, ${g}, ${b}`);
+    console.log(`vec4( ${r}, ${g}, ${b}`);
+    console.log("PlayerGlow updated.");
+}
+else { console.log("PlayerGlow was not found."); }
+
+if (source.match(PlayerOutlines)) {
+    let hex = TheColor.replace(/'/g, '');
+    let r = parseInt(hex[1] + hex[1], 16)/255;
+    let g = parseInt(hex[2] + hex[2], 16)/255;
+    let b = parseInt(hex[3] + hex[3], 16)/255;
+    source = source.replace(source.match(PlayerOutlines)[1], `vec4( ${r}, ${g}, ${b}`);
+    console.log(`vec4( ${r}, ${g}, ${b}`);
+    console.log("PlayerOutlines updated.");
+}
+else { console.log("PlayerOutlines were not found."); }
+
+
+console.log(source);
+    new Function(source)()
+})
+
+});
+
 const fs = require('fs');
 const styling = require('./modules/styling.js');
 const menuconstruct = require('./modules/menuconstruct.js');
@@ -17,11 +123,9 @@ document.addEventListener("DOMContentLoaded", function() {
 //Receive user datapath and save as variable
 require('electron').ipcRenderer.on('SendUserData', (event, message, client_version) => {
     const jsonpath = message;
-    console.log(jsonpath);
 
     // Parse the contents of the file into a JavaScript object
     const jsonobj = JSON.parse(fs.readFileSync(jsonpath, 'utf8'));
-    console.log(jsonobj);
 
     // Styling and CSS
     var menuHeaderColor = jsonobj.Colors.menuHeaderColor; //"#2a394f";
@@ -243,16 +347,22 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
         "skinCategoryoptionHolder", 
         "skyboxoptionHolder", 
         "wallpaperoptionHolder",
-        "themeOptionHolder"
+        "themeOptionHolder",
+        "colorblindOptionHolder"
     ];
 
     optionHolderManager.createOptionHolder('texturePackOptionHolder', 'Texture Pack', 'texturePackOptionInput', jsonobj);
     optionHolderManager.createOptionHolder('downloadTexturePackOptionHolder', 'Download QUASAR Pack', 'downloadTexturePackOptionInput', jsonobj);
-    optionHolderManager.createOptionHolder('RPCTextOptionHolder', 'RPC Text', 'rpcOptionInput', jsonobj);    
+    optionHolderManager.createOptionHolder('RPCTextOptionHolder', 'RPC Text', 'rpcOptionInput', jsonobj);
+    optionHolderManager.createOptionHolder('colorblindOptionHolder', `ZZZZ's Colorblind Mode`, 'colorblindOptionInput', jsonobj);  
 
     function createEventListener(id, styleProperty, jsonProperty) {
         const element = document.getElementById(id);
-        element.checked = jsonobj.Stats[jsonProperty];
+        if (id == "colorblindCheck") {
+            element.checked = jsonobj[jsonProperty];
+        } else {
+            element.checked = jsonobj.Stats[jsonProperty];
+        }
       
         return element.addEventListener('change', e => {
           const target = e.target;
@@ -262,8 +372,11 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
             const style = document.getElementById(styleProperty);
             style.style.display = value ? 'block' : 'none';
           }
-      
-          jsonobj.Stats[jsonProperty] = value;
+          if (id = "colorblindCheck") {
+            jsonobj[jsonProperty] = value;
+          } else {
+            jsonobj.Stats[jsonProperty] = value;
+          }
           fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         });
     }
@@ -280,6 +393,12 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
     createEventListener('uptimeDisplayCheck', 'uptime', 'Uptime');
     createEventListener('WASDDisplayCheck', 'WASD', 'WASD');
     createEventListener('AutoFullscreenCheck', null, 'AutoFullscreen');
+    createEventListener('colorblindCheck', null, 'Colorblindmode');
+
+    colorblindOptionInput.addEventListener('change', function() {
+        jsonobj.ColorblindmodeColor = colorblindOptionInput.value;
+        fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
+    });
 
     shortcuts.shortcuts(jsonobj, jsonpath, optionColor);
 
@@ -297,8 +416,9 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
             "AutoFullscreenOptionHolder",
             "FullscreenOptionHolder",
             "RPCDisplayOptionHolder",
-            //"RPCTextshortcutOptionHolder", // where did that one go lol
+            "RPCTextOptionHolder",
             "SplashOptionHolder",
+            "colorblindOptionHolder",
             "debugOptionHolder"
         ];
         utils.showTab("general", "General", elements, optionList, additionalHide);
