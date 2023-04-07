@@ -59,12 +59,42 @@ function menuconstruct(opacity, skinWrapperBorderRadius, menuHeaderColor, behind
     `;
     document.body.appendChild(skinWrapper);
 
+    var skinHeader = document.getElementById("skinheader");
+    var isDragging = false;
+    var dragOffset = { x: 0, y: 0 };
+    
+    skinWrapper.addEventListener('mousedown', function(e) {
+      if (e.target !== skinHeader) {
+        e.stopPropagation();
+      } else {
+        isDragging = true;
+        dragOffset.x = e.clientX - skinWrapper.offsetLeft;
+        dragOffset.y = e.clientY - skinWrapper.offsetTop;
+      }
+    });
+    
+    document.addEventListener('mousemove', function(e) {
+      if (isDragging) {
+        skinWrapper.style.left = (e.clientX - dragOffset.x) + 'px';
+        skinWrapper.style.top = (e.clientY - dragOffset.y) + 'px';
+      }
+    });
+    
+    document.addEventListener('mouseup', function(e) {
+      isDragging = false;
+    });
+    
+
     // close button
     const skinCloseButton = document.createElement('button');
     skinCloseButton.className = 'skinclose';
     skinCloseButton.innerText = '✖';
     skinCloseButton.id = 'skinclose';
     document.getElementById('skinWrapper').appendChild(skinCloseButton);
+
+    document.getElementById('skinclose').addEventListener('click', function() {
+        document.getElementById('skinWrapper').style.display = 'none';
+    });
 
     // hide and show skins on click
     function toggleSkins(displayType) {
@@ -94,12 +124,6 @@ function menuconstruct(opacity, skinWrapperBorderRadius, menuHeaderColor, behind
     document.getElementById('skinFolderButton').addEventListener('click', function() {
         require('electron').ipcRenderer.send('openSkinFolder')
     });
-
-    // some juicy js
-    var script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.innerHTML = `dragElement(document.getElementById("skinWrapper"));function dragElement(elmnt) {var pos1 = 0,pos2 = 0,pos3 = 0,pos4 = 0;document.getElementById("skinheader").onmousedown = dragMouseDown;function dragMouseDown(e) {e = e || window.event;e.preventDefault();pos3 = e.clientX;pos4 = e.clientY;document.onmouseup = closeDragElement;document.onmousemove = elementDrag;}function elementDrag(e) {e = e || window.event;e.preventDefault();pos1 = pos3 - e.clientX;pos2 = pos4 - e.clientY;pos3 = e.clientX;pos4 = e.clientY;elmnt.style.top = (elmnt.offsetTop - pos2) + "px";elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";}function closeDragElement() {document.onmouseup = null;document.onmousemove = null;}};document.getElementById('skinclose').addEventListener('click',function(){document.getElementById('skinWrapper').style.display='none'});`;
-    document.getElementsByTagName('head')[0].appendChild(script);
 
     const msgBoxWrapper = document.createElement('div');
     msgBoxWrapper.style = "position: absolute; width: 100%; z-index: 1001; display: flex; justify-content: center; align-items: center; margin-top: 10px;"
