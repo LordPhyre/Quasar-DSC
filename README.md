@@ -2,6 +2,7 @@
 
 Introducing the best client for [Deadshot.io](https://deadshot.io/) that exists and will ever exist!
 
+[![Discord Banner 2](https://discordapp.com/api/guilds/1071922870663528499/widget.png?style=banner2)](https://discord.gg/pdnjqV3tXV)
 #
 
 Some of the CRAZY FEATURES in this client include:
@@ -26,12 +27,13 @@ Credits: Iniquity#2313 | Owner of [Arbiter Design](https://www.arbiterdesign.net
 * **Gato:** Helped with Clan Tags and Color Swapping
 * **Armaccord#9846:** Official Quasar skins
 * **n!ck#0159:** Animated Quasar Splash Screen
+* **bean_frog#6968:** Assistant Developer
 
 
 #
 
 ### What we are currently working on:
-- [x] Preparing everything for public v2 - be ready :eyes:
+- [x] Preparing everything for public 1.2.5 :eyes:
 
 ### Later.....
 - [ ] Controller Support
@@ -53,8 +55,8 @@ Do you want to build Quasar from source to test out the latest changes or make y
 If so, you can follow the steps below.
 
 - Extract the folder or use git clone then open command prompt inside the directory.
-- Type `npm i --save-dev electron` to install required dependencies.
-- To run the application, type `npm run start`
+- Type `npm i electron --save-dev` to install required dependencies.
+- To run the application, type `npm start`
 - If you have applied code changes, you will need to restart the application by closing it and running it again.
 - If you have a feature request or bug fix, please test it out locally before starting a pull request.
 
