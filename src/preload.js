@@ -55,7 +55,6 @@ var EnemyOnDeathAndARDot = makeRegex("'#F44'");
 var HitCircle = makeRegex("'#FF2828'");
 var Unknown2 = makeRegex("'#F77'");
 var Unknown3 = makeRegex("'#F66'");
-var NametagsOLDBROKEN = makeRegex("'#F84f4f'");
 var KillFeedNames = makeRegex("'#E33'");
 var HPbar = makeRegex("'#E22'");
 var GameOver = makeRegex("'#E44'"); // duble chex this
@@ -102,6 +101,43 @@ console.log(source);
     new Function(source)()
 })
 
+});
+
+// Clan tags - Credit to Gato
+fetch('http://h3004259.stratoserver.net/clan_data.json')
+  .then(response => response.json())
+  .then(data => {
+    let clans = Object.keys(data).map(tag => ({
+      tag,
+      members: data[tag].members
+    }));
+    let oFillText2 = CanvasRenderingContext2D.prototype.fillText;
+    CanvasRenderingContext2D.prototype.fillText = function (){
+        if(this.canvas.width == '512' && this.canvas.height == '512'){
+            for(clan of clans){
+                if(clan.members.includes(arguments[0])){
+                    arguments[0] = `[${clan.tag}] ` + arguments[0];
+                }
+            }
+        }
+        oFillText2.apply(this,arguments);
+    }
+    let oStrokeText2 = CanvasRenderingContext2D.prototype.strokeText;
+    CanvasRenderingContext2D.prototype.strokeText = function (){
+        if(this.canvas.width == '512' && this.canvas.height == '512'){
+            for(clan of clans){
+                if(clan.members.includes(arguments[0])){
+                    let fontSize = Number(String(this.font).substring(5,String(this.font).indexOf("px")));
+                    fontSize = Math.round(fontSize * 100) / 100;
+                    fontSize *= (this.measureText(arguments[0]).width/this.measureText(`[${clan.tag}] ` + arguments[0]).width);
+                    this.font = `bold ${fontSize}px Verdana2, Verdana`
+                    arguments[0] = `[${clan.tag}] ` + arguments[0];
+                    console.log(arguments[0] + " member of " + clan.tag)
+                }
+            }
+        }
+        oStrokeText2.apply(this,arguments);
+    }
 });
 
 const fs = require('fs');
