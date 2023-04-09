@@ -3,6 +3,8 @@
 Introducing the best client for [Deadshot.io](https://deadshot.io/) that exists and will ever exist!
 
 [![Discord Banner 2](https://discordapp.com/api/guilds/1071922870663528499/widget.png?style=banner2)](https://discord.gg/pdnjqV3tXV)
+
+Invite Quasar Bot: [Invite](https://discord.com/api/oauth2/authorize?client_id=1086803072203882496&permissions=2147483648&scope=bot%20applications.commands)
 #
 
 Some of the CRAZY FEATURES in this client include:
@@ -65,6 +67,9 @@ Good luck!
 #
 ### Detailed list of features:
 
+- Clan tags
+- ZZZZ's Colorblind Mode
+- Emojis
 - WASD Detector
 - PC-Stats:
     - FPS-Counter
@@ -82,11 +87,8 @@ Good luck!
     - Texture Pack Support
         - Small Quasar Texture Pack
         - Custom Skins
-- Chromium Flags Support
 - Customizable UI
 - Auto Fullscreen
 - Discord RPC
     - Custom Text
-- Dev Settings (3x click on version number)
-    - Debug Mode
-    - Splash Screen Switcher
+- Debug Mode
