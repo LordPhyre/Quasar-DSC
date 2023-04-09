@@ -140,6 +140,97 @@ fetch('http://h3004259.stratoserver.net/clan_data.json')
     }
 });
 
+// EMOJIS - CREDIT TO GATO
+let oFillText3 = CanvasRenderingContext2D.prototype.fillText;
+let drawImage = CanvasRenderingContext2D.prototype.drawImage;
+var imageKey = [{tag:":gem:",image:"https://deadshot.io/promo/diamond.png"},{tag:":coin:",image:"https://deadshot.io/promo/coin.png"},{tag:":verified:",image:"https://deadshot.io/promo/verified.png"},{tag:":boost:",image:"https://deadshot.io/promo/boosted.png"},
+{tag:":bruh:",image:"https://cdn.discordapp.com/emojis/1072964791192277092.webp?quality=lossless"},{tag:":skulloyai:",image:"https://cdn.discordapp.com/emojis/1091298394678513715.webp?size=96&quality=lossless"}]
+var unicodeKey = [{tag:":cat:",char:"😺"},{tag:":ok:",char:"👌"},{tag:":skull:",char:"💀"}, {tag:":nerd:",char:"🤓"}]
+
+// Convert URLS to img
+for(let i=0;i<imageKey.length;i++){
+    let url = imageKey[i].image;
+    imageKey[i].image = new Image();
+    imageKey[i].image.src = url;
+}
+// Convert emoji to img
+for(let i=0;i<unicodeKey.length;i++){
+    unicodeKey[i].image = new Image();
+    unicodeKey[i].image.src = emojiToTwemoji(unicodeKey[i].char);
+}
+
+// Convert Unicode to Twemoji
+function emojiToTwemoji (emoji) {
+    var comp;
+    if (emoji.length === 1) {
+        comp = emoji.charCodeAt(0);
+    }
+    comp = (
+        (emoji.charCodeAt(0) - 0xD800) * 0x400
+      + (emoji.charCodeAt(1) - 0xDC00) + 0x10000
+    );
+    if (comp < 0) {
+        comp = emoji.charCodeAt(0);
+    }
+    return `https://twitter.github.io/twemoji/v/14.0.0/72x72/${comp.toString("16")}.png`;
+};
+
+CanvasRenderingContext2D.prototype.fillText = function (){
+    if((typeof arguments[0]).toLowerCase() !== "string"){
+        oFillText3.apply(this,arguments);
+        return;
+    };
+    // Unicode
+    unicodeKey.forEach(uni => {
+        let imgList = [];
+        while (arguments[0].includes(uni.tag)){
+            imgList[imgList.length] = arguments[0].indexOf(uni.tag);
+            arguments[0] = arguments[0].replace(uni.tag,"      ");
+        }
+        let imgSize = Number(String(this.font).replace("bold ","").split("px")[0]);
+
+        imgList.forEach(ind => {
+            let newArgs = [...arguments];
+            let fillStyle = this.fillStyle;
+            this.fillStyle = "#FFF"
+            newArgs[0] = uni.image;
+            newArgs[1] = newArgs[1] + this.measureText(arguments[0].substring(0,ind+1)).width;
+            newArgs[2] = 0;
+            newArgs[3] = imgSize;
+            newArgs[4] = imgSize;
+            console.log(newArgs)
+            drawImage.apply(this,newArgs);
+            this.fillStyle = fillStyle
+        })
+    });
+    
+    // Images
+    imageKey.forEach(uni => {
+        let imgList = [];
+        while (arguments[0].includes(uni.tag)){
+            imgList[imgList.length] = arguments[0].indexOf(uni.tag);
+            arguments[0] = arguments[0].replace(uni.tag,"      ");
+        }
+        let imgSize = Number(String(this.font).replace("bold ","").split("px")[0]);
+
+        imgList.forEach(ind => {
+            let newArgs = [...arguments];
+            let fillStyle = this.fillStyle;
+            this.fillStyle = "#FFF"
+            newArgs[0] = uni.image;
+            newArgs[1] = newArgs[1] + this.measureText(arguments[0].substring(0,ind+1)).width;
+            newArgs[2] = 0;
+            newArgs[3] = imgSize;
+            newArgs[4] = imgSize;
+            console.log(newArgs)
+            drawImage.apply(this,newArgs);
+            this.fillStyle = fillStyle
+        })
+    });
+    // Draw the text
+    oFillText3.apply(this,arguments)
+};
+
 const fs = require('fs');
 const styling = require('./modules/styling.js');
 const menuconstruct = require('./modules/menuconstruct.js');
