@@ -352,11 +352,6 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
     themes.themes(jsonobj, themeData);
     invmenu.create();
 
-    document.getElementById('skyboxFolderButton').addEventListener('click', function() {
-        require('electron').ipcRenderer.send('openSkyboxFolder')
-    });
-
-
     // Menu Tabs
     const tabData = [
         { text: 'Home', id: 'HomePage' },
@@ -365,7 +360,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
         { text: 'Stats', id: 'stats' },
         { text: 'Shortcuts', id: 'shortcuts' },
         { text: 'Skins', id: 'SkinCategory' },
-        { text: 'Wallpaper', id: 'wallpaper' },
+        //{ text: 'Wallpaper', id: 'wallpaper' },
         { text: 'Aimbot', id: 'aimbot' }
     ];
     
@@ -473,7 +468,7 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
         "skyboxcontent", 
         "skinCategoryoptionHolder", 
         "skyboxoptionHolder", 
-        "wallpaperoptionHolder",
+        //"wallpaperoptionHolder",
         "themeOptionHolder",
         "colorblindOptionHolder"
     ];
@@ -597,17 +592,17 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
         });
     });
     
-    document.getElementById("wallpaper").addEventListener("click", function() {
+    /*document.getElementById("wallpaper").addEventListener("click", function() {
         utils.showTab("wallpaper", "Wallpaper <p style=\"color: red; font-size: 17px\">ATTENTION: Need to restart client to apply wallpaper</p>", ["wallpaperoptionHolder", "wallpapercontent"], optionList, additionalHide);
-    });
+    });*/
     
     document.getElementById("aimbot").addEventListener("click", function() {
-        PageTitle.innerHTML = "<iframe width=\"100%\" height=\"260px\" src=\"https://bean-frog.github.io/yt5s.io-Rick%20Astley%20-%20Never%20Gonna%20Give%20You%20Up%20(Official%20Music%20Video).mp4\" frameborder=\"0\" allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>";
-        
+        PageTitle.innerHTML = "<iframe width=\"100%\" height=\"260px\" src=\"https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1\" frameborder=\"0\" allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>";
+    
         utils.hideOptions(optionList, additionalHide)
         utils.hideLogoVersionAndOpenCloseText()
         utils.hideStuff()
-    });
+    });    
 
     document.getElementById("themes").addEventListener("click", function() {
         const elements = [
@@ -677,5 +672,44 @@ require('electron').ipcRenderer.on('SendUserData', (event, message, client_versi
             fs.writeFileSync(jsonpath, JSON.stringify(jsonobj));
         }
     });
+
+    //Add Wallpaper Thing
+    /*document.querySelector("body > canvas:nth-child(12)").setAttribute("id", "custombg");
+        
+    ipcRenderer.on('wallpaper-path',(event,path) => {
+        // replace \ with / (doesn't work the other way)
+        var newPath = path.replace(/\\/g, "/");
+        console.log(newPath);
+
+        const bgcss = document.createElement('style');
+        bgcss.innerText = ``;
+        document.head.appendChild(bgcss);
+        const chat = document.querySelector("input[placeholder='[Enter] to use chat']");
+
+        function wallpaperSetter() {
+            if (chat.style.visibility == "hidden") {
+                bgcss.innerText = `            
+                    html, body {background: url("${newPath}") !important;
+                        background-size: cover !important;
+                    }`;
+                document.getElementById("custombg").style.display = "none"
+                
+            } else {
+                bgcss.innerText = ``;
+                document.getElementById("custombg").style.display = "block"
+            }
+            
+            ipcRenderer.on('toggleFullscreen',() => {
+                document.getElementById("custombg").style.display = "block"
+                setTimeout(() => {
+                    bg_canvas.style.display = "none";
+                }, 1000);
+            });
+        };
+
+        setTimeout(() => {
+            setInterval(wallpaperSetter, 1000);
+        }, 1500);
+    });*/
 });
 });

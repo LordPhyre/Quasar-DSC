@@ -50,10 +50,10 @@ function menuconstruct(opacity, skinWrapperBorderRadius, menuHeaderColor, behind
                 <hr style="height:5px; background-color: #1d00ff; border: none; width: 410px; margin: 15px; border-radius: 5px;">
                 <h2 style="text-align: center; margin: 10px 0 10px 0;">Texture Packs</h2>
             </div>
-            <div id="wallpaperoptionHolder" class="optionholder">
+            <!--<div id="wallpaperoptionHolder" class="optionholder">
             <div style="display: flex; justify-content: center;">
                 <button class="skinCategory" id="wallpaperFolderButton" style="padding: 10px 12.5px 10px 12.5px;background-color: var(--optionColor);border: none;color: white;font-size: 20px; text-decoration: underline; cursor: pointer;">Open Folder</button>
-            </div>
+            </div>-->
         </div>
         </div>
     `;
@@ -124,6 +124,10 @@ function menuconstruct(opacity, skinWrapperBorderRadius, menuHeaderColor, behind
     document.getElementById('skinFolderButton').addEventListener('click', function() {
         require('electron').ipcRenderer.send('openSkinFolder')
     });
+
+    /*document.getElementById('wallpaperFolderButton').addEventListener('click', function() {
+        require('electron').ipcRenderer.send('openWallpaperFolder')
+    });*/
 
     const msgBoxWrapper = document.createElement('div');
     msgBoxWrapper.style = "position: absolute; width: 100%; z-index: 1001; display: flex; justify-content: center; align-items: center; margin-top: 10px;"
