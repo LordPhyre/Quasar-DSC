@@ -2,6 +2,8 @@
 
 Introducing the best client for [Deadshot.io](https://deadshot.io/) that exists and will ever exist!
 
+**Edit:** Please not that this client is very buggy because we never finished it! And also this repo is now archived. It was fun while it lasted!
+
 [![Discord Banner 2](https://discordapp.com/api/guilds/1071922870663528499/widget.png?style=banner2)](https://discord.gg/pdnjqV3tXV)
 
 Invite Quasar Bot: [Invite](https://discord.com/api/oauth2/authorize?client_id=1086803072203882496&permissions=2147483648&scope=bot%20applications.commands)
